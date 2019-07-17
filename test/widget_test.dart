@@ -33,4 +33,7 @@ void main() {
   });
   test("test_T", () {
   });
+  test("testjson",(){
+    print(Moudle1Model(1,false,"sss").toJson());
+  });
 }
