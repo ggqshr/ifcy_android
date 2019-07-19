@@ -10,16 +10,11 @@ import 'package:ifcy/utils/constant_name.dart';
 import 'package:ifcy/utils/loading.dart';
 
 class MainApp extends StatelessWidget {
-  Store<AppState> _store =
-      createStoreWithmiddleware<AppState>(mainAppReducer, AppState(), null);
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
-      store: _store,
-      child: Scaffold(
-        body: _MainApp(),
-      ),
+    return Scaffold(
+      body: _MainApp(),
     );
   }
 }
