@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/module1/action/Moudle1Action.dart';
 import 'package:ifcy/module1/model/Moudle1Model.dart';
 import 'package:ifcy/utils/StoreCreater.dart';
@@ -34,6 +35,7 @@ void main() {
   test("test_T", () {
   });
   test("testjson",(){
-    print(Moudle1Model(1,false,"sss").toJson());
+   AppState appState = AppState();
+   print(appState);
   });
 }

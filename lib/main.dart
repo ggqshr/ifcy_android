@@ -5,8 +5,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
+import 'main_app/model/select_project_model.dart';
 import 'utils/StoreCreater.dart';
-import 'package:ifcy/main_app/main_app_redux.dart';
+import 'package:ifcy/main_app_redux.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +18,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   Store<AppState> _store =
-      createStoreWithmiddleware<AppState>(mainAppReducer, AppState(), null);
+      createStoreWithmiddleware<AppState>(mainAppReducer, AppState(selectProjectModel: SelectProjectModel()), null);
 
   // This widget is the root of your application.
   @override

@@ -1,19 +1,23 @@
+import 'package:ifcy/main_app/model/select_project_model.dart';
+
 part 'login_page_model.dart';
 
 class AppState {
   String userName;
-  List projectList;
   String alertText;
   Map project2Auth;
-  String currentAuth;
-  int currentProjectIndex = 0;
+  SelectProjectModel selectProjectModel = SelectProjectModel();
 
   AppState({
     this.userName,
-    this.projectList,
     this.alertText,
     this.project2Auth,
-    this.currentAuth,
-    this.currentProjectIndex,
+    this.selectProjectModel,
   });
+
+  @override
+  String toString() {
+    return 'AppState{userName: $userName, alertText: $alertText, project2Auth: $project2Auth, selectProjectModel: $selectProjectModel}';
+  }
+
 }

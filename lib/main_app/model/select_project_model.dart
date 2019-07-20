@@ -29,4 +29,9 @@ class SelectProjectModel {
       selectedProjectIndex.hashCode ^
       projectList.hashCode ^
       auth.hashCode;
+
+  @override
+  String toString() {
+    return 'SelectProjectModel{selectedProject: $selectedProject, selectedProjectIndex: $selectedProjectIndex, projectList: $projectList, onChangeCall: $onChangeCall, auth: $auth}';
+  }
 }

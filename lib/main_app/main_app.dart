@@ -3,7 +3,7 @@ import 'package:ifcy/main_app/pages/login_page.dart';
 import 'package:ifcy/utils/StoreCreater.dart';
 import 'package:redux/redux.dart';
 import 'model/AppState.dart';
-import 'main_app_redux.dart';
+import 'package:ifcy/main_app_redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ifcy/utils/constant_name.dart';

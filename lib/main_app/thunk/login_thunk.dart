@@ -8,6 +8,7 @@ ThunkAction<AppState> loginSubmitAction(
       userName,
       ["test", "test1", "test2"],
       {"test": "1", "test1": "2", "test2": "3"},
+      0,
     ));
     loadingDialogAction.cancleLoadingDialog();
     navigatorCall();

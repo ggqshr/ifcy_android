@@ -14,32 +14,51 @@ class SelectProjectPage extends StatelessWidget {
     return StoreConnector<AppState, SelectProjectModel>(
       converter: (Store<AppState> store) {
         return SelectProjectModel(
-          selectedProject:
-              store.state.projectList[store.state.currentProjectIndex],
-          selectedProjectIndex: store.state.currentProjectIndex,
-          projectList: store.state.projectList,
+          selectedProject: store.state.selectProjectModel.selectedProject,
+          selectedProjectIndex:
+              store.state.selectProjectModel.selectedProjectIndex,
+          projectList: store.state.selectProjectModel.projectList,
           onChangeCall: (v) {
             store.dispatch(
-              OnChangeProject(v, store.state.projectList.indexOf(v),
+              OnChangeProject(
+                  v,
+                  store.state.selectProjectModel.projectList.indexOf(v),
                   store.state.project2Auth[v]),
             );
           },
-          auth: store.state.currentAuth,
+          auth: store.state.selectProjectModel.auth,
         );
       },
       builder: (BuildContext context, SelectProjectModel vm) {
         return Scaffold(
           appBar: AppBar(
-            leading: DropdownButton(
-              items: vm.projectList.map<DropdownMenuItem<String>>((i) {
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            title: DropdownButton(
+              items: ["大厦1", "大厦2"].map((i) {
                 return DropdownMenuItem<String>(
                   value: i,
                   child: Text(i),
                 );
               }).toList(),
-              onChanged: (v) => vm.onChangeCall(v),
-              value: vm.selectedProject,
+              onChanged: (v) {},
+              value: "大厦1",
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: DropdownButton(
+                  items: vm.projectList.map<DropdownMenuItem<String>>((i) {
+                    return DropdownMenuItem<String>(
+                      value: i,
+                      child: Text(i),
+                    );
+                  }).toList(),
+                  onChanged: (v) => vm.onChangeCall(v),
+                  value: vm.selectedProject,
+                ),
+              )
+            ],
           ),
           body: DeviceSupervisor(vm.auth),
         );
