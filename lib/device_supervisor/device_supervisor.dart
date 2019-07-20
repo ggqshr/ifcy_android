@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:badges/badges.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/utils/StoreCreater.dart';
 import 'model/device_supervisor_model.dart';
@@ -24,9 +25,32 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text("current auth is ${widget.auth}"),
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            title: Text("建筑"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.warning),
+            title: Text("故障"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_list_bulleted),
+            title: Text("任务"),
+          ),
+          BottomNavigationBarItem(
+            icon: Badge(child: Icon(Icons.person_outline),badgeContent: Text("2"),),
+            title: Text("我的"),
+          ),
+        ],
+      ),
+      body: Container(
+        child: Center(
+          child: Text("current auth is ${widget.auth}"),
+        ),
       ),
     );
   }
