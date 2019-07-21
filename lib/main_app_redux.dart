@@ -29,10 +29,13 @@ Reducer<Map> Project2AuthReducer = combineReducers([
   TypedReducer<Map, LoginSuccessAction>(changeProject2Auth),
 ]);
 
-AppState mainAppReducer(AppState state, action) => AppState(
-      userName: UserNameReduer(state.userName, action),
-      alertText: AlertTextReducer(state.alertText, action),
-      project2Auth: Project2AuthReducer(state.project2Auth, action),
-      selectProjectModel:
-          SelectProjectReducer(state.selectProjectModel, action),
-    );
+AppState mainAppReducer(AppState state, action) {
+  print(action);
+  return AppState(
+    userName: UserNameReduer(state.userName, action),
+    alertText: AlertTextReducer(state.alertText, action),
+    project2Auth: Project2AuthReducer(state.project2Auth, action),
+    selectProjectModel:
+    SelectProjectReducer(state.selectProjectModel, action),
+  );
+}
