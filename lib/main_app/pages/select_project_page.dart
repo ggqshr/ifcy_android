@@ -31,20 +31,6 @@ class SelectProjectPage extends StatelessWidget {
       },
       builder: (BuildContext context, SelectProjectModel vm) {
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            title: DropdownButton(
-              items: ["大厦1", "大厦2"].map((i) {
-                return DropdownMenuItem<String>(
-                  value: i,
-                  child: Text(i),
-                );
-              }).toList(),
-              onChanged: (v) {},
-              value: "大厦1",
-            ),
-          ),
           body: DeviceSupervisor(vm.auth),
           drawer: Drawer(
             child: ListView(

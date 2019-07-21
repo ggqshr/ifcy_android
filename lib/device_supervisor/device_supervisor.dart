@@ -26,6 +26,20 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: DropdownButton(
+          items: ["大厦1", "大厦2"].map((i) {
+            return DropdownMenuItem<String>(
+              value: i,
+              child: Text(i),
+            );
+          }).toList(),
+          onChanged: (v) {},
+          value: "大厦1",
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
