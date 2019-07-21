@@ -44,23 +44,82 @@ class SelectProjectPage extends StatelessWidget {
               onChanged: (v) {},
               value: "大厦1",
             ),
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: DropdownButton(
-                  items: vm.projectList.map<DropdownMenuItem<String>>((i) {
-                    return DropdownMenuItem<String>(
-                      value: i,
-                      child: Text(i),
-                    );
-                  }).toList(),
-                  onChanged: (v) => vm.onChangeCall(v),
-                  value: vm.selectedProject,
-                ),
-              )
-            ],
           ),
           body: DeviceSupervisor(vm.auth),
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.all(0),
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                  ),
+                  child: Center(
+                    child: SizedBox(
+                      child: CircleAvatar(
+                        child: Text("G"),
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: Tooltip(
+                    child: Icon(Icons.change_history),
+                    message: "切换项目",
+                  ),
+                  title: Text("切换项目"),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        String groupValue = vm.selectedProject;
+                        return AlertDialog(
+                          title: Text("切换项目"),
+                          content: StatefulBuilder(
+                            builder: (context, state) {
+                              return Column(
+                                children:
+                                    vm.projectList.map<RadioListTile>((i) {
+                                  return RadioListTile<String>(
+                                    title: Text(i.toString()),
+                                    value: i.toString(),
+                                    onChanged: (v) {
+                                      state(() => groupValue = v);
+                                    },
+                                    groupValue: groupValue,
+                                  );
+                                }).toList(),
+                                mainAxisSize: MainAxisSize.min,
+                              );
+                            },
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("返回"),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            FlatButton(
+                              child: Text("切换"),
+                              onPressed: () {
+                                if (vm.selectedProject != groupValue){
+                                  vm.onChangeCall(groupValue);
+                                }
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                                if (vm.selectedProject != groupValue){
+                                  loadingDialogAction.showLoadingDialog("切换项目中..");
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
