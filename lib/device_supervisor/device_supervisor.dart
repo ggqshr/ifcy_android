@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:ifcy/utils/StoreCreater.dart';
 import 'model/device_supervisor_model.dart';
 import 'device_supervisor_redux.dart';
+import 'pages/device_supvisor_pages.dart';
 
 class DeviceSupervisor extends StatefulWidget {
   String auth;
@@ -15,31 +16,19 @@ class DeviceSupervisor extends StatefulWidget {
 }
 
 class _DeviceSupervisorState extends State<DeviceSupervisor> {
-//  Store<DeviceSupervisorModel> _store;
+  List<Widget> viewList = [];
+  int currentIndex = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    viewList..add(MonitorPage());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: DropdownButton(
-          items: ["大厦1", "大厦2"].map((i) {
-            return DropdownMenuItem<String>(
-              value: i,
-              child: Text(i),
-            );
-          }).toList(),
-          onChanged: (v) {},
-          value: "大厦1",
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
@@ -56,14 +45,23 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
             title: Text("任务"),
           ),
           BottomNavigationBarItem(
-            icon: Badge(child: Icon(Icons.person_outline),badgeContent: Text("2"),),
+            icon: Badge(
+              child: Icon(Icons.person_outline),
+              badgeContent: Text("2"),
+            ),
             title: Text("我的"),
           ),
         ],
+        onTap: (v) {
+          setState(() {
+            currentIndex = v;
+          });
+        },
+        currentIndex: currentIndex,
       ),
       body: Container(
         child: Center(
-          child: Text("current auth is ${widget.auth}"),
+          child:viewList[currentIndex],
         ),
       ),
     );
