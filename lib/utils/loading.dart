@@ -6,18 +6,29 @@ class LoadingDialogAction {
 
   LoadingDialogAction(this.context);
 
-  showLoadingDialog() {
+  showLoadingDialog([String text2show = ""]) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return SimpleDialog(
           children: <Widget>[
-            Container(
-              child: SpinKitPouringHourglass(color: Colors.blue),
+            Column(
+              children: <Widget>[
+                Container(
+                  child: SpinKitPouringHourglass(color: Colors.blue),
+                ),
+                text2show == ""
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(text2show),
+                      ),
+              ],
+              mainAxisSize: MainAxisSize.min,
             )
           ],
-          shape: CircleBorder(),
+          shape: text2show == "" ? CircleBorder() : Border.all(),
         );
       },
     );
