@@ -2,8 +2,8 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/select_project_reducer.dart';
 import 'package:redux/redux.dart';
 
+import 'device_supervisor/device_supervisor_redux.dart';
 import 'main_app/actions/main_app_actions.dart';
-
 
 String updateUserName(String userName, action) {
   return action.userName;
@@ -35,7 +35,8 @@ AppState mainAppReducer(AppState state, action) {
     userName: UserNameReduer(state.userName, action),
     alertText: AlertTextReducer(state.alertText, action),
     project2Auth: Project2AuthReducer(state.project2Auth, action),
-    selectProjectModel:
-    SelectProjectReducer(state.selectProjectModel, action),
+    selectProjectModel: SelectProjectReducer(state.selectProjectModel, action),
+    deviceSupervisorModel:
+        deviceSupervisorMoudle1Reducer(state.deviceSupervisorModel, action),
   );
 }

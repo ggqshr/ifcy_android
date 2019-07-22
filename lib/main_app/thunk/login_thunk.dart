@@ -10,6 +10,7 @@ ThunkAction<AppState> loginSubmitAction(
       {"test": "1", "test1": "2", "test2": "3"},
       0,
     ));
+    store.dispatch(InitPageStateAction.init());
     loadingDialogAction.cancleLoadingDialog();
     navigatorCall();
   };
