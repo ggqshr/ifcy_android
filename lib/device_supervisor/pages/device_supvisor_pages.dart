@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' ;
 import 'package:ifcy/device_supervisor/actions/device_supervisor_actions.dart';
+import 'package:ifcy/device_supervisor/component/device_supervisor_compoent.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
