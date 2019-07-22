@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'device_supervisor/model/device_supervisor_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
 import 'main_app/model/select_project_model.dart';
@@ -17,8 +18,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  Store<AppState> _store =
-      createStoreWithmiddleware<AppState>(mainAppReducer, AppState(selectProjectModel: SelectProjectModel()), null);
+  Store<AppState> _store = createStoreWithmiddleware<AppState>(
+      mainAppReducer,
+      AppState(
+        selectProjectModel: SelectProjectModel(),
+        deviceSupervisorModel: DeviceSupervisorModel.init(),
+      ),
+      null);
 
   // This widget is the root of your application.
   @override
@@ -28,7 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: Colors.green[300],
         ),
         home: MainApp(),
       ),
