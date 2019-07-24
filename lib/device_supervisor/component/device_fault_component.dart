@@ -1,21 +1,22 @@
-part of 'device_supervisor_compoent.dart';
+part of "device_supervisor_compoent.dart";
 
-class FireAlarmComponent extends StatelessWidget {
+class DeviceFaultComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           return Card(
-            child: StoreConnector<AppState, FireAlarmModel>(
+            child: StoreConnector<AppState, DeviceFaultModel>(
               converter: (Store<AppState> store) {
-                return FireAlarmModel(
+                return DeviceFaultModel(
                   messageNum: store
-                      .state.deviceSupervisorModel.fireAlarmMessages.length,
-                  messages: store.state.deviceSupervisorModel.fireAlarmMessages,
+                      .state.deviceSupervisorModel.deviceFaultMessages.length,
+                  messages:
+                      store.state.deviceSupervisorModel.deviceFaultMessages,
                 );
               },
-              builder: (BuildContext context, FireAlarmModel vm) {
+              builder: (BuildContext context, DeviceFaultModel vm) {
                 List<Widget> viewList = <Widget>[];
 
                 //若没有消息应该显示空白以及提示
@@ -24,13 +25,13 @@ class FireAlarmComponent extends StatelessWidget {
                     title: Text("当前无消息"),
                   ));
                 } else {
-                  viewList = vm.messages.map<Widget>((FireAlarmMessage meg) {
-                    return FireMessageTile(meg);
+                  viewList = vm.messages.map<Widget>((DeviceFaultMessage meg) {
+                    return DeviceFaultTile(meg);
                   }).toList();
                 }
 
                 return ExpansionCard(
-                  title: "紧急火警消息",
+                  title: "今日设备故障",
                   messageNum: vm.messageNum,
                   viewList: viewList,
                 );
@@ -44,10 +45,10 @@ class FireAlarmComponent extends StatelessWidget {
   }
 }
 
-class FireMessageTile extends StatelessWidget {
-  final FireAlarmMessage meg;
+class DeviceFaultTile extends StatelessWidget {
+  final DeviceFaultMessage meg;
 
-  FireMessageTile(this.meg);
+  DeviceFaultTile(this.meg);
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +57,13 @@ class FireMessageTile extends StatelessWidget {
       child: Card(
         child: ListTile(
           leading: Icon(
-            FontAwesomeIcons.fireAlt,
-            color: Colors.red,
+            FontAwesomeIcons.solidBell,
+            color: Colors.yellow.shade700,
           ),
           trailing: Icon(
             Icons.chevron_right,
           ),
-          title: Text(meg.content),
+          title: Text(meg.title),
           subtitle: Text(meg.content),
           onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text("跳转${meg.id}"),

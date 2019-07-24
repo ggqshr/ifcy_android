@@ -1,8 +1,10 @@
-import 'package:ifcy/model/fire_alarm_message.dart';
+import 'package:ifcy/model/model.dart';
 
 part 'monitor_page_model.dart';
 
 part 'fire_alarm_model.dart';
+
+part 'device_fault_model.dart';
 
 class DeviceSupervisorModel {
   int faultNum; //故障数
@@ -11,6 +13,7 @@ class DeviceSupervisorModel {
   String currentBuilding; //当前选中的大厦
   List<int> bottomBadgeNumList; // 底部导航栏的徽章数
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
+  List<DeviceFaultMessage> deviceFaultMessages;
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -19,6 +22,7 @@ class DeviceSupervisorModel {
     this.currentBuilding,
     this.bottomBadgeNumList,
     this.fireAlarmMessages,
+    this.deviceFaultMessages,
   });
 
   DeviceSupervisorModel.init()
@@ -28,8 +32,12 @@ class DeviceSupervisorModel {
         currentBuilding = "tt",
         bottomBadgeNumList = [0, 0, 0, 0],
         fireAlarmMessages = [
-//          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
-//          FireAlarmMessage(id: "2", title: "你好1", content: "火灾1")
+          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
+          FireAlarmMessage(id: "2", title: "你好1", content: "火灾1")
+        ],
+        deviceFaultMessages = [
+          DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
+          DeviceFaultMessage(id: "2", title: "故障1", content: "故障1")
         ];
 
   @override
