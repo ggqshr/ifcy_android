@@ -1,4 +1,4 @@
-import 'package:ifcy/model/model.dart';
+import 'package:ifcy/common/model/model.dart';
 
 part 'monitor_page_model.dart';
 

@@ -1,4 +1,4 @@
-import 'package:ifcy/model/model.dart';
+import 'package:ifcy/common/model/model.dart';
 
 class InitPageStateAction {
   int faultNum;

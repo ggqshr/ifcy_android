@@ -7,7 +7,7 @@ import 'device_supervisor/model/device_supervisor_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
 import 'main_app/model/select_project_model.dart';
-import 'utils/StoreCreater.dart';
+import 'common/utils/StoreCreater.dart';
 import 'package:ifcy/main_app_redux.dart';
 
 void main() {
