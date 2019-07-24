@@ -3,7 +3,7 @@ part of "main_app_thunk.dart";
 ThunkAction<AppState> loginSubmitAction(
     String userName, String passWord, Function navigatorCall) {
   return (Store<AppState> store) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
     store.dispatch(LoginSuccessAction(
       userName,
       ["test", "test1", "test2"],

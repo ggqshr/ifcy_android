@@ -8,6 +8,7 @@ class InitPageStateAction {
   List<int> bottomBadgeNumList;
   List<FireAlarmMessage> fireMessage;
   List<DeviceFaultMessage> deviceFaultMessage;
+  List<TaskInfoMessage> taskInfoMessage;
 
   InitPageStateAction({
     this.faultNum,
@@ -17,6 +18,7 @@ class InitPageStateAction {
     this.bottomBadgeNumList,
     this.fireMessage,
     this.deviceFaultMessage,
+    this.taskInfoMessage,
   });
 
   InitPageStateAction.init()
@@ -32,6 +34,18 @@ class InitPageStateAction {
         deviceFaultMessage = [
           DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
           DeviceFaultMessage(id: "2", title: "故障1", content: "故障1"),
+        ],
+        taskInfoMessage = [
+          TaskInfoMessage(
+              id: "1",
+              title: "任务1",
+              content: "任务",
+              status: TaskStatus.completed),
+          TaskInfoMessage(
+              id: "2",
+              title: "任务2",
+              content: "任务2",
+              status: TaskStatus.uncompleted),
         ];
 }
 

@@ -12,7 +12,13 @@ import 'package:redux/redux.dart';
 import 'package:charts_flutter/flutter.dart' as chart;
 
 part 'task_rate_component.dart';
+
 part 'fault_num_component.dart';
+
 part 'appbar_component.dart';
+
 part 'fire_alarm_component.dart';
+
 part "device_fault_component.dart";
+
+part 'task_info_component.dart';
