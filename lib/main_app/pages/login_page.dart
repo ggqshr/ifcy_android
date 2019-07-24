@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
-import 'package:ifcy/utils/loading.dart';
+import 'package:ifcy/common/utils/loading.dart';
 import 'package:redux/redux.dart';
 
 class LoginPage extends StatelessWidget {

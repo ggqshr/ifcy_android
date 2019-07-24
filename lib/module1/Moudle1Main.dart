@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/module1/pages/CountPage.dart';
-import 'package:ifcy/utils/StoreCreater.dart';
+import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 import 'action/Moudle1Action.dart';
@@ -31,10 +31,12 @@ class _Moudle1TestState extends State<Moudle1Test>
     _tabController = TabController(length: 2, vsync: this);
 //    connect(remoteDevtools);
   }
-  connect(remoteDevtools) async{
+
+  connect(remoteDevtools) async {
     remoteDevtools.store = _store;
     await remoteDevtools.connect();
   }
+
   @override
   Widget build(BuildContext context) {
     return StoreProvider<Moudle1Model>(

@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/module1/action/Moudle1Action.dart';
 import 'package:ifcy/module1/model/Moudle1Model.dart';
-import 'package:ifcy/utils/StoreCreater.dart';
+import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/main.dart';
 import 'package:ifcy/module1/MoudleRedux.dart';

@@ -3,7 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:redux/redux.dart';
-import 'package:ifcy/utils/StoreCreater.dart';
+import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'model/device_supervisor_model.dart';
 import 'device_supervisor_redux.dart';
 import 'pages/device_supvisor_pages.dart';
