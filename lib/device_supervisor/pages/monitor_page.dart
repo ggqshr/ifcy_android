@@ -54,74 +54,7 @@ class MonitorPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
             ),
             FireAlarmComponent(),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Card(
-                    child: ExpansionTile(
-                      title: Text(
-                        "今日设备故障",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textScaleFactor: 1.3,
-                      ),
-//                  leading: Icon(
-//                    FontAwesomeIcons.fireAlt,
-//                    color: Colors.red,
-//                  ),
-                      initiallyExpanded: true,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: Card(
-                            child: ListTile(
-                              leading: Icon(
-                                FontAwesomeIcons.solidBell,
-                                color: Colors.yellow.shade700,
-                              ),
-                              trailing: Icon(
-                                Icons.chevron_right,
-                              ),
-                              title: Text("一楼烟感故障！"),
-                              subtitle: Text("发生故障"),
-                              onTap: () =>
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text("点击了火灾，跳转"),
-                                  )),
-                            ),
-                            elevation: 10,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: Card(
-                            child: ListTile(
-                              leading: Icon(
-                                FontAwesomeIcons.solidBell,
-                                color: Colors.yellow.shade700,
-                              ),
-                              trailing: Icon(
-                                Icons.chevron_right,
-                              ),
-                              title: Text("二楼烟感故障！"),
-                              subtitle: Text("二楼烟感故障！"),
-                              onTap: () =>
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text("点击了火灾，跳转"),
-                                  )),
-                            ),
-                            elevation: 10,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-                childCount: 1,
-              ),
-            ),
+            DeviceFaultComponent(),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {

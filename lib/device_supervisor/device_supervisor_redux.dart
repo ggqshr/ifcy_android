@@ -14,6 +14,8 @@ DeviceSupervisorModel deviceSupervisorMoudle1Reducer(
           bottomBadgeNumListReducer(state.bottomBadgeNumList, action),
       fireAlarmMessages:
           fireAlarmMessagesReducer(state.fireAlarmMessages, action),
+      deviceFaultMessages:
+          deviceFaultMessagesReducer(state.deviceFaultMessages, action),
     );
 
 int initFaultNum(int faultNum, InitPageStateAction action) {
@@ -68,4 +70,12 @@ List initFireMessage(List fireMessages, InitPageStateAction action) {
 
 Reducer<List> fireAlarmMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(initFireMessage),
+]);
+
+List initdeviceFaultMessage(List deviceMessages, InitPageStateAction action) {
+  return action.deviceFaultMessage;
+}
+
+Reducer<List> deviceFaultMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(initdeviceFaultMessage),
 ]);

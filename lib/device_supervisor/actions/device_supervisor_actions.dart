@@ -1,4 +1,4 @@
-import 'package:ifcy/model/fire_alarm_message.dart';
+import 'package:ifcy/model/model.dart';
 
 class InitPageStateAction {
   int faultNum;
@@ -7,6 +7,7 @@ class InitPageStateAction {
   String currentBuilding;
   List<int> bottomBadgeNumList;
   List<FireAlarmMessage> fireMessage;
+  List<DeviceFaultMessage> deviceFaultMessage;
 
   InitPageStateAction({
     this.faultNum,
@@ -15,6 +16,7 @@ class InitPageStateAction {
     this.currentBuilding,
     this.bottomBadgeNumList,
     this.fireMessage,
+    this.deviceFaultMessage,
   });
 
   InitPageStateAction.init()
@@ -26,6 +28,10 @@ class InitPageStateAction {
         fireMessage = [
 //          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
 //          FireAlarmMessage(id: "2", title: "你好1", content: "火灾1")
+        ],
+        deviceFaultMessage = [
+          DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
+          DeviceFaultMessage(id: "2", title: "故障1", content: "故障1"),
         ];
 }
 
