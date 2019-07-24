@@ -55,76 +55,10 @@ class MonitorPage extends StatelessWidget {
             ),
             FireAlarmComponent(),
             DeviceFaultComponent(),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Card(
-                    child: ExpansionTile(
-                      title: Text(
-                        "今日巡检进度",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textScaleFactor: 1.3,
-                      ),
-//                  leading: Icon(
-//                    FontAwesomeIcons.fireAlt,
-//                    color: Colors.red,
-//                  ),
-                      initiallyExpanded: true,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                          child: Card(
-                            child: ExpansionTile(
-                              leading: Icon(
-                                Icons.check_circle_outline,
-                                color: Colors.green,
-                              ),
-                              trailing: Icon(
-                                Icons.chevron_right,
-                              ),
-                              title: Text("已完成任务 2"),
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text("员工1完成了二楼的巡检任务"),
-                                )
-                              ],
-                              initiallyExpanded: true,
-                            ),
-                            elevation: 10,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-                          child: Card(
-                            child: ExpansionTile(
-                              leading: Icon(
-                                FontAwesomeIcons.playCircle,
-                                color: Colors.yellow.shade700,
-                              ),
-                              trailing: Icon(
-                                Icons.chevron_right,
-                              ),
-                              title: Text("进行中任务 3"),
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text("员工1完成了二楼的巡检任务"),
-                                )
-                              ],
-                              initiallyExpanded: true,
-                            ),
-                            elevation: 10,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-                childCount: 1,
-              ),
-            )
+            TaskInfoComponent(),
+            SliverPadding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+            ),
           ],
         ),
       ),

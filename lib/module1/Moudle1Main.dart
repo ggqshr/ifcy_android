@@ -23,7 +23,6 @@ class _Moudle1TestState extends State<Moudle1Test>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 //    var remoteDevtools = RemoteDevToolsMiddleware('10.0.2.2:8000');
     _store = createStoreWithmiddleware<Moudle1Model>(

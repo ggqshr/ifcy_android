@@ -9,36 +9,38 @@ class ExpansionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Wrap(
-        spacing: 5,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-            ),
-            textScaleFactor: 1.3,
-          ),
-          Badge(
-            badgeContent: SizedBox(
-              width: 20,
-              child: Text(
-                messageNum.toString(),
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
+    return Card(
+      child: ExpansionTile(
+        title: Wrap(
+          spacing: 5,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
               ),
+              textScaleFactor: 1.3,
             ),
-            animationType: BadgeAnimationType.scale,
-            shape: BadgeShape.square,
-            showBadge: messageNum != 0,
-          ),
-        ],
+            Badge(
+              badgeContent: SizedBox(
+                width: 20,
+                child: Text(
+                  messageNum.toString(),
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              animationType: BadgeAnimationType.scale,
+              shape: BadgeShape.square,
+              showBadge: messageNum != 0,
+            ),
+          ],
+        ),
+        initiallyExpanded: true,
+        children: viewList,
       ),
-      initiallyExpanded: true,
-      children: viewList,
     );
   }
 }

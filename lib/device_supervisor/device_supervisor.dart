@@ -35,7 +35,6 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     viewList..add(MonitorPage());
   }
