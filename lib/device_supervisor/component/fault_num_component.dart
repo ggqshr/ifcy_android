@@ -1,6 +1,6 @@
 part of 'device_supervisor_compoent.dart';
 
-class FaultNumCompoent extends StatelessWidget {
+class FaultNumComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

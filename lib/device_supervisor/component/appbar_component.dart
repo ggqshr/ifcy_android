@@ -1,6 +1,6 @@
 part of "device_supervisor_compoent.dart";
 
-class AppBarCompoent extends StatelessWidget {
+class AppBarComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, MonitorPageAppBarModel>(
