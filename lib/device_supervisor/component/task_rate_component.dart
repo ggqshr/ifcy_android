@@ -1,6 +1,6 @@
 part of 'device_supervisor_compoent.dart';
 
-class TaskRate extends StatelessWidget {
+class TaskRateComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, int>(
