@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
@@ -9,6 +10,7 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/model/select_project_model.dart';
 import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
 import 'package:ifcy/common//utils/loading.dart';
+import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -129,9 +131,13 @@ class SelectProjectPage extends StatelessWidget {
                           true, // click on notification to open downloaded file (for Android)
                     );
                     FlutterDownloader.registerCallback(
-                        (taskId, status, progress) {
+                        (taskId, status, progress) async {
                       if (status == DownloadTaskStatus.complete) {
-                        FlutterDownloader.open(taskId: taskId);
+                        InstallPlugin.installApk(
+                                appDocDir.path + "/2.apk", "com.example.ifcy")
+                            .then((e) {
+                          print("install $e");
+                        });
                       }
                     });
                   },
