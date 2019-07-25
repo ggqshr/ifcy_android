@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
@@ -6,7 +9,9 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/model/select_project_model.dart';
 import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
 import 'package:ifcy/common//utils/loading.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SelectProjectPage extends StatelessWidget {
   @override
@@ -87,13 +92,14 @@ class SelectProjectPage extends StatelessWidget {
                             FlatButton(
                               child: Text("切换"),
                               onPressed: () {
-                                if (vm.selectedProject != groupValue){
+                                if (vm.selectedProject != groupValue) {
                                   vm.onChangeCall(groupValue);
                                 }
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
-                                if (vm.selectedProject != groupValue){
-                                  loadingDialogAction.showLoadingDialog("切换项目中..");
+                                if (vm.selectedProject != groupValue) {
+                                  loadingDialogAction
+                                      .showLoadingDialog("切换项目中..");
                                 }
                               },
                             ),
@@ -103,16 +109,33 @@ class SelectProjectPage extends StatelessWidget {
                     );
                   },
                 ),
-//                ListTile(
-//                  title: Text("升级app"),
-//                  onTap: ()async {
-//                    bool res = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
-//                    if(!res){
-//                      await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
-//                      await SimplePermissions.requestPermission(Permission.Camera);
-//                    }
-//                  },
-//                )
+                ListTile(
+                  title: Text("升级app"),
+                  onTap: () async {
+                    PermissionStatus permission = await PermissionHandler()
+                        .checkPermissionStatus(PermissionGroup.storage);
+                    if (permission == PermissionStatus.denied) {
+                      Map<PermissionGroup, PermissionStatus> permissions =
+                          await PermissionHandler()
+                              .requestPermissions([PermissionGroup.storage]);
+                    }
+                    Directory appDocDir = await getExternalStorageDirectory();
+                    final taskId = await FlutterDownloader.enqueue(
+                      url: 'http://116.56.140.194/2.apk',
+                      savedDir: appDocDir.path,
+                      showNotification: true,
+                      // show download progress in status bar (for Android)
+                      openFileFromNotification:
+                          true, // click on notification to open downloaded file (for Android)
+                    );
+                    FlutterDownloader.registerCallback(
+                        (taskId, status, progress) {
+                      if (status == DownloadTaskStatus.complete) {
+                        FlutterDownloader.open(taskId: taskId);
+                      }
+                    });
+                  },
+                )
               ],
             ),
           ),
