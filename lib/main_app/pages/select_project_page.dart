@@ -38,7 +38,7 @@ class SelectProjectPage extends StatelessWidget {
       },
       builder: (BuildContext context, SelectProjectModel vm) {
         return Scaffold(
-          body: DeviceSupervisor(vm.auth),
+          body: DeviceSupervisor(vm.auth,(c)=>()=>Scaffold.of(c).openDrawer()),
           drawer: Drawer(
             child: ListView(
               padding: EdgeInsets.all(0),
@@ -115,14 +115,14 @@ class SelectProjectPage extends StatelessWidget {
                   title: Text("升级app"),
                   onTap: () async {
                     PermissionStatus permission = await PermissionHandler()
-                        .checkPermissionStatus(PermissionGroup.storage);
+                        .checkPermissionStatus(PermissionGroup.storage);//请求权限
                     if (permission == PermissionStatus.denied) {
                       Map<PermissionGroup, PermissionStatus> permissions =
                           await PermissionHandler()
                               .requestPermissions([PermissionGroup.storage]);
                     }
-                    Directory appDocDir = await getExternalStorageDirectory();
-                    final taskId = await FlutterDownloader.enqueue(
+                    Directory appDocDir = await getExternalStorageDirectory();//获取app数据存储地址
+                    final taskId = await FlutterDownloader.enqueue(//下载app
                       url: 'http://116.56.140.194/2.apk',
                       savedDir: appDocDir.path,
                       showNotification: true,
@@ -130,10 +130,10 @@ class SelectProjectPage extends StatelessWidget {
                       openFileFromNotification:
                           true, // click on notification to open downloaded file (for Android)
                     );
-                    FlutterDownloader.registerCallback(
+                    FlutterDownloader.registerCallback(//设置回调
                         (taskId, status, progress) async {
                       if (status == DownloadTaskStatus.complete) {
-                        InstallPlugin.installApk(
+                        InstallPlugin.installApk( //下载完成后，启动更新
                                 appDocDir.path + "/2.apk", "com.example.ifcy")
                             .then((e) {
                           print("install $e");

@@ -1,6 +1,8 @@
 part of "device_supvisor_pages.dart";
 
 class MonitorPage extends StatelessWidget {
+  final Function drawerCall;
+  MonitorPage(this.drawerCall);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,6 +10,11 @@ class MonitorPage extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: AppBarComponent(),
+        leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              drawerCall();
+            }),
       ),
       body: RefreshIndicator(
         //todo 刷新回调
