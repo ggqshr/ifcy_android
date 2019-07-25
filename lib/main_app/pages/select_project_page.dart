@@ -103,6 +103,16 @@ class SelectProjectPage extends StatelessWidget {
                     );
                   },
                 ),
+//                ListTile(
+//                  title: Text("升级app"),
+//                  onTap: ()async {
+//                    bool res = await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+//                    if(!res){
+//                      await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+//                      await SimplePermissions.requestPermission(Permission.Camera);
+//                    }
+//                  },
+//                )
               ],
             ),
           ),
