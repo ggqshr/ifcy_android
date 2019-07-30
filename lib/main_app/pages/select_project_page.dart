@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/device_staff/device_staff.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
@@ -38,7 +39,7 @@ class SelectProjectPage extends StatelessWidget {
       },
       builder: (BuildContext context, SelectProjectModel vm) {
         return Scaffold(
-          body: DeviceSupervisor(vm.auth,(c)=>()=>Scaffold.of(c).openDrawer()),
+          body: DeviceStaff((c)=>()=>Scaffold.of(c).openDrawer()),
           drawer: Drawer(
             child: ListView(
               padding: EdgeInsets.all(0),
