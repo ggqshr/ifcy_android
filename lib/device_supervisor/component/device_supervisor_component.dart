@@ -10,6 +10,7 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:redux/redux.dart';
 import 'package:charts_flutter/flutter.dart' as chart;
+import 'package:intl/intl.dart';
 
 part 'task_rate_component.dart';
 
@@ -22,3 +23,10 @@ part 'fire_alarm_component.dart';
 part "device_fault_component.dart";
 
 part 'task_info_component.dart';
+
+part 'task_list_component.dart';
+
+part 'task_add_component.dart';
+
+part 'date_picker_component.dart';
+

@@ -1,4 +1,4 @@
-part of "device_supervisor_compoent.dart";
+part of "device_supervisor_component.dart";
 
 class DeviceFaultComponent extends StatelessWidget {
   @override

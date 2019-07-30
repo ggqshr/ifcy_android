@@ -51,6 +51,5 @@ class InitPageStateAction {
 
 class OnChangeBuilding {
   String buildingName;
-
   OnChangeBuilding(this.buildingName);
 }
