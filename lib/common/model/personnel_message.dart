@@ -11,7 +11,6 @@ class DepartmentMessage {
 ///人员信息
 class PersonnelMessage{
   String name;
-
   PersonnelMessage({this.name});
 }
 

@@ -3,6 +3,7 @@ part of "device_supvisor_pages.dart";
 class MonitorPage extends StatelessWidget {
   final Function drawerCall;
   MonitorPage(this.drawerCall);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

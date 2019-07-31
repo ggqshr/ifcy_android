@@ -13,6 +13,7 @@ class DeviceSupervisor extends StatefulWidget {
   String auth;
   Function drawerCall;
 
+
   DeviceSupervisor(this.auth, this.drawerCall);
 
   @override

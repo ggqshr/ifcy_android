@@ -30,3 +30,5 @@ part 'task_add_component.dart';
 
 part 'date_picker_component.dart';
 
+part 'online_device_fault_conponent.dart';
+
