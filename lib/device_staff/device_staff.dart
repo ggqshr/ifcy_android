@@ -1,49 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
-import 'package:redux/redux.dart';
-import 'package:ifcy/common/utils/StoreCreater.dart';
-import 'model/device_supervisor_model.dart';
-import 'device_supervisor_redux.dart';
-import 'pages/device_supvisor_pages.dart';
 
-
-class DeviceSupervisor extends StatefulWidget {
-  String auth;
+class DeviceStaff extends StatefulWidget {
   Function drawerCall;
-
-
-  DeviceSupervisor(this.auth, this.drawerCall);
-
+  DeviceStaff(this.drawerCall);
   @override
-  _DeviceSupervisorState createState() => _DeviceSupervisorState();
+  _DeviceStaffState createState() => _DeviceStaffState();
 }
 
-class _DeviceSupervisorState extends State<DeviceSupervisor> {
+class _DeviceStaffState extends State<DeviceStaff> {
   List<Widget> viewList = [];
   int currentIndex = 0;
   List<Icon> iconList = [
-    Icon(Icons.business),
-    Icon(Icons.warning),
-    Icon(Icons.format_list_bulleted),
+    Icon(Icons.work),
     Icon(Icons.person_outline),
   ];
   List<String> iconTextList = [
-    "大厦",
-    "故障",
-    "任务",
+    "工作",
     "我的",
   ];
-
   @override
   void initState() {
     super.initState();
-    viewList
-      ..add(MonitorPage(widget.drawerCall(context)))
-      ..add(FaultPage(widget.drawerCall(context)))
-      ..add(TaskPage(widget.drawerCall(context)))
-      ..add(PersonPage(widget.drawerCall(context)));
+    viewList..add(DeviceStaffWorkPage());
   }
 
   @override
