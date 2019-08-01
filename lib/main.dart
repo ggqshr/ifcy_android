@@ -1,8 +1,10 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'common/utils/utils.dart';
 import 'device_supervisor/model/device_supervisor_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
@@ -29,6 +31,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final router = new Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
+
     return StoreProvider<AppState>(
       store: _store,
       child: MaterialApp(
@@ -37,6 +43,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.green[300],
         ),
         home: MainApp(),
+        onGenerateRoute: Application.router.generator,
       ),
     );
   }
