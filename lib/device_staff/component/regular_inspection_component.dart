@@ -7,13 +7,28 @@ class RegularInspectionComponent extends StatefulWidget {
 }
 
 class _RegularInspectionComponentState extends State<RegularInspectionComponent>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
+    _scrollController = ScrollController(initialScrollOffset: 0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  scroToTopCall() {
+    if(_scrollController.hasClients){
+      _scrollController.animateTo(0,
+          duration: Duration(seconds: 1), curve: Curves.ease);
+    }
   }
 
   @override
@@ -22,7 +37,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         SliverPersistentHeader(
-          delegate: ChangeTaskState(_controller),
+          delegate: ChangeTaskState(_controller, scroToTopCall),
         ),
         SliverFillRemaining(
           child: Container(
@@ -41,6 +56,8 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
 
   getFinishTask() {
     return ListView.builder(
+      key: PageStorageKey("RegularInspectionComponentgetFinishTask"),
+      controller: _scrollController,
       itemBuilder: (context, index) {
         return Card(
           elevation: 5,
@@ -55,7 +72,10 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                   title: Text("ss"),
                   trailing: FlatButton.icon(
                     onPressed: null,
-                    icon: Icon(Icons.check_circle_outline,color: Colors.green,),
+                    icon: Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                    ),
                     label: Text("已完成"),
                   ),
                 ),
@@ -83,7 +103,10 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
   }
 
   getUnFinishTask() {
+
     return ListView.builder(
+      key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
+      controller: _scrollController,
       itemBuilder: (context, index) {
         return Card(
           elevation: 5,
@@ -124,12 +147,16 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class ChangeTaskState extends SliverPersistentHeaderDelegate {
   TabController _controller;
+  Function scroCall;
 
-  ChangeTaskState(this._controller);
+  ChangeTaskState(this._controller, this.scroCall);
 
   @override
   Widget build(
@@ -144,6 +171,12 @@ class ChangeTaskState extends SliverPersistentHeaderDelegate {
         )
       ],
       controller: _controller,
+      onTap: (index) {
+        print(_controller.indexIsChanging);
+        if (!_controller.indexIsChanging) {
+          scroCall();
+        }
+      },
     );
   }
 
