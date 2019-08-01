@@ -1,12 +1,15 @@
 part of "device_staff_components.dart";
 
-class RegularInspectionComponent extends StatefulWidget {
+class AdditionalInspectionComponent extends StatefulWidget {
+  AdditionalInspectionComponent({Key key}) : super(key: key);
+
   @override
-  _RegularInspectionComponentState createState() =>
-      _RegularInspectionComponentState();
+  _AdditionalInspectionComponentState createState() =>
+      _AdditionalInspectionComponentState();
 }
 
-class _RegularInspectionComponentState extends State<RegularInspectionComponent>
+class _AdditionalInspectionComponentState
+    extends State<AdditionalInspectionComponent>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
   ScrollController _scrollController;
@@ -15,29 +18,31 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
-    _scrollController = ScrollController(initialScrollOffset: 0);
+    _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+    _scrollController.dispose();
   }
 
-  scroToTopCall() {
+  scrollCall() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(0,
-          duration: Duration(seconds: 1), curve: Curves.ease);
+          duration: Duration(seconds: 1), curve: Curves.easeIn);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print(_controller.index);
     return CustomScrollView(
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         SliverPersistentHeader(
-          delegate: ChangeTaskState(_controller, scroToTopCall),
+          delegate: ChangeTaskState(_controller, scrollCall),
         ),
         SliverFillRemaining(
           child: Container(
@@ -163,43 +168,4 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class ChangeTaskState extends SliverPersistentHeaderDelegate {
-  TabController _controller;
-  Function scroCall;
-
-  ChangeTaskState(this._controller, this.scroCall);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return TabBar(
-      tabs: [
-        Tab(
-          child: Text("完成"),
-        ),
-        Tab(
-          child: Text("未完成"),
-        )
-      ],
-      controller: _controller,
-      onTap: (index) {
-        if (!_controller.indexIsChanging) {
-          scroCall();
-        }
-      },
-    );
-  }
-
-  @override
-  double get maxExtent => 40;
-
-  @override
-  double get minExtent => 40;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
 }

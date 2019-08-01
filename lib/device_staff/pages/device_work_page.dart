@@ -27,7 +27,7 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
     _controller = TabController(length: tabs.length, vsync: this);
     tabViews
       ..add(RegularInspectionComponent())
-      ..add(Container())
+      ..add(AdditionalInspectionComponent())
       ..add(Container());
   }
 
