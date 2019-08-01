@@ -28,7 +28,7 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
     tabViews
       ..add(RegularInspectionComponent())
       ..add(AdditionalInspectionComponent())
-      ..add(Container());
+      ..add(FaultInspectionComponent());
   }
 
   @override

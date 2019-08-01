@@ -37,7 +37,6 @@ class _AdditionalInspectionComponentState
 
   @override
   Widget build(BuildContext context) {
-    print(_controller.index);
     return CustomScrollView(
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
