@@ -9,6 +9,7 @@ class InitPageStateAction {
   List<FireAlarmMessage> fireMessage;
   List<DeviceFaultMessage> deviceFaultMessage;
   List<TaskInfoMessage> taskInfoMessage;
+  List<SupervisorMessageModel> supervisorMessgae;
 
   InitPageStateAction({
     this.faultNum,
@@ -19,6 +20,7 @@ class InitPageStateAction {
     this.fireMessage,
     this.deviceFaultMessage,
     this.taskInfoMessage,
+    this.supervisorMessgae,
   });
 
   InitPageStateAction.init()
@@ -46,6 +48,12 @@ class InitPageStateAction {
               title: "任务2",
               content: "任务2",
               status: TaskStatus.uncompleted),
+        ],
+        supervisorMessgae = [
+          SupervisorMessageModel(name: '主管1'),
+          SupervisorMessageModel(name: '主管2'),
+          SupervisorMessageModel(name: '主管3'),
+          SupervisorMessageModel(name: '主管4')
         ];
 }
 

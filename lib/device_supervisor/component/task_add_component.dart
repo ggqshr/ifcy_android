@@ -152,35 +152,6 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                         width: 10,
                       ),
                       Text('任务内容:'),
-//                      SizedBox(
-////                        width: 8,
-////                      ),
-
-//                      TextFormField(
-//                        decoration: new InputDecoration(
-//                            enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.all(Radius.circular(20)),
-//                              borderSide: BorderSide(
-//                                  color: Colors.lightGreen,
-//                                  width: 1
-//                              ),
-//                            ),
-//                            focusedBorder: OutlineInputBorder(
-//                                borderSide: BorderSide(
-//                                  color: Colors.green, //边框颜色为绿色
-//                                  width: 1, //宽度为5
-//                                )),
-//
-////                        helperText: "任务内容",
-//                            // errorText: "errorText",
-//                            hintText: "任务内容",
-//                            prefixIcon: Icon(Icons.perm_identity)
-//                        ),
-//                        onSaved: (val) {
-//                          _taskContent = val;
-//                        },
-//
-//                      ),
                     ],
                   ),
                   Row(
@@ -192,38 +163,6 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                       SizedBox(
                         width: 20,
                       ),
-
-
-
-//                      SafeArea(
-//                        top: false,
-//                        bottom: false,
-//                        child: new ListView(
-//                          children: <Widget>[
-//                            new DatePicker(
-//                              selectedDate: _taskStartDate,
-//                              selectDate: (DateTime date) {
-//                                setState(() {
-//                                  _taskStartDate = date;
-//                                });
-//                              },
-//                            )
-//                          ],
-//                        ),
-//                      )
-//                      DatePicker(
-//                        selectedDate: _taskStartDate,
-//                        selectDate: (DateTime date){
-//                          setState(() {
-//                            _taskStartDate=date;
-//                          });
-//                        },
-//                      )
-
-//                      RaisedButton(
-//                        child: Text(_taskStartDate == null ? '任务开始日期' : _taskStartDate),
-//                        onPressed: () => _showDataPicker(),
-//                      ),
                     ],
                   ),
                   Row(
@@ -237,51 +176,19 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                         height: 15,
                       ),
                       RaisedButton(
-                          child: Text("选择委派人"),
+                        child: Text("选择委派人"),
                         onPressed: (){
                           print('FloatingActionButton');
                           Navigator.push(context,
                               new MaterialPageRoute(builder: (context){
                                 return new PersonnelListComponent();
                               },
-//                    fullscreenDialog: true
                               )
                           );
                         },
-
                       )
-
                     ],
                   ),
-//                  new TextFormField(
-//                    decoration: new InputDecoration(
-//                        enabledBorder: OutlineInputBorder(
-//                          borderRadius: BorderRadius.all(Radius.circular(20)),
-//                          borderSide:
-//                              BorderSide(color: Colors.lightGreen, width: 1),
-//                        ),
-//                        focusedBorder: OutlineInputBorder(
-//                            borderSide: BorderSide(
-//                          color: Colors.green, //边框颜色为绿色
-//                          width: 1, //宽度为5
-//                        )),
-//
-////                        helperText: "任务内容",
-//                        // errorText: "errorText",
-//                        hintText: "任务内容",
-//                        prefixIcon: Icon(Icons.perm_identity)),
-//                    onSaved: (val) {
-//                      _taskContent = val;
-//                    },
-//                  ),
-//                  new TextFormField(
-//                    decoration: new InputDecoration(
-//                      labelText: '任务内容',
-//                    ),
-//                    onSaved: (val) {
-//                      _taskContent = val;
-//                    },
-//                  ),
                 ],
               ),
             )));

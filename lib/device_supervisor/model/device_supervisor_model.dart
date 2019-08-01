@@ -17,6 +17,7 @@ class DeviceSupervisorModel {
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
   List<DeviceFaultMessage> deviceFaultMessages;
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
+  List<SupervisorMessageModel> supervisorMessages; //主管信息
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -27,6 +28,7 @@ class DeviceSupervisorModel {
     this.fireAlarmMessages,
     this.deviceFaultMessages,
     this.taskInfoMessages,
+    this.supervisorMessages,
   });
 
   DeviceSupervisorModel.init()
@@ -54,6 +56,17 @@ class DeviceSupervisorModel {
               title: "任务2",
               content: "任务2",
               status: TaskStatus.uncompleted),
+        ],
+        supervisorMessages = [
+          SupervisorMessageModel(
+            name: '主管1',
+          ),
+          SupervisorMessageModel(
+            name: '主管2',
+          ),
+          SupervisorMessageModel(
+            name: '主管3',
+          )
         ];
 
   @override
