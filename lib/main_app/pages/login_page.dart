@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
@@ -19,12 +20,13 @@ class LoginPage extends StatelessWidget {
         return LoginPageModel(
           submitCall: (userName, passWord) {
             store.dispatch(loginSubmitAction(
-                userName,
-                passWord,
-                () =>
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                      return SelectProjectPage();
-                    }))));
+              userName,
+              passWord,
+//              () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+//                    return SelectProjectPage();
+//                  })),
+              () => Application.router.navigateTo(context, Routes.selectPage),
+            ));
           },
           alertText: store.state.alertText,
         );
