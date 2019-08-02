@@ -3,7 +3,7 @@ import 'package:redux/redux.dart';
 import 'actions/device_supervisor_actions.dart';
 import 'model/device_supervisor_model.dart';
 
-DeviceSupervisorModel deviceSupervisorMoudle1Reducer(
+DeviceSupervisorModel deviceSupervisorModule1Reducer(
         DeviceSupervisorModel state, action) =>
     DeviceSupervisorModel(
       faultNum: faultNumReducer(state.faultNum, action),

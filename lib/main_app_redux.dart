@@ -37,6 +37,6 @@ AppState mainAppReducer(AppState state, action) {
     project2Auth: Project2AuthReducer(state.project2Auth, action),
     selectProjectModel: SelectProjectReducer(state.selectProjectModel, action),
     deviceSupervisorModel:
-        deviceSupervisorMoudle1Reducer(state.deviceSupervisorModel, action),
+        deviceSupervisorModule1Reducer(state.deviceSupervisorModel, action),
   );
 }
