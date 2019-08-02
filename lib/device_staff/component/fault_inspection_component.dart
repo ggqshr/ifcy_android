@@ -97,7 +97,8 @@ class _FaultInspectionComponentState extends State<FaultInspectionComponent> {
                 ],
               ),
             );
-          }),
+          },
+          itemCount: vm.tasks.length,),
         );
       },
     );

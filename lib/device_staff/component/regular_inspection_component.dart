@@ -70,6 +70,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
       builder: (BuildContext context, RegularInspectionViewModel vm) {
         return RefreshIndicator(
           child: ListView.builder(
+            itemCount: vm.completeTasks.length,
             key: PageStorageKey("RegularInspectionComponentgetFinishTask"),
             controller: _scrollController,
             itemBuilder: (context, index) {
@@ -145,6 +146,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
       builder: (BuildContext context, RegularInspectionViewModel vm) {
         return RefreshIndicator(
           child: ListView.builder(
+            itemCount: vm.unCompleteTasks.length,
             key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
             controller: _scrollController,
             itemBuilder: (context, index) {
@@ -201,57 +203,6 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     );
   }
 
-//  getUnFinishTask() {
-//    return RefreshIndicator(
-//      child: ListView.builder(
-//        key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
-//        controller: _scrollController,
-//        itemBuilder: (context, index) {
-//          return Card(
-//            elevation: 5,
-//            margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-//            shape:
-//                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-//            child: Column(
-//              mainAxisSize: MainAxisSize.min,
-//              children: <Widget>[
-//                Flexible(
-//                  flex: 2,
-//                  child: ListTile(
-//                    title: Text("ss"),
-//                    trailing: FlatButton.icon(
-//                      onPressed: () => {},
-//                      icon: Icon(Icons.play_arrow),
-//                      label: Text("执行"),
-//                    ),
-//                  ),
-//                ),
-//                Divider(
-//                  color: Colors.black,
-//                ),
-//                ListTile(
-//                  dense: true,
-//                  title: Text("任务内容:巡检"),
-//                ),
-//                ListTile(
-//                  dense: true,
-//                  title: Text("委派人员：me"),
-//                ),
-//                ListTile(
-//                  dense: true,
-//                  title: Text("起始时间：2019年7月30日"),
-//                ),
-//              ],
-//            ),
-//          );
-//        },
-//      ),
-//      onRefresh: () async {
-//        //todo 未完成下拉刷新回调
-//        await Future.delayed(Duration(seconds: 2));
-//      },
-//    );
-//  }
 
   @override
   bool get wantKeepAlive => true;

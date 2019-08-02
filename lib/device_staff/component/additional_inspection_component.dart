@@ -75,6 +75,7 @@ class _AdditionalInspectionComponentState
       builder: (BuildContext context, AdditionalInspectionViewModel vm) {
         return RefreshIndicator(
           child: ListView.builder(
+            itemCount: vm.completeTasks.length,
             key: PageStorageKey("RegularInspectionComponentgetFinishTask"),
             controller: _scrollController,
             itemBuilder: (context, index) {
@@ -153,6 +154,7 @@ class _AdditionalInspectionComponentState
           child: ListView.builder(
             key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
             controller: _scrollController,
+            itemCount: vm.unCompleteTasks.length,
             itemBuilder: (context, index) {
               return Card(
                 elevation: 5,
