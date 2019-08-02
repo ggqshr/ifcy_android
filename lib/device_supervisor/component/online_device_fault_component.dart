@@ -44,6 +44,26 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
     );
   }
 
+  //table单元格子
+  Widget _buildTableCell(String label) {
+    return new Container(
+      //单元格内小部件对齐方式
+      alignment: Alignment.topLeft,
+      padding: EdgeInsets.all(5.0),
+      //文本小部件
+      child: new Text(
+        label,
+        textAlign: TextAlign.left,
+        style: TextStyle(color: Colors.black87, fontSize: 12.0),
+        maxLines: 3,
+        softWrap: true,
+      ),
+//      height: height,
+//      width: width,
+    );
+  }
+
+  //待确认线上设备
   getUnconfirmedDeviceFault() {
     return ListView.builder(itemBuilder: (context, index) {
       return Card(
@@ -66,7 +86,8 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
                   color: Colors.red,
                 ),
                 backgroundColor: Colors.white,
-                initiallyExpanded: true, //默认是否展开
+                initiallyExpanded: true,
+                //默认是否展开
                 children: <Widget>[
                   Divider(
                     color: Colors.black,
@@ -268,6 +289,7 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
     });
   }
 
+  //已确认线上设备
   getConfirmedDeviceFault() {
     return ListView.builder(itemBuilder: (context, index) {
       return Card(
@@ -290,151 +312,68 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
                   color: Colors.grey,
                 ),
                 backgroundColor: Colors.white,
-                initiallyExpanded: true, //默认是否展开
+                initiallyExpanded: true,
+                //默认是否展开
                 children: <Widget>[
                   Divider(
                     color: Colors.black,
                   ),
-                  ListTile(
-                    title: Text('反馈'),
-
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "反馈:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
+                  new Table(
+                    border: new TableBorder.all(
+                        width: 5.0, color: Colors.transparent),
+                    children: <TableRow>[
+                      //初始化一行widget
+                      new TableRow(
+                        children: <Widget>[
+                          new TableCell(child: _buildTableCell('反馈:')),
+                          new TableCell(child: _buildTableCell('确定故障')),
+                        ],
                       ),
-                      new SizedBox(
-                        width: 40,
+                      new TableRow(
+                        children: <Widget>[
+                          //在一行中初始化一个单元格
+                          new TableCell(child: _buildTableCell('处理人:')),
+                          new TableCell(child: _buildTableCell('张三')),
+                        ],
                       ),
-                      Container(
-                        child: Text(
-                          "确认故障",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
+                      new TableRow(
+                        children: <Widget>[
+                          //在一行中初始化一个单元格
+                          new TableCell(child: _buildTableCell('处理时间:')),
+                          new TableCell(
+                              child: _buildTableCell('2019-07-31 09:11')),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "处理人:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
+                      new TableRow(
+                        children: <Widget>[
+                          //在一行中初始化一个单元格
+                          new TableCell(child: _buildTableCell('设备故障原因:')),
+                          new TableCell(
+                              child: _buildTableCell(
+                                  '原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因')),
+                        ],
                       ),
-                      new SizedBox(
-                        width: 26,
+                      new TableRow(
+                        children: <Widget>[
+                          //在一行中初始化一个单元格
+                          new TableCell(child: _buildTableCell('故障设备图片:')),
+                          new TableCell(
+                            child: new Image.network(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3caBRRBaDBug3hDSSgLFtlu5QkAE_dsc366ScpKc4ZvhilCbMDg',
+                              scale: 0.5,
+                            ),
+                          )
+                        ],
                       ),
-                      Container(
-                        child: Text(
-                          "张三",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
+                      new TableRow(
+                        children: <Widget>[
+                          //在一行中初始化一个单元格
+                          new TableCell(child: _buildTableCell('备注说明')),
+                          new TableCell(child: _buildTableCell('备故障描述')),
+                        ],
                       ),
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "处理时间:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 18,
-                      ),
-                      Container(
-                        child: Text(
-                          "2019-07-18 08:30:21",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: new EdgeInsets.all(10.0),
-                    child: new Text(
-                      '设备故障原因:    Flutter 是一个用一套代码就可以构建高性能安卓和苹果应用的移动应用 SDK。卓和苹果应用的移卓和苹果应用的移卓和苹果应用的移 ',
-                      style: new TextStyle(fontSize:12.0,color: Colors.grey),
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "故障设备照片:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        child: new Image.network(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3caBRRBaDBug3hDSSgLFtlu5QkAE_dsc366ScpKc4ZvhilCbMDg',
-                          scale: 1.0,
-                        ),
-                        width: 100,
-                        height: 100,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: new EdgeInsets.all(10.0),
-                    child: new Text(
-                      '备注说明:    Flutter 是一个用一套代码就可以构建高性能安卓和苹果应用的移动应用 SDK。卓和苹果应用的移卓和苹果应用的移卓和苹果应用的移 ',
-                      style: new TextStyle(fontSize:12.0,color: Colors.grey),
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  new SizedBox(
-                    height: 5,
-                  ),
-
                   Divider(
                     color: Colors.black87,
                   ),
@@ -463,7 +402,7 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
                             borderRadius: BorderRadius.circular(8)),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -474,6 +413,7 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
 
 class ChangeFaultState extends SliverPersistentHeaderDelegate {
   TabController _tabController;
+
   ChangeFaultState(this._tabController);
 
   @override

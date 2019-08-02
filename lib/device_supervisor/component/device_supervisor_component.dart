@@ -37,3 +37,5 @@ part 'offline_device_fault_component.dart';
 
 part 'supervisor_list_component.dart';
 
+part 'person_list_component.dart';
+

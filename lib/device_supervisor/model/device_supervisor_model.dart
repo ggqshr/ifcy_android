@@ -18,6 +18,7 @@ class DeviceSupervisorModel {
   List<DeviceFaultMessage> deviceFaultMessages;
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
   List<SupervisorMessageModel> supervisorMessages; //主管信息
+  List<DepartmentMessage> departmentMessages;//维保公司员工信息
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -29,6 +30,7 @@ class DeviceSupervisorModel {
     this.deviceFaultMessages,
     this.taskInfoMessages,
     this.supervisorMessages,
+    this.departmentMessages,
   });
 
   DeviceSupervisorModel.init()
@@ -67,6 +69,23 @@ class DeviceSupervisorModel {
           SupervisorMessageModel(
             name: '主管3',
           )
+  ],
+        departmentMessages = [
+          DepartmentMessage(id: '01', title: '技术服务部', personnelList: [
+            PersonnelMessage(id: '001', name: '员工1'),
+            PersonnelMessage(id: '002', name: '员工2'),
+            PersonnelMessage(id: '003', name: '员工3'),
+          ]),
+          DepartmentMessage(id: '02', title: '设计预算部', personnelList: [
+            PersonnelMessage(id: '011', name: '员工1'),
+            PersonnelMessage(id: '022', name: '员工2'),
+            PersonnelMessage(id: '033', name: '员工3'),
+          ]),
+          DepartmentMessage(id: '03', title: '总经办', personnelList: [
+            PersonnelMessage(id: '021', name: '员工1'),
+            PersonnelMessage(id: '022', name: '员工2'),
+            PersonnelMessage(id: '023', name: '员工3'),
+          ]),
         ];
 
   @override

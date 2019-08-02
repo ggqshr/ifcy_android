@@ -9,8 +9,7 @@ class FireAlarmComponent extends StatelessWidget {
           return StoreConnector<AppState, FireAlarmModel>(
             converter: (Store<AppState> store) {
               return FireAlarmModel(
-                messageNum: store
-                    .state.deviceSupervisorModel.fireAlarmMessages.length,
+                messageNum: store.state.deviceSupervisorModel.fireAlarmMessages.length,
                 messages: store.state.deviceSupervisorModel.fireAlarmMessages,
               );
             },

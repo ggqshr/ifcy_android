@@ -17,7 +17,10 @@ DeviceSupervisorModel deviceSupervisorMoudle1Reducer(
       deviceFaultMessages:
           deviceFaultMessagesReducer(state.deviceFaultMessages, action),
       taskInfoMessages: taskInfoMessagesReducer(state.taskInfoMessages, action),
-      supervisorMessages: supervisiorMessagesReducer(state.supervisorMessages,action),
+      supervisorMessages:
+          supervisiorMessagesReducer(state.supervisorMessages, action),
+      departmentMessages:
+          departmentMessagesReducer(state.departmentMessages, action),
     );
 
 int initFaultNum(int faultNum, InitPageStateAction action) {
@@ -90,11 +93,20 @@ Reducer<List> taskInfoMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(inittaskInfoMessages),
 ]);
 
-
-List initsupervisiorMessages(List supervisorMessage,InitPageStateAction action){
+List initsupervisiorMessages(
+    List supervisorMessage, InitPageStateAction action) {
   return action.supervisorMessgae;
 }
 
 Reducer<List> supervisiorMessagesReducer = combineReducers([
-  TypedReducer<List,InitPageStateAction>(initsupervisiorMessages),
+  TypedReducer<List, InitPageStateAction>(initsupervisiorMessages),
+]);
+
+List initdepartmentMessages(
+    List departmentMessage, InitPageStateAction action) {
+  return action.departmentMessage;
+}
+
+Reducer<List> departmentMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(initdepartmentMessages),
 ]);

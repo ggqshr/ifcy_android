@@ -10,7 +10,8 @@ class DepartmentMessage {
 
 ///人员信息
 class PersonnelMessage{
+  String id;
   String name;
-  PersonnelMessage({this.name});
+  PersonnelMessage({this.id,this.name});
 }
 

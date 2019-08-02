@@ -80,10 +80,10 @@ class _TaskListComponentState extends State<TaskListComponent>
     return new DefaultTabController(
       length: _taskTabItems.length,
       child: new Scaffold(
-        appBar:AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.green,
 
-          title:Text("任务安排列表"),
+          title: Text("任务安排列表"),
 //          textTheme:TextTheme(
 //
 //          ),
@@ -93,14 +93,21 @@ class _TaskListComponentState extends State<TaskListComponent>
               onPressed: () {
 //                drawerCall();
               }),
-          bottom:new TabBar(
-            controller: controller, //控制器
-            labelColor: Colors.yellow, //选中的颜色
-            labelStyle: TextStyle(fontSize: 16), //选中的样式
-            unselectedLabelColor: Colors.white, //未选中的颜色
-            unselectedLabelStyle: TextStyle(fontSize: 14), //未选中的样式
-            indicatorColor: Colors.yellow, //下划线颜色
-            isScrollable: true, //是否可滑动
+          bottom: new TabBar(
+            controller: controller,
+            //控制器
+            labelColor: Colors.yellow,
+            //选中的颜色
+            labelStyle: TextStyle(fontSize: 16),
+            //选中的样式
+            unselectedLabelColor: Colors.white,
+            //未选中的颜色
+            unselectedLabelStyle: TextStyle(fontSize: 14),
+            //未选中的样式
+            indicatorColor: Colors.yellow,
+            //下划线颜色
+            isScrollable: true,
+            //是否可滑动
             //tab标签
             tabs: _taskTabItems.map((f) {
               return new Tab(
@@ -113,7 +120,6 @@ class _TaskListComponentState extends State<TaskListComponent>
             },
           ),
         ),
-
         body: new TabBarView(
           controller: controller,
           children: _taskTabItems.map((f) {
@@ -125,17 +131,16 @@ class _TaskListComponentState extends State<TaskListComponent>
           }).toList(),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromRGBO(152,251,152,1.0),
+          backgroundColor: Color.fromRGBO(102, 231, 142, 1.0),
           child: Icon(Icons.add),
-          onPressed: (){
+          onPressed: () {
             print('FloatingActionButton');
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context){
-                  return new TaskAddComponent();
-                },
+            Navigator.push(context, new MaterialPageRoute(
+              builder: (context) {
+                return new TaskAddComponent();
+              },
 //                    fullscreenDialog: true
-                )
-            );
+            ));
           },
         ),
       ),
@@ -163,10 +168,27 @@ class _TaskListComponentState extends State<TaskListComponent>
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+//                      new GridView(
+//                          scrollDirection: Axis.horizontal,
+//                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+//                            maxCrossAxisExtent: MediaQuery.of(context).size.height/5,
+//                            mainAxisSpacing: 10,
+//                            crossAxisSpacing: 10,
+//                          ),
+//                        children: <Widget>[
+//                          Text('任务描述:'),
+//                          Text(_taskListData[i].taskDetailList[i].des,
+//                          style: TextStyle(
+//                              fontSize: 14, fontWeight: FontWeight.bold),
+//                          maxLines: 3,
+//                          overflow: TextOverflow.ellipsis,
+//                          ),
+//                        ]
+//                  ),
                       new Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: new Text(
-                         _taskListData[i].taskDetailList[i].des,
+                          _taskListData[i].taskDetailList[i].des,
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                           maxLines: 3,
@@ -177,8 +199,7 @@ class _TaskListComponentState extends State<TaskListComponent>
                         padding: EdgeInsets.all(10),
                         child: new Text(
                           _taskListData[i].taskDetailList[i].type,
-                          style:
-                              TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: 14),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -186,15 +207,16 @@ class _TaskListComponentState extends State<TaskListComponent>
                       new Container(
                         alignment: Alignment.bottomLeft,
                         child: Row(
-                        children: <Widget>[
-                          new Expanded(
-                            flex: 1,
-                            child: new Padding(
-                              padding: EdgeInsets.all(10),
-                              child: new Text(_taskListData[i].taskDetailList[i].executor,
-                                  style: TextStyle(fontSize: 14)),
+                          children: <Widget>[
+                            new Expanded(
+                              flex: 1,
+                              child: new Padding(
+                                padding: EdgeInsets.all(10),
+                                child: new Text(
+                                    _taskListData[i].taskDetailList[i].executor,
+                                    style: TextStyle(fontSize: 14)),
+                              ),
                             ),
-                          ),
 
 //                          new Padding(
 //                            padding: EdgeInsets.all(10),
@@ -204,15 +226,17 @@ class _TaskListComponentState extends State<TaskListComponent>
 //                              textAlign: TextAlign.right,
 //                            ),
 //                          )
-                        ],
-                      ),
+                          ],
+                        ),
                       ),
                       new Padding(
                         padding: EdgeInsets.all(10),
                         child: new Text(
-                          _taskListData[i].taskDetailList[i].progress.toString(),
-                          style:
-                          TextStyle(fontSize: 14),
+                          _taskListData[i]
+                              .taskDetailList[i]
+                              .progress
+                              .toString(),
+                          style: TextStyle(fontSize: 14),
 //                          maxLines: 3,
 //                          overflow: TextOverflow.ellipsis,
                         ),
