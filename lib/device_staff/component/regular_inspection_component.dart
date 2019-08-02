@@ -54,112 +54,204 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     );
   }
 
-  getFinishTask() {
-    return RefreshIndicator(
-      child: ListView.builder(
-        key: PageStorageKey("RegularInspectionComponentgetFinishTask"),
-        controller: _scrollController,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 5,
-            margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: ListTile(
-                    title: Text("ss"),
-                    trailing: FlatButton.icon(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.check_circle_outline,
-                        color: Colors.green,
+  getFinishTask(){
+    return StoreConnector<AppState, RegularInspectionViewModel>(
+      converter: (Store<AppState> store) {
+        DeviceStaffModel model = store.state.deviceStaffModel;
+        return RegularInspectionViewModel(
+          completeTasks: model.regularTasks
+              .where((item) => item.taskStatus == TaskStatus.completed).toList(),
+          onRefreshCall: () async {
+            //todo 刷新回调
+            await Future.delayed(Duration(seconds: 2));
+          },
+        );
+      },
+      builder: (BuildContext context, RegularInspectionViewModel vm) {
+        return RefreshIndicator(
+          child: ListView.builder(
+            key: PageStorageKey("RegularInspectionComponentgetFinishTask"),
+            controller: _scrollController,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 5,
+                margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 2,
+                      child: ListTile(
+                        title: Text(vm.completeTasks[index].taskTitle),
+                        trailing: FlatButton.icon(
+                          onPressed: () => Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text("跳转到${vm.completeTasks[index].id}"),
+                                ),
+                              ),
+                          icon: Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.green,
+                          ),
+                          label: Text("已完成"),
+                        ),
                       ),
-                      label: Text("已完成"),
                     ),
-                  ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    ListTile(
+                      dense: true,
+                      title:
+                          Text("任务内容:${vm.completeTasks[index].taskContent}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("委派人员：${vm.completeTasks[index].taskPeople}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("起始时间：${vm.completeTasks[index].taskTime}"),
+                    ),
+                  ],
                 ),
-                Divider(
-                  color: Colors.black,
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text("任务内容:巡检"),
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text("委派人员：me"),
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text("起始时间：2019年7月30日"),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      onRefresh: () async {
-        //todo 完成任务下拉刷新回调
-        await Future.delayed(Duration(seconds: 2));
+              );
+            },
+          ),
+          onRefresh: () async {
+            await vm.onRefreshCall();
+          },
+        );
       },
     );
   }
 
   getUnFinishTask() {
-    return RefreshIndicator(
-      child: ListView.builder(
-        key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
-        controller: _scrollController,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 5,
-            margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: ListTile(
-                    title: Text("ss"),
-                    trailing: FlatButton.icon(
-                      onPressed: () => {},
-                      icon: Icon(Icons.play_arrow),
-                      label: Text("执行"),
+    return StoreConnector<AppState, RegularInspectionViewModel>(
+      converter: (Store<AppState> store) {
+        DeviceStaffModel model = store.state.deviceStaffModel;
+        return RegularInspectionViewModel(
+          unCompleteTasks: model.regularTasks
+              .where((item) => item.taskStatus == TaskStatus.uncompleted).toList(),
+          onRefreshCall: () async {
+            //todo 刷新回调
+            await Future.delayed(Duration(seconds: 2));
+          },
+        );
+      },
+      builder: (BuildContext context, RegularInspectionViewModel vm) {
+        return RefreshIndicator(
+          child: ListView.builder(
+            key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
+            controller: _scrollController,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 5,
+                margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 2,
+                      child: ListTile(
+                        title: Text(vm.unCompleteTasks[index].taskTitle),
+                        trailing: FlatButton.icon(
+                          onPressed: () => Scaffold.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                              Text("跳转到${vm.unCompleteTasks[index].id}"),
+                            ),
+                          ),
+                          icon: Icon(Icons.play_arrow),
+                          label: Text("执行"),
+                        ),
+                      ),
                     ),
-                  ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    ListTile(
+                      dense: true,
+                      title:
+                      Text("任务内容:${vm.unCompleteTasks[index].taskContent}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("委派人员：${vm.unCompleteTasks[index].taskPeople}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("起始时间：${vm.unCompleteTasks[index].taskTime}"),
+                    ),
+                  ],
                 ),
-                Divider(
-                  color: Colors.black,
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text("任务内容:巡检"),
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text("委派人员：me"),
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text("起始时间：2019年7月30日"),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      onRefresh: () async {
-        //todo 未完成下拉刷新回调
-        await Future.delayed(Duration(seconds: 2));
+              );
+            },
+          ),
+          onRefresh: () async {
+            await vm.onRefreshCall();
+          },
+        );
       },
     );
   }
+
+//  getUnFinishTask() {
+//    return RefreshIndicator(
+//      child: ListView.builder(
+//        key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
+//        controller: _scrollController,
+//        itemBuilder: (context, index) {
+//          return Card(
+//            elevation: 5,
+//            margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+//            shape:
+//                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+//            child: Column(
+//              mainAxisSize: MainAxisSize.min,
+//              children: <Widget>[
+//                Flexible(
+//                  flex: 2,
+//                  child: ListTile(
+//                    title: Text("ss"),
+//                    trailing: FlatButton.icon(
+//                      onPressed: () => {},
+//                      icon: Icon(Icons.play_arrow),
+//                      label: Text("执行"),
+//                    ),
+//                  ),
+//                ),
+//                Divider(
+//                  color: Colors.black,
+//                ),
+//                ListTile(
+//                  dense: true,
+//                  title: Text("任务内容:巡检"),
+//                ),
+//                ListTile(
+//                  dense: true,
+//                  title: Text("委派人员：me"),
+//                ),
+//                ListTile(
+//                  dense: true,
+//                  title: Text("起始时间：2019年7月30日"),
+//                ),
+//              ],
+//            ),
+//          );
+//        },
+//      ),
+//      onRefresh: () async {
+//        //todo 未完成下拉刷新回调
+//        await Future.delayed(Duration(seconds: 2));
+//      },
+//    );
+//  }
 
   @override
   bool get wantKeepAlive => true;

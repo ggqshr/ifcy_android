@@ -11,6 +11,7 @@ ThunkAction<AppState> loginSubmitAction(
       0,
     ));
     store.dispatch(InitPageStateAction.init());
+    store.dispatch(InitDeviceStaffStateAction.init());
     loadingDialogAction.cancleLoadingDialog();
     navigatorCall();
   };

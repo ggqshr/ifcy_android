@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'common/utils/utils.dart';
+import 'device_staff/model/device_staff_model.dart';
 import 'device_supervisor/model/device_supervisor_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       AppState(
         selectProjectModel: SelectProjectModel(),
         deviceSupervisorModel: DeviceSupervisorModel.init(),
+        deviceStaffModel: DeviceStaffModel.init(),
       ),
       null);
 

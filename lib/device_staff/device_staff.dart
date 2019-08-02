@@ -38,8 +38,8 @@ class _DeviceStaffState extends State<DeviceStaff> {
           int currentIndex = iconList.indexOf(i);
           int currentBadge = StoreProvider.of<AppState>(context)
               .state
-              .deviceSupervisorModel
-              .bottomBadgeNumList[currentIndex];
+              .deviceStaffModel
+              .badgeNumList[currentIndex];
           return BottomNavigationBarItem(
             icon: Badge(
               child: i,

@@ -2,6 +2,7 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/select_project_reducer.dart';
 import 'package:redux/redux.dart';
 
+import 'device_staff/device_staff_reducer.dart';
 import 'device_supervisor/device_supervisor_redux.dart';
 import 'main_app/actions/main_app_actions.dart';
 
@@ -38,5 +39,6 @@ AppState mainAppReducer(AppState state, action) {
     selectProjectModel: SelectProjectReducer(state.selectProjectModel, action),
     deviceSupervisorModel:
         deviceSupervisorModule1Reducer(state.deviceSupervisorModel, action),
+    deviceStaffModel: deviceStaffModelReducer(state.deviceStaffModel, action),
   );
 }
