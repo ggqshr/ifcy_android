@@ -1,6 +1,7 @@
 import 'package:ifcy/common/model/model.dart';
 
 part 'regular_inspection_model.dart';
+part 'additional_inspection_model.dart';
 
 ///@author ggq
 ///@description: 维保工作人员的模块model
