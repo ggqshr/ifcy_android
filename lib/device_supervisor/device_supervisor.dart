@@ -10,9 +10,8 @@ import 'pages/device_supvisor_pages.dart';
 
 class DeviceSupervisor extends StatefulWidget {
   String auth;
-  Function drawerCall;
 
-  DeviceSupervisor(this.auth, this.drawerCall);
+  DeviceSupervisor(this.auth);
 
   @override
   _DeviceSupervisorState createState() => _DeviceSupervisorState();
@@ -37,7 +36,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
   @override
   void initState() {
     super.initState();
-    viewList..add(MonitorPage(widget.drawerCall(context)));
+    viewList..add(MonitorPage(() => Scaffold.of(context).openDrawer()));
   }
 
   @override
