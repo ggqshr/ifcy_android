@@ -8,9 +8,9 @@ part 'additional_inspection_model.dart';
 ///@date :2019/8/2 8:58
 class DeviceStaffModel {
   List<int> badgeNumList; //底部导航栏微张数
-  List<RegularInspectionModel> regularTasks; //日常巡查任务
-  List<AdditionalInspectionModel> additionalTasks; //补充任务
-  List<FaultInspectionModel> faultTasks; // 故障确认任务
+  List<RegularInspectionTask> regularTasks; //日常巡查任务
+  List<AdditionalInspectionTask> additionalTasks; //补充任务
+  List<FaultInspectionTask> faultTasks; // 故障确认任务
 
   DeviceStaffModel(
       {this.badgeNumList,
@@ -21,13 +21,13 @@ class DeviceStaffModel {
   DeviceStaffModel.init()
       : badgeNumList = [1, 2],
         regularTasks = List.generate(20, (index) {
-          return RegularInspectionModel.generate(index.toString());
+          return RegularInspectionTask.generate(index.toString());
         }),
         additionalTasks = List.generate(20, (index) {
-          return AdditionalInspectionModel.generate(index.toString());
+          return AdditionalInspectionTask.generate(index.toString());
         }),
         faultTasks = List.generate(20, (index) {
-          return FaultInspectionModel.generate(index.toString());
+          return FaultInspectionTask.generate(index.toString());
         });
 }
 

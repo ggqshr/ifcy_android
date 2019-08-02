@@ -35,6 +35,6 @@ void main() {
   });
   test("test_T", () {});
   test("testjson", () {
-    print(FaultInspectionModel.generate("1"));
+    print(FaultInspectionTask.generate("1"));
   });
 }

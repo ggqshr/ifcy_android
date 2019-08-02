@@ -5,13 +5,13 @@ import 'model.dart';
 ///@author ggq
 ///@description: 故障确认任务的数据model
 ///@date :2019/8/2 9:19
-class FaultInspectionModel extends TaskInfo {
+class FaultInspectionTask extends TaskInfo {
   String location;
   String deviceName;
   String deviceBellTime; //设备报警事件
   String taskCreateTime; //任务创建时间
 
-  FaultInspectionModel(
+  FaultInspectionTask(
     id,
     taskTitle,
     taskPeople,
@@ -29,7 +29,7 @@ class FaultInspectionModel extends TaskInfo {
           taskStatus: taskStatus,
         );
 
-  FaultInspectionModel.generate(
+  FaultInspectionTask.generate(
     id,
   )   : deviceBellTime = "$id${DateTime.now()}",
         deviceName = "设备$id",

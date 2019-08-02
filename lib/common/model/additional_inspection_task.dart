@@ -3,10 +3,10 @@ import 'dart:math';
 import 'model.dart';
 
 ///@author ggq
-///@description: 定期巡检任务的数据model
+///@description: 补充巡检任务的数据model
 ///@date :2019/8/2 9:19
-class RegularInspectionModel extends TaskInfo {
-  RegularInspectionModel(
+class AdditionalInspectionTask extends TaskInfo {
+  AdditionalInspectionTask(
     id,
     taskTitle,
     taskPeople,
@@ -22,7 +22,7 @@ class RegularInspectionModel extends TaskInfo {
           taskStatus: taskStatus,
         );
 
-  RegularInspectionModel.generate(id)
+  AdditionalInspectionTask.generate(id)
       : super(
           id: id,
           taskTitle: "任务$id",

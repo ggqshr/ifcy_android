@@ -4,7 +4,7 @@
 part of 'device_staff_model.dart';
 
 class RegularInspectionViewModel
-    extends TaskInfoViewModel<RegularInspectionModel> {
+    extends TaskInfoViewModel<RegularInspectionTask> {
   RegularInspectionViewModel({
     completeTasks,
     unCompleteTasks,

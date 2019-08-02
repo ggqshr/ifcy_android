@@ -1,9 +1,9 @@
 export 'fire_alarm_message.dart';
 export 'device_fault_message.dart';
 export 'task_info_message.dart';
-export 'regular_inspection_model.dart';
-export 'additional_inspection_model.dart';
-export 'fault_inspection_model.dart';
+export 'regular_inspection_task.dart';
+export 'additional_inspection_task.dart';
+export 'fault_inspection_task.dart';
 
 import 'package:ifcy/common/model/task_info_message.dart';
 
