@@ -54,13 +54,14 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     );
   }
 
-  getFinishTask(){
+  getFinishTask() {
     return StoreConnector<AppState, RegularInspectionViewModel>(
       converter: (Store<AppState> store) {
         DeviceStaffModel model = store.state.deviceStaffModel;
         return RegularInspectionViewModel(
           completeTasks: model.regularTasks
-              .where((item) => item.taskStatus == TaskStatus.completed).toList(),
+              .where((item) => item.taskStatus == TaskStatus.completed)
+              .toList(),
           onRefreshCall: () async {
             //todo 刷新回调
             await Future.delayed(Duration(seconds: 2));
@@ -136,7 +137,8 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
         DeviceStaffModel model = store.state.deviceStaffModel;
         return RegularInspectionViewModel(
           unCompleteTasks: model.regularTasks
-              .where((item) => item.taskStatus == TaskStatus.uncompleted).toList(),
+              .where((item) => item.taskStatus == TaskStatus.uncompleted)
+              .toList(),
           onRefreshCall: () async {
             //todo 刷新回调
             await Future.delayed(Duration(seconds: 2));
@@ -163,12 +165,8 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                       child: ListTile(
                         title: Text(vm.unCompleteTasks[index].taskTitle),
                         trailing: FlatButton.icon(
-                          onPressed: () => Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                              Text("跳转到${vm.unCompleteTasks[index].id}"),
-                            ),
-                          ),
+                          onPressed: () => Application.router
+                              .navigateTo(context, Routes.regularInspection,transition: TransitionType.inFromBottom),
                           icon: Icon(Icons.play_arrow),
                           label: Text("执行"),
                         ),
@@ -180,11 +178,12 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                     ListTile(
                       dense: true,
                       title:
-                      Text("任务内容:${vm.unCompleteTasks[index].taskContent}"),
+                          Text("任务内容:${vm.unCompleteTasks[index].taskContent}"),
                     ),
                     ListTile(
                       dense: true,
-                      title: Text("委派人员：${vm.unCompleteTasks[index].taskPeople}"),
+                      title:
+                          Text("委派人员：${vm.unCompleteTasks[index].taskPeople}"),
                     ),
                     ListTile(
                       dense: true,
@@ -202,7 +201,6 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
       },
     );
   }
-
 
   @override
   bool get wantKeepAlive => true;
