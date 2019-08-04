@@ -1,12 +1,15 @@
 part of "device_staff_components.dart";
 
-class RegularInspectionComponent extends StatefulWidget {
+class AdditionalInspectionComponent extends StatefulWidget {
+  AdditionalInspectionComponent({Key key}) : super(key: key);
+
   @override
-  _RegularInspectionComponentState createState() =>
-      _RegularInspectionComponentState();
+  _AdditionalInspectionComponentState createState() =>
+      _AdditionalInspectionComponentState();
 }
 
-class _RegularInspectionComponentState extends State<RegularInspectionComponent>
+class _AdditionalInspectionComponentState
+    extends State<AdditionalInspectionComponent>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
   ScrollController _scrollController;
@@ -15,19 +18,20 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
-    _scrollController = ScrollController(initialScrollOffset: 0);
+    _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+    _scrollController.dispose();
   }
 
-  scroToTopCall() {
+  scrollCall() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(0,
-          duration: Duration(seconds: 1), curve: Curves.ease);
+          duration: Duration(seconds: 1), curve: Curves.easeIn);
     }
   }
 
@@ -37,7 +41,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         SliverPersistentHeader(
-          delegate: ChangeTaskState(_controller, scroToTopCall),
+          delegate: ChangeTaskState(_controller, scrollCall),
         ),
         SliverFillRemaining(
           child: Container(
@@ -55,11 +59,11 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
   }
 
   getFinishTask() {
-    return StoreConnector<AppState, RegularInspectionViewModel>(
+    return StoreConnector<AppState, AdditionalInspectionViewModel>(
       converter: (Store<AppState> store) {
         DeviceStaffModel model = store.state.deviceStaffModel;
-        return RegularInspectionViewModel(
-          completeTasks: model.regularTasks
+        return AdditionalInspectionViewModel(
+          completeTasks: model.additionalTasks
               .where((item) => item.taskStatus == TaskStatus.completed)
               .toList(),
           onRefreshCall: () async {
@@ -68,7 +72,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
           },
         );
       },
-      builder: (BuildContext context, RegularInspectionViewModel vm) {
+      builder: (BuildContext context, AdditionalInspectionViewModel vm) {
         return RefreshIndicator(
           child: ListView.builder(
             itemCount: vm.completeTasks.length,
@@ -132,11 +136,11 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
   }
 
   getUnFinishTask() {
-    return StoreConnector<AppState, RegularInspectionViewModel>(
+    return StoreConnector<AppState, AdditionalInspectionViewModel>(
       converter: (Store<AppState> store) {
         DeviceStaffModel model = store.state.deviceStaffModel;
-        return RegularInspectionViewModel(
-          unCompleteTasks: model.regularTasks
+        return AdditionalInspectionViewModel(
+          unCompleteTasks: model.additionalTasks
               .where((item) => item.taskStatus == TaskStatus.uncompleted)
               .toList(),
           onRefreshCall: () async {
@@ -145,12 +149,12 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
           },
         );
       },
-      builder: (BuildContext context, RegularInspectionViewModel vm) {
+      builder: (BuildContext context, AdditionalInspectionViewModel vm) {
         return RefreshIndicator(
           child: ListView.builder(
-            itemCount: vm.unCompleteTasks.length,
             key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
             controller: _scrollController,
+            itemCount: vm.unCompleteTasks.length,
             itemBuilder: (context, index) {
               return Card(
                 elevation: 5,
@@ -165,8 +169,12 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                       child: ListTile(
                         title: Text(vm.unCompleteTasks[index].taskTitle),
                         trailing: FlatButton.icon(
-                          onPressed: () => Application.router
-                              .navigateTo(context, Routes.regularInspection,transition: TransitionType.inFromBottom),
+                          onPressed: () => Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      "跳转到${vm.unCompleteTasks[index].id}"),
+                                ),
+                              ),
                           icon: Icon(Icons.play_arrow),
                           label: Text("执行"),
                         ),
@@ -204,43 +212,4 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class ChangeTaskState extends SliverPersistentHeaderDelegate {
-  TabController _controller;
-  Function scroCall;
-
-  ChangeTaskState(this._controller, this.scroCall);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return TabBar(
-      tabs: [
-        Tab(
-          child: Text("完成"),
-        ),
-        Tab(
-          child: Text("未完成"),
-        )
-      ],
-      controller: _controller,
-      onTap: (index) {
-        if (!_controller.indexIsChanging) {
-          scroCall();
-        }
-      },
-    );
-  }
-
-  @override
-  double get maxExtent => 40;
-
-  @override
-  double get minExtent => 40;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
 }

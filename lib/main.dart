@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'common/utils/utils.dart';
+import 'device_staff/model/device_staff_model.dart';
 import 'device_supervisor/model/device_supervisor_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
       AppState(
         selectProjectModel: SelectProjectModel(),
         deviceSupervisorModel: DeviceSupervisorModel.init(),
+        deviceStaffModel: DeviceStaffModel.init(),
       ),
       null);
 
@@ -34,6 +37,9 @@ class MyApp extends StatelessWidget {
     final router = new Router();
     Routes.configureRoutes(router);
     Application.router = router;
+    SharedPreferences.getInstance().then((res) {
+      Application.prefs = res;
+    });
 
     return StoreProvider<AppState>(
       store: _store,

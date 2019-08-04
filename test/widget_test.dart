@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/module1/action/Moudle1Action.dart';
 import 'package:ifcy/module1/model/Moudle1Model.dart';
@@ -32,10 +33,8 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
-  test("test_T", () {
-  });
-  test("testjson",(){
-   AppState appState = AppState();
-   print(appState);
+  test("test_T", () {});
+  test("testjson", () {
+    print(FaultInspectionTask.generate("1"));
   });
 }

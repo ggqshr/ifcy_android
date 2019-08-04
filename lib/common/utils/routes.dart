@@ -1,4 +1,5 @@
 import 'package:fluro/fluro.dart';
+import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/main_app/main_app.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 
@@ -10,10 +11,12 @@ class Routes {
   static String test = "/test/:a"; //支持两种路由参数设置方式
   static String test1 = "/test"; //可以按照网页的参数写 /test?a=1&b=2，在Handler中都能处理
   static String selectPage = "/select";
+  static String regularInspection = "/regularInspection/:id";
 
   static void configureRoutes(Router router) {
     router.define(test, handler: testHandler);
     router.define(selectPage, handler: selectHandler);
+    router.define(regularInspection, handler: regularInspectionHandler);
   }
 }
 
@@ -29,4 +32,9 @@ var testHandler = Handler(
 var selectHandler =
     Handler(handlerFunc: (context, Map<String, List<String>> params) {
   return SelectProjectPage();
+});
+
+var regularInspectionHandler =
+    Handler(handlerFunc: (context, Map<String, List<String>> params) {
+  return RegularInspectionPage();
 });

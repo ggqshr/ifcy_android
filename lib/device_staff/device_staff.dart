@@ -5,8 +5,7 @@ import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 
 class DeviceStaff extends StatefulWidget {
-  Function drawerCall;
-  DeviceStaff(this.drawerCall);
+
   @override
   _DeviceStaffState createState() => _DeviceStaffState();
 }
@@ -22,10 +21,11 @@ class _DeviceStaffState extends State<DeviceStaff> {
     "工作",
     "我的",
   ];
+
   @override
   void initState() {
     super.initState();
-    viewList..add(DeviceStaffWorkPage());
+    viewList..add(DeviceStaffWorkPage(()=>Scaffold.of(context).openDrawer()));
   }
 
   @override
@@ -38,8 +38,8 @@ class _DeviceStaffState extends State<DeviceStaff> {
           int currentIndex = iconList.indexOf(i);
           int currentBadge = StoreProvider.of<AppState>(context)
               .state
-              .deviceSupervisorModel
-              .bottomBadgeNumList[currentIndex];
+              .deviceStaffModel
+              .badgeNumList[currentIndex];
           return BottomNavigationBarItem(
             icon: Badge(
               child: i,

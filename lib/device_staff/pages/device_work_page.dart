@@ -1,6 +1,10 @@
 part of 'device_staff_pages.dart';
 
 class DeviceStaffWorkPage extends StatefulWidget {
+  Function drawerCall;
+
+  DeviceStaffWorkPage(this.drawerCall);
+
   @override
   _DeviceStaffWorkPageState createState() => _DeviceStaffWorkPageState();
 }
@@ -27,8 +31,8 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
     _controller = TabController(length: tabs.length, vsync: this);
     tabViews
       ..add(RegularInspectionComponent())
-      ..add(Container())
-      ..add(Container());
+      ..add(AdditionalInspectionComponent())
+      ..add(FaultInspectionComponent());
   }
 
   @override
@@ -36,6 +40,8 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading:
+            IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCall),
         title: Text("工作台"),
         centerTitle: true,
         bottom: TabBar(
