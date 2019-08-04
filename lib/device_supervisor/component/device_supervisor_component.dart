@@ -39,3 +39,5 @@ part 'supervisor_list_component.dart';
 
 part 'person_list_component.dart';
 
+part 'radio_component.dart';
+

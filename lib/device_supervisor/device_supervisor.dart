@@ -44,6 +44,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
       ..add(FaultPage(widget.drawerCall(context)))
       ..add(TaskPage(widget.drawerCall(context)))
       ..add(PersonPage(widget.drawerCall(context)));
+    //  ..add(FaultDeclareFeedback(widget.drawerCall(context)));
   }
 
   @override

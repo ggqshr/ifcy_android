@@ -9,10 +9,14 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   String _taskContent;
   String _taskType;
-  DateTime _taskStartDate = DateTime.now();
-  DateTime _taskEndDate = DateTime.now();
+
+//  DateTime _taskStartDate = DateTime.now();
+//  DateTime _taskEndDate = DateTime.now();
   String _taskPeriod;
   String _executor;
+  String startTime = '开始时间';
+  String endTime = '结束时间';
+  final TextEditingController _controller = new TextEditingController();
 
   List<DropdownMenuItem> getListData() {
     List<DropdownMenuItem> items = new List();
@@ -81,11 +85,31 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
         ),
         body: new Container(
             padding: const EdgeInsets.all(30.0),
-//            color: Color(0xFFdeecff),
+            margin: EdgeInsets.all(10.0),
+            color: Color(0xFFdeecff),
             child: new Form(
               key: _formKey,
               child: new Column(
                 children: <Widget>[
+                  TextFormField(
+                    //controller:TextEditingController(),
+                    //initialValue: '请输入任务内容',
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w200),
+                    controller: _controller,
+                    decoration: new InputDecoration(
+                      labelText: '    任务内容:',
+                      //helperText: '     请输入任务内容',
+                      // hintText: '请输入任务内容',
+                      border: InputBorder.none,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     children: <Widget>[
                       SizedBox(
@@ -98,72 +122,39 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                       DropdownButton(
                         items: getListData(),
                         hint: new Text('下拉选择你想要的数据'),
-                        value: value, //下拉菜单选择完之后显示给用户的值
+                        value: value,
+                        //下拉菜单选择完之后显示给用户的值
                         onChanged: (T) {
                           //下拉菜单item点击之后的回调
                           setState(() {
                             value = T;
                           });
                         },
-                        elevation: 20, //设置阴影的高度
+                        elevation: 20,
+                        //设置阴影的高度
                         style: new TextStyle(
                             //设置文本框里面文字的样式
-                            color: Colors.red),
-                        isDense:
-                            false, //减少按钮的高度。默认情况下，此按钮的高度与其菜单项的高度相同。如果isDense为true，则按钮的高度减少约一半。 这个当按钮嵌入添加的容器中时，非常有用
+                            color: Colors.greenAccent),
+                        isDense: false,
+                        //减少按钮的高度。默认情况下，此按钮的高度与其菜单项的高度相同。如果isDense为true，则按钮的高度减少约一半。 这个当按钮嵌入添加的容器中时，非常有用
                         iconSize: 25.0, //设置三角标icon的大小
                       )
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('任务类型:'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Radio(
-                        value: 1,
-                        groupValue: this._taskType,
-                        onChanged: (v) {
-//                          setState(() {
-//                            this. _taskType = v;
-//                          });
-                        },
-                      ),
-                      Text('日常巡检'),
-                      Radio(
-                        value: 2,
-                        groupValue: this._taskType,
-                        onChanged: (v) {
-//                          setState(() {
-//                            this. _taskType = v;
-//                          });
-                        },
-                      ),
-                      Text('年度巡检'),
-                    ],
+                  SizedBox(
+                    height: 20,
                   ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('任务内容:'),
-                    ],
+                  RadioComponent(),
+                  SizedBox(
+                    height: 20,
                   ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('开始时间:'),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
+                  DatePickerComponent(startTime),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  DatePickerComponent(endTime),
+                  SizedBox(
+                    height: 20,
                   ),
                   Row(
                     children: <Widget>[
@@ -175,20 +166,41 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                         width: 10,
                         height: 15,
                       ),
-                      RaisedButton(
-                        child: Text("选择委派人"),
-                        onPressed: (){
-                          print('FloatingActionButton');
-                          Navigator.push(context,
-                              new MaterialPageRoute(builder: (context){
-                                return new PersonnelListComponent();
-                              },
-                              )
-                          );
+                      IconButton(
+                        icon: Icon(
+                          Icons.people_outline,
+                          color: Colors.lightGreen,
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, new MaterialPageRoute(
+                            builder: (context) {
+                              return new PersonnelListComponent();
+                            },
+                          ));
                         },
                       )
                     ],
                   ),
+                  Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 120,
+                      ),
+                      RaisedButton(
+                        textColor:Colors.lightGreen,
+                        onPressed: null,
+                        child: Text('发布任务'),
+                        highlightColor:Colors.lightGreen,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      RaisedButton(
+                        onPressed: null,
+                        child: Text('取消发布'),
+                      ),
+                    ],
+                  )
                 ],
               ),
             )));

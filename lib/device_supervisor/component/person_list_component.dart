@@ -30,7 +30,6 @@ class PersonnelListComponent extends StatelessWidget {
 
 class DepartmentEmployeeListComponent extends StatelessWidget {
   int childCount;
-
   @override
   Widget build(BuildContext context) {
     return StoreBuilder(builder: (context, Store<AppState> store) {

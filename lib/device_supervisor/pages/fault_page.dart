@@ -25,6 +25,7 @@ class _FaultPageState extends State<FaultPage> with SingleTickerProviderStateMix
     ..add(OnlineDeviceFalutComponent())
     ..add(OfflineDeviceFalutComponent());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

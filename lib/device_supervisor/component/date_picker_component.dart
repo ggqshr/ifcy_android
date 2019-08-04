@@ -1,40 +1,58 @@
 part of "device_supervisor_component.dart";
 
-class DatePicker extends StatelessWidget {
-  DatePicker({Key key, this.selectedDate, this.selectDate}) : super(key: key);
-  //已经选择的时间
-  final DateTime selectedDate;
-  //泛型是时间的改变回调函数，当选择时间改变后触发
-  final ValueChanged<DateTime> selectDate;
+class DatePickerComponent extends StatefulWidget {
+  final String timeType;
 
-  //选择时间方法
-  _datePicker(BuildContext context) async {
-    DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2050),
-    );
-    if (picked != null) {
-      selectDate(picked);
-    }
+  DatePickerComponent(this.timeType);
+
+  @override
+  _DatePickerComponentState createState() => _DatePickerComponentState();
+}
+
+class _DatePickerComponentState extends State<DatePickerComponent> {
+  var _time = DateTime.now().toString().substring(0, 10);
+
+  _showDataPicker() async {
+    Locale myLocale = Localizations.localeOf(context);
+    var picker = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2019),
+        lastDate: DateTime(2050),
+        locale: myLocale);
+    setState(() {
+      _time = picker.toString().substring(0, 10);
+    });
+  }
+
+  _showTimePicker() async {
+    var picker =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    setState(() {
+      _time = picker.toString();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return new ListTile(
-      title: new InkWell(
-        onTap: () => _datePicker(context),
-        child: new Row(
-          children: <Widget>[
-            new Icon(Icons.today),
-            new SizedBox(
-              width: 20.0,
-            ),
-            new Text(DateFormat.yMd("en_US").format(selectedDate)),
-          ],
+    return Row(
+      children: <Widget>[
+        SizedBox(
+          width: 10,
         ),
-      ),
+        Text("开始时间:        "),
+        Text("$_time                  "),
+        IconButton(
+          icon: Icon(
+            Icons.date_range,
+            color: Colors.lightGreen,
+          ),
+          onPressed: () => _showDataPicker(),
+        ),
+        SizedBox(
+          width: 20,
+        ),
+      ],
     );
   }
 }

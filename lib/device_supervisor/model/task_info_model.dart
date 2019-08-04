@@ -8,31 +8,42 @@ class TaskInfoModel {
   TaskInfoModel({this.messageNum, this.completedTask, this.uncompletedTask});
 }
 
-class TaskListModel{
-  String choice;
-  //List<TaskExecuteModel> taskExecuteModel;//任务执行情况统计
-  List<TaskDetailModel> taskDetailList;//任务详细列表
+///任务执行视图类
+class TaskListViewModel {
 
-  TaskListModel({this.choice,this.taskDetailList});
+  TaskExecuteModel taskExecuteModel;//任务执行情况统计
+  List<TaskDetailModel> taskDetailList; //任务详细列表
+
+  TaskListViewModel({this.taskExecuteModel,this.taskDetailList});
 }
 
-
-///任务完成情况统计
-class TaskExecuteModel{
-  String choice;
+///任务执行情况数据统计类
+class TaskExecuteModel {
   int taskNum;
   int taskCompletedNum;
   int taskUnCompletedNum;
 
-  TaskExecuteModel({this.choice,this.taskNum,this.taskCompletedNum,this.taskUnCompletedNum});
+  TaskExecuteModel({
+    this.taskNum,
+    this.taskCompletedNum,
+    this.taskUnCompletedNum});
 }
 
-
-class TaskDetailModel{
+/// 单个任务详情类
+class TaskDetailModel {
   String des;
   String type;
   String executor;
   int progress;
-  TaskDetailModel({this.des,this.type,this.executor,this.progress});
+  String cycle;//周期
+
+  TaskDetailModel({this.des, this.type, this.executor, this.progress,this.cycle});
 }
 
+///任务周期实体类
+class TaskCycleModel {
+  String cycleId;
+  String item;
+
+  TaskCycleModel({this.cycleId, this.item});
+}

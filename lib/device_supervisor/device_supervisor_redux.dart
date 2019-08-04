@@ -21,6 +21,12 @@ DeviceSupervisorModel deviceSupervisorMoudle1Reducer(
           supervisiorMessagesReducer(state.supervisorMessages, action),
       departmentMessages:
           departmentMessagesReducer(state.departmentMessages, action),
+      taskCycleMessages:
+          taskCycleMessagesReducer(state.taskCycleMessages, action),
+      taskExecuteModel:
+          taskExecuteMessagesReducer(state.taskExecuteModel, action),
+      taskMessageViewList:
+        taskMessageViewListMessagesReducer(state.taskMessageViewList,action),
     );
 
 int initFaultNum(int faultNum, InitPageStateAction action) {
@@ -110,3 +116,31 @@ List initdepartmentMessages(
 Reducer<List> departmentMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(initdepartmentMessages),
 ]);
+
+/// 初始化任务类型信息
+List inittaskCycleMessages(List taskCycleMessage, InitPageStateAction action) {
+  return action.taskCycleMessages;
+}
+
+Reducer<List> taskCycleMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(inittaskCycleMessages),
+]);
+
+List inittaskExecuteMessages(
+    List taskExecuteMessage, InitPageStateAction action) {
+  return action.taskExecuteModel;
+}
+
+Reducer<List> taskExecuteMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(inittaskExecuteMessages),
+]);
+
+List inittaskMessageViewListMessages(
+    List taskMessageViewListMessage, InitPageStateAction action) {
+  return action.taskMessageViewList;
+}
+
+Reducer<List> taskMessageViewListMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(inittaskMessageViewListMessages),
+]);
+
