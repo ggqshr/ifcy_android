@@ -42,7 +42,10 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           IconButton(
             onPressed: () =>
                 showSearch(context: context, delegate: SearchBarButton()),
-            icon: Tooltip(message: "搜索",child: Icon(Icons.search),),
+            icon: Tooltip(
+              message: "搜索",
+              child: Icon(Icons.search),
+            ),
           ),
         ],
         title: Text("工作台"),
@@ -56,7 +59,62 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
       body: CustomScrollView(
         slivers: <Widget>[
           SliverPersistentHeader(
+            pinned: true,
             delegate: TaskStateHeader(animation),
+          ),
+          SliverAppBar(
+            backgroundColor: Colors.white,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
+              background: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                height: double.maxFinite,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text("待检查设备总数:6"),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text("已检查设备:6"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text("剩余待检查设备:6"),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            expandedHeight: 60,
+            automaticallyImplyLeading: false,
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return ExpansionTile(
+                title: Text("title$index"),
+                children: <Widget>[
+                  Text("哈哈"),
+                  Text("哈哈"),
+                  Text("哈哈"),
+                  Text("哈哈"),
+                ],
+              );
+            }),
           ),
         ],
       ),
@@ -187,44 +245,36 @@ class TaskStateHeader extends SliverPersistentHeaderDelegate {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
+        Stack(
+          alignment: AlignmentDirectional.center,
           children: <Widget>[
-            Text("当前总体进度"),
-            Container(
-              width: 200,
-              height: 10,
-              child: AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) {
-                    return LinearProgressIndicator(
-                      value: animation.value,
-                    );
-                  }),
+            LayoutBuilder(
+              builder: (context, BoxConstraints constraints) {
+                return Container(
+                  width: constraints.maxWidth,
+                  height: 25,
+                  child: AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, child) {
+                        return LinearProgressIndicator(
+                          value: animation.value,
+                        );
+                      }),
+                );
+              },
             ),
-            Text("50%"),
+            Text("当前进度: %50"),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: Wrap(
-            spacing: 15,
-            children: <Widget>[
-              Text("待检查设备总数:6"),
-              Text("已检查设备:6"),
-              Text("剩余待检查设备:6"),
-            ],
-          ),
-        )
       ],
     );
   }
 
   @override
-  double get maxExtent => 80;
+  double get maxExtent => 25.0;
 
   @override
-  double get minExtent => 80;
+  double get minExtent => 25.0;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
