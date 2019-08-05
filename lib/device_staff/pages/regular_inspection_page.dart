@@ -12,6 +12,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> animation;
+  List<File> images = [];
 
   @override
   void initState() {
@@ -105,18 +106,241 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              return ExpansionTile(
-                title: Text("title$index"),
-                children: <Widget>[
-                  Text("哈哈"),
-                  Text("哈哈"),
-                  Text("哈哈"),
-                  Text("哈哈"),
-                ],
+              return Card(
+                elevation: 5,
+                child: ExpansionTile(
+                  title: Text(
+                    "title$index",
+                  ),
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(
+                        "设备类别:",
+                        softWrap: true,
+                      ),
+                      subtitle: Text("消防器材-灭火器检查（包括各种类型的灭火器、防毒面具等。）"),
+                    ),
+                    ListTile(
+                      title: Text(
+                        "检查要求:",
+                        softWrap: true,
+                      ),
+                      subtitle: Text(
+                        '1.外观无破损2.压力正常（在绿色1.2mpa之间）3.摆放位置符合要求 4.数量符合相关规定 5.在正常使用有效期间内',
+                        softWrap: true,
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    ListTile(
+                      title: Text("检查结果"),
+                      subtitle: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: "正常",
+                            groupValue: "正常",
+                            onChanged: (value) {},
+                          ),
+                          Text("正常"),
+                          Radio(
+                            value: "缺陷",
+                            groupValue: null,
+                            onChanged: (value) {},
+                          ),
+                          Text("缺陷"),
+                          Radio(
+                            value: "故障",
+                            groupValue: null,
+                            onChanged: (value) {},
+                          ),
+                          Text("故障"),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    ListTile(
+                      title: Text("处理措施"),
+                      subtitle: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: "现场维修",
+                            groupValue: "现场维修",
+                            onChanged: (value) {},
+                          ),
+                          Text("现场维修"),
+                          Radio(
+                            value: "申请更换",
+                            groupValue: null,
+                            onChanged: (value) {},
+                          ),
+                          Text("申请更换"),
+                          Radio(
+                            value: "申报维修",
+                            groupValue: null,
+                            onChanged: (value) {},
+                          ),
+                          Text("申报维修"),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("备注："),
+                      subtitle: TextField(
+                        decoration: InputDecoration(
+                          hintText: "请输入备注",
+                          suffix: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {},
+                          ),
+                        ),
+                        maxLines: 3,
+                        minLines: 1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text("上传图片"),
+                    ),
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Container(
+                            child: IconButton(
+                              icon: Icon(Icons.camera_enhance),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Container(
+                                        color: Color.fromRGBO(117, 117, 117, 1),
+                                        height: 120,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).canvasColor,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft:
+                                                  const Radius.circular(15),
+                                              topRight:
+                                                  const Radius.circular(15),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: <Widget>[
+                                              ListTile(
+                                                leading:
+                                                    Icon(Icons.linked_camera),
+                                                title: Text("使用相机拍摄"),
+                                                onTap: () async {
+                                                  File ii = await ImagePicker
+                                                      .pickImage(
+                                                          source: ImageSource
+                                                              .camera);
+                                                  if (ii != null) {
+                                                    setState(() {
+                                                      images.add(ii);
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                },
+                                              ),
+                                              ListTile(
+                                                leading: Icon(Icons.photo),
+                                                title: Text("从相册选择"),
+                                                onTap: () async {
+                                                  File ii = await ImagePicker
+                                                      .pickImage(
+                                                          source: ImageSource
+                                                              .gallery);
+                                                  if (ii != null) {
+                                                    setState(() {
+                                                      images.add(ii);
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              },
+                            ),
+                            constraints: BoxConstraints.tight(Size(80, 80)),
+                            margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          if (images.isNotEmpty)
+                            for (var img in images) getImageWithCloseIcon(img),
+                        ],
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 5),
+                    ),
+                  ],
+                ),
               );
             }),
           ),
         ],
+      ),
+    );
+  }
+
+  ///传入一个图像，返回一个带有右上角取消图标的图像
+  getImageWithCloseIcon(File thisImg) {
+    return Badge(
+      padding: EdgeInsets.all(0),
+      position: BadgePosition.topRight(right: 2, top: -5),
+      child: Container(
+        constraints: BoxConstraints.tight(Size(80, 80)),
+        child: Image.file(
+          thisImg,
+          fit: BoxFit.fill,
+        ),
+        margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
+      ),
+      badgeContent: GestureDetector(
+        child: Icon(
+          Icons.close,
+          size: 18,
+          color: Colors.white,
+        ),
+        onTap: () async {
+          var result = await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("警告"),
+                content: Text("确认删除这张图片么？"),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    child: Text("确认"),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: Text("取消"),
+                  )
+                ],
+              );
+            },
+          );
+          if (result) {
+            images.remove(thisImg);
+            setState(() {});
+          }
+        },
       ),
     );
   }
