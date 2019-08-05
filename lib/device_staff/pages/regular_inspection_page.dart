@@ -12,17 +12,21 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> animation;
-  List<File> images = [];
+  List<RegularInspectionTaskDetail> taskDetails;
+  ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController();
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     animation =
         CurvedAnimation(parent: _animationController, curve: Curves.decelerate);
-    animation = Tween(begin: 0.0, end: 0.5).animate(animation);
     _animationController.forward();
+    taskDetails = List.generate(20, (index) {
+      return RegularInspectionTaskDetail.generate(index.toString());
+    });
   }
 
   @override
@@ -33,6 +37,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 
   @override
   Widget build(BuildContext context) {
+    animation = Tween(begin: 0.0, end: 0.5).animate(animation);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -41,8 +46,16 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             icon: Icon(FontAwesomeIcons.filter),
           ),
           IconButton(
-            onPressed: () =>
-                showSearch(context: context, delegate: SearchBarButton()),
+            onPressed: () async {
+              String itemIndex = await showSearch(context: context, delegate: SearchBarButton());
+              if(itemIndex.isNotEmpty){
+                scrollController.animateTo(
+                  60.0 + int.parse(itemIndex) * 66,
+                  duration: Duration(seconds: 1),
+                  curve: Curves.decelerate,
+                );
+              }
+            },
             icon: Tooltip(
               message: "搜索",
               child: Icon(Icons.search),
@@ -53,11 +66,18 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          scrollController.animateTo(
+            60.0 + 7 * 66,
+            duration: Duration(seconds: 1),
+            curve: Curves.decelerate,
+          );
+        },
         label: Text("扫码"),
         icon: Icon(FontAwesomeIcons.qrcode),
       ),
       body: CustomScrollView(
+        controller: scrollController,
         slivers: <Widget>[
           SliverPersistentHeader(
             pinned: true,
@@ -105,196 +125,145 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             automaticallyImplyLeading: false,
           ),
           SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              return Card(
-                elevation: 5,
-                child: ExpansionTile(
-                  title: Text(
-                    "title$index",
-                  ),
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(
-                        "设备类别:",
-                        softWrap: true,
-                      ),
-                      subtitle: Text("消防器材-灭火器检查（包括各种类型的灭火器、防毒面具等。）"),
-                    ),
-                    ListTile(
-                      title: Text(
-                        "检查要求:",
-                        softWrap: true,
-                      ),
-                      subtitle: Text(
-                        '1.外观无破损2.压力正常（在绿色1.2mpa之间）3.摆放位置符合要求 4.数量符合相关规定 5.在正常使用有效期间内',
-                        softWrap: true,
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      title: Text("检查结果"),
-                      subtitle: Row(
-                        children: <Widget>[
-                          Radio(
-                            value: "正常",
-                            groupValue: "正常",
-                            onChanged: (value) {},
-                          ),
-                          Text("正常"),
-                          Radio(
-                            value: "缺陷",
-                            groupValue: null,
-                            onChanged: (value) {},
-                          ),
-                          Text("缺陷"),
-                          Radio(
-                            value: "故障",
-                            groupValue: null,
-                            onChanged: (value) {},
-                          ),
-                          Text("故障"),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      title: Text("处理措施"),
-                      subtitle: Row(
-                        children: <Widget>[
-                          Radio(
-                            value: "现场维修",
-                            groupValue: "现场维修",
-                            onChanged: (value) {},
-                          ),
-                          Text("现场维修"),
-                          Radio(
-                            value: "申请更换",
-                            groupValue: null,
-                            onChanged: (value) {},
-                          ),
-                          Text("申请更换"),
-                          Radio(
-                            value: "申报维修",
-                            groupValue: null,
-                            onChanged: (value) {},
-                          ),
-                          Text("申报维修"),
-                        ],
-                      ),
-                    ),
-                    ListTile(
-                      title: Text("备注："),
-                      subtitle: TextField(
-                        decoration: InputDecoration(
-                          hintText: "请输入备注",
-                          suffix: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () {},
-                          ),
-                        ),
-                        maxLines: 3,
-                        minLines: 1,
-                      ),
-                    ),
-                    ListTile(
-                      title: Text("上传图片"),
-                    ),
-                    ListTile(
-                      title: Row(
-                        children: <Widget>[
-                          Container(
-                            child: IconButton(
-                              icon: Icon(Icons.camera_enhance),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return Container(
-                                        color: Color.fromRGBO(117, 117, 117, 1),
-                                        height: 120,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).canvasColor,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft:
-                                                  const Radius.circular(15),
-                                              topRight:
-                                                  const Radius.circular(15),
-                                            ),
-                                          ),
-                                          child: Column(
-                                            children: <Widget>[
-                                              ListTile(
-                                                leading:
-                                                    Icon(Icons.linked_camera),
-                                                title: Text("使用相机拍摄"),
-                                                onTap: () async {
-                                                  File ii = await ImagePicker
-                                                      .pickImage(
-                                                          source: ImageSource
-                                                              .camera);
-                                                  if (ii != null) {
-                                                    setState(() {
-                                                      images.add(ii);
-                                                    });
-                                                    Navigator.of(context).pop();
-                                                  }
-                                                },
-                                              ),
-                                              ListTile(
-                                                leading: Icon(Icons.photo),
-                                                title: Text("从相册选择"),
-                                                onTap: () async {
-                                                  File ii = await ImagePicker
-                                                      .pickImage(
-                                                          source: ImageSource
-                                                              .gallery);
-                                                  if (ii != null) {
-                                                    setState(() {
-                                                      images.add(ii);
-                                                    });
-                                                    Navigator.of(context).pop();
-                                                  }
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              },
-                            ),
-                            constraints: BoxConstraints.tight(Size(80, 80)),
-                            margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          if (images.isNotEmpty)
-                            for (var img in images) getImageWithCloseIcon(img),
-                        ],
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 5),
-                    ),
-                  ],
-                ),
-              );
-            }),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return InspectionTaskDetailPanel(
+                  taskDetails[index],
+                );
+              },
+              childCount: taskDetails.length,
+            ),
           ),
         ],
       ),
     );
   }
+}
+
+class InspectionTaskDetailPanel extends StatelessWidget {
+  final RegularInspectionTaskDetail taskDetail;
+
+  InspectionTaskDetailPanel(
+    this.taskDetail,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      Function onResultChangeCall = (value) {
+        taskDetail.inspectionResultType = parseEnumType(value);
+        setState(() {});
+      };
+      Function onProcessChangeCall = (value) {
+        taskDetail.processType = parseEnumType(value);
+        setState(() {});
+      };
+      return Card(
+        elevation: 5,
+        child: ExpansionTile(
+          title: Text(
+            taskDetail.deviceName + taskDetail.deviceId,
+          ),
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                "设备类别:",
+                softWrap: true,
+              ),
+              subtitle: Text(taskDetail.deviceType),
+            ),
+            ListTile(
+              title: Text(
+                "检查要求:",
+                softWrap: true,
+              ),
+              subtitle: Text(
+                taskDetail.inspectionRequire,
+                softWrap: true,
+              ),
+            ),
+            Divider(
+              color: Colors.black,
+            ),
+            ListTile(
+              title: Text("检查结果"),
+              subtitle: Row(
+                children: ["正常", "缺陷", "故障"].map((item) {
+                  return Row(
+                    children: <Widget>[
+                      Radio(
+                        value: item,
+                        groupValue:
+                            parseEnumType(taskDetail.inspectionResultType),
+                        onChanged: onResultChangeCall,
+                      ),
+                      Text(item)
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+            if (taskDetail.inspectionResultType !=
+                InspectionResultType.normal) ...[
+              Divider(
+                color: Colors.black,
+              ),
+              ListTile(
+                title: Text("处理措施"),
+                subtitle: Row(
+                  children: ["现场维修", "申请更换", "申报维修"].map(
+                    (item) {
+                      return Row(
+                        children: <Widget>[
+                          Radio(
+                            value: item,
+                            groupValue: parseEnumType(taskDetail.processType),
+                            onChanged: onProcessChangeCall,
+                          ),
+                          Text(item),
+                        ],
+                      );
+                    },
+                  ).toList(),
+                ),
+              ),
+              ListTile(
+                title: Text("备注："),
+                subtitle: TextField(
+                  maxLines: 3,
+                  minLines: 1,
+                  maxLength: 80,
+                  decoration: InputDecoration(
+                    hintText: "请输入备注",
+                  ),
+                  controller: TextEditingController.fromValue(
+                    TextEditingValue(
+                      text: taskDetail.noteText ?? "",
+                      selection: TextSelection.fromPosition(
+                        TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: (taskDetail.noteText ?? "").length),
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    taskDetail.noteText = value;
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text("上传图片"),
+              ),
+              getPIckImg(taskDetail.images, context, setState),
+            ]
+          ],
+        ),
+      );
+    });
+  }
 
   ///传入一个图像，返回一个带有右上角取消图标的图像
-  getImageWithCloseIcon(File thisImg) {
+  getImageWithCloseIcon(List<File> images, File thisImg, context, setState) {
     return Badge(
       padding: EdgeInsets.all(0),
       position: BadgePosition.topRight(right: 2, top: -5),
@@ -342,6 +311,82 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           }
         },
       ),
+    );
+  }
+
+  getPIckImg(List<File> images, context, setState) {
+    return ListTile(
+      title: Row(
+        children: <Widget>[
+          Container(
+            child: IconButton(
+              icon: Icon(Icons.camera_enhance),
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        color: Color.fromRGBO(117, 117, 117, 1),
+                        height: 120,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).canvasColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(15),
+                              topRight: const Radius.circular(15),
+                            ),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.linked_camera),
+                                title: Text("使用相机拍摄"),
+                                onTap: () async {
+                                  File ii = await ImagePicker.pickImage(
+                                      source: ImageSource.camera);
+                                  if (ii != null) {
+                                    setState(() {
+                                      images.add(ii);
+                                    });
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.photo),
+                                title: Text("从相册选择"),
+                                onTap: () async {
+                                  File ii = await ImagePicker.pickImage(
+                                      source: ImageSource.gallery);
+                                  if (ii != null) {
+                                    setState(() {
+                                      images.add(ii);
+                                    });
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              },
+            ),
+            constraints: BoxConstraints.tight(Size(80, 80)),
+            margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+              ),
+            ),
+          ),
+          if (images.isNotEmpty)
+            for (var img in images)
+              getImageWithCloseIcon(images, img, context, setState),
+        ],
+      ),
+      contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 5),
     );
   }
 }
@@ -393,9 +438,8 @@ class SearchBarButton extends SearchDelegate<String> {
         inputHistory.add(query);
       }
     }
-    return Center(
-      child: Text(query),
-    );
+    close(context, query);
+    return Container();
   }
 
   @override
