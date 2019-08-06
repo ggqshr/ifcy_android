@@ -41,3 +41,5 @@ part 'person_list_component.dart';
 
 part 'radio_component.dart';
 
+part 'task_excute_chart_compont.dart';
+

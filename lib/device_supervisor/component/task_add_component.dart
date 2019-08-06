@@ -7,81 +7,87 @@ class TaskAddComponent extends StatefulWidget {
 
 class _TaskAddComponentState extends State<TaskAddComponent> {
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
   String _taskContent;
   String _taskType;
-
-//  DateTime _taskStartDate = DateTime.now();
-//  DateTime _taskEndDate = DateTime.now();
   String _taskPeriod;
   String _executor;
   String startTime = '开始时间';
   String endTime = '结束时间';
   final TextEditingController _controller = new TextEditingController();
 
-  List<DropdownMenuItem> getListData() {
-    List<DropdownMenuItem> items = new List();
-    DropdownMenuItem dropdownMenuItem1 = new DropdownMenuItem(
-      child: new Text('1'),
-      value: '1',
-    );
-    items.add(dropdownMenuItem1);
-    DropdownMenuItem dropdownMenuItem2 = new DropdownMenuItem(
-      child: new Text('2'),
-      value: '2',
-    );
-    items.add(dropdownMenuItem2);
-    DropdownMenuItem dropdownMenuItem3 = new DropdownMenuItem(
-      child: new Text('3'),
-      value: '3',
-    );
-    items.add(dropdownMenuItem3);
-    DropdownMenuItem dropdownMenuItem4 = new DropdownMenuItem(
-      child: new Text('4'),
-      value: '4',
-    );
-    items.add(dropdownMenuItem4);
-    DropdownMenuItem dropdownMenuItem5 = new DropdownMenuItem(
-      child: new Text('5'),
-      value: '5',
-    );
-    items.add(dropdownMenuItem5);
-    DropdownMenuItem dropdownMenuItem6 = new DropdownMenuItem(
-      child: new Text('6'),
-      value: '6',
-    );
-    items.add(dropdownMenuItem6);
-    DropdownMenuItem dropdownMenuItem7 = new DropdownMenuItem(
-      child: new Text('7'),
-      value: '7',
-    );
-    items.add(dropdownMenuItem7);
-    DropdownMenuItem dropdownMenuItem8 = new DropdownMenuItem(
-      child: new Text('8'),
-      value: '8',
-    );
-    items.add(dropdownMenuItem8);
-    DropdownMenuItem dropdownMenuItem9 = new DropdownMenuItem(
-      child: new Text('9'),
-      value: '9',
-    );
-    items.add(dropdownMenuItem9);
-    DropdownMenuItem dropdownMenuItem10 = new DropdownMenuItem(
-      child: new Text('10'),
-      value: '10',
-    );
-    items.add(dropdownMenuItem10);
-    return items;
-  }
-
-  var value;
+//  List<DropdownMenuItem> getListData() {
+//    List<DropdownMenuItem> items = new List();
+//    DropdownMenuItem dropdownMenuItem1 = new DropdownMenuItem(
+//      child: new Text('1'),
+//      value: '1',
+//    );
+//    items.add(dropdownMenuItem1);
+//    DropdownMenuItem dropdownMenuItem2 = new DropdownMenuItem(
+//      child: new Text('2'),
+//      value: '2',
+//    );
+//    items.add(dropdownMenuItem2);
+//    DropdownMenuItem dropdownMenuItem3 = new DropdownMenuItem(
+//      child: new Text('3'),
+//      value: '3',
+//    );
+//    items.add(dropdownMenuItem3);
+//    DropdownMenuItem dropdownMenuItem4 = new DropdownMenuItem(
+//      child: new Text('4'),
+//      value: '4',
+//    );
+//    items.add(dropdownMenuItem4);
+//    DropdownMenuItem dropdownMenuItem5 = new DropdownMenuItem(
+//      child: new Text('5'),
+//      value: '5',
+//    );
+//    items.add(dropdownMenuItem5);
+//    DropdownMenuItem dropdownMenuItem6 = new DropdownMenuItem(
+//      child: new Text('6'),
+//      value: '6',
+//    );
+//    items.add(dropdownMenuItem6);
+//    DropdownMenuItem dropdownMenuItem7 = new DropdownMenuItem(
+//      child: new Text('7'),
+//      value: '7',
+//    );
+//    items.add(dropdownMenuItem7);
+//    DropdownMenuItem dropdownMenuItem8 = new DropdownMenuItem(
+//      child: new Text('8'),
+//      value: '8',
+//    );
+//    items.add(dropdownMenuItem8);
+//    DropdownMenuItem dropdownMenuItem9 = new DropdownMenuItem(
+//      child: new Text('9'),
+//      value: '9',
+//    );
+//    items.add(dropdownMenuItem9);
+//    DropdownMenuItem dropdownMenuItem10 = new DropdownMenuItem(
+//      child: new Text('10'),
+//      value: '10',
+//    );
+//    items.add(dropdownMenuItem10);
+//    return items;
+//  }
+//
+//  var value;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.green,
           title: Text("新增任务"),
           centerTitle: true,
+          actions: <Widget>[
+            FlatButton(
+                child: Text('取消'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                })
+          ],
         ),
         body: new Container(
             padding: const EdgeInsets.all(30.0),
@@ -119,26 +125,7 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                       SizedBox(
                         width: 8,
                       ),
-                      DropdownButton(
-                        items: getListData(),
-                        hint: new Text('下拉选择你想要的数据'),
-                        value: value,
-                        //下拉菜单选择完之后显示给用户的值
-                        onChanged: (T) {
-                          //下拉菜单item点击之后的回调
-                          setState(() {
-                            value = T;
-                          });
-                        },
-                        elevation: 20,
-                        //设置阴影的高度
-                        style: new TextStyle(
-                            //设置文本框里面文字的样式
-                            color: Colors.greenAccent),
-                        isDense: false,
-                        //减少按钮的高度。默认情况下，此按钮的高度与其菜单项的高度相同。如果isDense为true，则按钮的高度减少约一半。 这个当按钮嵌入添加的容器中时，非常有用
-                        iconSize: 25.0, //设置三角标icon的大小
-                      )
+                      taskCircleChooseComponent(),
                     ],
                   ),
                   SizedBox(
@@ -148,11 +135,11 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                   SizedBox(
                     height: 20,
                   ),
-                  DatePickerComponent(startTime),
+                  DatePickerComponent(timeType: startTime),
                   SizedBox(
                     height: 30,
                   ),
-                  DatePickerComponent(endTime),
+                  DatePickerComponent(timeType: endTime),
                   SizedBox(
                     height: 20,
                   ),
@@ -181,28 +168,79 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
                       )
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 120,
-                      ),
-                      RaisedButton(
-                        textColor:Colors.lightGreen,
-                        onPressed: null,
-                        child: Text('发布任务'),
-                        highlightColor:Colors.lightGreen,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      RaisedButton(
-                        onPressed: null,
-                        child: Text('取消发布'),
-                      ),
-                    ],
-                  )
+//                  Row(
+//                    children: <Widget>[
+//                      SizedBox(
+//                        width: 120,
+//                      ),
+//                      RaisedButton(
+//                        textColor: Colors.lightGreen,
+//                        onPressed: null,
+//                        child: Text('发布任务'),
+//                        highlightColor: Colors.lightGreen,
+//                      ),
+//                      SizedBox(
+//                        width: 20,
+//                      ),
+//                      RaisedButton(
+//                        onPressed: null,
+//                        child: Text('取消发布'),
+//                      ),
+//                    ],
+//                  )
                 ],
               ),
             )));
+  }
+}
+
+//下拉选择组件
+class taskCircleChooseComponent extends StatefulWidget {
+  @override
+  _taskCircleChooseComponentState createState() =>
+      _taskCircleChooseComponentState();
+}
+
+class _taskCircleChooseComponentState extends State<taskCircleChooseComponent> {
+  @override
+  Widget build(BuildContext context) {
+    int _selectedIndex = 0;
+    List<String> _taskCircleItems = StoreProvider.of<AppState>(context)
+        .state
+        .deviceSupervisorModel
+        .taskCycleMessages
+        .map((i) {
+      return i.item.toString();
+    }).toList();
+
+    return DropdownButton<String>(
+      style: TextStyle(
+        fontFamily: 'Arapey',
+        fontStyle: FontStyle.normal,
+        color: Colors.black,
+        fontSize: 15,
+      ),
+      hint: Text('下拉选择任务周期'),
+      value: _taskCircleItems[_selectedIndex],
+      onChanged: (String newVal) {
+        setState(() {
+          _selectedIndex=_taskCircleItems.indexOf(newVal);
+        });
+      },
+      items:_taskCircleItems.map<DropdownMenuItem<String>>((String value){
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Arapey',
+              fontStyle: FontStyle.normal,
+              color: Colors.black,
+              fontSize: 15,
+            ),
+          ),
+        );
+      }).toList(),
+    );
   }
 }

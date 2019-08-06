@@ -80,5 +80,22 @@ class FaultDeviceDeclareFeedback {
     this.time});
 }
 
+//设备故障视图模型
+abstract class FaultViewModel<T>{
+  List<T> onlineDeviceFaultSured;
+  List<T> onlineDeviceFaultUnSured;
+  List<T> offlineDeviceFault;
+
+  Function onRefreshCall;
+
+  FaultViewModel({
+    this.onlineDeviceFaultSured,
+    this.onlineDeviceFaultUnSured,
+    this.offlineDeviceFault,
+    this.onRefreshCall,
+});
+
+}
+
 
 

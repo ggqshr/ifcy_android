@@ -1,9 +1,9 @@
 part of "device_supervisor_component.dart";
 
 class DatePickerComponent extends StatefulWidget {
-  final String timeType;
 
-  DatePickerComponent(this.timeType);
+  final String timeType;
+  DatePickerComponent({this.timeType});
 
   @override
   _DatePickerComponentState createState() => _DatePickerComponentState();
@@ -40,8 +40,8 @@ class _DatePickerComponentState extends State<DatePickerComponent> {
         SizedBox(
           width: 10,
         ),
-        Text("开始时间:        "),
-        Text("$_time                  "),
+        Text("开始时间:          $_time                  "),
+//        Text("                 "),
         IconButton(
           icon: Icon(
             Icons.date_range,

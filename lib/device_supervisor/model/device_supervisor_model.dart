@@ -23,6 +23,7 @@ class DeviceSupervisorModel {
   List<TaskListViewModel> taskMessageViewList;//任务列表
   List<TaskExecuteModel> taskExecuteModel;//任务执行统计
   List<TaskDetailModel> taskList;//任务列表
+  List<OfflineDeviceFaultMessage> offlineDeviceFaultList;//离线故障设备列表
 
 
   DeviceSupervisorModel({
@@ -40,6 +41,7 @@ class DeviceSupervisorModel {
     this.taskMessageViewList,
     this.taskExecuteModel,
     this.taskList,
+    this.offlineDeviceFaultList,
   });
 
   DeviceSupervisorModel.init()
@@ -108,17 +110,17 @@ class DeviceSupervisorModel {
           TaskListViewModel(
               taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述1',type:'补充任务',executor: 'xwz',progress: 70,cycle: '半月检'),
-                TaskDetailModel(des: '任务描述2',type:'补充任务',executor: 'zxc',progress: 80,cycle: '半月检'),
-                TaskDetailModel(des: '任务描述3',type:'补充任务',executor: 'xdd',progress: 40,cycle: '半月检'),
+                TaskDetailModel(des: '任务描述111',type:'补充任务',executor: 'xwz',progress: 70,cycle: '半月检'),
+                TaskDetailModel(des: '任务描述222',type:'补充任务',executor: 'zxc',progress: 80,cycle: '半月检'),
+                TaskDetailModel(des: '任务描述333',type:'补充任务',executor: 'xdd',progress: 40,cycle: '半月检'),
               ]
           ),
           TaskListViewModel(
               taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述1',type:'日常任务',executor: 'xwz',progress: 50,cycle: '月检'),
-                TaskDetailModel(des: '任务描述2',type:'日常任务',executor: 'zxc',progress: 60,cycle: '月检'),
-                TaskDetailModel(des: '任务描述3',type:'日常任务',executor: 'xdd',progress: 70,cycle: '月检'),
+                TaskDetailModel(des: '任务描述11',type:'日常任务',executor: 'xwz',progress: 50,cycle: '月检'),
+                TaskDetailModel(des: '任务描述22',type:'日常任务',executor: 'zxc',progress: 60,cycle: '月检'),
+                TaskDetailModel(des: '任务描述33',type:'日常任务',executor: 'xdd',progress: 70,cycle: '月检'),
               ]
           ),
           TaskListViewModel(

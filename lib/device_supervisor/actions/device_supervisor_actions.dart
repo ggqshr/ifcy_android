@@ -16,6 +16,7 @@ class InitPageStateAction {
   List<TaskExecuteModel> taskExecuteModel; //任务执行信息
   List<TaskDetailModel> taskDetailList; //任务列表信息
   List<TaskListViewModel> taskMessageViewList; //任务相关信息
+  List<OfflineDeviceFaultMessage> offlineDeviceFaultList;//离线设备故障消息列表
 
   InitPageStateAction({
     this.faultNum,
@@ -30,8 +31,7 @@ class InitPageStateAction {
     this.departmentMessage,
     this.taskCycleMessages,
     this.taskMessageViewList,
-    this.taskExecuteModel,
-    this.taskDetailList,
+    this.offlineDeviceFaultList,
   });
 
   InitPageStateAction.init()
@@ -84,46 +84,12 @@ class InitPageStateAction {
           ]),
         ],
         taskCycleMessages = [
-          TaskCycleModel(cycleId: '01', item: '周检'),
-          TaskCycleModel(cycleId: '01', item: '半月检'),
-          TaskCycleModel(cycleId: '01', item: '月检'),
-          TaskCycleModel(cycleId: '01', item: '季度检'),
-          TaskCycleModel(cycleId: '01', item: '半年检'),
-          TaskCycleModel(cycleId: '01', item: '年检'),
-        ],
-        taskExecuteModel = [
-          TaskExecuteModel(
-              taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-          TaskExecuteModel(
-              taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-          TaskExecuteModel(
-              taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-          TaskExecuteModel(
-              taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-          TaskExecuteModel(
-              taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-          TaskExecuteModel(
-              taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-        ],
-        taskDetailList = [
-          TaskDetailModel(
-              des: '任务描述1',
-              type: '日常任务',
-              executor: 'xwz',
-              progress: 50,
-              cycle: '周检'),
-          TaskDetailModel(
-              des: '任务描述2',
-              type: '日常任务',
-              executor: 'zxc',
-              progress: 60,
-              cycle: '周检'),
-          TaskDetailModel(
-              des: '任务描述3',
-              type: '日常任务',
-              executor: 'xdd',
-              progress: 70,
-              cycle: '周检'),
+          TaskCycleModel(cycleId: '1', item: '周检'),
+          TaskCycleModel(cycleId: '2', item: '半月检'),
+          TaskCycleModel(cycleId: '3', item: '月检'),
+          TaskCycleModel(cycleId: '4', item: '季度检'),
+          TaskCycleModel(cycleId: '5', item: '半年检'),
+          TaskCycleModel(cycleId: '6', item: '年检'),
         ],
         taskMessageViewList = [
           TaskListViewModel(
@@ -134,19 +100,19 @@ class InitPageStateAction {
                     des: '任务描述1',
                     type: '日常任务',
                     executor: 'xwz',
-                    progress: 50,
+                    progress: .2,
                     cycle: '周检'),
                 TaskDetailModel(
                     des: '任务描述2',
                     type: '日常任务',
                     executor: 'zxc',
-                    progress: 60,
+                    progress: .6,
                     cycle: '周检'),
                 TaskDetailModel(
                     des: '任务描述3',
                     type: '日常任务',
                     executor: 'xdd',
-                    progress: 70,
+                    progress: .7,
                     cycle: '周检'),
               ]),
           TaskListViewModel(
@@ -154,23 +120,46 @@ class InitPageStateAction {
                   taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
                 TaskDetailModel(
-                    des: '任务描述1',
+                    des: '任务描述11',
                     type: '补充任务',
                     executor: 'xwz',
-                    progress: 70,
+                    progress: .7,
                     cycle: '半月检'),
                 TaskDetailModel(
-                    des: '任务描述2',
+                    des: '任务描述22',
                     type: '补充任务',
                     executor: 'zxc',
-                    progress: 80,
+                    progress: .6,
                     cycle: '半月检'),
                 TaskDetailModel(
-                    des: '任务描述3',
+                    des: '任务描述33',
                     type: '补充任务',
                     executor: 'xdd',
-                    progress: 40,
+                    progress: .4,
                     cycle: '半月检'),
+              ]),
+          TaskListViewModel(
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
+              taskDetailList: [
+                TaskDetailModel(
+                    des: '任务描述111',
+                    type: '日常任务',
+                    executor: 'xwz',
+                    progress: .5,
+                    cycle: '月检'),
+                TaskDetailModel(
+                    des: '任务描述222',
+                    type: '日常任务',
+                    executor: 'zxc',
+                    progress: .6,
+                    cycle: '月检'),
+                TaskDetailModel(
+                    des: '任务描述333',
+                    type: '日常任务',
+                    executor: 'xdd',
+                    progress: .7,
+                    cycle: '月检'),
               ]),
           TaskListViewModel(
               taskExecuteModel: TaskExecuteModel(
@@ -180,42 +169,19 @@ class InitPageStateAction {
                     des: '任务描述1',
                     type: '日常任务',
                     executor: 'xwz',
-                    progress: 50,
-                    cycle: '月检'),
-                TaskDetailModel(
-                    des: '任务描述2',
-                    type: '日常任务',
-                    executor: 'zxc',
-                    progress: 60,
-                    cycle: '月检'),
-                TaskDetailModel(
-                    des: '任务描述3',
-                    type: '日常任务',
-                    executor: 'xdd',
-                    progress: 70,
-                    cycle: '月检'),
-              ]),
-          TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(
-                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
-              taskDetailList: [
-                TaskDetailModel(
-                    des: '任务描述1',
-                    type: '日常任务',
-                    executor: 'xwz',
-                    progress: 50,
+                    progress: .5,
                     cycle: '季度检'),
                 TaskDetailModel(
                     des: '任务描述2',
                     type: '日常任务',
                     executor: 'zxc',
-                    progress: 60,
+                    progress: .6,
                     cycle: '季度检'),
                 TaskDetailModel(
                     des: '任务描述3',
                     type: '日常任务',
                     executor: 'xdd',
-                    progress: 70,
+                    progress: .7,
                     cycle: '季度检'),
               ]),
           TaskListViewModel(
@@ -226,19 +192,19 @@ class InitPageStateAction {
                     des: '任务描述1',
                     type: '日常任务',
                     executor: 'xwz',
-                    progress: 50,
+                    progress: .2,
                     cycle: '半年检'),
                 TaskDetailModel(
                     des: '任务描述2',
                     type: '日常任务',
                     executor: 'zxc',
-                    progress: 60,
+                    progress: .60,
                     cycle: '半年检'),
                 TaskDetailModel(
                     des: '任务描述3',
                     type: '日常任务',
                     executor: 'xdd',
-                    progress: 70,
+                    progress: .70,
                     cycle: '半年检'),
               ]),
           TaskListViewModel(
@@ -249,19 +215,19 @@ class InitPageStateAction {
                     des: '任务描述1',
                     type: '日常任务',
                     executor: 'xwz',
-                    progress: 50,
+                    progress: .50,
                     cycle: '年检'),
                 TaskDetailModel(
                     des: '任务描述2',
                     type: '日常任务',
-                    executor: 'zxc',
-                    progress: 60,
+                    executor: '.zxc',
+                    progress: .60,
                     cycle: '年检'),
                 TaskDetailModel(
                     des: '任务描述3',
                     type: '日常任务',
                     executor: 'xdd',
-                    progress: 70,
+                    progress: .70,
                     cycle: '年检'),
               ]),
         ];

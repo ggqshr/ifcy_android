@@ -48,6 +48,7 @@ class FireMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Card(
