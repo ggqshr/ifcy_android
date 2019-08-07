@@ -146,8 +146,9 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return InspectionTaskDetailPanel(
-                  _taskDetails[index],
+                return ChangeNotifierProvider.value(
+                  value: _taskDetails[index],
+                  child: InspectionTaskDetailPanel(),
                 );
               },
               childCount: _taskDetails.length,
@@ -240,129 +241,110 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 
 class InspectionTaskDetailPanel<T extends TaskInfoDetail>
     extends StatelessWidget {
-  final T taskDetail;
-
-  InspectionTaskDetailPanel(
-    this.taskDetail,
-  );
-
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (context, setState) {
-      Function onResultChangeCall = (value) {
-        taskDetail.inspectionResultType = parseEnumType(value);
-        setState(() {});
-      };
-      Function onProcessChangeCall = (value) {
-        taskDetail.processType = parseEnumType(value);
-        setState(() {});
-      };
-      return Card(
-        elevation: 5,
-        child: ExpansionTile(
-          title: Text(
-            taskDetail.deviceName + taskDetail.deviceId,
+    var model = Provider.of<RegularInspectionTaskDetail>(context);
+    return Card(
+      elevation: 5,
+      child: ExpansionTile(
+        title: Text(model.deviceName + model.deviceId),
+        children: <Widget>[
+          ListTile(
+            title: Text(
+              "设备类别:",
+              softWrap: true,
+            ),
+            subtitle: Text(model.deviceType),
           ),
-          children: <Widget>[
-            ListTile(
-              title: Text(
-                "设备类别:",
-                softWrap: true,
-              ),
-              subtitle: Text(taskDetail.deviceType),
+          ListTile(
+            title: Text(
+              "检查要求:",
+              softWrap: true,
             ),
-            ListTile(
-              title: Text(
-                "检查要求:",
-                softWrap: true,
-              ),
-              subtitle: Text(
-                taskDetail.inspectionRequire,
-                softWrap: true,
-              ),
+            subtitle: Text(
+              model.inspectionRequire,
             ),
+          ),
+          Divider(
+            color: Colors.black,
+          ),
+          ListTile(
+            title: Text("检查结果"),
+            subtitle: Row(
+              children: ["正常", "缺陷", "故障"].map((item) {
+                return Row(
+                  children: <Widget>[
+                    Radio(
+                      value: item,
+                      groupValue: parseEnumType(model.inspectionResultType),
+                      onChanged: model.onResultChangeCall,
+                    ),
+                    Text(item)
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+          if (model.inspectionResultType !=
+              InspectionResultType.normal) ...[
             Divider(
               color: Colors.black,
             ),
             ListTile(
-              title: Text("检查结果"),
+              title: Text("处理措施"),
               subtitle: Row(
-                children: ["正常", "缺陷", "故障"].map((item) {
-                  return Row(
-                    children: <Widget>[
-                      Radio(
-                        value: item,
-                        groupValue:
-                            parseEnumType(taskDetail.inspectionResultType),
-                        onChanged: onResultChangeCall,
-                      ),
-                      Text(item)
-                    ],
-                  );
-                }).toList(),
+                children: ["现场维修", "申请更换", "申报维修"].map(
+                  (item) {
+                    return Row(
+                      children: <Widget>[
+                        Radio(
+                          value: item,
+                          groupValue: parseEnumType(model.processType),
+                          onChanged: model.onProcessChangeCall,
+                        ),
+                        Text(item),
+                      ],
+                    );
+                  },
+                ).toList(),
               ),
             ),
-            if (taskDetail.inspectionResultType !=
-                InspectionResultType.normal) ...[
-              Divider(
-                color: Colors.black,
-              ),
-              ListTile(
-                title: Text("处理措施"),
-                subtitle: Row(
-                  children: ["现场维修", "申请更换", "申报维修"].map(
-                    (item) {
-                      return Row(
-                        children: <Widget>[
-                          Radio(
-                            value: item,
-                            groupValue: parseEnumType(taskDetail.processType),
-                            onChanged: onProcessChangeCall,
-                          ),
-                          Text(item),
-                        ],
-                      );
-                    },
-                  ).toList(),
+            ListTile(
+              title: Text("备注："),
+              subtitle: TextField(
+                maxLines: 3,
+                minLines: 1,
+                maxLength: 80,
+                decoration: InputDecoration(
+                  hintText: "请输入备注",
                 ),
-              ),
-              ListTile(
-                title: Text("备注："),
-                subtitle: TextField(
-                  maxLines: 3,
-                  minLines: 1,
-                  maxLength: 80,
-                  decoration: InputDecoration(
-                    hintText: "请输入备注",
-                  ),
-                  controller: TextEditingController.fromValue(
-                    TextEditingValue(
-                      text: taskDetail.noteText ?? "",
-                      selection: TextSelection.fromPosition(
-                        TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: (taskDetail.noteText ?? "").length),
-                      ),
+                controller: TextEditingController.fromValue(
+                  TextEditingValue(
+                    text: model.noteText ?? "",
+                    selection: TextSelection.fromPosition(
+                      TextPosition(
+                          affinity: TextAffinity.downstream,
+                          offset: (model.noteText ?? "").length),
                     ),
                   ),
-                  onChanged: (value) {
-                    taskDetail.noteText = value;
-                  },
                 ),
+                onChanged: (value) {
+                  model.noteText = value;
+                },
               ),
-              ListTile(
-                title: Text("上传图片"),
-              ),
-              getPIckImg(taskDetail.images, context, setState),
-            ]
-          ],
-        ),
-      );
-    });
+            ),
+            ListTile(
+              title: Text("上传图片"),
+            ),
+            getPIckImg(model, context),
+          ]
+        ],
+      ),
+    );
   }
 
   ///传入一个图像，返回一个带有右上角取消图标的图像
-  getImageWithCloseIcon(List<File> images, File thisImg, context, setState) {
+  getImageWithCloseIcon(RegularInspectionTaskDetail model, File thisImg, context) {
     return Badge(
       padding: EdgeInsets.all(0),
       position: BadgePosition.topRight(right: 2, top: -5),
@@ -405,15 +387,14 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
             },
           );
           if (result) {
-            images.remove(thisImg);
-            setState(() {});
+            model.removeFromImages(thisImg);
           }
         },
       ),
     );
   }
 
-  getPIckImg(List<File> images, context, setState) {
+  getPIckImg(RegularInspectionTaskDetail model, context) {
     return ListTile(
       title: Row(
         children: <Widget>[
@@ -444,9 +425,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                                   File ii = await ImagePicker.pickImage(
                                       source: ImageSource.camera);
                                   if (ii != null) {
-                                    setState(() {
-                                      images.add(ii);
-                                    });
+                                    model.addToImages(ii);
                                     Navigator.of(context).pop();
                                   }
                                 },
@@ -458,9 +437,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                                   File ii = await ImagePicker.pickImage(
                                       source: ImageSource.gallery);
                                   if (ii != null) {
-                                    setState(() {
-                                      images.add(ii);
-                                    });
+                                    model.addToImages(ii);
                                     Navigator.of(context).pop();
                                   }
                                 },
@@ -480,9 +457,9 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
               ),
             ),
           ),
-          if (images.isNotEmpty)
-            for (var img in images)
-              getImageWithCloseIcon(images, img, context, setState),
+          if (model.images.isNotEmpty)
+            for (var img in model.images)
+              getImageWithCloseIcon(model, img, context),
         ],
       ),
       contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 5),

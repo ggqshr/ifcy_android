@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'dart:math';
+
+import 'package:flutter/foundation.dart';
 
 import 'model.dart';
 
@@ -39,7 +42,7 @@ class RegularInspectionTask extends TaskInfo {
 }
 
 //日常巡检任务详情
-class RegularInspectionTaskDetail extends TaskInfoDetail {
+class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
   RegularInspectionTaskDetail({
     deviceName,
     deviceId,
@@ -71,6 +74,25 @@ class RegularInspectionTaskDetail extends TaskInfoDetail {
           noteText: "备注$id",
           images: [],
         );
+
+  void onResultChangeCall(value) {
+    inspectionResultType = parseEnumType(value);
+    notifyListeners();
+  }
+
+  void onProcessChangeCall(value) {
+    processType = parseEnumType(value);
+    notifyListeners();
+  }
+  void addToImages(value){
+    images.add(value);
+    notifyListeners();
+  }
+
+  void removeFromImages(value){
+    images.remove(value);
+    notifyListeners();
+  }
 
   @override
   String toString() {
