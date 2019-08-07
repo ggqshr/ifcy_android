@@ -9,22 +9,44 @@ class RegularInspectionPage extends StatefulWidget {
 }
 
 class _RegularInspectionPageState extends State<RegularInspectionPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   AnimationController _animationController;
-  Animation<double> animation;
-  List<RegularInspectionTaskDetail> taskDetails;
-  ScrollController scrollController;
+  AnimationController _floatAnimationController;
+  Animation<double> _animation;
+  Animation<double> _transButton;
+  List<RegularInspectionTaskDetail> _taskDetails;
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    //当滚动到下面的时候，开始展示回到顶部按钮
+    _scrollController = ScrollController()
+      ..addListener(() {
+        if (_scrollController.offset > 500 &&
+            !_floatAnimationController.isCompleted) {
+          _floatAnimationController.forward();
+        } else if (_scrollController.offset <= 500 &&
+            _floatAnimationController.isCompleted) {
+          _floatAnimationController.reverse();
+        }
+      });
+    //初始化两个动画控制器，一个控制最上面的进度条,一个控制floatingActionButton的出现
+    _floatAnimationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    animation =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+    //曲线动画
+    _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.decelerate);
+    //悬浮按钮的动画
+    _transButton =
+        Tween<double>(begin: 45, end: -14.0).animate(_floatAnimationController);
+
+    //执行进度条动画
     _animationController.forward();
-    taskDetails = List.generate(20, (index) {
+
+    _taskDetails = List.generate(50, (index) {
       return RegularInspectionTaskDetail.generate(index.toString());
     });
   }
@@ -33,11 +55,17 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   void dispose() {
     super.dispose();
     _animationController.dispose();
+    _floatAnimationController.dispose();
+    _scrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    animation = Tween(begin: 0.0, end: 0.5).animate(animation);
+    if (_animationController.isCompleted) {
+      _animationController.reset();
+      _animationController.forward();
+    }
+    _animation = Tween(begin: 0.0, end: 0.5).animate(_animation);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -47,9 +75,10 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           ),
           IconButton(
             onPressed: () async {
-              String itemIndex = await showSearch(context: context, delegate: SearchBarButton());
-              if(itemIndex.isNotEmpty){
-                scrollController.animateTo(
+              String itemIndex = await showSearch(
+                  context: context, delegate: SearchBarButton());
+              if (itemIndex?.isNotEmpty is bool) {
+                _scrollController.animateTo(
                   60.0 + int.parse(itemIndex) * 66,
                   duration: Duration(seconds: 1),
                   curve: Curves.decelerate,
@@ -65,23 +94,13 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
         title: Text("工作台"),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          scrollController.animateTo(
-            60.0 + 7 * 66,
-            duration: Duration(seconds: 1),
-            curve: Curves.decelerate,
-          );
-        },
-        label: Text("扫码"),
-        icon: Icon(FontAwesomeIcons.qrcode),
-      ),
+      floatingActionButton: getFloatingActionButton(),
       body: CustomScrollView(
-        controller: scrollController,
+        controller: _scrollController,
         slivers: <Widget>[
           SliverPersistentHeader(
             pinned: true,
-            delegate: TaskStateHeader(animation),
+            delegate: TaskStateHeader(_animation),
           ),
           SliverAppBar(
             backgroundColor: Colors.white,
@@ -128,20 +147,100 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return InspectionTaskDetailPanel(
-                  taskDetails[index],
+                  _taskDetails[index],
                 );
               },
-              childCount: taskDetails.length,
+              childCount: _taskDetails.length,
             ),
           ),
         ],
       ),
+      bottomNavigationBar: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: Flex(
+          direction: Axis.horizontal,
+          children: <Widget>[
+            Expanded(
+              child: FlatButton(
+                onPressed: () {},
+                child: Text(
+                  "保存",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                color: Colors.blue,
+              ),
+            ),
+            SizedBox(
+              height: 35,
+              width: 10,
+              child: VerticalDivider(
+                color: Colors.black,
+              ),
+            ),
+            Expanded(
+              child: OutlineButton(
+                onPressed: () {},
+                child: Text("上传"),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  getFloatingActionButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        AnimatedBuilder(
+          animation: _transButton,
+          builder: (context, child) {
+            return Transform(
+              transform:
+                  Matrix4.translationValues(0.0, _transButton.value, 0.0),
+              child: child,
+            );
+          },
+          child: FloatingActionButton.extended(
+            heroTag: "backtoTop",
+            tooltip: "backtoTop",
+            onPressed: () {
+              _scrollController.animateTo(0.0,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.decelerate);
+            },
+            icon: Icon(Icons.arrow_upward),
+            label: Text("回顶"),
+          ),
+        ),
+        FloatingActionButton.extended(
+          onPressed: () {
+//              scrollController.animateTo(
+//                60.0 + 7 * 66,
+//                duration: Duration(seconds: 1),
+//                curve: Curves.decelerate,
+//              );
+          },
+          label: Text("扫码"),
+          icon: Icon(FontAwesomeIcons.qrcode),
+        ),
+      ],
     );
   }
 }
 
-class InspectionTaskDetailPanel extends StatelessWidget {
-  final RegularInspectionTaskDetail taskDetail;
+class InspectionTaskDetailPanel<T extends TaskInfoDetail>
+    extends StatelessWidget {
+  final T taskDetail;
 
   InspectionTaskDetailPanel(
     this.taskDetail,
