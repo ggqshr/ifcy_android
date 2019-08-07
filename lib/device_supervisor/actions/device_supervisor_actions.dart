@@ -10,13 +10,13 @@ class InitPageStateAction {
   List<FireAlarmMessage> fireMessage;
   List<DeviceFaultMessage> deviceFaultMessage;
   List<TaskInfoMessage> taskInfoMessage;
-  List<SupervisorMessageModel> supervisorMessgae;
   List<DepartmentMessage> departmentMessage;
   List<TaskCycleModel> taskCycleMessages; //任务周期类别信息
   List<TaskExecuteModel> taskExecuteModel; //任务执行信息
   List<TaskDetailModel> taskDetailList; //任务列表信息
   List<TaskListViewModel> taskMessageViewList; //任务相关信息
   List<OfflineDeviceFaultMessage> offlineDeviceFaultList;//离线设备故障消息列表
+  List<SupervisorMessageModel> supervisorMessages;//主管信息列表
 
   InitPageStateAction({
     this.faultNum,
@@ -27,11 +27,11 @@ class InitPageStateAction {
     this.fireMessage,
     this.deviceFaultMessage,
     this.taskInfoMessage,
-    this.supervisorMessgae,
     this.departmentMessage,
     this.taskCycleMessages,
     this.taskMessageViewList,
     this.offlineDeviceFaultList,
+    this.supervisorMessages,
   });
 
   InitPageStateAction.init()
@@ -59,12 +59,6 @@ class InitPageStateAction {
               title: "任务2",
               content: "任务2",
               status: TaskStatus.uncompleted),
-        ],
-        supervisorMessgae = [
-          SupervisorMessageModel(name: '主管1'),
-          SupervisorMessageModel(name: '主管2'),
-          SupervisorMessageModel(name: '主管3'),
-          SupervisorMessageModel(name: '主管4')
         ],
         departmentMessage = [
           DepartmentMessage(id: '01', title: '技术服务部', personnelList: [
@@ -230,7 +224,15 @@ class InitPageStateAction {
                     progress: .70,
                     cycle: '年检'),
               ]),
-        ];
+        ],
+
+  offlineDeviceFaultList=List.generate(20,(index){
+    return OfflineDeviceFaultMessage.generate(index.toString());
+  }),
+
+  supervisorMessages=List.generate(20, (index){
+    return SupervisorMessageModel.generste(index.toString());
+  });
 }
 
 class OnChangeBuilding {

@@ -29,6 +29,7 @@ DeviceSupervisorModel deviceSupervisorModule1Reducer(
         taskMessageViewListMessagesReducer(state.taskMessageViewList,action),
       offlineDeviceFaultList:
         offlineDeviceFaultMessagesReducer(state.offlineDeviceFaultList,action),
+
     );
 
 int initFaultNum(int faultNum, InitPageStateAction action) {
@@ -103,7 +104,7 @@ Reducer<List> taskInfoMessagesReducer = combineReducers([
 
 List initsupervisiorMessages(
     List supervisorMessage, InitPageStateAction action) {
-  return action.supervisorMessgae;
+  return action.supervisorMessages;
 }
 
 Reducer<List> supervisiorMessagesReducer = combineReducers([
@@ -155,4 +156,5 @@ List initofflineDeviceFaultMessages(
 Reducer<List> offlineDeviceFaultMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(initofflineDeviceFaultMessages),
 ]);
+
 
