@@ -9,19 +9,23 @@ class SupervisorListPage extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Divider(
-              height: 1.0,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SearchInputComponent(),
-          ),
-//          SupervisorListComponent()
-        ],
-      ),
+body: SupervisorListComponent(),
+//      body: CustomScrollView(
+//        slivers: <Widget>[
+//          SliverToBoxAdapter(
+//            child: Divider(
+//              height: 1.0,
+//            ),
+//          ),
+//          SliverToBoxAdapter(
+//            child: SearchInputComponent(),
+//          ),
+//          SliverToBoxAdapter(
+//            child:  SupervisorListComponent(),
+//          ),
+//
+//        ],
+//      ),
     );
   }
 }

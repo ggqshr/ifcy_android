@@ -39,8 +39,8 @@ class SelectProjectPage extends StatelessWidget {
       },
       builder: (BuildContext context, SelectProjectModel vm) {
         return Scaffold(
-         // body: DeviceStaff((c)=>()=>Scaffold.of(c).openDrawer()),
-          body: DeviceSupervisor(vm.auth,(c)=>()=>Scaffold.of(c).openDrawer()),
+          //body: DeviceStaff(),
+         body: DeviceSupervisor(vm.auth,(c)=>()=>Scaffold.of(c).openDrawer()),
           drawer: Drawer(
             child: ListView(
               padding: EdgeInsets.all(0),
