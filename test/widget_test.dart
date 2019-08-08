@@ -47,4 +47,7 @@ void main() {
       var s1 = await dio.get("/user/projects",options: Options(headers: {"authorization":ss.headers['authorization']}));
       print(s1);
   });
+  test("tt",(){
+    print(parseEnumType(TaskStatus.completed));
+  });
 }

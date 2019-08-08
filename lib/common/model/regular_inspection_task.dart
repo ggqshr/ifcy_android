@@ -52,6 +52,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
     processType,
     noteText,
     images,
+    taskStatus,
   }) : super(
           deviceName: deviceName,
           deviceId: deviceId,
@@ -61,6 +62,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           processType: processType,
           noteText: noteText,
           images: images,
+          taskStatus: taskStatus,
         );
 
   RegularInspectionTaskDetail.generate(id)
@@ -73,6 +75,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           processType: ProcessType.values[int.parse(id) % 3],
           noteText: "备注$id",
           images: [],
+          taskStatus: TaskStatus.values[int.parse(id) % 2],
         );
 
   void onResultChangeCall(value) {
@@ -84,12 +87,13 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
     processType = parseEnumType(value);
     notifyListeners();
   }
-  void addToImages(value){
+
+  void addToImages(value) {
     images.add(value);
     notifyListeners();
   }
 
-  void removeFromImages(value){
+  void removeFromImages(value) {
     images.remove(value);
     notifyListeners();
   }

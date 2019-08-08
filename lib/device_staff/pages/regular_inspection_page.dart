@@ -14,8 +14,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   AnimationController _floatAnimationController;
   Animation<double> _animation;
   Animation<double> _transButton;
-  List<RegularInspectionTaskDetail> _taskDetails;
   ScrollController _scrollController;
+  TaskInfoDetailListBloc<RegularInspectionTaskDetail> _taskDetailsBloc;
 
   @override
   void initState() {
@@ -41,14 +41,15 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
         CurvedAnimation(parent: _animationController, curve: Curves.decelerate);
     //悬浮按钮的动画
     _transButton =
-        Tween<double>(begin: 45, end: -14.0).animate(_floatAnimationController);
+        Tween<double>(begin: 56, end: -14.0).animate(_floatAnimationController);
 
     //执行进度条动画
     _animationController.forward();
 
-    _taskDetails = List.generate(50, (index) {
+    _taskDetailsBloc =
+        TaskInfoDetailListBloc.localInit(List.generate(50, (index) {
       return RegularInspectionTaskDetail.generate(index.toString());
-    });
+    }));
   }
 
   @override
@@ -57,6 +58,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
     _animationController.dispose();
     _floatAnimationController.dispose();
     _scrollController.dispose();
+    _taskDetailsBloc.dispose();
   }
 
   @override
@@ -74,16 +76,21 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             icon: Icon(FontAwesomeIcons.filter),
           ),
           IconButton(
-            onPressed: () async {
-              String itemIndex = await showSearch(
-                  context: context, delegate: SearchBarButton());
-              if (itemIndex?.isNotEmpty is bool) {
-                _scrollController.animateTo(
-                  60.0 + int.parse(itemIndex) * 66,
-                  duration: Duration(seconds: 1),
-                  curve: Curves.decelerate,
-                );
-              }
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SearchBarButton(
+                  inputHistory: ["1", "2", "3"],
+                  dataList: _taskDetailsBloc.taskDetailList,
+                ),
+              );
+//              if (itemIndex?.isNotEmpty is bool && itemIndex.isNotEmpty) {
+//                _scrollController.animateTo(
+//                  60.0 + int.parse(itemIndex) * 66,
+//                  duration: Duration(seconds: 1),
+//                  curve: Curves.decelerate,
+//                );
+//              }
             },
             icon: Tooltip(
               message: "搜索",
@@ -147,11 +154,11 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return ChangeNotifierProvider.value(
-                  value: _taskDetails[index],
+                  value: _taskDetailsBloc.list2show[index],
                   child: InspectionTaskDetailPanel(),
                 );
               },
-              childCount: _taskDetails.length,
+              childCount: _taskDetailsBloc.list2show.length,
             ),
           ),
         ],
@@ -211,7 +218,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
               child: child,
             );
           },
-          child: FloatingActionButton.extended(
+          child: FloatingActionButton(
             heroTag: "backtoTop",
             tooltip: "backtoTop",
             onPressed: () {
@@ -219,11 +226,10 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   duration: Duration(milliseconds: 500),
                   curve: Curves.decelerate);
             },
-            icon: Icon(Icons.arrow_upward),
-            label: Text("回顶"),
+            child: Icon(Icons.arrow_upward),
           ),
         ),
-        FloatingActionButton.extended(
+        FloatingActionButton(
           onPressed: () {
 //              scrollController.animateTo(
 //                60.0 + 7 * 66,
@@ -231,8 +237,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 //                curve: Curves.decelerate,
 //              );
           },
-          label: Text("扫码"),
-          icon: Icon(FontAwesomeIcons.qrcode),
+          child: Icon(FontAwesomeIcons.qrcode),
         ),
       ],
     );
@@ -247,7 +252,25 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
     return Card(
       elevation: 5,
       child: ExpansionTile(
-        title: Text(model.deviceName + model.deviceId),
+        title: Container(
+          width: 200,
+          child: Row(
+            children: <Widget>[
+              Text(model.deviceName + model.deviceId),
+              Spacer(),
+              Chip(
+                label: Text(
+                  parseEnumType(model.taskStatus),
+                  style: TextStyle(
+                    color: model.taskStatus == TaskStatus.completed
+                        ? Colors.black
+                        : Colors.red,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         children: <Widget>[
           ListTile(
             title: Text(
@@ -285,8 +308,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
               }).toList(),
             ),
           ),
-          if (model.inspectionResultType !=
-              InspectionResultType.normal) ...[
+          if (model.inspectionResultType != InspectionResultType.normal) ...[
             Divider(
               color: Colors.black,
             ),
@@ -344,7 +366,8 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
   }
 
   ///传入一个图像，返回一个带有右上角取消图标的图像
-  getImageWithCloseIcon(RegularInspectionTaskDetail model, File thisImg, context) {
+  getImageWithCloseIcon(
+      RegularInspectionTaskDetail model, File thisImg, context) {
     return Badge(
       padding: EdgeInsets.all(0),
       position: BadgePosition.topRight(right: 2, top: -5),
@@ -469,7 +492,12 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
 
 class SearchBarButton extends SearchDelegate<String> {
   List<String> inputHistory = ["1", "2", "3"];
-  List<String> dataList = ["4", "5", "6"];
+  List<RegularInspectionTaskDetail> dataList;
+
+  SearchBarButton({
+    this.inputHistory,
+    this.dataList,
+  });
 
   @override
   String get searchFieldLabel => "输入设备号或类别";
@@ -514,8 +542,66 @@ class SearchBarButton extends SearchDelegate<String> {
         inputHistory.add(query);
       }
     }
-    close(context, query);
-    return Container();
+    Map<String, List<RegularInspectionTaskDetail>> res =
+        findResultByQuery(query);
+    if (res.isEmpty) {
+      return Container(
+        child: Center(
+          child: Text("结果为空"),
+        ),
+      );
+    }
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          if (res['name'].isNotEmpty)
+            ExpansionTile(
+              title: Text("按照名字查询命中的结果"),
+              children: res['name'].map((item) {
+                return ChangeNotifierProvider.value(
+                  value: item,
+                  child: InspectionTaskDetailPanel(),
+                );
+              }).toList(),
+            ),
+          if (res['type'].isNotEmpty)
+            ExpansionTile(
+              title: Text("按照类别查询命中的结果"),
+              children: res['type'].map((item) {
+                return ChangeNotifierProvider.value(
+                  value: item,
+                  child: InspectionTaskDetailPanel(),
+                );
+              }).toList(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Map<String, List<RegularInspectionTaskDetail>> findResultByQuery(
+      String nameOrType) {
+    if (dataList.isNotEmpty) {
+      List<RegularInspectionTaskDetail> onNameHit = [];
+      List<RegularInspectionTaskDetail> onTypeHit = [];
+      for (var item in dataList) {
+        if (item.deviceName.contains(nameOrType)) {
+          onNameHit.add(item);
+        }
+        if (item.deviceType.contains(nameOrType)) {
+          onTypeHit.add(item);
+        }
+      }
+      if (onNameHit.isEmpty && onTypeHit.isEmpty) {
+        return {};
+      }
+      return {
+        "name": onNameHit,
+        "type": onTypeHit,
+      };
+    } else {
+      return {};
+    }
   }
 
   @override
@@ -607,7 +693,7 @@ class TaskStateHeader extends SliverPersistentHeaderDelegate {
                 );
               },
             ),
-            Text("当前进度: %50"),
+            Text("当前进度: 50%"),
           ],
         ),
       ],

@@ -7,6 +7,7 @@ export 'fault_inspection_task.dart';
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/task_info_message.dart';
 
 ///检查结果的类型
@@ -26,10 +27,11 @@ Map<int, String> inspectionResultTypeMap = {
 parseEnumType<S>(S type) {
   if (!(type is String)) {
     if (type is InspectionResultType) {
-      return inspectionResultTypeMap[
-          InspectionResultType.values.indexOf((type as InspectionResultType))];
+      return inspectionResultTypeMap[InspectionResultType.values.indexOf(type)];
     } else if (type is ProcessType) {
-      return processTypeMap[ProcessType.values.indexOf((type as ProcessType))];
+      return processTypeMap[ProcessType.values.indexOf(type)];
+    } else if (type is TaskStatus) {
+      return taskStatusEnumMap[TaskStatus.values.indexOf(type)];
     }
   } else {
     if (inspectionResultTypeMap.containsValue(type as String)) {
@@ -40,6 +42,10 @@ parseEnumType<S>(S type) {
       int thisIndex = processTypeMap.keys
           .toList()[processTypeMap.values.toList().indexOf(type as String)];
       return ProcessType.values[thisIndex];
+    } else if (taskStatusEnumMap.containsValue(type as String)) {
+      int thisIndex = taskStatusEnumMap.keys
+          .toList()[taskStatusEnumMap.values.toList().indexOf(type as String)];
+      return TaskStatus.values[thisIndex];
     }
   }
 }
@@ -88,6 +94,7 @@ abstract class TaskInfoDetail {
   ProcessType processType; //处理的措施
   String noteText; //备注
   List<File> images; //上传的图片
+  TaskStatus taskStatus; //任务的状态，是否完成
 
   TaskInfoDetail({
     this.deviceName,
@@ -98,9 +105,20 @@ abstract class TaskInfoDetail {
     this.processType,
     this.noteText,
     this.images,
+    this.taskStatus,
   });
 
   String toPrint(String className) {
-    return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images}';
+    return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images, taskStatus: $taskStatus}';
+  }
+}
+
+class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
+  List<T> taskDetailList; //装载所有数据的列表
+  List<T> list2show; //页面上用来渲染的列表
+
+  TaskInfoDetailListBloc.localInit(List<T> taskDetailList) {
+    this.taskDetailList = taskDetailList;
+    list2show = taskDetailList;
   }
 }
