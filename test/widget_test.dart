@@ -36,18 +36,31 @@ void main() {
 //    expect(find.text('0'), findsNothing);
 //    expect(find.text('1'), findsOneWidget);
 //  });
-  test("testjson", ()async  {
+  test("testjson", () async {
     Dio dio = Dio()..options.baseUrl = "http://116.56.140.193/business/app/api";
-    dio.options.receiveDataWhenStatusError=true;
-    dio.options.contentType=ContentType.json;
-      var ss = await dio.post(
-        "/anonymous/login",
-        data: '{"password": "123456", "username": "hyj"}',
-      );
-      var s1 = await dio.get("/user/projects",options: Options(headers: {"authorization":ss.headers['authorization']}));
-      print(s1);
+    dio.options.receiveDataWhenStatusError = true;
+    dio.options.contentType = ContentType.json;
+    var ss = await dio.post(
+      "/anonymous/login",
+      data: '{"password": "123456", "username": "hyj"}',
+    );
+    var s1 = await dio.get("/user/projects",
+        options:
+            Options(headers: {"authorization": ss.headers['authorization']}));
+    print(s1);
   });
-  test("tt",(){
-    print(parseEnumType(TaskStatus.completed));
+  test("tt", () {
+    Set<int> aa = {1,2,3};
+    Set<int> bb = {3,4,5};
+    print(aa.intersection(bb));
+  });
+  test("tt", () {
+    var tt = TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
+      return RegularInspectionTaskDetail.generate(index.toString());
+    }));
+    tt.filterByTaskStatus(TaskStatus.uncompleted);
+    print(tt.list2show.every((item){
+      return item.taskStatus==TaskStatus.uncompleted;
+    }));
   });
 }

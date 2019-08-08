@@ -47,7 +47,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
     _animationController.forward();
 
     _taskDetailsBloc =
-        TaskInfoDetailListBloc.localInit(List.generate(50, (index) {
+        TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
       return RegularInspectionTaskDetail.generate(index.toString());
     }));
   }
@@ -67,23 +67,28 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
       _animationController.reset();
       _animationController.forward();
     }
-    _animation = Tween(begin: 0.0, end: 0.5).animate(_animation);
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            onPressed: null,
-            icon: Icon(FontAwesomeIcons.filter),
-          ),
-          IconButton(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: SearchBarButton(
-                  inputHistory: ["1", "2", "3"],
-                  dataList: _taskDetailsBloc.taskDetailList,
-                ),
-              );
+    return ChangeNotifierProvider.value(
+      value: _taskDetailsBloc,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: <Widget>[
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  icon: Icon(FontAwesomeIcons.filter),
+                );
+              },
+            ),
+            IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: SearchBarButton(
+                    inputHistory: ["1", "2", "3"],
+                    dataList: _taskDetailsBloc.taskDetailList,
+                  ),
+                );
 //              if (itemIndex?.isNotEmpty is bool && itemIndex.isNotEmpty) {
 //                _scrollController.animateTo(
 //                  60.0 + int.parse(itemIndex) * 66,
@@ -91,115 +96,207 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 //                  curve: Curves.decelerate,
 //                );
 //              }
-            },
-            icon: Tooltip(
-              message: "搜索",
-              child: Icon(Icons.search),
+              },
+              icon: Tooltip(
+                message: "搜索",
+                child: Icon(Icons.search),
+              ),
+            ),
+          ],
+          title: Text("工作台"),
+          centerTitle: true,
+        ),
+        floatingActionButton: getFloatingActionButton(),
+        body: Consumer<TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+          builder: (context, model, child) {
+            return CustomScrollView(
+              controller: _scrollController,
+              slivers: <Widget>[
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: TaskStateProcessHeader(Tween(
+                          begin: 0.0,
+                          end: model.currentCompleteTask.length /
+                              model.taskDetailList.length)
+                      .animate(_animation)),
+                ),
+                SliverPersistentHeader(
+                  delegate: TaskStateHeader(model.taskDetailList),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return ChangeNotifierProvider.value(
+                        value: model.list2show[index],
+                        child: InspectionTaskDetailPanel(),
+                      );
+                    },
+                    childCount: _taskDetailsBloc.list2show.length,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        bottomNavigationBar: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
           ),
-        ],
-        title: Text("工作台"),
-        centerTitle: true,
-      ),
-      floatingActionButton: getFloatingActionButton(),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: <Widget>[
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: TaskStateHeader(_animation),
-          ),
-          SliverAppBar(
-            backgroundColor: Colors.white,
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.pin,
-              background: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
+          child: Flex(
+            direction: Axis.horizontal,
+            children: <Widget>[
+              Expanded(
+                child: FlatButton(
+                  onPressed: () {},
+                  child: Text(
+                    "保存",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  color: Colors.blue,
                 ),
-                height: double.maxFinite,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+              ),
+              SizedBox(
+                height: 35,
+                width: 10,
+                child: VerticalDivider(
+                  color: Colors.black,
+                ),
+              ),
+              Expanded(
+                child: OutlineButton(
+                  onPressed: () {},
+                  child: Text("上传"),
+                ),
+              )
+            ],
+          ),
+        ),
+        endDrawer: Container(
+          width: 250,
+          child: Drawer(
+            child: ListView(
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    child: Text("筛选"),
+                  ),
+                ),
+                Divider(
+                  color: Colors.black,
+                ),
+                Container(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        height: 5,
+                      Center(
+                        child: Text("显示任务类型"),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Text("待检查设备总数:6"),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text("已检查设备:6"),
-                        ],
+                      Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TaskStatusChip(TaskStatus.completed),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            TaskStatusChip(TaskStatus.uncompleted),
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text("剩余待检查设备:6"),
-                        ],
-                      )
                     ],
                   ),
                 ),
-              ),
-            ),
-            expandedHeight: 60,
-            automaticallyImplyLeading: false,
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return ChangeNotifierProvider.value(
-                  value: _taskDetailsBloc.list2show[index],
-                  child: InspectionTaskDetailPanel(),
-                );
-              },
-              childCount: _taskDetailsBloc.list2show.length,
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        child: Flex(
-          direction: Axis.horizontal,
-          children: <Widget>[
-            Expanded(
-              child: FlatButton(
-                onPressed: () {},
-                child: Text(
-                  "保存",
-                  style: TextStyle(
-                    color: Colors.white,
+                Divider(
+                  color: Colors.black,
+                ),
+                Center(
+                  child: Container(
+                    child: Text("楼层选择"),
                   ),
                 ),
-                color: Colors.blue,
-              ),
+                Consumer<TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+                  builder: (context, model, child) {
+                    var floorList = model.currentFloorList;
+                    floorList.sort((a,b)=>int.parse(a).compareTo(int.parse(b)));
+                    return ListTile(
+                      title: Text("选择楼层:"),
+                      trailing: DropdownButton(
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("空"),
+                            value: "空",
+                          ),
+                          ...floorList.map<DropdownMenuItem<String>>(
+                            (item) {
+                              return DropdownMenuItem(
+                                child: Text(item),
+                                value: item,
+                              );
+                            },
+                          ).toList()
+                        ],
+                        onChanged: model.changeFloor,
+                        value: model.currentFloor,
+                      ),
+                    );
+                  },
+                ),
+                Divider(
+                  color: Colors.black,
+                ),
+                Center(
+                  child: Container(
+                    child: Text("区域选择"),
+                  ),
+                ),
+                Container(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 1.5,
+                        mainAxisSpacing: 0),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        child: Consumer<
+                            TaskInfoDetailListBloc<
+                                RegularInspectionTaskDetail>>(
+                          builder: (context, model, child) {
+                            return RawChip(
+                              label: Text("区域${(index + 1).toString()}"),
+                              labelStyle: model.areaSelected[index] &
+                                      model.areaEnable[index]
+                                  ? TextStyle(color: Colors.white)
+                                  : null,
+                              selectedColor: Colors.blue,
+                              showCheckmark: false,
+                              isEnabled: model.areaEnable[index],
+                              selected: model.areaSelected[index] &
+                                  model.areaEnable[index],
+                              onSelected: (checked) {
+                                model.changeAreaSelected(index, checked);
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    itemCount: 12,
+                  ),
+                ),
+                Divider(
+                  color: Colors.black,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 35,
-              width: 10,
-              child: VerticalDivider(
-                color: Colors.black,
-              ),
-            ),
-            Expanded(
-              child: OutlineButton(
-                onPressed: () {},
-                child: Text("上传"),
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -664,10 +761,40 @@ class SearchBarButton extends SearchDelegate<String> {
   }
 }
 
-class TaskStateHeader extends SliverPersistentHeaderDelegate {
+class TaskStatusChip extends StatelessWidget {
+  final TaskStatus taskStatus;
+
+  TaskStatusChip(this.taskStatus);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+      builder: (context, model, child) {
+        return RawChip(
+          label: Text(parseEnumType(taskStatus)),
+          labelStyle: model.currentShowTaskStatus == taskStatus
+              ? TextStyle(color: Colors.white)
+              : null,
+          selectedColor: Colors.blue,
+          showCheckmark: false,
+          selected: model.currentShowTaskStatus == taskStatus,
+          onSelected: (checked) {
+            if (checked) {
+              model.changeTaskStatusByIndex(taskStatus);
+            } else {
+              model.changeTaskStatusByIndex(null);
+            }
+          },
+        );
+      },
+    );
+  }
+}
+
+class TaskStateProcessHeader extends SliverPersistentHeaderDelegate {
   final Animation<double> animation;
 
-  TaskStateHeader(this.animation);
+  TaskStateProcessHeader(this.animation);
 
   @override
   Widget build(
@@ -705,6 +832,62 @@ class TaskStateHeader extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent => 25.0;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class TaskStateHeader extends SliverPersistentHeaderDelegate {
+  final List<RegularInspectionTaskDetail> taskDetailList;
+
+  TaskStateHeader(this.taskDetailList);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: <Widget>[
+                  Text("待检查设备总数:${taskDetailList.length}"),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                      "已检查设备:${taskDetailList.where((item) => item.taskStatus == TaskStatus.completed).length}"),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                      "剩余待检查设备:${taskDetailList.where((item) => item.taskStatus == TaskStatus.uncompleted).length}"),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  double get maxExtent => 60;
+
+  @override
+  double get minExtent => 60;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

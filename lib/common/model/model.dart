@@ -36,7 +36,7 @@ parseEnumType<S>(S type) {
   } else {
     if (inspectionResultTypeMap.containsValue(type as String)) {
       int thisIndex = inspectionResultTypeMap.keys.toList()[
-          inspectionResultTypeMap.values.toList().indexOf(type as String)];
+      inspectionResultTypeMap.values.toList().indexOf(type as String)];
       return InspectionResultType.values[thisIndex];
     } else if (processTypeMap.containsValue(type as String)) {
       int thisIndex = processTypeMap.keys
@@ -95,6 +95,8 @@ abstract class TaskInfoDetail {
   String noteText; //备注
   List<File> images; //上传的图片
   TaskStatus taskStatus; //任务的状态，是否完成
+  String taskArea; //设备的区域
+  String taskFloor; //设备的楼层信息
 
   TaskInfoDetail({
     this.deviceName,
@@ -106,19 +108,105 @@ abstract class TaskInfoDetail {
     this.noteText,
     this.images,
     this.taskStatus,
+    this.taskArea,
+    this.taskFloor,
   });
 
   String toPrint(String className) {
-    return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images, taskStatus: $taskStatus}';
+    return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images, taskStatus: $taskStatus, taskArea: $taskArea, taskFloor: $taskFloor}';
   }
 }
 
 class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
   List<T> taskDetailList; //装载所有数据的列表
   List<T> list2show; //页面上用来渲染的列表
+  List<T> list2filter; //用来筛选的列表
+  TaskStatus currentShowTaskStatus; //当前要显示的任务详情列表的状态，用来筛选
+  List<bool> areaSelected; //当前选中的区域
+  String currentFloor; //当前选择的楼层
+  List<T> afterTypeFilter; //经过完成类型过滤的数据
+  List<T> afterFloorFilter; //经过楼层过滤的数据
+  List<T> afterAreaFilter; //经过区域过滤的数据
+
+  //当前过滤当中该区域是否有设备需要检查
+  List<bool> get areaEnable {
+    var temp = List.generate(12, (_) => false);
+    for (var item in currentAreaList) {
+      temp[int.parse(item)] = true;
+    }
+    return temp;
+  }
+
+  //当前显示的任务详情的所有区域
+  Set<String> get currentAreaList =>
+      afterFloorFilter.isNotEmpty
+          ? afterFloorFilter.map((item) => item.taskArea).toSet()
+          : afterTypeFilter.map((item) => item.taskArea).toSet();
+
+  //经过类型筛选后的所有楼层
+  List<String> get currentFloorList =>
+      afterTypeFilter.isNotEmpty
+          ? afterTypeFilter.map((item) => item.taskFloor).toSet().toList()
+          : taskDetailList.map((item) => item.taskFloor).toSet().toList();
+
+  //获取当前所有任务中执行完成的任务列表
+  List<T> get currentCompleteTask =>
+      taskDetailList
+          .where((item) => item.taskStatus == TaskStatus.completed)
+          .toList();
+
+  //获取当前所有任务中未执行完成的任务列表
+  List<T> get currentUnCompleteTask =>
+      taskDetailList
+          .where((item) => item.taskStatus == TaskStatus.uncompleted)
+          .toList();
 
   TaskInfoDetailListBloc.localInit(List<T> taskDetailList) {
     this.taskDetailList = taskDetailList;
     list2show = taskDetailList;
+    list2filter = taskDetailList;
+    afterAreaFilter = taskDetailList;
+    afterFloorFilter = taskDetailList;
+    afterTypeFilter = taskDetailList;
+    areaSelected = List.generate(12, (_) => false);
+    currentFloor = "空";
+  }
+
+  void filterByTaskStatus(TaskStatus taskStatus) {
+    afterTypeFilter = taskDetailList.where((item) {
+      return item.taskStatus == taskStatus;
+    }).toList();
+  }
+
+  //更改选中显示的任务状态
+  void changeTaskStatusByIndex(TaskStatus status) {
+    currentShowTaskStatus = status;
+    if (status == null) {
+      afterTypeFilter = taskDetailList;
+    } else {
+      filterByTaskStatus(status);
+    }
+    changeFloor("空");
+    notifyListeners();
+  }
+
+  //更改选中区域
+  void changeAreaSelected(int index, bool value) {
+    areaSelected[index] = value;
+    afterAreaFilter = afterFloorFilter.where((item) {
+      var thisArea = int.parse(item.taskArea);
+      return areaSelected[thisArea] &
+      areaEnable[thisArea];
+    }).toList();
+    notifyListeners();
+  }
+
+  //改变当前的楼层
+  void changeFloor(String value) {
+    currentFloor = value;
+    afterFloorFilter = afterTypeFilter.where((item) {
+      return item.taskFloor == currentFloor;
+    }).toList();
+    notifyListeners();
   }
 }

@@ -53,6 +53,8 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
     noteText,
     images,
     taskStatus,
+    taskArea,
+    taskFloor,
   }) : super(
           deviceName: deviceName,
           deviceId: deviceId,
@@ -63,6 +65,8 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           noteText: noteText,
           images: images,
           taskStatus: taskStatus,
+          taskArea: taskArea,
+          taskFloor: taskFloor,
         );
 
   RegularInspectionTaskDetail.generate(id)
@@ -76,6 +80,8 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           noteText: "备注$id",
           images: [],
           taskStatus: TaskStatus.values[int.parse(id) % 2],
+          taskArea: "${Random().nextInt(12)}",
+          taskFloor: "${Random().nextInt(30)}",
         );
 
   void onResultChangeCall(value) {
