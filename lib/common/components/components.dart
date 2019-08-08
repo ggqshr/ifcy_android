@@ -8,5 +8,7 @@ import 'package:ifcy/common/model/model.dart';
 
 part 'search_input_componet.dart';
 part 'expansion_card.dart';
+
+part 'person_info_component.dart';
 //part 'package:ifcy/device_supervisor/component/person_list_component.dart';
 

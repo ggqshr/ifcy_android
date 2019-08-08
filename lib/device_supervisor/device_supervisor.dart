@@ -7,6 +7,7 @@ import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'model/device_supervisor_model.dart';
 import 'device_supervisor_redux.dart';
 import 'pages/device_supvisor_pages.dart';
+import 'package:ifcy/common/utils/person_page.dart';
 
 
 class DeviceSupervisor extends StatefulWidget {
