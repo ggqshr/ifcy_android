@@ -16,7 +16,6 @@ part 'monitor_page.dart';
 part 'fault_page.dart';
 part 'task_page.dart';
 part 'task_add_page.dart';
-part 'person_page.dart';
 part 'supervisor_list_page.dart';
 part 'falut_declare_feedback_page.dart';
 
