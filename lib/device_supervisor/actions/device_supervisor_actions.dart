@@ -15,8 +15,12 @@ class InitPageStateAction {
   List<TaskExecuteModel> taskExecuteModel; //任务执行信息
   List<TaskDetailModel> taskDetailList; //任务列表信息
   List<TaskListViewModel> taskMessageViewList; //任务相关信息
-  List<OfflineDeviceFaultMessage> offlineDeviceFaultList;//离线设备故障消息列表
-  List<SupervisorMessageModel> supervisorMessages;//主管信息列表
+  List<OfflineDeviceFaultMessage> offlineDeviceFaultList; //离线设备故障消息列表
+  List<OnlineDeviceFaultSuredMessage>
+      onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
+  List<OnlineDeviceFaultUnsuredMessage>
+      onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
+  List<SupervisorMessageModel> supervisorMessages; //主管信息列表
 
   InitPageStateAction({
     this.faultNum,
@@ -31,6 +35,8 @@ class InitPageStateAction {
     this.taskCycleMessages,
     this.taskMessageViewList,
     this.offlineDeviceFaultList,
+    this.onlineDeviceFaultSuredList,
+    this.onlineDeviceFaultUnSuredList,
     this.supervisorMessages,
   });
 
@@ -225,14 +231,18 @@ class InitPageStateAction {
                     cycle: '年检'),
               ]),
         ],
-
-  offlineDeviceFaultList=List.generate(20,(index){
-    return OfflineDeviceFaultMessage.generate(index.toString());
-  }),
-
-  supervisorMessages=List.generate(20, (index){
-    return SupervisorMessageModel.generste(index.toString());
-  });
+        offlineDeviceFaultList = List.generate(20, (index) {
+          return OfflineDeviceFaultMessage.generate(index.toString());
+        }),
+        onlineDeviceFaultUnSuredList = List.generate(20, (index) {
+          return OnlineDeviceFaultUnsuredMessage.generate(index.toString());
+        }),
+        onlineDeviceFaultSuredList = List.generate(20, (index) {
+          return OnlineDeviceFaultSuredMessage.generate(index.toString());
+        }),
+        supervisorMessages = List.generate(20, (index) {
+          return SupervisorMessageModel.generste(index.toString());
+        });
 }
 
 class OnChangeBuilding {

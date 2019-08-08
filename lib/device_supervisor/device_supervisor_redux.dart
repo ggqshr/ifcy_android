@@ -26,10 +26,13 @@ DeviceSupervisorModel deviceSupervisorModule1Reducer(
       taskExecuteModel:
           taskExecuteMessagesReducer(state.taskExecuteModel, action),
       taskMessageViewList:
-        taskMessageViewListMessagesReducer(state.taskMessageViewList,action),
-      offlineDeviceFaultList:
-        offlineDeviceFaultMessagesReducer(state.offlineDeviceFaultList,action),
-
+          taskMessageViewListMessagesReducer(state.taskMessageViewList, action),
+      offlineDeviceFaultList: offlineDeviceFaultMessagesReducer(
+          state.offlineDeviceFaultList, action),
+      onlineDeviceFaultSuredList: onlineDeviceFaultSuredMessagesReducer(
+          state.onlineDeviceFaultSuredList, action),
+      onlineDeviceFaultUnSuredList: onlineDeviceFaultUnSuredMessagesReducer(
+          state.onlineDeviceFaultUnSuredList, action),
     );
 
 int initFaultNum(int faultNum, InitPageStateAction action) {
@@ -150,11 +153,29 @@ Reducer<List> taskMessageViewListMessagesReducer = combineReducers([
 ///离线设备故障消息列表
 List initofflineDeviceFaultMessages(
     List offlineDeviceFaultMessage, InitPageStateAction action) {
-    return action.offlineDeviceFaultList;
+  return action.offlineDeviceFaultList;
 }
 
 Reducer<List> offlineDeviceFaultMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(initofflineDeviceFaultMessages),
 ]);
 
+///线上设备已确认故障消息列表
+List initonlineDeviceFaultSuredMessages(
+    List onlineDeviceFaultSuredMessage, InitPageStateAction action) {
+  return action.onlineDeviceFaultSuredList;
+}
 
+Reducer<List> onlineDeviceFaultSuredMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(initonlineDeviceFaultSuredMessages),
+]);
+
+///线上设备待确认故障消息列表
+List initonlineDeviceFaultUnSuredMessages(
+    List onlineDeviceFaultUnSuredMessage, InitPageStateAction action) {
+  return action.onlineDeviceFaultUnSuredList;
+}
+
+Reducer<List> onlineDeviceFaultUnSuredMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(initonlineDeviceFaultUnSuredMessages),
+]);

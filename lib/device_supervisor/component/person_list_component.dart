@@ -10,7 +10,18 @@ class PersonnelListComponent extends StatelessWidget {
         title: Text(_title,style: TextStyle(fontSize: 16.0),),
         backgroundColor: Colors.green,
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () =>
+                showSearch(context: context, delegate: SearchBarButton()),
+            icon: Tooltip(
+              message: "搜索",
+              child: Icon(Icons.search),
+            ),
+          ),
+        ],
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.publish),
@@ -29,9 +40,6 @@ class PersonnelListComponent extends StatelessWidget {
             child: Divider(
               height: 1.0,
             ),
-          ),
-          SliverToBoxAdapter(
-            child: SearchInputComponent(),
           ),
           DepartmentEmployeeListComponent(),
         ],

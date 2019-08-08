@@ -1,4 +1,6 @@
 import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/common/model/online_device_fault_sured_message.dart';
+import 'package:ifcy/common/model/online_device_fault_unsrued_message.dart';
 
 part 'monitor_page_model.dart';
 
@@ -19,12 +21,13 @@ class DeviceSupervisorModel {
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
   List<SupervisorMessageModel> supervisorMessages; //主管信息
   List<DepartmentMessage> departmentMessages; //维保公司员工信息
-  List<TaskCycleModel> taskCycleMessages;//任务类型信息
-  List<TaskListViewModel> taskMessageViewList;//任务列表
-  List<TaskExecuteModel> taskExecuteModel;//任务执行统计
-  List<TaskDetailModel> taskList;//任务列表
-  List<OfflineDeviceFaultMessage> offlineDeviceFaultList;//离线故障设备列表
-
+  List<TaskCycleModel> taskCycleMessages; //任务类型信息
+  List<TaskListViewModel> taskMessageViewList; //任务列表
+  List<TaskExecuteModel> taskExecuteModel; //任务执行统计
+  List<TaskDetailModel> taskList; //任务列表
+  List<OfflineDeviceFaultMessage> offlineDeviceFaultList; //离线故障设备列表
+  List<OnlineDeviceFaultSuredMessage> onlineDeviceFaultSuredList;//线上已确认故障设备消息列表
+  List<OnlineDeviceFaultUnsuredMessage> onlineDeviceFaultUnSuredList;//线上待确认故障设备消息列表
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -42,6 +45,8 @@ class DeviceSupervisorModel {
     this.taskExecuteModel,
     this.taskList,
     this.offlineDeviceFaultList,
+    this.onlineDeviceFaultSuredList,
+    this.onlineDeviceFaultUnSuredList,
   });
 
   DeviceSupervisorModel.init()
@@ -98,57 +103,146 @@ class DeviceSupervisorModel {
             PersonnelMessage(id: '023', name: '员工3'),
           ]),
         ],
-        taskMessageViewList=[
+        taskMessageViewList = [
           TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述1',type:'日常任务',executor: 'xwz',progress: 50,cycle: '周检'),
-                TaskDetailModel(des: '任务描述2',type:'日常任务',executor: 'zxc',progress: 60,cycle: '周检'),
-                TaskDetailModel(des: '任务描述3',type:'日常任务',executor: 'xdd',progress: 70,cycle: '周检'),
-              ]
-          ),
+                TaskDetailModel(
+                    des: '任务描述1',
+                    type: '日常任务',
+                    executor: 'xwz',
+                    progress: 50,
+                    cycle: '周检'),
+                TaskDetailModel(
+                    des: '任务描述2',
+                    type: '日常任务',
+                    executor: 'zxc',
+                    progress: 60,
+                    cycle: '周检'),
+                TaskDetailModel(
+                    des: '任务描述3',
+                    type: '日常任务',
+                    executor: 'xdd',
+                    progress: 70,
+                    cycle: '周检'),
+              ]),
           TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述111',type:'补充任务',executor: 'xwz',progress: 70,cycle: '半月检'),
-                TaskDetailModel(des: '任务描述222',type:'补充任务',executor: 'zxc',progress: 80,cycle: '半月检'),
-                TaskDetailModel(des: '任务描述333',type:'补充任务',executor: 'xdd',progress: 40,cycle: '半月检'),
-              ]
-          ),
+                TaskDetailModel(
+                    des: '任务描述111',
+                    type: '补充任务',
+                    executor: 'xwz',
+                    progress: 70,
+                    cycle: '半月检'),
+                TaskDetailModel(
+                    des: '任务描述222',
+                    type: '补充任务',
+                    executor: 'zxc',
+                    progress: 80,
+                    cycle: '半月检'),
+                TaskDetailModel(
+                    des: '任务描述333',
+                    type: '补充任务',
+                    executor: 'xdd',
+                    progress: 40,
+                    cycle: '半月检'),
+              ]),
           TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述11',type:'日常任务',executor: 'xwz',progress: 50,cycle: '月检'),
-                TaskDetailModel(des: '任务描述22',type:'日常任务',executor: 'zxc',progress: 60,cycle: '月检'),
-                TaskDetailModel(des: '任务描述33',type:'日常任务',executor: 'xdd',progress: 70,cycle: '月检'),
-              ]
-          ),
+                TaskDetailModel(
+                    des: '任务描述11',
+                    type: '日常任务',
+                    executor: 'xwz',
+                    progress: 50,
+                    cycle: '月检'),
+                TaskDetailModel(
+                    des: '任务描述22',
+                    type: '日常任务',
+                    executor: 'zxc',
+                    progress: 60,
+                    cycle: '月检'),
+                TaskDetailModel(
+                    des: '任务描述33',
+                    type: '日常任务',
+                    executor: 'xdd',
+                    progress: 70,
+                    cycle: '月检'),
+              ]),
           TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述1',type:'日常任务',executor: 'xwz',progress: 50,cycle: '季度检'),
-                TaskDetailModel(des: '任务描述2',type:'日常任务',executor: 'zxc',progress: 60,cycle: '季度检'),
-                TaskDetailModel(des: '任务描述3',type:'日常任务',executor: 'xdd',progress: 70,cycle: '季度检'),
-              ]
-          ),
+                TaskDetailModel(
+                    des: '任务描述1',
+                    type: '日常任务',
+                    executor: 'xwz',
+                    progress: 50,
+                    cycle: '季度检'),
+                TaskDetailModel(
+                    des: '任务描述2',
+                    type: '日常任务',
+                    executor: 'zxc',
+                    progress: 60,
+                    cycle: '季度检'),
+                TaskDetailModel(
+                    des: '任务描述3',
+                    type: '日常任务',
+                    executor: 'xdd',
+                    progress: 70,
+                    cycle: '季度检'),
+              ]),
           TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述1',type:'日常任务',executor: 'xwz',progress: 50,cycle: '半年检'),
-                TaskDetailModel(des: '任务描述2',type:'日常任务',executor: 'zxc',progress: 60,cycle: '半年检'),
-                TaskDetailModel(des: '任务描述3',type:'日常任务',executor: 'xdd',progress: 70,cycle: '半年检'),
-              ]
-          ),
+                TaskDetailModel(
+                    des: '任务描述1',
+                    type: '日常任务',
+                    executor: 'xwz',
+                    progress: 50,
+                    cycle: '半年检'),
+                TaskDetailModel(
+                    des: '任务描述2',
+                    type: '日常任务',
+                    executor: 'zxc',
+                    progress: 60,
+                    cycle: '半年检'),
+                TaskDetailModel(
+                    des: '任务描述3',
+                    type: '日常任务',
+                    executor: 'xdd',
+                    progress: 70,
+                    cycle: '半年检'),
+              ]),
           TaskListViewModel(
-              taskExecuteModel: TaskExecuteModel(taskNum: 10,taskUnCompletedNum: 3,taskCompletedNum: 7),
+              taskExecuteModel: TaskExecuteModel(
+                  taskNum: 10, taskUnCompletedNum: 3, taskCompletedNum: 7),
               taskDetailList: [
-                TaskDetailModel(des: '任务描述1',type:'日常任务',executor: 'xwz',progress: 50,cycle: '年检'),
-                TaskDetailModel(des: '任务描述2',type:'日常任务',executor: 'zxc',progress: 60,cycle: '年检'),
-                TaskDetailModel(des: '任务描述3',type:'日常任务',executor: 'xdd',progress: 70,cycle: '年检'),
-              ]
-          ),
+                TaskDetailModel(
+                    des: '任务描述1',
+                    type: '日常任务',
+                    executor: 'xwz',
+                    progress: 50,
+                    cycle: '年检'),
+                TaskDetailModel(
+                    des: '任务描述2',
+                    type: '日常任务',
+                    executor: 'zxc',
+                    progress: 60,
+                    cycle: '年检'),
+                TaskDetailModel(
+                    des: '任务描述3',
+                    type: '日常任务',
+                    executor: 'xdd',
+                    progress: 70,
+                    cycle: '年检'),
+              ]),
         ];
-
 
   @override
   bool operator ==(Object other) =>
@@ -168,4 +262,17 @@ class DeviceSupervisorModel {
       buildingList.hashCode ^
       currentBuilding.hashCode ^
       bottomBadgeNumList.hashCode;
+}
+
+//线上设备故障视图模型
+ class OnlineDeviceFaultMessageViewModel{
+  List<OnlineDeviceFaultSuredMessage> onlineDeviceFaultSuredMessage;
+  List<OnlineDeviceFaultUnsuredMessage> onlineDeviceFaultUnSuredMessage;
+  Function onRefreshCall;
+
+  OnlineDeviceFaultMessageViewModel({
+    this.onlineDeviceFaultSuredMessage,
+    this.onlineDeviceFaultUnSuredMessage,
+    this.onRefreshCall,
+  });
 }

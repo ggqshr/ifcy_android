@@ -9,7 +9,7 @@ export 'fault_inspection_task.dart';
 
 export 'offline_device_fault_message.dart';
 export 'online_device_fault_sured_message.dart';
-export 'offline_device_fault_message.dart';
+export 'online_device_fault_unsrued_message.dart';
 
 import 'package:ifcy/common/model/task_info_message.dart';
 
@@ -36,21 +36,27 @@ abstract class TaskInfo {
 }
 
 ///故障消息的抽象类
-abstract class FaultInfo{
-  String id;//故障消息id
-  String deviceName;//故障设备名称
-  String deviceType;//故障设备类型
-  String deviceLocation;//故障设备位置
+abstract class FaultInfo {
+  String id; //故障消息id
+  String deviceName; //故障设备名称
+  String deviceType; //故障设备类型
+  String deviceLocation; //故障设备位置
+  FaultStatus faultStatus;//线上设备故障确认状态
 
   FaultInfo({
     this.id,
     this.deviceName,
     this.deviceType,
     this.deviceLocation,
-});
+    this.faultStatus,
+  });
 
-  String toPrint(String className){
+  String toPrint(String className) {
     return '$className{id:$id,deviceName:$deviceName,deviceType:$deviceType,deviceLocation:$deviceLocation}';
   }
+}
 
+enum FaultStatus {
+  sured, //确定故障
+  unSured, //待确定
 }

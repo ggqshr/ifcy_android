@@ -5,8 +5,7 @@ class SupervisorListComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreBuilder(builder: (context, Store<AppState> store) {
-      var supervisorMessageList =
-          store.state.deviceSupervisorModel.supervisorMessages;
+      var supervisorMessageList = store.state.deviceSupervisorModel.supervisorMessages;
       return ListView.separated(
         itemCount: supervisorMessageList.length,
         itemBuilder: (BuildContext context, int index) {

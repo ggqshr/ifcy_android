@@ -1,24 +1,34 @@
 part of "device_supervisor_component.dart";
 
-class OnlineDeviceFalutComponent extends StatefulWidget {
+class OnlineDeviceFaultComponent extends StatefulWidget {
   @override
-  _OnlineDeviceFalutComponentState createState() =>
-      _OnlineDeviceFalutComponentState();
+  _OnlineDeviceFaultComponentState createState() =>
+      _OnlineDeviceFaultComponentState();
 }
 
-class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
+class _OnlineDeviceFaultComponentState extends State<OnlineDeviceFaultComponent>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _scrollController = ScrollController(initialScrollOffset: 0);
+  }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+    _tabController.dispose();
   }
 
-  void initState() {
-    super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
+  scroToTopCall() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(0,
+          duration: Duration(seconds: 1), curve: Curves.ease);
+    }
   }
 
   @override
@@ -27,14 +37,15 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         SliverPersistentHeader(
-          delegate: ChangeFaultState(_tabController),
+          delegate:
+              ChangeOnlineDeviceFaultType(_tabController, scroToTopCall()),
         ),
         SliverFillRemaining(
           child: Container(
             child: TabBarView(
               children: [
                 getUnconfirmedDeviceFault(),
-                getConfirmedDeviceFault(),
+                getConfirmedDeviceFault()
               ],
               controller: _tabController,
             ),
@@ -44,395 +55,202 @@ class _OnlineDeviceFalutComponentState extends State<OnlineDeviceFalutComponent>
     );
   }
 
-  //table单元格子
-  Widget _buildTableCell(String label) {
-    return new Container(
-      //单元格内小部件对齐方式
-      alignment: Alignment.topLeft,
-      padding: EdgeInsets.all(5.0),
-      //文本小部件
-      child: new Text(
-        label,
-        textAlign: TextAlign.left,
-        style: TextStyle(color: Colors.black87, fontSize: 12.0),
-        maxLines: 3,
-        softWrap: true,
-      ),
-//      height: height,
-//      width: width,
+  getUnconfirmedDeviceFault() {
+    return StoreConnector<AppState, OnlineDeviceFaultMessageViewModel>(
+      converter: (Store<AppState> store) {
+        DeviceSupervisorModel model = store.state.deviceSupervisorModel;
+        return OnlineDeviceFaultMessageViewModel(
+            onlineDeviceFaultUnSuredMessage: model.onlineDeviceFaultUnSuredList,
+            onRefreshCall: () async {
+              await Future.delayed(Duration(seconds: 2));
+            });
+      },
+      builder: (BuildContext context, OnlineDeviceFaultMessageViewModel vm) {
+        print(vm);
+        return RefreshIndicator(
+          child: ListView.builder(
+              itemCount: vm.onlineDeviceFaultUnSuredMessage.length,
+              key: PageStorageKey(
+                  "OnlineDeviceFaultComponentgetUnconfirmedDeviceFault"),
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 2,
+                        child: ExpansionTile(
+                          title: Text(
+                            "${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast}" +
+                                "${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}" +
+                                "${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}" +
+                                "发出警报",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 13,
+                            ),
+                          ),
+                          leading: Icon(
+                            Icons.warning,
+                            color: Colors.red,
+                          ),
+                          backgroundColor: Colors.white,
+                          initiallyExpanded: true,
+                          //默认是否展开
+                          children: <Widget>[
+                            Divider(
+                              color: Colors.black,
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "设备名称:${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}"),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "设备位置:${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}"),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "首次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeFirst}"),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "最后一次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast}"),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
+          onRefresh: () async {
+            await vm.onRefreshCall();
+          },
+        );
+      },
     );
   }
 
-  //待确认线上设备
-  getUnconfirmedDeviceFault() {
-    return ListView.builder(itemBuilder: (context, index) {
-      return Card(
-          elevation: 5,
-          margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Flexible(
-              flex: 2,
-              child: ExpansionTile(
-                title: Text(
-                  "2019-07-03 19:02 XX大厦烟感设备故障报警",
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 13,
-                  ),
-                ),
-                leading: Icon(
-                  Icons.warning,
-                  color: Colors.red,
-                ),
-                backgroundColor: Colors.white,
-                initiallyExpanded: true,
-                //默认是否展开
-                children: <Widget>[
-                  Divider(
-                    color: Colors.black,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      new SizedBox(
-                        width: 68,
-                      ),
-                      Container(
-                        child: Text(
-                          "--------------------------详情---------------------",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 14,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(5.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "设备名称:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 48,
-                      ),
-                      Container(
-                        child: Text(
-                          "烟感设备",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "故障设备位置:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 25,
-                      ),
-                      Container(
-                        child: Text(
-                          "XX大厦一楼",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "首次报警时间:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 25,
-                      ),
-                      Container(
-                        child: Text(
-                          "2019-07-18 08:30:21",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "最后一次报警时间:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 3,
-                      ),
-                      Container(
-                        child: Text(
-                          "2019-07-18 08:30:21",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "人员确认:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                      new SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                        child: Text(
-                          "2019-07-18 08:30:21",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                      ),
-                    ],
-                  ),
-                  new SizedBox(
-                    height: 5,
-                  ),
-                  Divider(
-                    color: Colors.black87,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      new SizedBox(
-                        width: 280,
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          print('FloatingActionButton');
-                          Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) {
-                              return new PersonnelListComponent();
-                            },
-                          ));
-                        },
-                        child: Text("委派确认"),
-                        color: Colors.green,
-                        textColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.white,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]));
-    });
-  }
-
-  //已确认线上设备
   getConfirmedDeviceFault() {
-    return ListView.builder(itemBuilder: (context, index) {
-      return Card(
-          elevation: 5,
-          margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Flexible(
-              flex: 2,
-              child: ExpansionTile(
-                title: Text(
-                  "2019-07-03 19:02 XX大厦烟感设备故障报警",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 13,
-                  ),
-                ),
-                leading: Icon(
-                  Icons.warning,
-                  color: Colors.grey,
-                ),
-                backgroundColor: Colors.white,
-                initiallyExpanded: true,
-                //默认是否展开
-                children: <Widget>[
-                  Divider(
-                    color: Colors.black,
-                  ),
-                  new Table(
-                    border: new TableBorder.all(
-                        width: 5.0, color: Colors.transparent),
-                    children: <TableRow>[
-                      //初始化一行widget
-                      new TableRow(
-                        children: <Widget>[
-                          new TableCell(child: _buildTableCell('反馈:')),
-                          new TableCell(child: _buildTableCell('确定故障')),
-                        ],
-                      ),
-                      new TableRow(
-                        children: <Widget>[
-                          //在一行中初始化一个单元格
-                          new TableCell(child: _buildTableCell('处理人:')),
-                          new TableCell(child: _buildTableCell('张三')),
-                        ],
-                      ),
-                      new TableRow(
-                        children: <Widget>[
-                          //在一行中初始化一个单元格
-                          new TableCell(child: _buildTableCell('处理时间:')),
-                          new TableCell(
-                              child: _buildTableCell('2019-07-31 09:11')),
-                        ],
-                      ),
-                      new TableRow(
-                        children: <Widget>[
-                          //在一行中初始化一个单元格
-                          new TableCell(child: _buildTableCell('设备故障原因:')),
-                          new TableCell(
-                              child: _buildTableCell(
-                                  '原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因')),
-                        ],
-                      ),
-                      new TableRow(
-                        children: <Widget>[
-                          //在一行中初始化一个单元格
-                          new TableCell(child: _buildTableCell('故障设备图片:')),
-                          new TableCell(
-                            child: new Image.network(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3caBRRBaDBug3hDSSgLFtlu5QkAE_dsc366ScpKc4ZvhilCbMDg',
-                              scale: 0.5,
-                            ),
-                          )
-                        ],
-                      ),
-                      new TableRow(
-                        children: <Widget>[
-                          //在一行中初始化一个单元格
-                          new TableCell(child: _buildTableCell('备注说明')),
-                          new TableCell(child: _buildTableCell('备故障描述')),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.black87,
-                  ),
-                  Row(
+    return StoreConnector<AppState, OnlineDeviceFaultMessageViewModel>(
+      converter: (Store<AppState> store) {
+        DeviceSupervisorModel model = store.state.deviceSupervisorModel;
+        return OnlineDeviceFaultMessageViewModel(
+            onlineDeviceFaultSuredMessage: model.onlineDeviceFaultSuredList,
+            onRefreshCall: () async {
+              await Future.delayed(Duration(seconds: 2));
+            });
+      },
+      builder: (BuildContext context, OnlineDeviceFaultMessageViewModel vm) {
+        return RefreshIndicator(
+          child: ListView.builder(
+              itemCount: vm.onlineDeviceFaultSuredMessage.length,
+              key: PageStorageKey(
+                  "OnlineDeviceFaultComponentgetConfirmedDeviceFault"),
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      new SizedBox(
-                        width: 280,
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          print('FloatingActionButton');
-                          Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) {
-                              return new SupervisorListPage();
-                            },
-                          ));
-                        },
-                        child: Text("申报维修"),
-                        color: Colors.green,
-                        textColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.white,
-                              width: 1,
+                      Flexible(
+                        flex: 2,
+                        child: ExpansionTile(
+                          title: Text(
+                            "${vm.onlineDeviceFaultSuredMessage[index].faultDeclareTime}" +
+                                "${vm.onlineDeviceFaultSuredMessage[index].deviceLocation}" +
+                                "${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}" +
+                                "发出警报",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 13,
                             ),
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
+                          ),
+                          leading: Icon(
+                            Icons.warning,
+                            color: Colors.red,
+                          ),
+                          backgroundColor: Colors.white,
+                          initiallyExpanded: true,
+                          //默认是否展开
+                          children: <Widget>[
+                            Divider(
+                              color: Colors.black,
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "设备名称:${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}"),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "设备位置:${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}"),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "首次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeFirst}"),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                  "最后一次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast}"),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                ],
-              ),
-            ),
-          ]));
-    });
+                );
+              }),
+          onRefresh: () async {
+            await vm.onRefreshCall();
+          },
+        );
+      },
+    );
   }
 }
 
-class ChangeFaultState extends SliverPersistentHeaderDelegate {
+class ChangeOnlineDeviceFaultType extends SliverPersistentHeaderDelegate {
   TabController _tabController;
+  Function scroCall;
 
-  ChangeFaultState(this._tabController);
+  ChangeOnlineDeviceFaultType(this._tabController, this.scroCall);
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return TabBar(
-      indicatorColor: Colors.green,
-      indicatorSize: TabBarIndicatorSize.label,
-      indicatorPadding: new EdgeInsets.only(top: 30.0),
-//      indicator: new ShapeDecoration(shape: new Border.all(color: Colors.green, width: 1.0)),
       tabs: <Widget>[
         Tab(
-          child: Text('待确认'),
+          child: Text("待确认"),
         ),
         Tab(
-          child: Text('已确认'),
-        ),
+          child: Text("已确认"),
+        )
       ],
       controller: _tabController,
+      onTap: (index) {
+        if (!_tabController.indexIsChanging) {
+          scroCall();
+        }
+      },
     );
   }
 
@@ -447,3 +265,4 @@ class ChangeFaultState extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
+

@@ -22,5 +22,5 @@ class InitDeviceStaffStateAction {
         }),
         faultTasks = List.generate(20, (index) {
           return FaultInspectionTask.generate(index.toString());
-        });
+});
 }

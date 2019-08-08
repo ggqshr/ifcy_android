@@ -22,7 +22,7 @@ class _FaultPageState extends State<FaultPage> with SingleTickerProviderStateMix
     super.initState();
     _tabController=TabController(length: tabs.length, vsync: this);
     tabViews
-    ..add(OnlineDeviceFalutComponent())
+    ..add(OnlineDeviceFaultComponent())
     ..add(OfflineDeviceFaultComponent());
   }
 

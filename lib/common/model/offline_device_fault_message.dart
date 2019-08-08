@@ -3,7 +3,7 @@ import 'model.dart';
 
 ///线下设备故障消息的数据model
 
-class OfflineDeviceFaultMessage extends FaultInfo {
+class OfflineDeviceFaultMessage extends FaultInfo{
   String deviceFaultDes; //设备故障描述
   String deviceFaultExcutor; //检报人员
   String faultDeclareTime; //检报时间
