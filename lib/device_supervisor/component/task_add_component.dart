@@ -16,185 +16,89 @@ class _TaskAddComponentState extends State<TaskAddComponent> {
   String endTime = '结束时间';
   final TextEditingController _controller = new TextEditingController();
 
-//  List<DropdownMenuItem> getListData() {
-//    List<DropdownMenuItem> items = new List();
-//    DropdownMenuItem dropdownMenuItem1 = new DropdownMenuItem(
-//      child: new Text('1'),
-//      value: '1',
-//    );
-//    items.add(dropdownMenuItem1);
-//    DropdownMenuItem dropdownMenuItem2 = new DropdownMenuItem(
-//      child: new Text('2'),
-//      value: '2',
-//    );
-//    items.add(dropdownMenuItem2);
-//    DropdownMenuItem dropdownMenuItem3 = new DropdownMenuItem(
-//      child: new Text('3'),
-//      value: '3',
-//    );
-//    items.add(dropdownMenuItem3);
-//    DropdownMenuItem dropdownMenuItem4 = new DropdownMenuItem(
-//      child: new Text('4'),
-//      value: '4',
-//    );
-//    items.add(dropdownMenuItem4);
-//    DropdownMenuItem dropdownMenuItem5 = new DropdownMenuItem(
-//      child: new Text('5'),
-//      value: '5',
-//    );
-//    items.add(dropdownMenuItem5);
-//    DropdownMenuItem dropdownMenuItem6 = new DropdownMenuItem(
-//      child: new Text('6'),
-//      value: '6',
-//    );
-//    items.add(dropdownMenuItem6);
-//    DropdownMenuItem dropdownMenuItem7 = new DropdownMenuItem(
-//      child: new Text('7'),
-//      value: '7',
-//    );
-//    items.add(dropdownMenuItem7);
-//    DropdownMenuItem dropdownMenuItem8 = new DropdownMenuItem(
-//      child: new Text('8'),
-//      value: '8',
-//    );
-//    items.add(dropdownMenuItem8);
-//    DropdownMenuItem dropdownMenuItem9 = new DropdownMenuItem(
-//      child: new Text('9'),
-//      value: '9',
-//    );
-//    items.add(dropdownMenuItem9);
-//    DropdownMenuItem dropdownMenuItem10 = new DropdownMenuItem(
-//      child: new Text('10'),
-//      value: '10',
-//    );
-//    items.add(dropdownMenuItem10);
-//    return items;
-//  }
-//
-//  var value;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.green,
-          title: Text("新增任务"),
-          centerTitle: true,
-          actions: <Widget>[
-            FlatButton(
-                child: Text('取消'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                })
-          ],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.green,
+        title: Text(
+          "工作安排",
+          style: TextStyle(fontSize: 16.0),
         ),
-        body: new Container(
-            padding: const EdgeInsets.all(30.0),
-            margin: EdgeInsets.all(10.0),
-            color: Color(0xFFdeecff),
-            child: new Form(
-              key: _formKey,
-              child: new Column(
-                children: <Widget>[
-                  TextFormField(
-                    //controller:TextEditingController(),
-                    //initialValue: '请输入任务内容',
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w200),
-                    controller: _controller,
-                    decoration: new InputDecoration(
-                      labelText: '    任务内容:',
-                      //helperText: '     请输入任务内容',
-                      // hintText: '请输入任务内容',
-                      border: InputBorder.none,
+        centerTitle: true,
+        actions: <Widget>[
+          FlatButton(
+              child: Text('取消'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ],
+      ),
+      body: new SingleChildScrollView(
+          child: new Container(
+              //height: 600,
+              padding: const EdgeInsets.all(30.0),
+              margin: EdgeInsets.all(10.0),
+              color: Color(0xFFdeecff),
+              child: new Form(
+                key: _formKey,
+                child: new Column(
+                  children: <Widget>[
+                    RadioComponent(),
+                    Row(
+                      children: <Widget>[
+                        Text("任务内容:"),
+                      ],
                     ),
-                    textAlign: TextAlign.end,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
+                    TextFormField(
+                      style: TextStyle(fontSize: 16.0, color: Colors.black),
+                      //controller: _controller,
+                      //initialValue: '请输入任务内容',
+                      decoration: new InputDecoration(
+                        labelText: '请输入任务内容:',
+//                      border: InputBorder.none,
                       ),
-                      Text('任务周期:'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      taskCircleChooseComponent(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  RadioComponent(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  DatePickerComponent(timeType: startTime),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  DatePickerComponent(timeType: endTime),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('选择人员:'),
-                      SizedBox(
-                        width: 10,
-                        height: 15,
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.people_outline,
-                          color: Colors.lightGreen,
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      onSaved: null,
+                    ),
+                    taskCircleChooseComponent(),
+                    buildingChooseComponent(),
+                    DatePickerComponent(timeType: startTime),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    DatePickerComponent(timeType: endTime),
+                    Row(
+                      children: <Widget>[
+                        Text('选择人员:'),
+                        SizedBox(
+                          width: 10,
                         ),
-                        onPressed: () {
-                          Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) {
-                              return new PersonnelListComponent();
-                            },
-                          ));
-                        },
-                      )
-                    ],
-                  ),
-//                  Row(
-//                    children: <Widget>[
-//                      SizedBox(
-//                        width: 120,
-//                      ),
-//                      RaisedButton(
-//                        textColor: Colors.lightGreen,
-//                        onPressed: null,
-//                        child: Text('发布任务'),
-//                        highlightColor: Colors.lightGreen,
-//                      ),
-//                      SizedBox(
-//                        width: 20,
-//                      ),
-//                      RaisedButton(
-//                        onPressed: null,
-//                        child: Text('取消发布'),
-//                      ),
-//                    ],
-//                  )
-                ],
-              ),
-            )));
+                        IconButton(
+                          icon: Icon(
+                            Icons.people_outline,
+                            color: Colors.lightGreen,
+                          ),
+                          onPressed: () {
+                            Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) {
+                                return new PersonnelListComponent();
+                              },
+                            ));
+                          },
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ))),
+    );
   }
 }
 
-//下拉选择组件
+//下拉选择任务周期组件
 class taskCircleChooseComponent extends StatefulWidget {
   @override
   _taskCircleChooseComponentState createState() =>
@@ -202,45 +106,157 @@ class taskCircleChooseComponent extends StatefulWidget {
 }
 
 class _taskCircleChooseComponentState extends State<taskCircleChooseComponent> {
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0;
-    List<String> _taskCircleItems = StoreProvider.of<AppState>(context)
-        .state
-        .deviceSupervisorModel
-        .taskCycleMessages
-        .map((i) {
-      return i.item.toString();
-    }).toList();
-
-    return DropdownButton<String>(
-      style: TextStyle(
-        fontFamily: 'Arapey',
-        fontStyle: FontStyle.normal,
-        color: Colors.black,
-        fontSize: 15,
-      ),
-      hint: Text('下拉选择任务周期'),
-      value: _taskCircleItems[_selectedIndex],
-      onChanged: (String newVal) {
-        setState(() {
-          _selectedIndex=_taskCircleItems.indexOf(newVal);
+    return StoreConnector<AppState, TaskAddViewModel>(
+        distinct: true,
+        converter: (Store<AppState> store) {
+          DeviceSupervisorModel model = store.state.deviceSupervisorModel;
+          return TaskAddViewModel(
+              taskCycleList: model.taskCycleMessages,
+              onRefreshCall: () async {
+                await Future.delayed(Duration(seconds: 2));
+              });
+        },
+        builder: (BuildContext context, TaskAddViewModel vm) {
+          print(vm.taskCycleList);
+          List<String> taskCircleItems = vm.taskCycleList.map((i) {
+            return i.item.toString();
+          }).toList();
+          return Row(
+            children: <Widget>[
+              Text('任务周期:        '),
+              SizedBox(
+                width: 8,
+              ),
+              DropdownButton<String>(
+                style: TextStyle(
+                  fontFamily: 'Arapey',
+                  fontStyle: FontStyle.normal,
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+                hint: Text('下拉选择任务周期'),
+                onChanged: (String newVal) {
+                  setState(() {
+                    selectedIndex = taskCircleItems.indexOf(newVal);
+                    print(selectedIndex);
+                  });
+                },
+                items: taskCircleItems
+                    .map<DropdownMenuItem<String>>((String dropDownStringItem) {
+                  return DropdownMenuItem<String>(
+                    value: dropDownStringItem,
+                    child: Text(
+                      dropDownStringItem,
+                      style: TextStyle(
+                        fontFamily: 'Arapey',
+                        fontStyle: FontStyle.normal,
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                value: taskCircleItems[selectedIndex],
+              )
+            ],
+          );
         });
-      },
-      items:_taskCircleItems.map<DropdownMenuItem<String>>((String value){
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(
-            value,
-            style: TextStyle(
-              fontFamily: 'Arapey',
-              fontStyle: FontStyle.normal,
-              color: Colors.black,
-              fontSize: 15,
-            ),
-          ),
-        );
-      }).toList(),
-    );
+  }
+}
+
+////下拉选择建筑和楼层组件
+class buildingChooseComponent extends StatefulWidget {
+  @override
+  _buildingChooseComponentState createState() =>
+      _buildingChooseComponentState();
+}
+
+class _buildingChooseComponentState extends State<buildingChooseComponent> {
+  int selectedIndex = 0;
+  List<FloorMessage> floorList;
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, TaskAddViewModel>(
+        distinct: true,
+        converter: (Store<AppState> store) {
+          DeviceSupervisorModel model = store.state.deviceSupervisorModel;
+          return TaskAddViewModel(
+              buildingFloorList: model.buildingFloorList,
+              onRefreshCall: () async {
+                await Future.delayed(Duration(seconds: 2));
+              });
+        },
+        builder: (BuildContext context, TaskAddViewModel vm) {
+          List<String> buildingFloorItems = vm.buildingFloorList.map((i) {
+            return i.buildName.toString();
+          }).toList();
+          return Container(
+
+              padding: EdgeInsets.all(2.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text("选择建筑："),
+                      SizedBox(
+                        width: 25,
+                      ),
+                      DropdownButton<String>(
+                        elevation: 24,
+                        style: TextStyle(
+                          fontFamily: 'Arapey',
+                          fontStyle: FontStyle.normal,
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        hint: Text('下拉选择巡检建筑'),
+                        items: buildingFloorItems.map<DropdownMenuItem<String>>(
+                            (String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem+"         "),
+                          );
+                        }).toList(),
+                        value: buildingFloorItems[selectedIndex],
+                        onChanged: (String newVal) {
+                          setState(() {
+                            selectedIndex = buildingFloorItems.indexOf(newVal);
+                            print(selectedIndex);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 100,
+                    width: 180,
+                    child: new ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: floorList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return new ListTile(
+                            title: Text("${floorList[index].floorName}",style: TextStyle(fontSize: 14),),
+                            trailing: IconButton(icon: Icon(Icons.check_circle,color: Colors.green,size: 14,), onPressed: null),
+                          );
+                        }),
+                  ),
+                ],
+              ));
+        });
+  }
+
+  buildFloorTile() {
+    floorList.map((item) {
+      print(item);
+      return ListTile(
+        title: Text("${item.floorName.toString()}"),
+        //trailing: ,
+      );
+    });
   }
 }

@@ -33,6 +33,9 @@ DeviceSupervisorModel deviceSupervisorModule1Reducer(
           state.onlineDeviceFaultSuredList, action),
       onlineDeviceFaultUnSuredList: onlineDeviceFaultUnSuredMessagesReducer(
           state.onlineDeviceFaultUnSuredList, action),
+      processedDeviceFaultList: processedDeviceFaultMessgaesReducer(state.processedDeviceFaultList,action),
+      processingDeviceFaultList: processingDeviceFaultMessgaesReducer(state.processingDeviceFaultList,action),
+      buildingFloorList: buildingFloorMessgaesReducer(state.buildingFloorList,action),
     );
 
 int initFaultNum(int faultNum, InitPageStateAction action) {
@@ -179,3 +182,34 @@ List initonlineDeviceFaultUnSuredMessages(
 Reducer<List> onlineDeviceFaultUnSuredMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(initonlineDeviceFaultUnSuredMessages),
 ]);
+
+///处理中设备故障申报消息列表
+List initprocessingDeviceFaultMessgaes(
+    List processingDeviceFaultMessgae, InitPageStateAction action) {
+  return action.processingDeviceFaultList;
+}
+
+Reducer<List> processingDeviceFaultMessgaesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(initprocessingDeviceFaultMessgaes),
+]);
+
+///已处理设备故障申报消息列表
+List initprocessedDeviceFaultMessgaes(
+    List processedDeviceFaultMessgae, InitPageStateAction action) {
+  return action.processedDeviceFaultList;
+}
+
+Reducer<List> processedDeviceFaultMessgaesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(initprocessedDeviceFaultMessgaes),
+]);
+
+
+List initbuildingFloorMessgaes(
+    List buildingFloorMessgae, InitPageStateAction action) {
+  return action.buildingFloorList;
+}
+
+Reducer<List> buildingFloorMessgaesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>( initbuildingFloorMessgaes),
+]);
+

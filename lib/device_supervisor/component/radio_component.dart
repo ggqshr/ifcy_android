@@ -6,21 +6,21 @@ class RadioComponent extends StatefulWidget {
 }
 
 class _RadioComponentState extends State<RadioComponent> {
-  String _newValue = '日常';
+  String _newValue = '巡检';
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        SizedBox(
-          width: 10,
-        ),
+//        SizedBox(
+//          width: 10,
+//        ),
         Text('任务类型:'),
         Flexible(
           child: RadioListTile<String>(
             activeColor: Colors.lightGreen,
-            value: '日常',
-            title: Text('日常'),
+            value: '巡检',
+            title: Text('巡检',style: TextStyle(fontSize: 14)),
             groupValue: _newValue,
             onChanged: (value) {
               setState(() {
@@ -32,8 +32,8 @@ class _RadioComponentState extends State<RadioComponent> {
         Flexible(
           child: RadioListTile<String>(
             activeColor: Colors.lightGreen,
-            value: '补充',
-            title: Text('补充'),
+            value: '任务',
+            title: Text('任务',style: TextStyle(fontSize: 14),),
             groupValue: _newValue,
             onChanged: (value) {
               setState(() {

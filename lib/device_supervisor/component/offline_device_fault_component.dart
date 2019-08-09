@@ -97,7 +97,7 @@ class _OfflineDeviceFaultComponentState
                             //在一行中初始化一个单元格
                             new TableCell(child: _buildTableCell('检报时间:')),
                             new TableCell(
-                                child: _buildTableCell(offlineDeviceFaultList[index].faultDeclareTime.toString().substring(1,20))),
+                                child: _buildTableCell(offlineDeviceFaultList[index].deviceFaultTime.toString().substring(1,20))),
                           ],
                         ),
                         new TableRow(

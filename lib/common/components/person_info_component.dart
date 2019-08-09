@@ -17,14 +17,6 @@ class PersonInfoPage extends StatelessWidget {
 
 class PersonInfoForm extends StatelessWidget {
 
-  List<String> lists = [
-    '默认排序',
-    '首付最低',
-    '月供最低',
-    '车价最低',
-    '车价最高'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(

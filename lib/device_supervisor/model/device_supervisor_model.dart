@@ -26,8 +26,14 @@ class DeviceSupervisorModel {
   List<TaskExecuteModel> taskExecuteModel; //任务执行统计
   List<TaskDetailModel> taskList; //任务列表
   List<OfflineDeviceFaultMessage> offlineDeviceFaultList; //离线故障设备列表
-  List<OnlineDeviceFaultSuredMessage> onlineDeviceFaultSuredList;//线上已确认故障设备消息列表
-  List<OnlineDeviceFaultUnsuredMessage> onlineDeviceFaultUnSuredList;//线上待确认故障设备消息列表
+  List<OnlineDeviceFaultSuredMessage>
+      onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
+  List<OnlineDeviceFaultUnsuredMessage>
+      onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
+  List<ProcessingDeviceFaultMessage> processingDeviceFaultList; //处理中的设备故障申报
+  List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的设备故障申报
+
+  List<BuildingFloorMessage> buildingFloorList; //建筑以及楼层信息
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -47,6 +53,9 @@ class DeviceSupervisorModel {
     this.offlineDeviceFaultList,
     this.onlineDeviceFaultSuredList,
     this.onlineDeviceFaultUnSuredList,
+    this.processedDeviceFaultList,
+    this.processingDeviceFaultList,
+    this.buildingFloorList,
   });
 
   DeviceSupervisorModel.init()
@@ -265,7 +274,7 @@ class DeviceSupervisorModel {
 }
 
 //线上设备故障视图模型
- class OnlineDeviceFaultMessageViewModel{
+class OnlineDeviceFaultMessageViewModel {
   List<OnlineDeviceFaultSuredMessage> onlineDeviceFaultSuredMessage;
   List<OnlineDeviceFaultUnsuredMessage> onlineDeviceFaultUnSuredMessage;
   Function onRefreshCall;
@@ -273,6 +282,33 @@ class DeviceSupervisorModel {
   OnlineDeviceFaultMessageViewModel({
     this.onlineDeviceFaultSuredMessage,
     this.onlineDeviceFaultUnSuredMessage,
+    this.onRefreshCall,
+  });
+}
+
+//故障申报视图模型
+class FaultDeclareMessageViewModel {
+  List<ProcessedDeviceFaultMessage> processedDeviceFaultDeclareList;
+  List<ProcessingDeviceFaultMessage> processingDeviceFaultDeclareList;
+  Function onRefreshCall;
+
+  FaultDeclareMessageViewModel({
+    this.processedDeviceFaultDeclareList,
+    this.processingDeviceFaultDeclareList,
+    this.onRefreshCall,
+  });
+}
+
+//新增工作视图模型
+class TaskAddViewModel {
+  List<BuildingFloorMessage> buildingFloorList;
+  List<TaskCycleModel> taskCycleList;
+
+  Function onRefreshCall;
+
+  TaskAddViewModel({
+    this.buildingFloorList,
+    this.taskCycleList,
     this.onRefreshCall,
   });
 }

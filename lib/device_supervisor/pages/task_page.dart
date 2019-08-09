@@ -19,7 +19,7 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
     return StoreConnector<AppState, List<TaskListViewModel>>(
       distinct: true,
       converter: (Store<AppState> store) {
-        var currentTaskMessageViewList = store.state.deviceSupervisorModel.taskMessageViewList.map((item) {
+          var currentTaskMessageViewList = store.state.deviceSupervisorModel.taskMessageViewList.map((item) {
           return TaskListViewModel(
             taskExecuteModel: item.taskExecuteModel,
             taskDetailList: item.taskDetailList,
@@ -30,7 +30,7 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
       builder: (context, List<TaskListViewModel> vms) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('任务安排列表'),
+            title: Text('任务安排列表',style: TextStyle(fontSize: 16),),
             centerTitle: true,
             automaticallyImplyLeading: false,
             leading: IconButton(

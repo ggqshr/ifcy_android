@@ -11,12 +11,14 @@ import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:ifcy/common/utils/person_page.dart';
 import 'package:flutter/services.dart';
+import 'package:ifcy/common/model/processed_device_fault_message.dart';
+import 'package:ifcy/common/model/processing_device_fault_message.dart';
 
 part 'monitor_page.dart';
 part 'fault_page.dart';
 part 'task_page.dart';
 part 'task_add_page.dart';
 part 'supervisor_list_page.dart';
-part 'falut_declare_feedback_page.dart';
+part 'falut_declare_page.dart';
 
 

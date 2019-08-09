@@ -15,6 +15,11 @@ import 'common/utils/StoreCreater.dart';
 import 'package:ifcy/main_app_redux.dart';
 
 void main() {
+  // 注册 fluro routes
+  Router router = Router();
+  Routes.configureRoutes(router);
+  Application.router = router;
+
   runApp(MyApp());
   SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);

@@ -77,58 +77,51 @@ class _OnlineDeviceFaultComponentState extends State<OnlineDeviceFaultComponent>
                 return Card(
                   elevation: 5,
                   margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  child: ExpansionTile(
+                    key: PageStorageKey("${vm.onlineDeviceFaultUnSuredMessage[index].id}"),
+                    title: Text(
+                      vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast.substring(1,20) +
+                          "${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}" +
+                          "${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}" +
+                          "发出警报",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 11,
+                      ),
+                    ),
+                    leading: Icon(
+                      Icons.warning,
+                      color: Colors.red,
+                    ),
+                    backgroundColor: Colors.white,
+                    initiallyExpanded: true,
+                    //默认是否展开
                     children: <Widget>[
-                      Flexible(
-                        flex: 2,
-                        child: ExpansionTile(
-                          title: Text(
-                            "${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast}" +
-                                "${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}" +
-                                "${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}" +
-                                "发出警报",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 13,
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.warning,
-                            color: Colors.red,
-                          ),
-                          backgroundColor: Colors.white,
-                          initiallyExpanded: true,
-                          //默认是否展开
-                          children: <Widget>[
-                            Divider(
-                              color: Colors.black,
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "设备名称:${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}"),
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "设备位置:${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}"),
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "首次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeFirst}"),
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "最后一次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast}"),
-                            ),
-                          ],
-                        ),
-                      )
+                      Divider(
+                        color: Colors.black,
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "设备名称:   ${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "设备位置:    ${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "首次报警时间:"+vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeFirst.substring(1,20)),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "最后一次报警时间:"+vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast.substring(1,20)),
+                      ),
                     ],
                   ),
                 );
@@ -155,8 +148,7 @@ class _OnlineDeviceFaultComponentState extends State<OnlineDeviceFaultComponent>
         return RefreshIndicator(
           child: ListView.builder(
               itemCount: vm.onlineDeviceFaultSuredMessage.length,
-              key: PageStorageKey(
-                  "OnlineDeviceFaultComponentgetConfirmedDeviceFault"),
+              key: PageStorageKey("OnlineDeviceFaultComponentgetConfirmedDeviceFault"),
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return Card(
@@ -164,56 +156,82 @@ class _OnlineDeviceFaultComponentState extends State<OnlineDeviceFaultComponent>
                   margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                  child:  ExpansionTile(
+                    key: PageStorageKey("${vm.onlineDeviceFaultSuredMessage[index].id}"),
+                    title: Text(
+                      "${vm.onlineDeviceFaultSuredMessage[index].alarmTimeLast}" +
+                          "${vm.onlineDeviceFaultSuredMessage[index].deviceLocation}" +
+                          "${vm.onlineDeviceFaultSuredMessage[index].deviceName}" +
+                          "发出警报",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 13,
+                      ),
+                    ),
+                    leading: Icon(
+                      Icons.warning,
+                      color: Colors.red,
+                    ),
+                    backgroundColor: Colors.white,
+                    initiallyExpanded: true,
+                    //默认是否展开
                     children: <Widget>[
-                      Flexible(
-                        flex: 2,
-                        child: ExpansionTile(
-                          title: Text(
-                            "${vm.onlineDeviceFaultSuredMessage[index].faultDeclareTime}" +
-                                "${vm.onlineDeviceFaultSuredMessage[index].deviceLocation}" +
-                                "${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}" +
-                                "发出警报",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 13,
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.warning,
-                            color: Colors.red,
-                          ),
-                          backgroundColor: Colors.white,
-                          initiallyExpanded: true,
-                          //默认是否展开
-                          children: <Widget>[
-                            Divider(
-                              color: Colors.black,
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "设备名称:${vm.onlineDeviceFaultUnSuredMessage[index].deviceName}"),
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "设备位置:${vm.onlineDeviceFaultUnSuredMessage[index].deviceLocation}"),
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "首次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeFirst}"),
-                            ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                  "最后一次报警时间:${vm.onlineDeviceFaultUnSuredMessage[index].alarmTimeLast}"),
-                            ),
-                          ],
-                        ),
-                      )
+                      Divider(
+                        color: Colors.black,
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "设备名称:${vm.onlineDeviceFaultSuredMessage[index].deviceName}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "设备位置:${vm.onlineDeviceFaultSuredMessage[index].deviceLocation}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "首次报警时间:${vm.onlineDeviceFaultSuredMessage[index].alarmTimeFirst}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "最后一次报警时间:${vm.onlineDeviceFaultSuredMessage[index].alarmTimeLast}"),
+                      ),
+                      Divider(
+                        color: Colors.black,
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "反馈:${vm.onlineDeviceFaultSuredMessage[index].confirmResult}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "确认人员:${vm.onlineDeviceFaultSuredMessage[index].excutor}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "反馈时间:${vm.onlineDeviceFaultSuredMessage[index].faultDeclareTime}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "设备故障原因:${vm.onlineDeviceFaultSuredMessage[index].deviceFaultDes}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "设备故障照片:${vm.onlineDeviceFaultSuredMessage[index].devicePhoto}"),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                            "备注说明:${vm.onlineDeviceFaultSuredMessage[index].remarks}"),
+                      ),
                     ],
                   ),
                 );
@@ -228,14 +246,14 @@ class _OnlineDeviceFaultComponentState extends State<OnlineDeviceFaultComponent>
 }
 
 class ChangeOnlineDeviceFaultType extends SliverPersistentHeaderDelegate {
+
   TabController _tabController;
   Function scroCall;
 
   ChangeOnlineDeviceFaultType(this._tabController, this.scroCall);
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return TabBar(
       tabs: <Widget>[
         Tab(

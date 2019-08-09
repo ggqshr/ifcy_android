@@ -21,6 +21,10 @@ class InitPageStateAction {
   List<OnlineDeviceFaultUnsuredMessage>
       onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
   List<SupervisorMessageModel> supervisorMessages; //主管信息列表
+  List<ProcessingDeviceFaultMessage> processingDeviceFaultList; //处理中的设备故障申报
+  List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的设备故障申报
+
+  List<BuildingFloorMessage> buildingFloorList; //建筑楼层信息
 
   InitPageStateAction({
     this.faultNum,
@@ -38,6 +42,9 @@ class InitPageStateAction {
     this.onlineDeviceFaultSuredList,
     this.onlineDeviceFaultUnSuredList,
     this.supervisorMessages,
+    this.processingDeviceFaultList,
+    this.processedDeviceFaultList,
+    this.buildingFloorList,
   });
 
   InitPageStateAction.init()
@@ -239,6 +246,15 @@ class InitPageStateAction {
         }),
         onlineDeviceFaultSuredList = List.generate(20, (index) {
           return OnlineDeviceFaultSuredMessage.generate(index.toString());
+        }),
+        processingDeviceFaultList = List.generate(20, (index) {
+          return ProcessingDeviceFaultMessage.generate(index.toString());
+        }),
+        processedDeviceFaultList = List.generate(20, (index) {
+          return ProcessedDeviceFaultMessage.generate(index.toString());
+        }),
+        buildingFloorList = List.generate(10, (index) {
+          return BuildingFloorMessage.generate(index.toString());
         }),
         supervisorMessages = List.generate(20, (index) {
           return SupervisorMessageModel.generste(index.toString());

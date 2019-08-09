@@ -37,9 +37,9 @@ class _DatePickerComponentState extends State<DatePickerComponent> {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        SizedBox(
-          width: 10,
-        ),
+//        SizedBox(
+//          width: 10,
+//        ),
         Text("开始时间:          $_time                  "),
 //        Text("                 "),
         IconButton(

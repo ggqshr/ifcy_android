@@ -10,6 +10,10 @@ export 'fault_inspection_task.dart';
 export 'offline_device_fault_message.dart';
 export 'online_device_fault_sured_message.dart';
 export 'online_device_fault_unsrued_message.dart';
+export 'processed_device_fault_message.dart';
+export 'processing_device_fault_message.dart';
+
+export 'building_floor_message.dart';
 
 import 'package:ifcy/common/model/task_info_message.dart';
 
@@ -41,18 +45,24 @@ abstract class FaultInfo {
   String deviceName; //故障设备名称
   String deviceType; //故障设备类型
   String deviceLocation; //故障设备位置
-  FaultStatus faultStatus;//线上设备故障确认状态
+  String alarmTimeFirst;//线上设备首次报警时间
+  String alarmTimeLast;//线上设备最后一次报警时间
+  String deviceFaultTime;//设备故障时间
+  String excutor;//线上设备故障确认者
 
   FaultInfo({
     this.id,
     this.deviceName,
     this.deviceType,
     this.deviceLocation,
-    this.faultStatus,
+    this.alarmTimeFirst,
+    this.alarmTimeLast,
+    this.deviceFaultTime,
+    this.excutor,
   });
 
   String toPrint(String className) {
-    return '$className{id:$id,deviceName:$deviceName,deviceType:$deviceType,deviceLocation:$deviceLocation}';
+    return '$className{id:$id,deviceName:$deviceName,deviceType:$deviceType,deviceLocation:$deviceLocation,alarmTimeFirst:$alarmTimeFirst,alarmTimeLast:$alarmTimeLast,deviceFaultTime:$deviceFaultTime,excutor:$excutor}';
   }
 }
 
