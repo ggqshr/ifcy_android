@@ -123,9 +123,11 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
   TaskStatus currentShowTaskStatus; //当前要显示的任务详情列表的状态，用来筛选
   List<bool> areaSelected; //当前选中的区域
   String currentFloor; //当前选择的楼层
+  String currentDeviceType; //当前选择的设备类型
   List<T> afterTypeFilter; //经过完成类型过滤的数据
   List<T> afterFloorFilter; //经过楼层过滤的数据
   List<T> afterAreaFilter; //经过区域过滤的数据
+  List<T> afterDeviceTypeFilter; //经过设备类型过滤的数据
 
   //当前过滤当中该区域是否有设备需要检查
   List<bool> get areaEnable {
@@ -152,6 +154,15 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
       .toSet()
       .toList();
 
+  //经过任务类型以及楼层和区域选择之后的设备类型列表
+  List<String> get currentDeviceTypeList => afterAreaFilter
+      .toSet()
+      .intersection(afterFloorFilter.toSet())
+      .intersection(afterTypeFilter.toSet())
+      .map((item) => item.deviceType)
+      .toSet()
+      .toList();
+
   //获取当前所有任务中执行完成的任务列表
   List<T> get currentCompleteTask => taskDetailList
       .where((item) => item.taskStatus == TaskStatus.completed)
@@ -170,6 +181,7 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     afterTypeFilter = taskDetailList;
     areaSelected = List.generate(12, (_) => false);
     currentFloor = "空";
+    currentDeviceType = "空";
   }
 
   void filterByTaskStatus(TaskStatus taskStatus) {
@@ -186,8 +198,10 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     } else {
       filterByTaskStatus(status);
     }
-    currentFloor="空";
+    currentFloor = "空";
     afterFloorFilter = taskDetailList;
+    currentDeviceType = "空";
+    afterDeviceTypeFilter = taskDetailList;
     notifyListeners();
   }
 
@@ -201,29 +215,47 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
         return item.taskFloor == currentFloor;
       }).toList();
     }
+    currentDeviceType = "空";
+    afterDeviceTypeFilter = taskDetailList;
     notifyListeners();
   }
 
   //更改选中区域
   void changeAreaSelected(int index, bool value) {
     areaSelected[index] = value; //更新当前的区域选择数据
-    afterAreaFilter = afterFloorFilter.where((item) {
-      var thisArea = int.parse(item.taskArea);
-      return areaSelected[thisArea] & areaEnable[thisArea];
-    }).toList();
+    //如果当前有区域是激活的，但是一个都没选择，那么确认时就默认选全部
+    if (areaEnable.any((item) => item) && areaSelected.every((item) => !item)) {
+      afterAreaFilter = taskDetailList;
+    } else {
+      afterAreaFilter = afterFloorFilter.where((item) {
+        var thisArea = int.parse(item.taskArea);
+        return areaSelected[thisArea] & areaEnable[thisArea];
+      }).toList();
+    }
+    currentDeviceType = "空";
+    afterDeviceTypeFilter = taskDetailList;
+    notifyListeners();
+  }
+
+  void changeDeviceType(String value) {
+    currentDeviceType = value;
+    if (value == "空") {
+      afterDeviceTypeFilter = taskDetailList;
+    } else {
+      afterDeviceTypeFilter = afterTypeFilter.where((item) {
+        return item.deviceType == currentDeviceType;
+      }).toList();
+    }
     notifyListeners();
   }
 
   //应用当前的筛选条件
   void applyFilter() {
-    //如果当前有区域是激活的，但是一个都没选择，那么确认时就默认选全部
-    if (areaEnable.any((item) => item) && areaSelected.every((item) => !item)) {
-      afterAreaFilter = taskDetailList;
-    }
     list2show = afterTypeFilter
         .toSet()
         .intersection(afterFloorFilter.toSet())
         .intersection(afterAreaFilter.toSet())
+        .intersection(afterDeviceTypeFilter.toSet())
         .toList();
     notifyListeners();
   }
@@ -234,8 +266,10 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     afterAreaFilter = taskDetailList;
     afterFloorFilter = taskDetailList;
     afterTypeFilter = taskDetailList;
+    afterDeviceTypeFilter = taskDetailList;
     areaSelected = List.generate(12, (_) => false);
     currentFloor = "空";
+    currentDeviceType = "空";
     notifyListeners();
   }
 }

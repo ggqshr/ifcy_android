@@ -302,6 +302,38 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                     Divider(
                       color: Colors.black,
                     ),
+                    Center(
+                      child: Container(
+                        child: Text("设备类型选择"),
+                      ),
+                    ),
+                    Consumer<
+                        TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+                      builder: (context, model, child) {
+                        var deviceTypeList = model.currentDeviceTypeList;
+                        return ListTile(
+                          title: Text("设备类型:"),
+                          trailing: DropdownButton(
+                            items: [
+                              DropdownMenuItem(
+                                child: Text("空"),
+                                value: "空",
+                              ),
+                              ...deviceTypeList.map<DropdownMenuItem<String>>(
+                                (item) {
+                                  return DropdownMenuItem(
+                                    child: Text(item),
+                                    value: item,
+                                  );
+                                },
+                              ).toList()
+                            ],
+                            onChanged: model.changeDeviceType,
+                            value: model.currentDeviceType,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
                 Positioned(
@@ -329,7 +361,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                             ),
                             Expanded(
                               child: RaisedButton(
-                                onPressed: ()=>model.resetFilter(),
+                                onPressed: () => model.resetFilter(),
                                 child: Text("重置"),
                               ),
                             ),
