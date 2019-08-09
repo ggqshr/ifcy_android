@@ -180,120 +180,166 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
         endDrawer: Container(
           width: 250,
           child: Drawer(
-            child: ListView(
+            child: Stack(
               children: <Widget>[
-                Center(
-                  child: Container(
-                    child: Text("筛选"),
-                  ),
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
-                Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Center(
-                        child: Text("显示任务类型"),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).viewPadding.top,
+                    ),
+                    Center(
+                      child: Container(
+                        child: Text("筛选"),
                       ),
-                      Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            TaskStatusChip(TaskStatus.completed),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            TaskStatusChip(TaskStatus.uncompleted),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
-                Center(
-                  child: Container(
-                    child: Text("楼层选择"),
-                  ),
-                ),
-                Consumer<TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
-                  builder: (context, model, child) {
-                    var floorList = model.currentFloorList;
-                    floorList.sort((a,b)=>int.parse(a).compareTo(int.parse(b)));
-                    return ListTile(
-                      title: Text("选择楼层:"),
-                      trailing: DropdownButton(
-                        items: [
-                          DropdownMenuItem(
-                            child: Text("空"),
-                            value: "空",
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    Container(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Center(
+                            child: Text("显示任务类型"),
                           ),
-                          ...floorList.map<DropdownMenuItem<String>>(
-                            (item) {
-                              return DropdownMenuItem(
-                                child: Text(item),
-                                value: item,
-                              );
-                            },
-                          ).toList()
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                TaskStatusChip(TaskStatus.completed),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                TaskStatusChip(TaskStatus.uncompleted),
+                              ],
+                            ),
+                          ),
                         ],
-                        onChanged: model.changeFloor,
-                        value: model.currentFloor,
                       ),
-                    );
-                  },
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
-                Center(
-                  child: Container(
-                    child: Text("区域选择"),
-                  ),
-                ),
-                Container(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 1.5,
-                        mainAxisSpacing: 0),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: Consumer<
-                            TaskInfoDetailListBloc<
-                                RegularInspectionTaskDetail>>(
-                          builder: (context, model, child) {
-                            return RawChip(
-                              label: Text("区域${(index + 1).toString()}"),
-                              labelStyle: model.areaSelected[index] &
-                                      model.areaEnable[index]
-                                  ? TextStyle(color: Colors.white)
-                                  : null,
-                              selectedColor: Colors.blue,
-                              showCheckmark: false,
-                              isEnabled: model.areaEnable[index],
-                              selected: model.areaSelected[index] &
-                                  model.areaEnable[index],
-                              onSelected: (checked) {
-                                model.changeAreaSelected(index, checked);
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    Center(
+                      child: Container(
+                        child: Text("楼层选择"),
+                      ),
+                    ),
+                    Consumer<
+                        TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+                      builder: (context, model, child) {
+                        var floorList = model.currentFloorList;
+                        floorList.sort(
+                            (a, b) => int.parse(a).compareTo(int.parse(b)));
+                        return ListTile(
+                          title: Text("选择楼层:"),
+                          trailing: DropdownButton(
+                            items: [
+                              DropdownMenuItem(
+                                child: Text("空"),
+                                value: "空",
+                              ),
+                              ...floorList.map<DropdownMenuItem<String>>(
+                                (item) {
+                                  return DropdownMenuItem(
+                                    child: Text(item),
+                                    value: item,
+                                  );
+                                },
+                              ).toList()
+                            ],
+                            onChanged: model.changeFloor,
+                            value: model.currentFloor,
+                          ),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    Center(
+                      child: Container(
+                        child: Text("区域选择"),
+                      ),
+                    ),
+                    Container(
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 1.5,
+                            mainAxisSpacing: 0),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: Consumer<
+                                TaskInfoDetailListBloc<
+                                    RegularInspectionTaskDetail>>(
+                              builder: (context, model, child) {
+                                return RawChip(
+                                  label: Text("区域${(index + 1).toString()}"),
+                                  labelStyle: model.areaSelected[index] &
+                                          model.areaEnable[index]
+                                      ? TextStyle(color: Colors.white)
+                                      : null,
+                                  selectedColor: Colors.blue,
+                                  showCheckmark: false,
+                                  isEnabled: model.areaEnable[index],
+                                  selected: model.areaSelected[index] &
+                                      model.areaEnable[index],
+                                  onSelected: (checked) {
+                                    model.changeAreaSelected(index, checked);
+                                  },
+                                );
                               },
-                            );
-                          },
+                            ),
+                          );
+                        },
+                        itemCount: 12,
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  child: Consumer<
+                      TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+                    builder: (context, model, child) {
+                      return Container(
+                        height: 100,
+                        width: 250,
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: <Widget>[
+                            Expanded(
+                              child: RaisedButton(
+                                onPressed: () {
+                                  model.applyFilter();
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  "应用",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                color: Colors.blue,
+                              ),
+                            ),
+                            Expanded(
+                              child: RaisedButton(
+                                onPressed: ()=>model.resetFilter(),
+                                child: Text("重置"),
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
-                    itemCount: 12,
                   ),
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
+                  bottom: 0,
+                )
               ],
             ),
           ),
@@ -363,6 +409,16 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                         ? Colors.black
                         : Colors.red,
                   ),
+                ),
+              ),
+              Chip(
+                label: Text(
+                  "区域${model.taskArea}",
+                ),
+              ),
+              Chip(
+                label: Text(
+                  "楼层${model.taskFloor}",
                 ),
               ),
             ],

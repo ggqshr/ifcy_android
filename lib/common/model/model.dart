@@ -36,7 +36,7 @@ parseEnumType<S>(S type) {
   } else {
     if (inspectionResultTypeMap.containsValue(type as String)) {
       int thisIndex = inspectionResultTypeMap.keys.toList()[
-      inspectionResultTypeMap.values.toList().indexOf(type as String)];
+          inspectionResultTypeMap.values.toList().indexOf(type as String)];
       return InspectionResultType.values[thisIndex];
     } else if (processTypeMap.containsValue(type as String)) {
       int thisIndex = processTypeMap.keys
@@ -120,7 +120,6 @@ abstract class TaskInfoDetail {
 class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
   List<T> taskDetailList; //装载所有数据的列表
   List<T> list2show; //页面上用来渲染的列表
-  List<T> list2filter; //用来筛选的列表
   TaskStatus currentShowTaskStatus; //当前要显示的任务详情列表的状态，用来筛选
   List<bool> areaSelected; //当前选中的区域
   String currentFloor; //当前选择的楼层
@@ -138,33 +137,34 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
   }
 
   //当前显示的任务详情的所有区域
-  Set<String> get currentAreaList =>
-      afterFloorFilter.isNotEmpty
-          ? afterFloorFilter.map((item) => item.taskArea).toSet()
-          : afterTypeFilter.map((item) => item.taskArea).toSet();
+  Set<String> get currentAreaList => afterFloorFilter
+      .toSet()
+      .intersection(afterTypeFilter.toSet())
+      .map((item) => item.taskArea)
+      .toSet();
 
   //经过类型筛选后的所有楼层
-  List<String> get currentFloorList =>
-      afterTypeFilter.isNotEmpty
-          ? afterTypeFilter.map((item) => item.taskFloor).toSet().toList()
-          : taskDetailList.map((item) => item.taskFloor).toSet().toList();
+  List<String> get currentFloorList => afterTypeFilter
+      .toSet()
+      .intersection(taskDetailList.toSet())
+      .toList()
+      .map((item) => item.taskFloor)
+      .toSet()
+      .toList();
 
   //获取当前所有任务中执行完成的任务列表
-  List<T> get currentCompleteTask =>
-      taskDetailList
-          .where((item) => item.taskStatus == TaskStatus.completed)
-          .toList();
+  List<T> get currentCompleteTask => taskDetailList
+      .where((item) => item.taskStatus == TaskStatus.completed)
+      .toList();
 
   //获取当前所有任务中未执行完成的任务列表
-  List<T> get currentUnCompleteTask =>
-      taskDetailList
-          .where((item) => item.taskStatus == TaskStatus.uncompleted)
-          .toList();
+  List<T> get currentUnCompleteTask => taskDetailList
+      .where((item) => item.taskStatus == TaskStatus.uncompleted)
+      .toList();
 
   TaskInfoDetailListBloc.localInit(List<T> taskDetailList) {
     this.taskDetailList = taskDetailList;
     list2show = taskDetailList;
-    list2filter = taskDetailList;
     afterAreaFilter = taskDetailList;
     afterFloorFilter = taskDetailList;
     afterTypeFilter = taskDetailList;
@@ -186,27 +186,56 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     } else {
       filterByTaskStatus(status);
     }
-    changeFloor("空");
-    notifyListeners();
-  }
-
-  //更改选中区域
-  void changeAreaSelected(int index, bool value) {
-    areaSelected[index] = value;
-    afterAreaFilter = afterFloorFilter.where((item) {
-      var thisArea = int.parse(item.taskArea);
-      return areaSelected[thisArea] &
-      areaEnable[thisArea];
-    }).toList();
+    currentFloor="空";
+    afterFloorFilter = taskDetailList;
     notifyListeners();
   }
 
   //改变当前的楼层
   void changeFloor(String value) {
     currentFloor = value;
-    afterFloorFilter = afterTypeFilter.where((item) {
-      return item.taskFloor == currentFloor;
+    if (value == "空") {
+      afterFloorFilter = taskDetailList;
+    } else {
+      afterFloorFilter = afterTypeFilter.where((item) {
+        return item.taskFloor == currentFloor;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  //更改选中区域
+  void changeAreaSelected(int index, bool value) {
+    areaSelected[index] = value; //更新当前的区域选择数据
+    afterAreaFilter = afterFloorFilter.where((item) {
+      var thisArea = int.parse(item.taskArea);
+      return areaSelected[thisArea] & areaEnable[thisArea];
     }).toList();
+    notifyListeners();
+  }
+
+  //应用当前的筛选条件
+  void applyFilter() {
+    //如果当前有区域是激活的，但是一个都没选择，那么确认时就默认选全部
+    if (areaEnable.any((item) => item) && areaSelected.every((item) => !item)) {
+      afterAreaFilter = taskDetailList;
+    }
+    list2show = afterTypeFilter
+        .toSet()
+        .intersection(afterFloorFilter.toSet())
+        .intersection(afterAreaFilter.toSet())
+        .toList();
+    notifyListeners();
+  }
+
+  //重置所有条件
+  void resetFilter() {
+    currentShowTaskStatus = null;
+    afterAreaFilter = taskDetailList;
+    afterFloorFilter = taskDetailList;
+    afterTypeFilter = taskDetailList;
+    areaSelected = List.generate(12, (_) => false);
+    currentFloor = "空";
     notifyListeners();
   }
 }
