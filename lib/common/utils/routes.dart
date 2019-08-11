@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/main_app/main_app.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
+import 'package:provider/provider.dart';
 
 ///@author ggq
 ///@description: 路由
@@ -12,11 +17,14 @@ class Routes {
   static String test1 = "/test"; //可以按照网页的参数写 /test?a=1&b=2，在Handler中都能处理
   static String selectPage = "/select";
   static String regularInspection = "/regularInspection/:id";
+  static String regularInspectionBrCodeView = "/brcodeInspection/:taskDetail";
 
   static void configureRoutes(Router router) {
     router.define(test, handler: testHandler);
     router.define(selectPage, handler: selectHandler);
     router.define(regularInspection, handler: regularInspectionHandler);
+    router.define(regularInspectionBrCodeView,
+        handler: regularInspectionBrCodeViewHandler);
   }
 }
 
@@ -37,4 +45,50 @@ var selectHandler =
 var regularInspectionHandler =
     Handler(handlerFunc: (context, Map<String, List<String>> params) {
   return RegularInspectionPage();
+});
+
+var regularInspectionBrCodeViewHandler =
+    Handler(handlerFunc: (context, Map<String, List<String>> params) {
+  RegularInspectionTaskDetail model = RegularInspectionTaskDetail.fromJson(
+      json.decode(params['taskDetail'].first));
+  print(model);
+  return ChangeNotifierProvider.value(
+    value: model,
+    child: Scaffold(
+      appBar: AppBar(
+        title: Text("${model.deviceName}"),
+      ),
+      body: ListView(
+        children: <Widget>[
+          InspectionTaskDetailPanel(true),
+        ],
+      ),
+      bottomNavigationBar: Consumer<RegularInspectionTaskDetail>(
+        builder: (context, model, child) {
+          return Container(
+            height: 100,
+            width: 250,
+            child: Flex(
+              direction: Axis.horizontal,
+              children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(
+                          model);
+                    },
+                    child: Text(
+                      "保存",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ),
+  );
 });

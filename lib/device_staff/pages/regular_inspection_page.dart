@@ -381,52 +381,89 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   }
 
   getFloatingActionButton() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        AnimatedBuilder(
-          animation: _transButton,
-          builder: (context, child) {
-            return Transform(
-              transform:
-                  Matrix4.translationValues(0.0, _transButton.value, 0.0),
-              child: child,
-            );
-          },
-          child: FloatingActionButton(
-            heroTag: "backtoTop",
-            tooltip: "backtoTop",
-            onPressed: () {
-              _scrollController.animateTo(0.0,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.decelerate);
+    return Builder(builder: (context) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          AnimatedBuilder(
+            animation: _transButton,
+            builder: (context, child) {
+              return Transform(
+                transform:
+                    Matrix4.translationValues(0.0, _transButton.value, 0.0),
+                child: child,
+              );
             },
-            child: Icon(Icons.arrow_upward),
+            child: FloatingActionButton(
+              heroTag: "backtoTop",
+              tooltip: "backtoTop",
+              onPressed: () {
+                _scrollController.animateTo(0.0,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.decelerate);
+              },
+              child: Icon(Icons.arrow_upward),
+            ),
           ),
-        ),
-        FloatingActionButton(
-          onPressed: () {
-//              scrollController.animateTo(
-//                60.0 + 7 * 66,
-//                duration: Duration(seconds: 1),
-//                curve: Curves.decelerate,
-//              );
-          },
-          child: Icon(FontAwesomeIcons.qrcode),
-        ),
-      ],
-    );
+          FloatingActionButton(
+            onPressed: () async {
+              String BRCodeScanRes = "2"; //二维码扫描结果
+//            try {
+//              BRCodeScanRes = await BarcodeScanner.scan();
+//            } on PlatformException catch (e) {
+//              if (e.code == BarcodeScanner.CameraAccessDenied) {
+//                print('The user did not grant the camera permission!');
+//              } else {
+//                print('Unknown error: $e');
+//              }
+//            } on FormatException {
+//              print(
+//                  'null (User returned using the "back"-button before scanning anything. Re');
+//            } catch (e) {
+//              print('Unknown error: $e');
+//            }
+              //扫描到结果
+              if (BRCodeScanRes.isNotEmpty) {
+                var resIndex = _taskDetailsBloc.taskDetailList
+                    .indexWhere((item) => item.deviceId == BRCodeScanRes);
+                if (resIndex == -1) {
+                  //没有找到对应id的设备
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text("无效的二维码")));
+                } else {
+                  var bachRes =  await Application.router.navigateTo(
+                      context, "/brcodeInspection/${json.encode(_taskDetailsBloc.taskDetailList[resIndex])}");
+                  if (bachRes!=null){
+                    print(bachRes);
+                    _taskDetailsBloc.taskDetailList[resIndex] = bachRes;
+                  }
+                }
+              }
+            },
+            child: Icon(FontAwesomeIcons.qrcode),
+          ),
+        ],
+      );
+    });
   }
 }
 
 class InspectionTaskDetailPanel<T extends TaskInfoDetail>
     extends StatelessWidget {
+  bool isExpansion;
+
+  InspectionTaskDetailPanel([this.isExpansion=false]);
+
   @override
   Widget build(BuildContext context) {
     var model = Provider.of<RegularInspectionTaskDetail>(context);
+    if(model.images == null){
+      model.images = [];
+    }
     return Card(
       elevation: 5,
       child: ExpansionTile(
+        initiallyExpanded: isExpansion,
         title: Container(
           width: 200,
           child: Row(
@@ -665,7 +702,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
               ),
             ),
           ),
-          if (model.images.isNotEmpty)
+          if (model.images!=null && model.images.isNotEmpty)
             for (var img in model.images)
               getImageWithCloseIcon(model, img, context),
         ],

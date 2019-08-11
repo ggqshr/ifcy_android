@@ -93,6 +93,7 @@ abstract class TaskInfoDetail {
   InspectionResultType inspectionResultType; //检查结果的类型
   ProcessType processType; //处理的措施
   String noteText; //备注
+  @JsonKey(ignore: true)
   List<File> images; //上传的图片
   TaskStatus taskStatus; //任务的状态，是否完成
   String taskArea; //设备的区域
