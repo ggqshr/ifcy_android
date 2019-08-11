@@ -2,8 +2,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'model.dart';
+
+part 'regular_inspection_task.g.dart';
 
 ///@author ggq
 ///@description: 定期巡检任务的数据model
@@ -42,17 +45,18 @@ class RegularInspectionTask extends TaskInfo {
 }
 
 //日常巡检任务详情
+@JsonSerializable()
 class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
   RegularInspectionTaskDetail({
     deviceName,
     deviceId,
     deviceType,
     inspectionRequire,
-    inspectionResultType,
-    processType,
+    InspectionResultType inspectionResultType,
+    ProcessType processType,
     noteText,
     images,
-    taskStatus,
+    TaskStatus taskStatus,
     taskArea,
     taskFloor,
   }) : super(
@@ -83,6 +87,11 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           taskArea: "${Random().nextInt(12)}",
           taskFloor: "${Random().nextInt(30)}",
         );
+
+  factory RegularInspectionTaskDetail.fromJson(Map<String, dynamic> json) =>
+      _$RegularInspectionTaskDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RegularInspectionTaskDetailToJson(this);
 
   void onResultChangeCall(value) {
     inspectionResultType = parseEnumType(value);

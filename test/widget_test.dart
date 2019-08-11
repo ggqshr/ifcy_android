@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -49,12 +50,12 @@ void main() {
             Options(headers: {"authorization": ss.headers['authorization']}));
     print(s1);
   });
-  test("tt", () {
-    Set<int> aa = {1,2,3};
-    Set<int> bb = {3,4,5};
-    print(aa.intersection(bb));
+  test("tt11", () {
+    var rr = RegularInspectionTaskDetail.generate("1");
+    print(jsonEncode(rr));
+    print(RegularInspectionTaskDetail.fromJson(jsonDecode(json.encode(rr))).taskStatus.runtimeType);
   });
-  test("tt", () {
+  test("tt12", () {
     var tt = TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
       return RegularInspectionTaskDetail.generate(index.toString());
     }));

@@ -6,7 +6,7 @@ export 'additional_inspection_task.dart';
 export 'fault_inspection_task.dart';
 
 import 'dart:io';
-
+import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/task_info_message.dart';
 
