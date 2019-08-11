@@ -70,8 +70,7 @@ class _OnlineDeviceFaultComponentState extends State<OnlineDeviceFaultComponent>
         return RefreshIndicator(
           child: ListView.builder(
               itemCount: vm.onlineDeviceFaultUnSuredMessage.length,
-              key: PageStorageKey(
-                  "OnlineDeviceFaultComponentgetUnconfirmedDeviceFault"),
+              key: PageStorageKey("OnlineDeviceFaultComponentgetUnconfirmedDeviceFault"),
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return Card(

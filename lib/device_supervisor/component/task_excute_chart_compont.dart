@@ -4,9 +4,9 @@ part of "device_supervisor_component.dart";
 class TaskExcuteChartComponent extends StatelessWidget {
 
   final TaskExecuteModel taskExecuteModel;
-  final TaskDetailModel taskDetailModel;
+  final List<TaskDetailModel> taskDetailList;
 
-  TaskExcuteChartComponent(this.taskExecuteModel, this.taskDetailModel);
+  TaskExcuteChartComponent(this.taskExecuteModel, this.taskDetailList);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class TaskExcuteChartComponent extends StatelessWidget {
                   ),
                 ],
               ),
-              TaskBarChart(taskDetailModel:taskDetailModel,),
+              TaskBarChart(taskDetailList:taskDetailList,),
             ])));
   }
 }
@@ -49,14 +49,31 @@ class TaskExcuteChartComponent extends StatelessWidget {
 //任务执统计柱状图
 class TaskBarChart extends StatefulWidget {
 
-  final TaskDetailModel taskDetailModel;
-  TaskBarChart({this.taskDetailModel});
+  final List<TaskDetailModel> taskDetailList;
+  TaskBarChart({this.taskDetailList});
+
 
   @override
   _TaskBarChartState createState() => _TaskBarChartState();
 }
 
 class _TaskBarChartState extends State<TaskBarChart> {
+
+  List<TaskExcute> taskExcuteList=new List();
+
+  @override
+  void initState(){
+    super.initState();
+    setState(() {
+      taskExcuteList= widget.taskDetailList.map((item){
+        //print(item);
+        return new TaskExcute(
+           excutor:item.executor,
+           progress: item.progress *100,
+        );
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +85,7 @@ class _TaskBarChartState extends State<TaskBarChart> {
             height: 200.0,
             child: chart.BarChart(
               //通过下面获取数据传入
-              ChartFlutterBean.createSampleData(),
+              ChartFlutterBean.createSampleData(taskExcuteList),
             ),
           ),
         ],
@@ -78,14 +95,7 @@ class _TaskBarChartState extends State<TaskBarChart> {
 }
 
 class ChartFlutterBean {
-  static List<chart.Series<TaskExcute, String>> createSampleData() {
-    final data = [
-      new TaskExcute('xxx', 50),
-      new TaskExcute('zzz', 30),
-      new TaskExcute('www', 20),
-      new TaskExcute('lll', 75),
-    ];
-
+  static List<chart.Series<TaskExcute, String>> createSampleData(List<TaskExcute> data) {
     return [
       new chart.Series<TaskExcute, String>(
         displayName: '任务执行情况',
@@ -103,5 +113,5 @@ class TaskExcute {
   final String excutor;
   final double progress;
 
-  TaskExcute(this.excutor, this.progress);
+  TaskExcute({this.excutor, this.progress});
 }

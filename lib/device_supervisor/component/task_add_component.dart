@@ -195,6 +195,7 @@ class _buildingChooseComponentState extends State<buildingChooseComponent> {
           List<String> buildingFloorItems = vm.buildingFloorList.map((i) {
             return i.buildName.toString();
           }).toList();
+          floorList=vm.buildingFloorList[selectedIndex].floorList;
           return Container(
 
               padding: EdgeInsets.all(2.0),

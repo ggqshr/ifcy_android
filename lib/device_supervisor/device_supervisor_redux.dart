@@ -23,10 +23,9 @@ DeviceSupervisorModel deviceSupervisorModule1Reducer(
           departmentMessagesReducer(state.departmentMessages, action),
       taskCycleMessages:
           taskCycleMessagesReducer(state.taskCycleMessages, action),
-      taskExecuteModel:
-          taskExecuteMessagesReducer(state.taskExecuteModel, action),
-      taskMessageViewList:
-          taskMessageViewListMessagesReducer(state.taskMessageViewList, action),
+      taskExecuteList:
+          taskExecuteMessagesReducer(state.taskExecuteList, action),
+      taskDetailList: taskDetailListMessagesReducer(state.taskDetailList,action),
       offlineDeviceFaultList: offlineDeviceFaultMessagesReducer(
           state.offlineDeviceFaultList, action),
       onlineDeviceFaultSuredList: onlineDeviceFaultSuredMessagesReducer(
@@ -137,20 +136,20 @@ Reducer<List> taskCycleMessagesReducer = combineReducers([
 
 List inittaskExecuteMessages(
     List taskExecuteMessage, InitPageStateAction action) {
-  return action.taskExecuteModel;
+  return action.taskExecuteList;
 }
 
 Reducer<List> taskExecuteMessagesReducer = combineReducers([
   TypedReducer<List, InitPageStateAction>(inittaskExecuteMessages),
 ]);
 
-List inittaskMessageViewListMessages(
+List inittaskDetailListMessages(
     List taskMessageViewListMessage, InitPageStateAction action) {
-  return action.taskMessageViewList;
+  return action.taskDetailList;
 }
 
-Reducer<List> taskMessageViewListMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(inittaskMessageViewListMessages),
+Reducer<List> taskDetailListMessagesReducer = combineReducers([
+  TypedReducer<List, InitPageStateAction>(inittaskDetailListMessages),
 ]);
 
 ///离线设备故障消息列表

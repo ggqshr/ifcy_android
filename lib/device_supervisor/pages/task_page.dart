@@ -10,27 +10,35 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
+
   TabController _tabController;
   List _tabbarItems = new List();
+  List<TaskDetailModel> taskDetailList = new List();
   int curIndex = 0; //选中下标
+  var curCycle = "周检"; //选中的周期
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, List<TaskListViewModel>>(
+    return StoreConnector<AppState, TaskListViewModel>(
       distinct: true,
       converter: (Store<AppState> store) {
-          var currentTaskMessageViewList = store.state.deviceSupervisorModel.taskMessageViewList.map((item) {
-          return TaskListViewModel(
-            taskExecuteModel: item.taskExecuteModel,
-            taskDetailList: item.taskDetailList,
-          );
-        }).toList();
-        return currentTaskMessageViewList;
+        DeviceSupervisorModel model = store.state.deviceSupervisorModel;
+        return TaskListViewModel(
+            taskCycleList: model.taskCycleMessages,
+            taskExecuteList: model.taskExecuteList,
+            taskDetailList: model.taskDetailList,
+            //taskDetailList: model.taskDetailList.where((i) => i.cycle ==curCycle).toList(),
+            onRefreshCall: () async {
+              await Future.delayed(Duration(seconds: 2));
+            });
       },
-      builder: (context, List<TaskListViewModel> vms) {
+      builder: (BuildContext context, TaskListViewModel vm) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('任务安排列表',style: TextStyle(fontSize: 16),),
+            title: Text(
+              '任务安排列表',
+              style: TextStyle(fontSize: 16),
+            ),
             centerTitle: true,
             automaticallyImplyLeading: false,
             leading: IconButton(
@@ -54,15 +62,14 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
                 );
               }).toList(),
             ),
-
           ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             backgroundColor: Colors.green,
-            onPressed: (){
+            onPressed: () {
               Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context)=>TaskAddComponent()),
+                context,
+                new MaterialPageRoute(builder: (context) => TaskAddComponent()),
               );
             },
           ),
@@ -70,7 +77,7 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
             controller: _tabController,
             children: _tabbarItems.map((item) {
               return Container(
-                child: getRow(vms[_tabbarItems.indexOf(item)]),
+                child: getRow(vm),
               );
             }).toList(),
           ),
@@ -78,7 +85,14 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
       },
       onInit: (Store<AppState> store) {
         _tabbarItems = store.state.deviceSupervisorModel.taskCycleMessages;
-        _tabController = new TabController(length: _tabbarItems.length, vsync: this);
+        _tabController = new TabController(length: _tabbarItems.length, vsync: this)
+              ..addListener(() {
+                if (_tabController.index.toDouble() == _tabController.animation.value) {
+                  setState(() {
+                    curIndex = _tabController.index;
+                  });
+                }
+              });
       },
       onDispose: (Store<AppState> store) {
         _tabController.dispose();
@@ -88,16 +102,17 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
 
   Widget getRow(TaskListViewModel vm) {
     List<Widget> viewList = <Widget>[];
-    if (vm.taskExecuteModel.taskNum == 0) {
+    var taskDetailListFilter=vm.taskDetailList.where((i) => i.cycle ==_tabbarItems[curIndex].item).toList();
+    if (vm.taskExecuteList[curIndex].taskNum == 0) {
       viewList.add(Text('当前无任务'));
     } else {
-      viewList = vm.taskDetailList.map<Widget>((TaskDetailModel meg) {
+       viewList = taskDetailListFilter.map<Widget>((TaskDetailModel meg) {
         return TaskTile(meg);
       }).toList();
     }
     return ListView(
       children: <Widget>[
-        TaskExcuteChartComponent(vm.taskExecuteModel, vm.taskDetailList[0]),
+        TaskExcuteChartComponent(vm.taskExecuteList[curIndex],vm.taskDetailList.where((i) => i.cycle ==_tabbarItems[curIndex].item).toList()),
         ...viewList
       ],
     );
@@ -161,7 +176,6 @@ class TaskTile extends StatelessWidget {
 //                    Text(meg.type),
                   ],
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: LinearProgressIndicator(
@@ -180,6 +194,14 @@ class TaskTile extends StatelessWidget {
                   children: <Widget>[
                     Text('任务执行者:                         '),
                     Text(meg.executor),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: <Widget>[
+                    Text('任务周期:                            ${meg.cycle}'),
                   ],
                 ),
                 SizedBox(

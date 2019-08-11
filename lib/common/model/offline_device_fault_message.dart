@@ -8,6 +8,7 @@ class OfflineDeviceFaultMessage extends FaultInfo{
   String deviceFaultExcutor; //检报人员
   String devicePhoto; //故障设备照片
   String remarks; //备注说明
+  Function onRefreshCall;
   OfflineDeviceFaultMessage(id,
       deviceName,
       deviceType,
@@ -16,6 +17,7 @@ class OfflineDeviceFaultMessage extends FaultInfo{
       this.deviceFaultDes,
       this.deviceFaultExcutor,
       this.devicePhoto,
+      this.onRefreshCall,
       this.remarks,) : super(
     id: id,
     deviceName: deviceName,
