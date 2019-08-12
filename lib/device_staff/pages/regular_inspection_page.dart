@@ -407,7 +407,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           ),
           FloatingActionButton(
             onPressed: () async {
-              String BRCodeScanRes = "2"; //二维码扫描结果
+              String BRCodeScanRes = "5"; //二维码扫描结果
 //            try {
 //              BRCodeScanRes = await BarcodeScanner.scan();
 //            } on PlatformException catch (e) {
@@ -431,11 +431,54 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text("无效的二维码")));
                 } else {
-                  var bachRes =  await Application.router.navigateTo(
-                      context, "/brcodeInspection/${json.encode(_taskDetailsBloc.taskDetailList[resIndex])}");
-                  if (bachRes!=null){
-                    print(bachRes);
-                    _taskDetailsBloc.taskDetailList[resIndex] = bachRes;
+                  var bachRes = await Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return ChangeNotifierProvider.value(
+                        value: _taskDetailsBloc.taskDetailList[resIndex],
+                        child: Scaffold(
+                          appBar: AppBar(
+                            title: Text(
+                                "${_taskDetailsBloc.taskDetailList[resIndex].deviceName}"),
+                          ),
+                          body: ListView(
+                            children: <Widget>[
+                              InspectionTaskDetailPanel(true),
+                            ],
+                          ),
+                          bottomNavigationBar:
+                              Consumer<RegularInspectionTaskDetail>(
+                            builder: (context, model, child) {
+                              return Container(
+                                height: 50,
+                                width: 250,
+                                child: Flex(
+                                  direction: Axis.horizontal,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: RaisedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(model);
+                                        },
+                                        child: Text(
+                                          "保存",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ));
+                  if (bachRes != null) {
+                    _taskDetailsBloc.taskDetailList[resIndex] = bachRes; //将数据更新
+                    _taskDetailsBloc.taskDetailList[resIndex]
+                        .updateTaskStatus(TaskStatus.completed); //更新任务的状态，改成已完成
                   }
                 }
               }
@@ -452,12 +495,12 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
     extends StatelessWidget {
   bool isExpansion;
 
-  InspectionTaskDetailPanel([this.isExpansion=false]);
+  InspectionTaskDetailPanel([this.isExpansion = false]);
 
   @override
   Widget build(BuildContext context) {
     var model = Provider.of<RegularInspectionTaskDetail>(context);
-    if(model.images == null){
+    if (model.images == null) {
       model.images = [];
     }
     return Card(
@@ -702,7 +745,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
               ),
             ),
           ),
-          if (model.images!=null && model.images.isNotEmpty)
+          if (model.images != null && model.images.isNotEmpty)
             for (var img in model.images)
               getImageWithCloseIcon(model, img, context),
         ],

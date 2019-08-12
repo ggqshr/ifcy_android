@@ -113,6 +113,11 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTaskStatus(TaskStatus status) {
+    taskStatus = status;
+    notifyListeners();
+  }
+
   @override
   String toString() {
     return super.toPrint(this.runtimeType.toString());
