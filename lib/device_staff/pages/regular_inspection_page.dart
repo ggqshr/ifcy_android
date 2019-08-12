@@ -479,7 +479,28 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                     _taskDetailsBloc.taskDetailList[resIndex] = bachRes; //将数据更新
                     _taskDetailsBloc.taskDetailList[resIndex]
                         .updateTaskStatus(TaskStatus.completed); //更新任务的状态，改成已完成
+                    print(_taskDetailsBloc.taskDetailList[resIndex].images[0]);
                   }
+                  var db = RITaskDetailDatabase();
+                  String id = "1";
+                  var res = await db
+                      .addTaskDetail(RegularInspectionTaskDetailEntryCompanion(
+                    deviceName: moor.Value("设备$id"),
+                    deviceId: moor.Value(id.toString()),
+                    deviceType: moor.Value("设备类别$id"),
+                    inspectionRequire: moor.Value("检查要求$id"),
+                    inspectionResultType: moor.Value(parseEnumType(
+                        InspectionResultType.values[int.parse(id) % 3])),
+                    processType: moor.Value(
+                        parseEnumType(ProcessType.values[int.parse(id) % 3])),
+                    noteText: moor.Value("备注$id"),
+                    images: moor.Value.absent(),
+                    taskStatus: moor.Value(
+                        parseEnumType(TaskStatus.values[int.parse(id) % 2])),
+                    taskArea: moor.Value("${Random().nextInt(12)}"),
+                    taskFloor: moor.Value("${Random().nextInt(30)}"),
+                  ));
+                  print(res);
                 }
               }
             },
@@ -632,15 +653,23 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
 
   ///传入一个图像，返回一个带有右上角取消图标的图像
   getImageWithCloseIcon(
-      RegularInspectionTaskDetail model, File thisImg, context) {
+      RegularInspectionTaskDetail model, String thisImg, context) {
     return Badge(
       padding: EdgeInsets.all(0),
       position: BadgePosition.topRight(right: 2, top: -5),
       child: Container(
         constraints: BoxConstraints.tight(Size(80, 80)),
-        child: Image.file(
-          thisImg,
-          fit: BoxFit.fill,
+        child: CachedNetworkImage(
+          cacheManager: IfcyCacheManager(),
+          imageUrl: thisImg,
+          imageBuilder: (context, imageProvider) {
+            return Image(
+              image: imageProvider,
+              fit: BoxFit.fill,
+            );
+          },
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
         margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
       ),
@@ -676,6 +705,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
           );
           if (result) {
             model.removeFromImages(thisImg);
+            IfcyCacheManager().removeFile(thisImg);
           }
         },
       ),
@@ -713,7 +743,15 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                                   File ii = await ImagePicker.pickImage(
                                       source: ImageSource.camera);
                                   if (ii != null) {
-                                    model.addToImages(ii);
+                                    String thisFileName =
+                                        p.basename(ii.path); //获取文件名
+
+                                    await IfcyCacheManager().putFile(
+                                        thisFileName, await ii.readAsBytes(),
+                                        fileExtension: 'jpg'); //将文件放到缓存管理中
+                                    ii.deleteSync(); //删除当前文件
+                                    model.addToImages(
+                                        thisFileName); //等文件加入到缓存中后，再添加到当前集合中
                                     Navigator.of(context).pop();
                                   }
                                 },
@@ -725,7 +763,13 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                                   File ii = await ImagePicker.pickImage(
                                       source: ImageSource.gallery);
                                   if (ii != null) {
-                                    model.addToImages(ii);
+                                    String thisFileName =
+                                        p.basename(ii.path); //获取文件名
+                                    await IfcyCacheManager().putFile(
+                                        thisFileName, await ii.readAsBytes(),
+                                        fileExtension: 'jpg'); //将文件放到缓存管理中
+                                    ii.deleteSync(); //删除当前文件
+                                    model.addToImages(thisFileName); //添加到当前集合中
                                     Navigator.of(context).pop();
                                   }
                                 },

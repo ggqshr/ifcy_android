@@ -94,7 +94,7 @@ abstract class TaskInfoDetail {
   ProcessType processType; //处理的措施
   String noteText; //备注
   @JsonKey(ignore: true)
-  List<File> images; //上传的图片
+  List<String> images; //上传的图片的文件名
   TaskStatus taskStatus; //任务的状态，是否完成
   String taskArea; //设备的区域
   String taskFloor; //设备的楼层信息
