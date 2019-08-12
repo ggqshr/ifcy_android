@@ -121,6 +121,7 @@ abstract class TaskInfoDetail {
 class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
   List<T> taskDetailList; //装载所有数据的列表
   List<T> list2show; //页面上用来渲染的列表
+  Set<T> list2upload; // 扫码以后等待上传和服务器同步的列表
   TaskStatus currentShowTaskStatus; //当前要显示的任务详情列表的状态，用来筛选
   List<bool> areaSelected; //当前选中的区域
   String currentFloor; //当前选择的楼层
@@ -175,6 +176,7 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
       .toList();
 
   TaskInfoDetailListBloc.localInit(List<T> taskDetailList) {
+    list2upload = {};
     this.taskDetailList = taskDetailList;
     list2show = taskDetailList;
     afterAreaFilter = taskDetailList;
@@ -183,6 +185,12 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     areaSelected = List.generate(12, (_) => false);
     currentFloor = "空";
     currentDeviceType = "空";
+  }
+
+  //将任务添加到待上传列表
+  void addUploadItem(T taskDetail) {
+    list2upload.add(taskDetail);
+    notifyListeners();
   }
 
   void filterByTaskStatus(TaskStatus taskStatus) {

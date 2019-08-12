@@ -7,18 +7,24 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/module1/action/Moudle1Action.dart';
 import 'package:ifcy/module1/model/Moudle1Model.dart';
 import 'package:ifcy/common/utils/StoreCreater.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/main.dart';
 import 'package:ifcy/module1/MoudleRedux.dart';
+import 'package:path/path.dart' as p;
 
 void main() {
 //  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -53,15 +59,20 @@ void main() {
   test("tt11", () {
     var rr = RegularInspectionTaskDetail.generate("1");
     print(jsonEncode(rr));
-    print(RegularInspectionTaskDetail.fromJson(jsonDecode(json.encode(rr))).taskStatus.runtimeType);
+    print(RegularInspectionTaskDetail.fromJson(jsonDecode(json.encode(rr)))
+        .taskStatus
+        .runtimeType);
   });
   test("tt12", () {
     var tt = TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
       return RegularInspectionTaskDetail.generate(index.toString());
     }));
     tt.filterByTaskStatus(TaskStatus.uncompleted);
-    print(tt.list2show.every((item){
-      return item.taskStatus==TaskStatus.uncompleted;
+    print(tt.list2show.every((item) {
+      return item.taskStatus == TaskStatus.uncompleted;
     }));
+  });
+  test("testdb", () async {
+    print(p.basename("/sss/aaa/www/1.png"));
   });
 }

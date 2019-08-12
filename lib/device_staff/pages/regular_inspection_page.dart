@@ -334,6 +334,9 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                         );
                       },
                     ),
+                    SizedBox(
+                      height: 40, //添加一个底部的留白，防止屏幕太短遮挡筛选项目
+                    ),
                   ],
                 ),
                 Positioned(
@@ -341,7 +344,6 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                       TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
                     builder: (context, model, child) {
                       return Container(
-                        height: 100,
                         width: 250,
                         child: Flex(
                           direction: Axis.horizontal,
@@ -405,7 +407,29 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
               child: Icon(Icons.arrow_upward),
             ),
           ),
+          Consumer<TaskInfoDetailListBloc<RegularInspectionTaskDetail>>(
+            builder: (context, model, child) {
+              return Badge(
+                showBadge: model.list2upload.length != 0,
+                position: BadgePosition.topRight(right: 2, top: -10),
+                badgeContent: Text(
+                  model.list2upload.length.toString(),
+                  style: TextStyle(color: Colors.white),
+                ),
+                child: FloatingActionButton(
+                  tooltip: "待上传列表",
+                  heroTag: "waiting_upload_list",
+                  onPressed: () {},
+                  child: Icon(Icons.format_list_bulleted),
+                ),
+              );
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
           FloatingActionButton(
+            tooltip: "扫码",
             onPressed: () async {
               String BRCodeScanRes = "5"; //二维码扫描结果
 //            try {
@@ -460,7 +484,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                                           Navigator.of(context).pop(model);
                                         },
                                         child: Text(
-                                          "保存",
+                                          "添加到待上传列表",
                                           style: TextStyle(color: Colors.white),
                                         ),
                                         color: Colors.blue,
@@ -477,30 +501,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   ));
                   if (bachRes != null) {
                     _taskDetailsBloc.taskDetailList[resIndex] = bachRes; //将数据更新
-                    _taskDetailsBloc.taskDetailList[resIndex]
-                        .updateTaskStatus(TaskStatus.completed); //更新任务的状态，改成已完成
-                    print(_taskDetailsBloc.taskDetailList[resIndex].images[0]);
+                    _taskDetailsBloc.addUploadItem(bachRes);
                   }
-                  var db = RITaskDetailDatabase();
-                  String id = "1";
-                  var res = await db
-                      .addTaskDetail(RegularInspectionTaskDetailEntryCompanion(
-                    deviceName: moor.Value("设备$id"),
-                    deviceId: moor.Value(id.toString()),
-                    deviceType: moor.Value("设备类别$id"),
-                    inspectionRequire: moor.Value("检查要求$id"),
-                    inspectionResultType: moor.Value(parseEnumType(
-                        InspectionResultType.values[int.parse(id) % 3])),
-                    processType: moor.Value(
-                        parseEnumType(ProcessType.values[int.parse(id) % 3])),
-                    noteText: moor.Value("备注$id"),
-                    images: moor.Value.absent(),
-                    taskStatus: moor.Value(
-                        parseEnumType(TaskStatus.values[int.parse(id) % 2])),
-                    taskArea: moor.Value("${Random().nextInt(12)}"),
-                    taskFloor: moor.Value("${Random().nextInt(30)}"),
-                  ));
-                  print(res);
                 }
               }
             },
