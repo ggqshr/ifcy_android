@@ -21,6 +21,7 @@ class RegularInspectionTaskDetailEntryData extends DataClass
   final String taskArea;
   final String taskFloor;
   final String taskId;
+  final bool isUpload;
   RegularInspectionTaskDetailEntryData(
       {@required this.deviceId,
       @required this.deviceName,
@@ -33,12 +34,14 @@ class RegularInspectionTaskDetailEntryData extends DataClass
       @required this.taskStatus,
       @required this.taskArea,
       @required this.taskFloor,
-      @required this.taskId});
+      @required this.taskId,
+      @required this.isUpload});
   factory RegularInspectionTaskDetailEntryData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return RegularInspectionTaskDetailEntryData(
       deviceId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}device_id']),
@@ -64,6 +67,8 @@ class RegularInspectionTaskDetailEntryData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}task_floor']),
       taskId:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}task_id']),
+      isUpload:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_upload']),
     );
   }
   factory RegularInspectionTaskDetailEntryData.fromJson(
@@ -83,6 +88,7 @@ class RegularInspectionTaskDetailEntryData extends DataClass
       taskArea: serializer.fromJson<String>(json['taskArea']),
       taskFloor: serializer.fromJson<String>(json['taskFloor']),
       taskId: serializer.fromJson<String>(json['taskId']),
+      isUpload: serializer.fromJson<bool>(json['isUpload']),
     );
   }
   @override
@@ -101,6 +107,7 @@ class RegularInspectionTaskDetailEntryData extends DataClass
       'taskArea': serializer.toJson<String>(taskArea),
       'taskFloor': serializer.toJson<String>(taskFloor),
       'taskId': serializer.toJson<String>(taskId),
+      'isUpload': serializer.toJson<bool>(isUpload),
     };
   }
 
@@ -143,6 +150,9 @@ class RegularInspectionTaskDetailEntryData extends DataClass
           : Value(taskFloor),
       taskId:
           taskId == null && nullToAbsent ? const Value.absent() : Value(taskId),
+      isUpload: isUpload == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isUpload),
     ) as T;
   }
 
@@ -158,7 +168,8 @@ class RegularInspectionTaskDetailEntryData extends DataClass
           String taskStatus,
           String taskArea,
           String taskFloor,
-          String taskId}) =>
+          String taskId,
+          bool isUpload}) =>
       RegularInspectionTaskDetailEntryData(
         deviceId: deviceId ?? this.deviceId,
         deviceName: deviceName ?? this.deviceName,
@@ -172,6 +183,7 @@ class RegularInspectionTaskDetailEntryData extends DataClass
         taskArea: taskArea ?? this.taskArea,
         taskFloor: taskFloor ?? this.taskFloor,
         taskId: taskId ?? this.taskId,
+        isUpload: isUpload ?? this.isUpload,
       );
   @override
   String toString() {
@@ -187,7 +199,8 @@ class RegularInspectionTaskDetailEntryData extends DataClass
           ..write('taskStatus: $taskStatus, ')
           ..write('taskArea: $taskArea, ')
           ..write('taskFloor: $taskFloor, ')
-          ..write('taskId: $taskId')
+          ..write('taskId: $taskId, ')
+          ..write('isUpload: $isUpload')
           ..write(')'))
         .toString();
   }
@@ -203,18 +216,20 @@ class RegularInspectionTaskDetailEntryData extends DataClass
                               $mrjc(
                                   $mrjc(
                                       $mrjc(
-                                          $mrjc($mrjc(0, deviceId.hashCode),
-                                              deviceName.hashCode),
-                                          deviceType.hashCode),
-                                      inspectionRequire.hashCode),
-                                  inspectionResultType.hashCode),
-                              processType.hashCode),
-                          noteText.hashCode),
-                      images.hashCode),
-                  taskStatus.hashCode),
-              taskArea.hashCode),
-          taskFloor.hashCode),
-      taskId.hashCode));
+                                          $mrjc(
+                                              $mrjc($mrjc(0, deviceId.hashCode),
+                                                  deviceName.hashCode),
+                                              deviceType.hashCode),
+                                          inspectionRequire.hashCode),
+                                      inspectionResultType.hashCode),
+                                  processType.hashCode),
+                              noteText.hashCode),
+                          images.hashCode),
+                      taskStatus.hashCode),
+                  taskArea.hashCode),
+              taskFloor.hashCode),
+          taskId.hashCode),
+      isUpload.hashCode));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -230,7 +245,8 @@ class RegularInspectionTaskDetailEntryData extends DataClass
           other.taskStatus == taskStatus &&
           other.taskArea == taskArea &&
           other.taskFloor == taskFloor &&
-          other.taskId == taskId);
+          other.taskId == taskId &&
+          other.isUpload == isUpload);
 }
 
 class RegularInspectionTaskDetailEntryCompanion
@@ -247,6 +263,7 @@ class RegularInspectionTaskDetailEntryCompanion
   final Value<String> taskArea;
   final Value<String> taskFloor;
   final Value<String> taskId;
+  final Value<bool> isUpload;
   const RegularInspectionTaskDetailEntryCompanion({
     this.deviceId = const Value.absent(),
     this.deviceName = const Value.absent(),
@@ -260,6 +277,7 @@ class RegularInspectionTaskDetailEntryCompanion
     this.taskArea = const Value.absent(),
     this.taskFloor = const Value.absent(),
     this.taskId = const Value.absent(),
+    this.isUpload = const Value.absent(),
   });
 }
 
@@ -421,6 +439,18 @@ class $RegularInspectionTaskDetailEntryTable
     );
   }
 
+  final VerificationMeta _isUploadMeta = const VerificationMeta('isUpload');
+  GeneratedBoolColumn _isUpload;
+  @override
+  GeneratedBoolColumn get isUpload => _isUpload ??= _constructIsUpload();
+  GeneratedBoolColumn _constructIsUpload() {
+    return GeneratedBoolColumn(
+      'is_upload',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         deviceId,
@@ -434,7 +464,8 @@ class $RegularInspectionTaskDetailEntryTable
         taskStatus,
         taskArea,
         taskFloor,
-        taskId
+        taskId,
+        isUpload
       ];
   @override
   $RegularInspectionTaskDetailEntryTable get asDslTable => this;
@@ -523,6 +554,12 @@ class $RegularInspectionTaskDetailEntryTable
     } else if (taskId.isRequired && isInserting) {
       context.missing(_taskIdMeta);
     }
+    if (d.isUpload.present) {
+      context.handle(_isUploadMeta,
+          isUpload.isAcceptableValue(d.isUpload.value, _isUploadMeta));
+    } else if (isUpload.isRequired && isInserting) {
+      context.missing(_isUploadMeta);
+    }
     return context;
   }
 
@@ -577,6 +614,9 @@ class $RegularInspectionTaskDetailEntryTable
     }
     if (d.taskId.present) {
       map['task_id'] = Variable<String, StringType>(d.taskId.value);
+    }
+    if (d.isUpload.present) {
+      map['is_upload'] = Variable<bool, BoolType>(d.isUpload.value);
     }
     return map;
   }

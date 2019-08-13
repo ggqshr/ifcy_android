@@ -33,6 +33,8 @@ class RegularInspectionTaskDetailEntry extends Table {
   TextColumn get taskFloor => text()();
 
   TextColumn get taskId => text()(); //任务的ID
+
+  BoolColumn get isUpload => boolean()();
 }
 
 ///数据库类，用来装载本地的巡检任务的任务详情的一些数据操作
@@ -49,14 +51,21 @@ class RITaskDetailDatabase extends _$RITaskDetailDatabase {
     return into(regularInspectionTaskDetailEntry).insert(entry);
   }
 
-  Future<List<RegularInspectionTaskDetailEntryData>> getTaskDetailList() {
-    return select(regularInspectionTaskDetailEntry).get();
+  //根据任务id查询该任务需要检查的设备
+  Future<List<RegularInspectionTaskDetailEntryData>> getTaskDetailList(
+      String taskId) {
+    return (select(regularInspectionTaskDetailEntry)
+          ..where((item) => item.taskId.equals(taskId)))
+        .get();
   }
 
-  Future<int> addTaskDetails(List<RegularInspectionTaskDetail> list) {
+  /// 将任务列表插入到数据库中，根据[taskId]来标识是属于哪一个任务的
+  Future<void> addTaskDetails(
+      String taskId, List<RegularInspectionTaskDetail> list) {
     var addList = list.map((item) {
       //todo taskid加入到实体类，现在正在写批量插入的部分
       return RegularInspectionTaskDetailEntryData(
+        taskId: taskId,
         deviceName: item.deviceName,
         deviceId: item.deviceId,
         deviceType: item.deviceType,
@@ -68,8 +77,33 @@ class RITaskDetailDatabase extends _$RITaskDetailDatabase {
         taskStatus: parseEnumType(item.taskStatus),
         taskArea: item.taskArea,
         taskFloor: item.taskFloor,
+        isUpload: item.isUpload,
       );
     }).toList();
-    into(regularInspectionTaskDetailEntry).insertAll(addList);
+    return into(regularInspectionTaskDetailEntry).insertAll(addList);
+  }
+
+  ///根据任务id，以及设备id更新某个设备的执行状态，图像名称，备注文字，处理的方式以及检查的结果
+  Future<int> updateDeviceStatus(
+      String taskId, RegularInspectionTaskDetail task) {
+    return (update(regularInspectionTaskDetailEntry)
+          ..where((item) => and(
+              item.taskId.equals(taskId), item.deviceId.equals(task.deviceId))))
+        .write(RegularInspectionTaskDetailEntryCompanion(
+      deviceName: Value.absent(),
+      deviceId: Value.absent(),
+      deviceType: Value.absent(),
+      inspectionRequire: Value.absent(),
+      taskArea: Value.absent(),
+      taskFloor: Value.absent(),
+      taskStatus: Value(parseEnumType(task.taskStatus)),
+      images: Value(jsonEncode(task.images)),
+      noteText: Value(task.noteText),
+      processType: Value(parseEnumType(task.processType)),
+      inspectionResultType: Value(
+        parseEnumType(task.inspectionResultType),
+      ),
+      isUpload: Value(task.isUpload),
+    ));
   }
 }
