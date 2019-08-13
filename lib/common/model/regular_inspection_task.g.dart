@@ -21,6 +21,7 @@ RegularInspectionTaskDetail _$RegularInspectionTaskDetailFromJson(
     taskStatus: _$enumDecodeNullable(_$TaskStatusEnumMap, json['taskStatus']),
     taskArea: json['taskArea'],
     taskFloor: json['taskFloor'],
+    isUpload: json['isUpload'],
   );
 }
 
@@ -38,6 +39,7 @@ Map<String, dynamic> _$RegularInspectionTaskDetailToJson(
       'taskStatus': _$TaskStatusEnumMap[instance.taskStatus],
       'taskArea': instance.taskArea,
       'taskFloor': instance.taskFloor,
+      'isUpload': instance.isUpload,
     };
 
 T _$enumDecode<T>(

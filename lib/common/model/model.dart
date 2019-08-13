@@ -6,9 +6,12 @@ export 'additional_inspection_task.dart';
 export 'fault_inspection_task.dart';
 
 import 'dart:io';
+import 'package:ifcy/common/dao/dao.dart';
+import 'package:ifcy/common/model/regular_inspection_task.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/task_info_message.dart';
+import 'dart:convert';
 
 ///检查结果的类型
 enum InspectionResultType {
@@ -98,27 +101,43 @@ abstract class TaskInfoDetail {
   TaskStatus taskStatus; //任务的状态，是否完成
   String taskArea; //设备的区域
   String taskFloor; //设备的楼层信息
+  bool isUpload; //是否已经上传到云端
 
-  TaskInfoDetail({
-    this.deviceName,
-    this.deviceId,
-    this.deviceType,
-    this.inspectionRequire,
-    this.inspectionResultType,
-    this.processType,
-    this.noteText,
-    this.images,
-    this.taskStatus,
-    this.taskArea,
-    this.taskFloor,
-  });
+  TaskInfoDetail(
+      {this.deviceName,
+      this.deviceId,
+      this.deviceType,
+      this.inspectionRequire,
+      this.inspectionResultType,
+      this.processType,
+      this.noteText,
+      this.images,
+      this.taskStatus,
+      this.taskArea,
+      this.taskFloor,
+      this.isUpload});
+
+  TaskInfoDetail.fromDao(RegularInspectionTaskDetailEntryData data)
+      : deviceName = data.deviceName,
+        deviceId = data.deviceId,
+        deviceType = data.deviceType,
+        inspectionRequire = data.inspectionRequire,
+        inspectionResultType = parseEnumType(data.inspectionResultType),
+        processType = parseEnumType(data.processType),
+        noteText = data.noteText,
+        images = jsonDecode(data.images,).cast<String>(),
+        taskStatus = parseEnumType(data.taskStatus),
+        taskArea = data.taskArea,
+        taskFloor = data.taskFloor,
+        isUpload = data.isUpload;
 
   String toPrint(String className) {
-    return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images, taskStatus: $taskStatus, taskArea: $taskArea, taskFloor: $taskFloor}';
+    return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images, taskStatus: $taskStatus, taskArea: $taskArea, taskFloor: $taskFloor, isUpload: $isUpload}';
   }
 }
 
 class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
+  String taskId; //用来标识是哪个任务
   List<T> taskDetailList; //装载所有数据的列表
   List<T> list2show; //页面上用来渲染的列表
   Set<T> list2upload; // 扫码以后等待上传和服务器同步的列表
@@ -130,6 +149,7 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
   List<T> afterFloorFilter; //经过楼层过滤的数据
   List<T> afterAreaFilter; //经过区域过滤的数据
   List<T> afterDeviceTypeFilter; //经过设备类型过滤的数据
+  RITaskDetailDatabase db = RITaskDetailDatabase();
 
   //当前过滤当中该区域是否有设备需要检查
   List<bool> get areaEnable {
@@ -175,9 +195,10 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
       .where((item) => item.taskStatus == TaskStatus.uncompleted)
       .toList();
 
-  TaskInfoDetailListBloc.localInit(List<T> taskDetailList) {
+  TaskInfoDetailListBloc.localInit(String taskId) {
+    this.taskId = taskId;
     list2upload = {};
-    this.taskDetailList = taskDetailList;
+    taskDetailList = [];
     list2show = taskDetailList;
     afterAreaFilter = taskDetailList;
     afterFloorFilter = taskDetailList;
@@ -185,6 +206,29 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     areaSelected = List.generate(12, (_) => false);
     currentFloor = "空";
     currentDeviceType = "空";
+    _localInit(taskId);
+  }
+
+  void _localInit(String taskId) async {
+//    List tt1 = await db.getTaskDetailList(taskId);
+//    if(tt1.isEmpty){
+//      db.addTaskDetails("1", List.generate(20, (index) {
+//        return RegularInspectionTaskDetail.generate(index.toString());
+//      }));
+//    }
+    List tt = await db.getTaskDetailList(taskId);
+    tt = tt
+        .map((item) => RegularInspectionTaskDetail.fromDao(item))
+        .toList();
+    this.taskDetailList = tt;
+    list2show = taskDetailList;
+    afterAreaFilter = taskDetailList;
+    afterFloorFilter = taskDetailList;
+    afterTypeFilter = taskDetailList;
+    areaSelected = List.generate(12, (_) => false);
+    currentFloor = "空";
+    currentDeviceType = "空";
+    notifyListeners();
   }
 
   //将任务添加到待上传列表

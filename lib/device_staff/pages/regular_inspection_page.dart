@@ -45,11 +45,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 
     //执行进度条动画
     _animationController.forward();
-
-    _taskDetailsBloc =
-        TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
-      return RegularInspectionTaskDetail.generate(index.toString());
-    }));
+    _taskDetailsBloc = TaskInfoDetailListBloc.localInit("1");
   }
 
   @override
@@ -112,28 +108,36 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             return CustomScrollView(
               controller: _scrollController,
               slivers: <Widget>[
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: TaskStateProcessHeader(Tween(
-                          begin: 0.0,
-                          end: model.currentCompleteTask.length /
-                              model.taskDetailList.length)
-                      .animate(_animation)),
-                ),
-                SliverPersistentHeader(
-                  delegate: TaskStateHeader(model.taskDetailList),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return ChangeNotifierProvider.value(
-                        value: model.list2show[index],
-                        child: InspectionTaskDetailPanel(),
-                      );
-                    },
-                    childCount: _taskDetailsBloc.list2show.length,
+                if (model.taskDetailList.isNotEmpty) ...[
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: TaskStateProcessHeader(Tween(
+                            begin: 0.0,
+                            end: model.currentCompleteTask.length /
+                                model.taskDetailList.length)
+                        .animate(_animation)),
                   ),
-                ),
+                  SliverPersistentHeader(
+                    delegate: TaskStateHeader(model.taskDetailList),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return ChangeNotifierProvider.value(
+                          value: model.list2show[index],
+                          child: InspectionTaskDetailPanel(),
+                        );
+                      },
+                      childCount: _taskDetailsBloc.list2show.length,
+                    ),
+                  )
+                ],
+                if (model.taskDetailList.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
               ],
             );
           },
@@ -502,6 +506,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   if (bachRes != null) {
                     _taskDetailsBloc.taskDetailList[resIndex] = bachRes; //将数据更新
                     _taskDetailsBloc.addUploadItem(bachRes);
+                    print(await _taskDetailsBloc.db
+                        .updateDeviceStatus(_taskDetailsBloc.taskId, bachRes));
                   }
                 }
               }

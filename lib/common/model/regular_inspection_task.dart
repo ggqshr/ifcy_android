@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
-
+import 'package:ifcy/common/dao/dao.dart';
 import 'model.dart';
 
 part 'regular_inspection_task.g.dart';
@@ -59,6 +59,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
     TaskStatus taskStatus,
     taskArea,
     taskFloor,
+    isUpload,
   }) : super(
           deviceName: deviceName,
           deviceId: deviceId,
@@ -71,6 +72,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           taskStatus: taskStatus,
           taskArea: taskArea,
           taskFloor: taskFloor,
+          isUpload: isUpload,
         );
 
   RegularInspectionTaskDetail.generate(id)
@@ -86,7 +88,10 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           taskStatus: TaskStatus.values[int.parse(id) % 2],
           taskArea: "${Random().nextInt(12)}",
           taskFloor: "${Random().nextInt(30)}",
+          isUpload: int.parse(id) % 2 == 0,
         );
+
+  RegularInspectionTaskDetail.fromDao(data) : super.fromDao(data);
 
   factory RegularInspectionTaskDetail.fromJson(Map<String, dynamic> json) =>
       _$RegularInspectionTaskDetailFromJson(json);

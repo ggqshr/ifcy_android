@@ -25,7 +25,10 @@ import 'package:redux/redux.dart';
 import 'package:ifcy/main.dart';
 import 'package:ifcy/module1/MoudleRedux.dart';
 import 'package:path/path.dart' as p;
-
+aa()async{
+  await Future.delayed(Duration(seconds: 1));
+  print("sss");
+}
 void main() {
 //  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
 //    // Build our app and trigger a frame.
@@ -64,15 +67,17 @@ void main() {
         .runtimeType);
   });
   test("tt12", () {
-    var tt = TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
-      return RegularInspectionTaskDetail.generate(index.toString());
-    }));
-    tt.filterByTaskStatus(TaskStatus.uncompleted);
-    print(tt.list2show.every((item) {
-      return item.taskStatus == TaskStatus.uncompleted;
-    }));
+//    var tt = TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
+//      return RegularInspectionTaskDetail.generate(index.toString());
+//    }));
+//    tt.filterByTaskStatus(TaskStatus.uncompleted);
+//    print(tt.list2show.every((item) {
+//      return item.taskStatus == TaskStatus.uncompleted;
+//    }));
   });
-  test("testdb", () async {
-    print(p.basename("/sss/aaa/www/1.png"));
+  test("testdb", ()  {
+    var ss = TaskInfoDetailListBloc.localInit("1");
+    print(ss);
   });
+
 }
