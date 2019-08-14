@@ -63,7 +63,6 @@ class RITaskDetailDatabase extends _$RITaskDetailDatabase {
   Future<void> addTaskDetails(
       String taskId, List<RegularInspectionTaskDetail> list) {
     var addList = list.map((item) {
-      //todo taskid加入到实体类，现在正在写批量插入的部分
       return RegularInspectionTaskDetailEntryData(
         taskId: taskId,
         deviceName: item.deviceName,
@@ -84,8 +83,8 @@ class RITaskDetailDatabase extends _$RITaskDetailDatabase {
   }
 
   ///根据任务id，以及设备id更新某个设备的执行状态，图像名称，备注文字，处理的方式以及检查的结果
-  Future<int> updateDeviceStatus(
-      String taskId, RegularInspectionTaskDetail task) {
+  Future<int> updateDeviceStatus<T extends TaskInfoDetail>(
+      String taskId, T task) {
     return (update(regularInspectionTaskDetailEntry)
           ..where((item) => and(
               item.taskId.equals(taskId), item.deviceId.equals(task.deviceId))))

@@ -75,9 +75,12 @@ void main() {
 //      return item.taskStatus == TaskStatus.uncompleted;
 //    }));
   });
-  test("testdb", ()  {
-    var ss = TaskInfoDetailListBloc.localInit("1");
-    print(ss);
+  test("testdb", ()  async {
+    for(int i in List.generate(10, (item)=>item)){
+      await Future.delayed(Duration(seconds: 1));
+      print("ssss");
+    }
+    print("hahahha");
   });
 
 }

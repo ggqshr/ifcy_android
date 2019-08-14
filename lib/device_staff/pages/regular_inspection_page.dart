@@ -423,7 +423,15 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 child: FloatingActionButton(
                   tooltip: "待上传列表",
                   heroTag: "waiting_upload_list",
-                  onPressed: () {},
+                  onPressed: () {
+                    //点击弹出待上传列表页面，
+                    // 可以将已经扫码的设备进行上传，点击上传后，
+                    // 将待上传列表中的设备和服务器进行同步，每上传一个，就更新一个状态
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return UploadComponent(model);
+                    }));
+                  },
                   child: Icon(Icons.format_list_bulleted),
                 ),
               );
@@ -459,55 +467,18 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text("无效的二维码")));
                 } else {
-                  var bachRes = await Navigator.push(context, MaterialPageRoute(
+                  RegularInspectionTaskDetail bachRes =
+                      await Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return ChangeNotifierProvider.value(
-                        value: _taskDetailsBloc.taskDetailList[resIndex],
-                        child: Scaffold(
-                          appBar: AppBar(
-                            title: Text(
-                                "${_taskDetailsBloc.taskDetailList[resIndex].deviceName}"),
-                          ),
-                          body: ListView(
-                            children: <Widget>[
-                              InspectionTaskDetailPanel(true),
-                            ],
-                          ),
-                          bottomNavigationBar:
-                              Consumer<RegularInspectionTaskDetail>(
-                            builder: (context, model, child) {
-                              return Container(
-                                height: 50,
-                                width: 250,
-                                child: Flex(
-                                  direction: Axis.horizontal,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(model);
-                                        },
-                                        child: Text(
-                                          "添加到待上传列表",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
+                      return ScanCodeToInspectionComponent(
+                          _taskDetailsBloc.taskDetailList[resIndex]);
                     },
                   ));
                   if (bachRes != null) {
                     _taskDetailsBloc.taskDetailList[resIndex] = bachRes; //将数据更新
                     _taskDetailsBloc.addUploadItem(bachRes);
-                    print(await _taskDetailsBloc.db
-                        .updateDeviceStatus(_taskDetailsBloc.taskId, bachRes));
+                    _taskDetailsBloc.db
+                        .updateDeviceStatus(_taskDetailsBloc.taskId, bachRes);
                   }
                 }
               }
@@ -522,7 +493,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 
 class InspectionTaskDetailPanel<T extends TaskInfoDetail>
     extends StatelessWidget {
-  bool isExpansion;
+  final bool isExpansion;
 
   InspectionTaskDetailPanel([this.isExpansion = false]);
 
@@ -798,6 +769,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
             ),
           ),
           if (model.images != null && model.images.isNotEmpty)
+            //todo 多个图片时会溢出
             for (var img in model.images)
               getImageWithCloseIcon(model, img, context),
         ],

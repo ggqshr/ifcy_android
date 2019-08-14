@@ -125,11 +125,19 @@ abstract class TaskInfoDetail {
         inspectionResultType = parseEnumType(data.inspectionResultType),
         processType = parseEnumType(data.processType),
         noteText = data.noteText,
-        images = jsonDecode(data.images,).cast<String>(),
+        images = jsonDecode(
+          data.images,
+        ).cast<String>(),
         taskStatus = parseEnumType(data.taskStatus),
         taskArea = data.taskArea,
         taskFloor = data.taskFloor,
         isUpload = data.isUpload;
+
+  void changeUploadStatus(bool status) {
+    isUpload = status;
+  }
+
+  void updateTaskStatus(TaskStatus status);
 
   String toPrint(String className) {
     return '$className{deviceName: $deviceName, deviceId: $deviceId, deviceType: $deviceType, inspectionRequire: $inspectionRequire, inspectionResultType: $inspectionResultType, processType: $processType, noteText: $noteText, images: $images, taskStatus: $taskStatus, taskArea: $taskArea, taskFloor: $taskFloor, isUpload: $isUpload}';
@@ -217,9 +225,7 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
 //      }));
 //    }
     List tt = await db.getTaskDetailList(taskId);
-    tt = tt
-        .map((item) => RegularInspectionTaskDetail.fromDao(item))
-        .toList();
+    tt = tt.map((item) => RegularInspectionTaskDetail.fromDao(item)).toList();
     this.taskDetailList = tt;
     list2show = taskDetailList;
     afterAreaFilter = taskDetailList;
@@ -323,6 +329,22 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     areaSelected = List.generate(12, (_) => false);
     currentFloor = "空";
     currentDeviceType = "空";
+    notifyListeners();
+  }
+
+  ///将待上传列表中的项目上传到服务器
+  ///上传的同时，将任务的上传状态改为已上传，同时将该设备的缓存中的图片改为服务器返回的图片名
+  ///同时，在上传成功之后，将设备从待上传列表中删除
+  Future<void> upload2server() async {
+    for (var device in list2upload) {
+      //todo 上传到服务器，并更改图片的文件名
+      device.changeUploadStatus(true); //将上传状态更新
+      device.taskStatus = TaskStatus.completed; //将任务状态更新
+      await Future.delayed(Duration(seconds: 1));
+      await db.updateDeviceStatus(taskId, device); //将数据库中的数据更新
+    }
+    //全部上传完成后，将列表清空
+    list2upload.clear();
     notifyListeners();
   }
 }

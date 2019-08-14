@@ -117,7 +117,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
     images.remove(value);
     notifyListeners();
   }
-
+  @override
   void updateTaskStatus(TaskStatus status) {
     taskStatus = status;
     notifyListeners();
