@@ -231,6 +231,12 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
     afterAreaFilter = taskDetailList;
     afterFloorFilter = taskDetailList;
     afterTypeFilter = taskDetailList;
+    list2upload = taskDetailList
+        .where((item) =>
+            item.isUpload != null &&
+            !item.isUpload &&
+            item.taskStatus == TaskStatus.uncompleted)
+        .toSet(); //将未完成的，且上传状态为false的项目加入到待上传列表中
     areaSelected = List.generate(12, (_) => false);
     currentFloor = "空";
     currentDeviceType = "空";
@@ -239,6 +245,7 @@ class TaskInfoDetailListBloc<T extends TaskInfoDetail> with ChangeNotifier {
 
   //将任务添加到待上传列表
   void addUploadItem(T taskDetail) {
+    taskDetail.changeUploadStatus(false); //默认的上传状态为null,只有扫码时，将上传状态改为false
     list2upload.add(taskDetail);
     notifyListeners();
   }

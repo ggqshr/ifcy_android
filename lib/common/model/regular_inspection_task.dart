@@ -88,7 +88,7 @@ class RegularInspectionTaskDetail extends TaskInfoDetail with ChangeNotifier {
           taskStatus: TaskStatus.values[int.parse(id) % 2],
           taskArea: "${Random().nextInt(12)}",
           taskFloor: "${Random().nextInt(30)}",
-          isUpload: int.parse(id) % 2 == 0,
+          isUpload: null,
         );
 
   RegularInspectionTaskDetail.fromDao(data) : super.fromDao(data);

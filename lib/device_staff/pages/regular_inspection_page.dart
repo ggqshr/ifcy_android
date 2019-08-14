@@ -150,35 +150,15 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
               topRight: Radius.circular(10),
             ),
           ),
-          child: Flex(
-            direction: Axis.horizontal,
-            children: <Widget>[
-              Expanded(
-                child: FlatButton(
-                  onPressed: () {},
-                  child: Text(
-                    "保存",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  color: Colors.blue,
-                ),
+          child: FlatButton(
+            onPressed: () {},
+            child: Text(
+              "本地保存",
+              style: TextStyle(
+                color: Colors.white,
               ),
-              SizedBox(
-                height: 35,
-                width: 10,
-                child: VerticalDivider(
-                  color: Colors.black,
-                ),
-              ),
-              Expanded(
-                child: OutlineButton(
-                  onPressed: () {},
-                  child: Text("上传"),
-                ),
-              )
-            ],
+            ),
+            color: Colors.blue,
           ),
         ),
         endDrawer: Container(
