@@ -5,17 +5,24 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/dao/dao.dart';
+import 'package:ifcy/common/utils/utils.dart';
+import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/module1/action/Moudle1Action.dart';
 import 'package:ifcy/module1/model/Moudle1Model.dart';
@@ -25,12 +32,17 @@ import 'package:redux/redux.dart';
 import 'package:ifcy/main.dart';
 import 'package:ifcy/module1/MoudleRedux.dart';
 import 'package:path/path.dart' as p;
-aa()async{
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ifcy/common/res/res.dart';
+
+aa() async {
   await Future.delayed(Duration(seconds: 1));
   print("sss");
 }
+
 void main() {
-//  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  group(("other"), () {
+    //  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
 //    // Build our app and trigger a frame.
 //    await tester.pumpWidget(MyApp());
 //
@@ -46,41 +58,64 @@ void main() {
 //    expect(find.text('0'), findsNothing);
 //    expect(find.text('1'), findsOneWidget);
 //  });
-  test("testjson", () async {
-    Dio dio = Dio()..options.baseUrl = "http://116.56.140.193/business/app/api";
-    dio.options.receiveDataWhenStatusError = true;
-    dio.options.contentType = ContentType.json;
-    var ss = await dio.post(
-      "/anonymous/login",
-      data: '{"password": "123456", "username": "hyj"}',
-    );
-    var s1 = await dio.get("/user/projects",
-        options:
-            Options(headers: {"authorization": ss.headers['authorization']}));
-    print(s1);
-  });
-  test("tt11", () {
-    var rr = RegularInspectionTaskDetail.generate("1");
-    print(jsonEncode(rr));
-    print(RegularInspectionTaskDetail.fromJson(jsonDecode(json.encode(rr)))
-        .taskStatus
-        .runtimeType);
-  });
-  test("tt12", () {
-//    var tt = TaskInfoDetailListBloc.localInit(List.generate(20, (index) {
-//      return RegularInspectionTaskDetail.generate(index.toString());
-//    }));
-//    tt.filterByTaskStatus(TaskStatus.uncompleted);
-//    print(tt.list2show.every((item) {
-//      return item.taskStatus == TaskStatus.uncompleted;
-//    }));
-  });
-  test("testdb", ()  async {
-    for(int i in List.generate(10, (item)=>item)){
-      await Future.delayed(Duration(seconds: 1));
-      print("ssss");
-    }
-    print("hahahha");
+    test("testjson", () async {
+      Dio dio = Dio()
+        ..options.baseUrl = "http://116.56.140.193/business/app/api";
+//    dio.interceptors.add(LogInterceptor(responseBody: true));
+      dio.options.receiveDataWhenStatusError = true;
+      dio.options.contentType = ContentType.json;
+      var ss = await dio.post(
+        "/anonymous/login",
+        data: '{"password": "123456", "username": "hyj"}',
+      );
+      print(ss.headers.value("authorization"));
+      var s1 = await dio.get("/user/projects",
+          options:
+              Options(headers: {"authorization": ss.headers['authorization']}));
+      print(s1);
+    });
+    test("testjson1", () async {
+      Dio dio = Dio()
+        ..options.baseUrl = "http://116.56.140.193/business/app/api";
+      dio.options.receiveDataWhenStatusError = true;
+      dio.options.contentType = ContentType.json;
+      dio.interceptors.add(InterceptorsWrapper(onError: (e) {
+        print(e.toString());
+      }));
+      try {
+        var s1 = await dio.get("/user/projects",
+            options: Options(headers: {"authorization": "11111"}));
+        print(s1);
+      } on DioError catch (e) {
+        print(e);
+      }
+    });
+    test("tt11", () {
+      var rr = RegularInspectionTaskDetail.generate("1");
+      print(jsonEncode(rr));
+      print(RegularInspectionTaskDetail.fromJson(jsonDecode(json.encode(rr)))
+          .taskStatus
+          .runtimeType);
+    });
+    test("testcmp", () async {
+      var ss = await DioUtils.getInstance().login("ggq", "123456");
+      print(await DioUtils.getInstance().getToken());
+    });
   });
 
+  group(("mocking testsp"), () {
+    String prefixKey = "flutter.";
+    String prefixUserName = prefixKey + USER_NAME;
+    String prefixPassWord = prefixKey + PASS_WORD;
+    setUp(() {
+      SharedPreferences.setMockInitialValues(
+          {prefixUserName: "hello", prefixPassWord: "123456"});
+    });
+    test(("read"), () async {
+      Application.prefs = await SharedPreferences.getInstance();
+      Response res =
+          await DioUtils.getInstance().getDio().get("/user/projects");
+      print(res);
+    });
+  });
 }
