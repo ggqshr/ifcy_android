@@ -2,8 +2,8 @@ part of 'device_supervisor_model.dart';
 
 class MonitorPageAppBarModel {
   Function onChangeCall;
-  List<String> buildingList;
-  String currentBuild;
+  List<Build> buildingList;
+  Build currentBuild;
 
   MonitorPageAppBarModel({
     this.onChangeCall,

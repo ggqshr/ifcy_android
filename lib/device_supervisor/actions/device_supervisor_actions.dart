@@ -1,16 +1,16 @@
 import 'package:ifcy/common/model/model.dart';
 
-class InitPageStateAction {
+class InitDeviceSupervisorStateAction {
   int faultNum;
   int taskRate;
-  List<String> buildingList;
-  String currentBuilding;
+  List<Build> buildingList;
+  Build currentBuilding;
   List<int> bottomBadgeNumList;
   List<FireAlarmMessage> fireMessage;
   List<DeviceFaultMessage> deviceFaultMessage;
   List<TaskInfoMessage> taskInfoMessage;
 
-  InitPageStateAction({
+  InitDeviceSupervisorStateAction({
     this.faultNum,
     this.taskRate,
     this.buildingList,
@@ -21,11 +21,9 @@ class InitPageStateAction {
     this.taskInfoMessage,
   });
 
-  InitPageStateAction.init()
+  InitDeviceSupervisorStateAction.init()
       : faultNum = 0,
         taskRate = 23,
-        buildingList = ["tt", "tt2"],
-        currentBuilding = "tt",
         bottomBadgeNumList = [1, 0, 0, 0],
         fireMessage = [
 //          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
@@ -49,8 +47,18 @@ class InitPageStateAction {
         ];
 }
 
-class OnChangeBuilding {
-  String buildingName;
+class DeviceSupervisorOnChangeBuilding {
+  Build building;
 
-  OnChangeBuilding(this.buildingName);
+  DeviceSupervisorOnChangeBuilding(this.building);
+}
+
+class DeviceSupervisorInitBuildingList {
+  ///建筑物列表
+  List<Build> buildingList;
+
+  ///当前建筑
+  Build currentBuilding;
+
+  DeviceSupervisorInitBuildingList({this.buildingList, this.currentBuilding});
 }

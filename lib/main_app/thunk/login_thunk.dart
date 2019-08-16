@@ -41,7 +41,7 @@ ThunkAction<AppState> loginSubmitAction(
       store.dispatch(res);
       loadingDialogAction.cancleLoadingDialog();
     }
-    store.dispatch(InitPageStateAction.init());
+    store.dispatch(InitDeviceSupervisorStateAction.init());
     store.dispatch(InitDeviceStaffStateAction.init());
   };
 }
