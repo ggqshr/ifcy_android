@@ -1,16 +1,4 @@
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter/services.dart';
-import 'package:ifcy/common/components/components.dart';
-import 'package:fluro/fluro.dart';
-import 'package:ifcy/common/utils/application.dart';
-import 'package:ifcy/common/utils/routes.dart';
-import 'package:ifcy/device_supervisor/pages/device_supvisor_pages.dart';
-
+part of 'components.dart';
 class PersonPage extends StatelessWidget {
   final Function drawerCall;
 

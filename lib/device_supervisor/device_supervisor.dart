@@ -7,7 +7,7 @@ import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'model/device_supervisor_model.dart';
 import 'device_supervisor_redux.dart';
 import 'pages/device_supvisor_pages.dart';
-import 'package:ifcy/common/utils/person_page.dart';
+import 'package:ifcy/common/components/components.dart';
 
 
 class DeviceSupervisor extends StatefulWidget {
@@ -38,10 +38,10 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
   void initState() {
     super.initState();
     viewList
-      ..add(MonitorPage(widget.drawerCall(context)))
-      ..add(FaultPage(widget.drawerCall(context)))
-      ..add(TaskPage(widget.drawerCall(context)))
-      ..add(PersonPage(widget.drawerCall(context)));
+      ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
+      ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
+      ..add(TaskPage(() => Scaffold.of(context).openDrawer()))
+      ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
 
   @override
