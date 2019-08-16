@@ -108,8 +108,8 @@ class DioUtils {
   // 从服务器获取新的token
   Future<String> _getToken() async {
     String token;
-    String userName = Application.prefs.getString(USER_NAME);
-    String passWord = Application.prefs.getString(PASS_WORD);
+    String userName = await Auth.getInstance().getString(USER_NAME);
+    String passWord = await Auth.getInstance().getString(PASS_WORD);
     try {
       Response response = await _login(userName, passWord);
       token = response.headers.value("authorization");

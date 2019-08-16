@@ -5,11 +5,11 @@ import 'package:ifcy/common/res/res.dart';
 ///@description:在请求之后存储用户的一些信息
 ///@date :2019/8/15 15:58
 class Auth {
-  FlutterSecureStorage flutterSecureStorage = FlutterSecureStorage();
+  FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage();
   static Auth _auth;
 
   Auth._() {
-    flutterSecureStorage = FlutterSecureStorage();
+    _flutterSecureStorage = FlutterSecureStorage();
   }
 
   factory Auth.getInstance() {
@@ -21,13 +21,17 @@ class Auth {
 
   //存储用户名和密码
   Future save(String userName, String passWord) async {
-    await flutterSecureStorage.write(key: USER_NAME, value: userName);
-    await flutterSecureStorage.write(key: PASS_WORD, value: passWord);
+    await _flutterSecureStorage.write(key: USER_NAME, value: userName);
+    await _flutterSecureStorage.write(key: PASS_WORD, value: passWord);
   }
 
   //注销时删除信息
   Future reset() async {
-    await flutterSecureStorage.delete(key: USER_NAME);
-    await flutterSecureStorage.delete(key: PASS_WORD);
+    await _flutterSecureStorage.delete(key: USER_NAME);
+    await _flutterSecureStorage.delete(key: PASS_WORD);
+  }
+
+  Future getString(String key)async{
+    return await _flutterSecureStorage.read(key: key);
   }
 }

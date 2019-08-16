@@ -25,12 +25,12 @@ class ChangeAlertAction {
   ChangeAlertAction(this.alertText);
 }
 
-class OnChangeProject {
+class OnChangeProjectAction {
   Projects selectedProject;
   int index;
   String auth;
 
-  OnChangeProject(this.selectedProject, this.index, this.auth);
+  OnChangeProjectAction(this.selectedProject, this.index, this.auth);
 }
 
 //网络错误的基类

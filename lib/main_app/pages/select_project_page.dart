@@ -31,10 +31,7 @@ class SelectProjectPage extends StatelessWidget {
             int thieIndex = store.state.selectProjectModel.projectList
                 .indexWhere((item) => item.projectName == v);
             store.dispatch(
-              OnChangeProject(
-                  v,
-                  store.state.selectProjectModel.projectList.indexOf(v),
-                  store.state.project2Auth[v]),
+              ChangeProjectThunkAction(thieIndex),
             );
           },
           auth: store.state.selectProjectModel.auth,

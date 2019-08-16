@@ -19,12 +19,12 @@ int changeProjectIndex(int currentIndex, action) {
 }
 
 int updateIndex(int currentIndex, action) {
-  return (action as OnChangeProject).index;
+  return (action as OnChangeProjectAction).index;
 }
 
 Reducer<int> CurrentProjectIndexReducer = combineReducers([
   TypedReducer<int, LoginSuccessAction>(changeProjectIndex),
-  TypedReducer<int, OnChangeProject>(updateIndex),
+  TypedReducer<int, OnChangeProjectAction>(updateIndex),
 ]);
 
 Projects changeSelectedProject(Projects selectedProject, action) {
@@ -37,7 +37,7 @@ Projects onChangeProject(Projects selectedProject, action) {
 
 Reducer<Projects> selectProjectReducer = combineReducers([
   TypedReducer<Projects, LoginSuccessAction>(changeSelectedProject),
-  TypedReducer<Projects, OnChangeProject>(onChangeProject),
+  TypedReducer<Projects, OnChangeProjectAction>(onChangeProject),
 ]);
 
 String changeCurrentAuth(String currentAuth, action) {
@@ -45,12 +45,12 @@ String changeCurrentAuth(String currentAuth, action) {
 }
 
 String updateAuth(String currentAuth, action) {
-  return (action as OnChangeProject).auth;
+  return (action as OnChangeProjectAction).auth;
 }
 
 Reducer<String> CurrentAuth = combineReducers([
   TypedReducer<String, LoginSuccessAction>(changeCurrentAuth),
-  TypedReducer<String, OnChangeProject>(updateAuth),
+  TypedReducer<String, OnChangeProjectAction>(updateAuth),
 ]);
 
 List updateProjectList(List projectList, action) {
