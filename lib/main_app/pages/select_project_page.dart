@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_staff/device_staff.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
@@ -27,6 +28,8 @@ class SelectProjectPage extends StatelessWidget {
               store.state.selectProjectModel.selectedProjectIndex,
           projectList: store.state.selectProjectModel.projectList,
           onChangeCall: (v) {
+            int thieIndex = store.state.selectProjectModel.projectList
+                .indexWhere((item) => item.projectName == v);
             store.dispatch(
               OnChangeProject(
                   v,
@@ -39,22 +42,22 @@ class SelectProjectPage extends StatelessWidget {
       },
       builder: (BuildContext context, SelectProjectModel vm) {
         return Scaffold(
-          body: DeviceStaff(),
+          body: Application.auth2view[vm.auth],
           drawer: Drawer(
             child: ListView(
               padding: EdgeInsets.all(0),
               children: <Widget>[
-                DrawerHeader(
+                UserAccountsDrawerHeader(
                   decoration: BoxDecoration(
-                    color: Colors.blueAccent,
+                    color: Colors.green[300],
                   ),
-                  child: Center(
-                    child: SizedBox(
-                      child: CircleAvatar(
-                        child: Text("G"),
-                      ),
-                    ),
+                  currentAccountPicture: CircleAvatar(
+                    child: Text(
+                        StoreProvider.of<AppState>(context).state.userName[0]),
                   ),
+                  accountName:
+                      Text(StoreProvider.of<AppState>(context).state.userName),
+                  accountEmail: Text(""),
                 ),
                 ListTile(
                   leading: Tooltip(
@@ -66,7 +69,7 @@ class SelectProjectPage extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        String groupValue = vm.selectedProject;
+                        String groupValue = vm.selectedProject.projectName;
                         return AlertDialog(
                           title: Text("切换项目"),
                           content: StatefulBuilder(
@@ -75,8 +78,8 @@ class SelectProjectPage extends StatelessWidget {
                                 children:
                                     vm.projectList.map<RadioListTile>((i) {
                                   return RadioListTile<String>(
-                                    title: Text(i.toString()),
-                                    value: i.toString(),
+                                    title: Text(i.projectName),
+                                    value: i.projectName,
                                     onChanged: (v) {
                                       state(() => groupValue = v);
                                     },
@@ -116,14 +119,16 @@ class SelectProjectPage extends StatelessWidget {
                   title: Text("升级app"),
                   onTap: () async {
                     PermissionStatus permission = await PermissionHandler()
-                        .checkPermissionStatus(PermissionGroup.storage);//请求权限
+                        .checkPermissionStatus(PermissionGroup.storage); //请求权限
                     if (permission == PermissionStatus.denied) {
                       Map<PermissionGroup, PermissionStatus> permissions =
                           await PermissionHandler()
                               .requestPermissions([PermissionGroup.storage]);
                     }
-                    Directory appDocDir = await getExternalStorageDirectory();//获取app数据存储地址
-                    final taskId = await FlutterDownloader.enqueue(//下载app
+                    Directory appDocDir =
+                        await getExternalStorageDirectory(); //获取app数据存储地址
+                    final taskId = await FlutterDownloader.enqueue(
+                      //下载app
                       url: 'http://116.56.140.194/2.apk',
                       savedDir: appDocDir.path,
                       showNotification: true,
@@ -134,8 +139,10 @@ class SelectProjectPage extends StatelessWidget {
                     FlutterDownloader.registerCallback(//设置回调
                         (taskId, status, progress) async {
                       if (status == DownloadTaskStatus.complete) {
-                        InstallPlugin.installApk( //下载完成后，启动更新
-                                appDocDir.path + "/2.apk", "com.example.ifcy")
+                        InstallPlugin.installApk(
+                                //下载完成后，启动更新
+                                appDocDir.path + "/2.apk",
+                                "com.example.ifcy")
                             .then((e) {
                           print("install $e");
                         });

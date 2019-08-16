@@ -1,5 +1,7 @@
+import 'package:ifcy/main_app/model/AppState.dart';
+
 class SelectProjectModel {
-  String selectedProject; //当前选中的项目
+  Projects selectedProject; //当前选中的项目
   int selectedProjectIndex = 0; //当前选中项目的下标 ,默认为0
   List projectList; //所有的项目列表
   Function onChangeCall; //当前选中的项目发生变化时的回调

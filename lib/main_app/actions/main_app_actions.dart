@@ -1,17 +1,22 @@
 import 'package:dio/dio.dart';
+import 'package:ifcy/main_app/model/AppState.dart';
 
 class LoginSuccessAction {
   String userName;
+  String companyName;
+  int userId;
   List projectList;
-  Map project2Auth;
   int currentProIndex;
+  String auth;
 
-  LoginSuccessAction(
+  LoginSuccessAction({
     this.userName,
     this.projectList,
-    this.project2Auth,
     this.currentProIndex,
-  );
+    this.userId,
+    this.companyName,
+    this.auth,
+  });
 }
 
 class ChangeAlertAction {
@@ -21,7 +26,7 @@ class ChangeAlertAction {
 }
 
 class OnChangeProject {
-  String selectedProject;
+  Projects selectedProject;
   int index;
   String auth;
 
@@ -29,7 +34,7 @@ class OnChangeProject {
 }
 
 //网络错误的基类
-class InternetAction {
+abstract class InternetAction {
   final int statusCode; //状态码
   final String msg; //服务器返回的msg
   final String code; //服务器返回的code
@@ -78,7 +83,13 @@ class EmptyUserFieldAction extends InternetAction {
   EmptyUserFieldAction.fromResponse(Response res) : super.fromResponse(res);
 }
 
-//需要重新登陆的action
-class ShouldReLoginAction {
+// 未知错误
+class UnknownErrorAction extends InternetAction {
+  UnknownErrorAction({statusCode, msg, code})
+      : super(statusCode: statusCode, msg: msg, code: code);
 
+  UnknownErrorAction.fromResponse(Response res) : super.fromResponse(res);
 }
+
+//需要重新登陆的action
+class ShouldReLoginAction {}

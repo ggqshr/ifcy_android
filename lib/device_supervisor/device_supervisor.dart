@@ -9,9 +9,8 @@ import 'device_supervisor_redux.dart';
 import 'pages/device_supvisor_pages.dart';
 
 class DeviceSupervisor extends StatefulWidget {
-  String auth;
 
-  DeviceSupervisor(this.auth);
+  DeviceSupervisor();
 
   @override
   _DeviceSupervisorState createState() => _DeviceSupervisorState();

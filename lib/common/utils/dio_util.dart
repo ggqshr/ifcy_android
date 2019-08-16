@@ -158,7 +158,7 @@ class DioUtils {
     } else if (res.data['code'] == '110002') {
       return EmptyUserFieldAction.fromResponse(res);
     }
-    return InternetAction.fromResponse(res);
+    return UnknownErrorAction.fromResponse(res);
   }
 
   //封装的登陆接口

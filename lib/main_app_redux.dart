@@ -2,6 +2,7 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/select_project_reducer.dart';
 import 'package:redux/redux.dart';
 
+import 'common/utils/utils.dart';
 import 'device_staff/device_staff_reducer.dart';
 import 'device_supervisor/device_supervisor_redux.dart';
 import 'main_app/actions/main_app_actions.dart';
@@ -22,23 +23,56 @@ Reducer<String> AlertTextReducer = combineReducers([
   TypedReducer<String, ChangeAlertAction>(changeAlertText),
 ]);
 
-Map changeProject2Auth(Map project2Auth, action) {
-  return action.project2Auth;
+
+String initCompanyNameReducer(String companyName, action) {
+  return action.companyName;
 }
 
-Reducer<Map> Project2AuthReducer = combineReducers([
-  TypedReducer<Map, LoginSuccessAction>(changeProject2Auth),
+Reducer<String> CompanyNameReducer = combineReducers([
+  TypedReducer<String, LoginSuccessAction>(initCompanyNameReducer),
+]);
+
+int initUserId(int userId, action) {
+  return action.userId;
+}
+
+Reducer<int> UserIdReducer = combineReducers([
+  TypedReducer<int, LoginSuccessAction>(initUserId),
 ]);
 
 AppState mainAppReducer(AppState state, action) {
   print(action);
+  if (action is InternetAction) {
+    reactToInternetErrorReducer(null, action);
+  }
   return AppState(
+    companyName: CompanyNameReducer(state.companyName, action),
+    userId: UserIdReducer(state.userId, action),
     userName: UserNameReduer(state.userName, action),
     alertText: AlertTextReducer(state.alertText, action),
-    project2Auth: Project2AuthReducer(state.project2Auth, action),
     selectProjectModel: SelectProjectReducer(state.selectProjectModel, action),
     deviceSupervisorModel:
         deviceSupervisorModule1Reducer(state.deviceSupervisorModel, action),
     deviceStaffModel: deviceStaffModelReducer(state.deviceStaffModel, action),
   );
 }
+
+//用于输出网络错误的reducer todo 写一个中间件
+Reducer<void> reactToInternetErrorReducer = combineReducers([
+  TypedReducer<void, InternalErrorAction>(
+    (_, action) => Application.showToast(
+        "服务器内部错误 ${action.code} ${action.msg} ${action.statusCode}"),
+  ),
+  TypedReducer<void, EmptyUserFieldAction>(
+    (_, action) => Application.showToast(
+        "空的用户名或者密码 ${action.code} ${action.msg} ${action.statusCode}"),
+  ),
+  TypedReducer<void, IncorrectUserErrorAction>(
+    (_, action) => Application.showToast(
+        "用户名密码不正确 ${action.code} ${action.msg} ${action.statusCode}"),
+  ),
+  TypedReducer<void, UnknownErrorAction>(
+    (_, action) => Application.showToast(
+        "未知错误 ${action.code} ${action.msg} ${action.statusCode}"),
+  ),
+]);
