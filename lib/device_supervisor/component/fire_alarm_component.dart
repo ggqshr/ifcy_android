@@ -1,4 +1,4 @@
-part of 'device_supervisor_compoent.dart';
+part of 'device_supervisor_component.dart';
 
 class FireAlarmComponent extends StatelessWidget {
   @override
@@ -9,8 +9,7 @@ class FireAlarmComponent extends StatelessWidget {
           return StoreConnector<AppState, FireAlarmModel>(
             converter: (Store<AppState> store) {
               return FireAlarmModel(
-                messageNum: store
-                    .state.deviceSupervisorModel.fireAlarmMessages.length,
+                messageNum: store.state.deviceSupervisorModel.fireAlarmMessages.length,
                 messages: store.state.deviceSupervisorModel.fireAlarmMessages,
               );
             },
@@ -49,6 +48,7 @@ class FireMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Card(

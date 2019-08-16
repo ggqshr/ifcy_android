@@ -6,6 +6,7 @@ import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/main_app/main_app.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
+import 'package:ifcy/common/components/components.dart';
 import 'package:provider/provider.dart';
 
 ///@author ggq
@@ -17,11 +18,13 @@ class Routes {
   static String test1 = "/test"; //可以按照网页的参数写 /test?a=1&b=2，在Handler中都能处理
   static String selectPage = "/select";
   static String regularInspection = "/regularInspection/:id";
+  static String pesonalInfo="/personalInfo/:id";//跳转到个人信息模块
 
   static void configureRoutes(Router router) {
     router.define(test, handler: testHandler);
     router.define(selectPage, handler: selectHandler);
     router.define(regularInspection, handler: regularInspectionHandler);
+    router.define(pesonalInfo, handler:pesonalInfoHandler);
   }
 }
 
@@ -43,4 +46,10 @@ var regularInspectionHandler =
     Handler(handlerFunc: (context, Map<String, List<String>> params) {
   return RegularInspectionPage();
 });
+
+//跳转到个人信息页面
+var pesonalInfoHandler=Handler(handlerFunc:(context, Map<String, List<String>> params){
+  return PersonInfoPage();
+});
+
 

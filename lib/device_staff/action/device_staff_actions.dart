@@ -22,7 +22,7 @@ class InitDeviceStaffStateAction {
         }),
         faultTasks = List.generate(20, (index) {
           return FaultInspectionTask.generate(index.toString());
-        });
+});
 }
 
 ///维保工作人员更改建筑的action

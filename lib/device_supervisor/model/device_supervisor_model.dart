@@ -1,4 +1,6 @@
 import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/common/model/online_device_fault_sured_message.dart';
+import 'package:ifcy/common/model/online_device_fault_unsrued_message.dart';
 
 part 'monitor_page_model.dart';
 
@@ -17,6 +19,21 @@ class DeviceSupervisorModel {
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
   List<DeviceFaultMessage> deviceFaultMessages;
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
+  List<SupervisorMessageModel> supervisorMessages; //主管信息
+  List<DepartmentMessage> departmentMessages; //维保公司员工信息
+
+  List<TaskCycleModel> taskCycleMessages; //任务类型信息
+  List<TaskExecuteModel> taskExecuteList; //任务执行统计
+  List<TaskDetailModel> taskDetailList; //任务详情列表
+
+  List<OfflineDeviceFaultMessage> offlineDeviceFaultList; //离线故障设备列表
+  List<OnlineDeviceFaultSuredMessage>onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
+  List<OnlineDeviceFaultUnsuredMessage>onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
+
+  List<ProcessingDeviceFaultMessage> processingDeviceFaultList; //处理中的设备故障申报
+  List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的设备故障申报
+
+  List<BuildingFloorMessage> buildingFloorList; //建筑以及楼层信息
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -27,6 +44,17 @@ class DeviceSupervisorModel {
     this.fireAlarmMessages,
     this.deviceFaultMessages,
     this.taskInfoMessages,
+    this.supervisorMessages,
+    this.departmentMessages,
+    this.taskCycleMessages,
+    this.taskExecuteList,
+    this.taskDetailList,
+    this.offlineDeviceFaultList,
+    this.onlineDeviceFaultSuredList,
+    this.onlineDeviceFaultUnSuredList,
+    this.processedDeviceFaultList,
+    this.processingDeviceFaultList,
+    this.buildingFloorList,
   });
 
   DeviceSupervisorModel.init()
@@ -54,6 +82,34 @@ class DeviceSupervisorModel {
               title: "任务2",
               content: "任务2",
               status: TaskStatus.uncompleted),
+        ],
+        supervisorMessages = [
+          SupervisorMessageModel(
+            name: '主管1',
+          ),
+          SupervisorMessageModel(
+            name: '主管2',
+          ),
+          SupervisorMessageModel(
+            name: '主管3',
+          )
+        ],
+        departmentMessages = [
+          DepartmentMessage(id: '01', title: '技术服务部', personnelList: [
+            PersonnelMessage(id: '001', name: '员工1'),
+            PersonnelMessage(id: '002', name: '员工2'),
+            PersonnelMessage(id: '003', name: '员工3'),
+          ]),
+          DepartmentMessage(id: '02', title: '设计预算部', personnelList: [
+            PersonnelMessage(id: '011', name: '员工1'),
+            PersonnelMessage(id: '022', name: '员工2'),
+            PersonnelMessage(id: '033', name: '员工3'),
+          ]),
+          DepartmentMessage(id: '03', title: '总经办', personnelList: [
+            PersonnelMessage(id: '021', name: '员工1'),
+            PersonnelMessage(id: '022', name: '员工2'),
+            PersonnelMessage(id: '023', name: '员工3'),
+          ]),
         ];
 
   @override
@@ -74,4 +130,61 @@ class DeviceSupervisorModel {
       buildingList.hashCode ^
       currentBuilding.hashCode ^
       bottomBadgeNumList.hashCode;
+}
+
+//线上设备故障视图模型
+class OnlineDeviceFaultMessageViewModel {
+  List<OnlineDeviceFaultSuredMessage> onlineDeviceFaultSuredMessage;
+  List<OnlineDeviceFaultUnsuredMessage> onlineDeviceFaultUnSuredMessage;
+  Function onRefreshCall;
+
+  OnlineDeviceFaultMessageViewModel({
+    this.onlineDeviceFaultSuredMessage,
+    this.onlineDeviceFaultUnSuredMessage,
+    this.onRefreshCall,
+  });
+}
+
+//故障申报视图模型
+class FaultDeclareMessageViewModel {
+  List<ProcessedDeviceFaultMessage> processedDeviceFaultDeclareList;
+  List<ProcessingDeviceFaultMessage> processingDeviceFaultDeclareList;
+  Function onRefreshCall;
+
+  FaultDeclareMessageViewModel({
+    this.processedDeviceFaultDeclareList,
+    this.processingDeviceFaultDeclareList,
+    this.onRefreshCall,
+  });
+}
+
+//新增工作视图模型
+class TaskAddViewModel {
+  List<BuildingFloorMessage> buildingFloorList;
+  List<TaskCycleModel> taskCycleList;
+
+  Function onRefreshCall;
+
+  TaskAddViewModel({
+    this.buildingFloorList,
+    this.taskCycleList,
+    this.onRefreshCall,
+  });
+}
+
+
+///任务执行视图类
+class TaskListViewModel {
+
+  List<TaskCycleModel> taskCycleList;//任务执行周期
+  List<TaskExecuteModel> taskExecuteList;//任务执行情况统图表
+  List<TaskDetailModel> taskDetailList; //任务执行详细列表
+  Function onRefreshCall;
+
+  TaskListViewModel({
+    this.taskCycleList,
+    this.taskExecuteList,
+    this.taskDetailList,
+    this.onRefreshCall,
+  });
 }

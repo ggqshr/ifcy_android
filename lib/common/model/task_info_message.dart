@@ -17,3 +17,13 @@ class TaskInfoMessage {
 
   TaskInfoMessage({this.id, this.title, this.content, this.status});
 }
+
+///任务的具体描述类
+class TaskDetailMessage{
+  String des;
+  String type;
+  String executor;
+  int progress;
+  TaskDetailMessage({this.des,this.type,this.executor,this.progress});
+}
+
