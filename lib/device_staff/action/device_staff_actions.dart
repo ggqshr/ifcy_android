@@ -24,3 +24,22 @@ class InitDeviceStaffStateAction {
           return FaultInspectionTask.generate(index.toString());
         });
 }
+
+///维保工作人员更改建筑的action
+class DeviceStaffChangeBuildAction {
+  ///要更改的建筑
+  Build changedBuilding;
+
+  DeviceStaffChangeBuildAction({this.changedBuilding});
+}
+
+///初始化建筑物列表的action
+class InitAppBarBuildingList {
+  ///建筑物列表
+  List<Build> buildingList;
+
+  ///当前建筑物
+  Build currentBuilding;
+
+  InitAppBarBuildingList({this.buildingList, this.currentBuilding});
+}

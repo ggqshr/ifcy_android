@@ -18,14 +18,14 @@ class Application {
 
   ///封装的flutterToast的方法，使用方法一致
   static void showToast(
-    String msg, [
-    Toast toastLength,
-    int timeInSecForIos = 1,
-    double fontSize = 16.0,
-    ToastGravity gravity,
-    Color backgroundColor,
-    Color textColor,
-  ]) {
+    String msg, {
+        Toast toastLength,
+        int timeInSecForIos = 1,
+        double fontSize = 16.0,
+        ToastGravity gravity,
+        Color backgroundColor,
+        Color textColor,
+      }) {
     Fluttertoast.showToast(
         msg: msg,
         toastLength: toastLength,

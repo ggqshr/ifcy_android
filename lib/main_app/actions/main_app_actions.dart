@@ -93,3 +93,13 @@ class UnknownErrorAction extends InternetAction {
 
 //需要重新登陆的action
 class ShouldReLoginAction {}
+
+///错误的action
+class ErrorAction {
+  String msg;
+  String trace;
+
+  ErrorAction.fromError(Error err)
+      : msg = err.toString(),
+        trace = err.stackTrace.toString();
+}

@@ -4,6 +4,7 @@ export 'task_info_message.dart';
 export 'regular_inspection_task.dart';
 export 'additional_inspection_task.dart';
 export 'fault_inspection_task.dart';
+export 'build.dart';
 
 import 'dart:io';
 import 'package:ifcy/common/dao/dao.dart';

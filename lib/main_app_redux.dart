@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/select_project_reducer.dart';
 import 'package:redux/redux.dart';
@@ -23,7 +24,6 @@ Reducer<String> AlertTextReducer = combineReducers([
   TypedReducer<String, ChangeAlertAction>(changeAlertText),
 ]);
 
-
 String initCompanyNameReducer(String companyName, action) {
   return action.companyName;
 }
@@ -44,6 +44,8 @@ AppState mainAppReducer(AppState state, action) {
   print(action);
   if (action is InternetAction) {
     reactToInternetErrorReducer(null, action);
+  } else if (action is ErrorAction) {
+    Application.showToast("错误${action.msg}",toastLength:Toast.LENGTH_LONG);
   }
   return AppState(
     companyName: CompanyNameReducer(state.companyName, action),
