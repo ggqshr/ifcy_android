@@ -38,10 +38,10 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
   void initState() {
     super.initState();
     viewList
-      ..add(MonitorPage(widget.drawerCall(context)))
-      ..add(FaultPage(widget.drawerCall(context)))
-      ..add(TaskPage(widget.drawerCall(context)))
-      ..add(PersonPage(widget.drawerCall(context)));
+      ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
+      ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
+      ..add(TaskPage(() => Scaffold.of(context).openDrawer()))
+      ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
 
   @override

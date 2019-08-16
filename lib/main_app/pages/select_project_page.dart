@@ -11,7 +11,7 @@ import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/model/select_project_model.dart';
 import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
-import 'package:ifcy/common//utils/loading.dart';
+import 'package:ifcy/common/utils/loading.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';

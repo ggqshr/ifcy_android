@@ -109,107 +109,107 @@ Reducer<List> taskInfoMessagesReducer = combineReducers([
 ]);
 
 List initsupervisiorMessages(
-    List supervisorMessage, InitPageStateAction action) {
+    List supervisorMessage, InitDeviceSupervisorStateAction action) {
   return action.supervisorMessages;
 }
 
 Reducer<List> supervisiorMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initsupervisiorMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initsupervisiorMessages),
 ]);
 
 List initdepartmentMessages(
-    List departmentMessage, InitPageStateAction action) {
+    List departmentMessage, InitDeviceSupervisorStateAction action) {
   return action.departmentMessage;
 }
 
 Reducer<List> departmentMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initdepartmentMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initdepartmentMessages),
 ]);
 
 /// 初始化任务类型信息
-List inittaskCycleMessages(List taskCycleMessage, InitPageStateAction action) {
+List inittaskCycleMessages(List taskCycleMessage, InitDeviceSupervisorStateAction action) {
   return action.taskCycleMessages;
 }
 
 Reducer<List> taskCycleMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(inittaskCycleMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(inittaskCycleMessages),
 ]);
 
 List inittaskExecuteMessages(
-    List taskExecuteMessage, InitPageStateAction action) {
+    List taskExecuteMessage, InitDeviceSupervisorStateAction action) {
   return action.taskExecuteList;
 }
 
 Reducer<List> taskExecuteMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(inittaskExecuteMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(inittaskExecuteMessages),
 ]);
 
 List inittaskDetailListMessages(
-    List taskMessageViewListMessage, InitPageStateAction action) {
+    List taskMessageViewListMessage, InitDeviceSupervisorStateAction action) {
   return action.taskDetailList;
 }
 
 Reducer<List> taskDetailListMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(inittaskDetailListMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(inittaskDetailListMessages),
 ]);
 
 ///离线设备故障消息列表
 List initofflineDeviceFaultMessages(
-    List offlineDeviceFaultMessage, InitPageStateAction action) {
+    List offlineDeviceFaultMessage, InitDeviceSupervisorStateAction action) {
   return action.offlineDeviceFaultList;
 }
 
 Reducer<List> offlineDeviceFaultMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initofflineDeviceFaultMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initofflineDeviceFaultMessages),
 ]);
 
 ///线上设备已确认故障消息列表
 List initonlineDeviceFaultSuredMessages(
-    List onlineDeviceFaultSuredMessage, InitPageStateAction action) {
+    List onlineDeviceFaultSuredMessage, InitDeviceSupervisorStateAction action) {
   return action.onlineDeviceFaultSuredList;
 }
 
 Reducer<List> onlineDeviceFaultSuredMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initonlineDeviceFaultSuredMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initonlineDeviceFaultSuredMessages),
 ]);
 
 ///线上设备待确认故障消息列表
 List initonlineDeviceFaultUnSuredMessages(
-    List onlineDeviceFaultUnSuredMessage, InitPageStateAction action) {
+    List onlineDeviceFaultUnSuredMessage, InitDeviceSupervisorStateAction action) {
   return action.onlineDeviceFaultUnSuredList;
 }
 
 Reducer<List> onlineDeviceFaultUnSuredMessagesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initonlineDeviceFaultUnSuredMessages),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initonlineDeviceFaultUnSuredMessages),
 ]);
 
 ///处理中设备故障申报消息列表
 List initprocessingDeviceFaultMessgaes(
-    List processingDeviceFaultMessgae, InitPageStateAction action) {
+    List processingDeviceFaultMessgae, InitDeviceSupervisorStateAction action) {
   return action.processingDeviceFaultList;
 }
 
 Reducer<List> processingDeviceFaultMessgaesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initprocessingDeviceFaultMessgaes),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initprocessingDeviceFaultMessgaes),
 ]);
 
 ///已处理设备故障申报消息列表
 List initprocessedDeviceFaultMessgaes(
-    List processedDeviceFaultMessgae, InitPageStateAction action) {
+    List processedDeviceFaultMessgae, InitDeviceSupervisorStateAction action) {
   return action.processedDeviceFaultList;
 }
 
 Reducer<List> processedDeviceFaultMessgaesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>(initprocessedDeviceFaultMessgaes),
+  TypedReducer<List, InitDeviceSupervisorStateAction>(initprocessedDeviceFaultMessgaes),
 ]);
 
 
 List initbuildingFloorMessgaes(
-    List buildingFloorMessgae, InitPageStateAction action) {
+    List buildingFloorMessgae, InitDeviceSupervisorStateAction action) {
   return action.buildingFloorList;
 }
 
 Reducer<List> buildingFloorMessgaesReducer = combineReducers([
-  TypedReducer<List, InitPageStateAction>( initbuildingFloorMessgaes),
+  TypedReducer<List, InitDeviceSupervisorStateAction>( initbuildingFloorMessgaes),
 ]);
 
