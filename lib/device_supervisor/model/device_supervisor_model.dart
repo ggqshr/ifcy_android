@@ -18,6 +18,7 @@ class DeviceSupervisorModel {
   List<int> bottomBadgeNumList; // 底部导航栏的徽章数
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
   List<DeviceFaultMessage> deviceFaultMessages;
+
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
   List<SupervisorMessageModel> supervisorMessages; //主管信息
   List<DepartmentMessage> departmentMessages; //维保公司员工信息

@@ -6,7 +6,6 @@ export 'supervisior_message.dart';
 export 'regular_inspection_task.dart';
 export 'additional_inspection_task.dart';
 export 'fault_inspection_task.dart';
-
 export 'offline_device_fault_message.dart';
 export 'online_device_fault_sured_message.dart';
 export 'online_device_fault_unsrued_message.dart';
