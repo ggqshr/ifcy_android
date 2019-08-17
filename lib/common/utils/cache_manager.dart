@@ -3,6 +3,7 @@
 ///@date :2019/8/12 18:42
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:ifcy/common/utils/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
@@ -35,9 +36,8 @@ class IfcyCacheManager extends BaseCacheManager {
   //自定义的请求类
   static Future<FileFetcherResponse> _customHttpGetter(String url,
       {Map<String, String> headers}) async {
-    //todo 应从单例的dio中拿取
-    String realUrl = "http://116.56.140.192/getimg" + url;
-    //todo 使用dio验证token的合法性，然后加入到header中
+    String realUrl = DioUtils.getInstance().getImageUrl+"url";
+    headers['authorization'] = await DioUtils.getInstance().getToken();
     return HttpFileFetcherResponse(await http.get(url, headers: headers));
   }
 }
