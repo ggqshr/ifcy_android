@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/actions/device_supervisor_actions.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
+import 'package:ifcy/device_supervisor/thunk/device_supervisor_thunk.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/pages/device_supvisor_pages.dart';

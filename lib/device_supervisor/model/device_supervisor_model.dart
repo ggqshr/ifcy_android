@@ -13,8 +13,8 @@ part 'task_info_model.dart';
 class DeviceSupervisorModel {
   int faultNum; //故障数
   int taskRate; //任务完成进度
-  List<String> buildingList; //大厦列表
-  String currentBuilding; //当前选中的大厦
+  List<Build> buildingList; //大厦列表
+  Build currentBuilding; //当前选中的大厦
   List<int> bottomBadgeNumList; // 底部导航栏的徽章数
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
   List<DeviceFaultMessage> deviceFaultMessages;
@@ -61,8 +61,8 @@ class DeviceSupervisorModel {
   DeviceSupervisorModel.init()
       : faultNum = 0,
         taskRate = 0,
-        buildingList = ["tt", "tt2"],
-        currentBuilding = "tt",
+        buildingList = [Build(buildId: null, buildName: "所有建筑")],
+        currentBuilding = Build(buildId: null, buildName: "所有建筑"),
         bottomBadgeNumList = [0, 0, 0, 0],
         fireAlarmMessages = [
           FireAlarmMessage(id: "1", title: "你好", content: "火灾"),

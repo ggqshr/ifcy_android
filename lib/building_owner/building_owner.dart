@@ -3,7 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/building_owner/pages/building_owner_pages.dart';
-import 'package:ifcy/common/utils/person_page.dart';
+import 'package:ifcy/common/components/components.dart';
 
 class BuildingOwner extends StatefulWidget {
   String auth;

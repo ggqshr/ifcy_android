@@ -3,6 +3,11 @@ enum TaskStatus {
   uncompleted, //未完成
 }
 
+Map<int, String> taskStatusEnumMap = {
+  0: "完成",
+  1: "未完成",
+};
+
 /// 任务消息的实体类
 class TaskInfoMessage {
   String id;

@@ -42,7 +42,7 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
         automaticallyImplyLeading: false,
         leading:
             IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCall),
-        title: Text("工作台"),
+        title: DeviceStaffAppBarComponent(),
         centerTitle: true,
         bottom: TabBar(
           tabs: tabs,

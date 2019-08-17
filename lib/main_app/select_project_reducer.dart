@@ -1,3 +1,5 @@
+import 'package:ifcy/main_app/model/AppState.dart';
+
 import 'actions/main_app_actions.dart';
 import 'model/select_project_model.dart';
 import 'package:redux/redux.dart';
@@ -17,38 +19,38 @@ int changeProjectIndex(int currentIndex, action) {
 }
 
 int updateIndex(int currentIndex, action) {
-  return (action as OnChangeProject).index;
+  return (action as OnChangeProjectAction).index;
 }
 
 Reducer<int> CurrentProjectIndexReducer = combineReducers([
   TypedReducer<int, LoginSuccessAction>(changeProjectIndex),
-  TypedReducer<int, OnChangeProject>(updateIndex),
+  TypedReducer<int, OnChangeProjectAction>(updateIndex),
 ]);
 
-String changeSelectedProject(String selectedProject, action) {
+Projects changeSelectedProject(Projects selectedProject, action) {
   return (action as LoginSuccessAction).projectList[action.currentProIndex];
 }
 
-String onChangeProject(String selectedProject, action) {
+Projects onChangeProject(Projects selectedProject, action) {
   return action.selectedProject;
 }
 
-Reducer<String> selectProjectReducer = combineReducers([
-  TypedReducer<String, LoginSuccessAction>(changeSelectedProject),
-  TypedReducer<String, OnChangeProject>(onChangeProject),
+Reducer<Projects> selectProjectReducer = combineReducers([
+  TypedReducer<Projects, LoginSuccessAction>(changeSelectedProject),
+  TypedReducer<Projects, OnChangeProjectAction>(onChangeProject),
 ]);
 
 String changeCurrentAuth(String currentAuth, action) {
-  return (action as LoginSuccessAction).project2Auth[action.projectList[0]];
+  return (action as LoginSuccessAction).auth;
 }
 
 String updateAuth(String currentAuth, action) {
-  return (action as OnChangeProject).auth;
+  return (action as OnChangeProjectAction).auth;
 }
 
 Reducer<String> CurrentAuth = combineReducers([
   TypedReducer<String, LoginSuccessAction>(changeCurrentAuth),
-  TypedReducer<String, OnChangeProject>(updateAuth),
+  TypedReducer<String, OnChangeProjectAction>(updateAuth),
 ]);
 
 List updateProjectList(List projectList, action) {

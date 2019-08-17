@@ -1,8 +1,12 @@
 import 'package:ifcy/common/model/model.dart';
 
 part 'regular_inspection_model.dart';
+
 part 'additional_inspection_model.dart';
+
 part 'fault_inspection_model.dart';
+
+part 'device_staff_appbar_model.dart';
 
 ///@author ggq
 ///@description: 维保工作人员的模块model
@@ -12,12 +16,17 @@ class DeviceStaffModel {
   List<RegularInspectionTask> regularTasks; //日常巡查任务
   List<AdditionalInspectionTask> additionalTasks; //补充任务
   List<FaultInspectionTask> faultTasks; // 故障确认任务
+  List<Build> buildingList = [Build(buildId: null, buildName: "所有大厦")]; //大厦列表
+  Build currentBuilding; //当前选中的大厦
 
-  DeviceStaffModel(
-      {this.badgeNumList,
-      this.regularTasks,
-      this.additionalTasks,
-      this.faultTasks});
+  DeviceStaffModel({
+    this.badgeNumList,
+    this.regularTasks,
+    this.additionalTasks,
+    this.faultTasks,
+    this.buildingList,
+    this.currentBuilding,
+  });
 
   DeviceStaffModel.init()
       : badgeNumList = [1, 2],
@@ -29,7 +38,9 @@ class DeviceStaffModel {
         }),
         faultTasks = List.generate(20, (index) {
           return FaultInspectionTask.generate(index.toString());
-        });
+        }),
+        buildingList = [Build(buildId: null, buildName: "所有大厦")],
+        currentBuilding = Build(buildId: null, buildName: "所有大厦");
 }
 
 abstract class TaskInfoViewModel<T> {

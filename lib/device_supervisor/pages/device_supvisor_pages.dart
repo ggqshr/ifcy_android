@@ -9,7 +9,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:charts_flutter/flutter.dart' as chart;
-import 'package:ifcy/common/utils/person_page.dart';
+import 'package:ifcy/common/components/components.dart';
 import 'package:flutter/services.dart';
 import 'package:ifcy/common/model/processed_device_fault_message.dart';
 import 'package:ifcy/common/model/processing_device_fault_message.dart';

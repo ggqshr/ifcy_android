@@ -8,13 +8,15 @@ import 'package:ifcy/common/utils/loading.dart';
 import 'package:redux/redux.dart';
 
 class LoginPage extends StatelessWidget {
+  FocusNode userNameFocusNode;
+  FocusNode passWordFocusNode;
+  String userName;
+  String passWord;
+  TextEditingController userNameController;
+  TextEditingController passWordController;
+
   @override
   Widget build(BuildContext context) {
-    FocusNode userNameFocusNode = new FocusNode();
-    FocusNode passWordFocusNode = new FocusNode();
-    String userName;
-    String passWord;
-
     return StoreConnector<AppState, LoginPageModel>(
       converter: (Store<AppState> store) {
         return LoginPageModel(
@@ -22,14 +24,29 @@ class LoginPage extends StatelessWidget {
             store.dispatch(loginSubmitAction(
               userName,
               passWord,
-//              () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-//                    return SelectProjectPage();
-//                  })),
               () => Application.router.navigateTo(context, Routes.selectPage),
             ));
           },
           alertText: store.state.alertText,
         );
+      },
+      onInit: (store) {
+        passWordController = TextEditingController()
+          ..addListener(() {
+            passWord = passWordController.text;
+          });
+        userNameController = TextEditingController()
+          ..addListener(() {
+            userName = userNameController.text;
+          });
+        userNameFocusNode = new FocusNode();
+        passWordFocusNode = new FocusNode();
+      },
+      onDispose: (store) {
+        passWordController.dispose();
+        userNameController.dispose();
+        userNameFocusNode.dispose();
+        passWordFocusNode.dispose();
       },
       builder: (BuildContext context, vm) {
         return GestureDetector(
@@ -43,9 +60,7 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 TextField(
                   autofocus: true,
-                  onChanged: (v) {
-                    userName = v;
-                  },
+                  controller: userNameController,
                   focusNode: userNameFocusNode,
                   decoration: InputDecoration(
                     labelText: "请输入用户名",
@@ -57,10 +72,8 @@ class LoginPage extends StatelessWidget {
                   keyboardType: TextInputType.text,
                 ),
                 TextField(
-                  onChanged: (v) {
-                    passWord = v;
-                  },
                   focusNode: passWordFocusNode,
+                  controller: passWordController,
                   decoration: InputDecoration(
                     labelText: "请输入密码",
                     hintText: "密码",
@@ -70,7 +83,12 @@ class LoginPage extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.text,
                   obscureText: true,
-                  onSubmitted: (_) => vm.submitCall(userName, passWord),
+                  onSubmitted: (_) {
+                    userNameFocusNode.unfocus();
+                    passWordFocusNode.unfocus();
+                    loadingDialogAction.showLoadingDialog();
+                    vm.submitCall(userName, passWord);
+                  },
                 ),
                 RaisedButton(
                   child: Text("登陆"),

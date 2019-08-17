@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/main_app/main_app.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:ifcy/common/components/components.dart';
+import 'package:provider/provider.dart';
 
 ///@author ggq
 ///@description: 路由
@@ -46,4 +51,5 @@ var regularInspectionHandler =
 var pesonalInfoHandler=Handler(handlerFunc:(context, Map<String, List<String>> params){
   return PersonInfoPage();
 });
+
 

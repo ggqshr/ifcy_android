@@ -1,11 +1,11 @@
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 
-class InitPageStateAction {
+class InitDeviceSupervisorStateAction {
   int faultNum;
   int taskRate;
-  List<String> buildingList;
-  String currentBuilding;
+  List<Build> buildingList;
+  Build currentBuilding;
   List<int> bottomBadgeNumList;
   List<FireAlarmMessage> fireMessage;
   List<DeviceFaultMessage> deviceFaultMessage;
@@ -27,7 +27,7 @@ class InitPageStateAction {
 
   List<BuildingFloorMessage> buildingFloorList; //建筑楼层信息
 
-  InitPageStateAction({
+  InitDeviceSupervisorStateAction({
     this.faultNum,
     this.taskRate,
     this.buildingList,
@@ -49,11 +49,9 @@ class InitPageStateAction {
     this.buildingFloorList,
   });
 
-  InitPageStateAction.init()
+  InitDeviceSupervisorStateAction.init()
       : faultNum = 0,
         taskRate = 23,
-        buildingList = ["tt", "tt2"],
-        currentBuilding = "tt",
         bottomBadgeNumList = [1, 0, 0, 0],
         fireMessage = [
 //          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
@@ -265,8 +263,18 @@ class InitPageStateAction {
         });
 }
 
-class OnChangeBuilding {
-  String buildingName;
+class DeviceSupervisorOnChangeBuilding {
+  Build building;
 
-  OnChangeBuilding(this.buildingName);
+  DeviceSupervisorOnChangeBuilding(this.building);
+}
+
+class DeviceSupervisorInitBuildingList {
+  ///建筑物列表
+  List<Build> buildingList;
+
+  ///当前建筑
+  Build currentBuilding;
+
+  DeviceSupervisorInitBuildingList({this.buildingList, this.currentBuilding});
 }
