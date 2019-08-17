@@ -12,7 +12,7 @@ class DeviceStaffAppBarComponent extends StatelessWidget {
           buildingList: store.state.deviceStaffModel.buildingList,
           currentBuilding: store.state.deviceStaffModel.currentBuilding,
           onChangeBuildCall: (v) {
-            store.dispatch(onChangeBuildingThunkAction);
+            store.dispatch(onChangeBuildingThunkAction(v));
           },
         );
       },

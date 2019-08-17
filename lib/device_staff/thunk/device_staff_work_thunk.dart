@@ -22,7 +22,7 @@ void initBuildList(Store<AppState> store) async {
       store.dispatch(ErrorAction.fromError(err));
     }
     if (err.response != null) {
-      store.dispatch(err.response);
+      store.dispatch(DioUtils.getInstance().parseResponse2action(err.response));
     }
   }).whenComplete(() {});
 }
