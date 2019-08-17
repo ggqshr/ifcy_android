@@ -1,12 +1,12 @@
 ///@author ggq
 ///@description: 统一的网络请求类
 ///@date :2019/8/14 14:39
-///
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:ifcy/common/res/res.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
@@ -15,10 +15,13 @@ import 'package:ifcy/main_app/actions/main_app_actions.dart';
 /// 对于错误处理的逻辑也有封装，如果请求出错，那么使用封装的函数就会返回对应的action
 class DioUtils {
   static Dio _dio;
+  static final String baseUrl =
+      "http://116.56.140.193/business/app/api"; //基础url
   final int connectTimeOut = 5000; //连接超时时间
   final int receiveTimeOut = 100000; //接收超时时间
-  final String baseUrl = "http://116.56.140.193/business/app/api"; //基础url
-  static String _authTokenHeader; //验证需要的token
+  String _authTokenHeader; //验证需要的token
+  final String getImageUrl = baseUrl + "/images/"; //拿去图片的地址
+  BuildContext context;
 
   static DioUtils _dioUtils;
 
@@ -31,6 +34,10 @@ class DioUtils {
       _dioUtils = DioUtils._();
     }
     return _dioUtils;
+  }
+
+  void init({con}){
+    context = con;
   }
 
   //初始化Dio单例
