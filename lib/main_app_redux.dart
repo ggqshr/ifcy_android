@@ -6,6 +6,7 @@ import 'package:redux/redux.dart';
 import 'common/utils/utils.dart';
 import 'device_staff/device_staff_reducer.dart';
 import 'device_supervisor/device_supervisor_redux.dart';
+import 'building_owner/building_owner_reducer.dart';
 import 'main_app/actions/main_app_actions.dart';
 
 String updateUserName(String userName, action) {
@@ -53,9 +54,9 @@ AppState mainAppReducer(AppState state, action) {
     userName: UserNameReduer(state.userName, action),
     alertText: AlertTextReducer(state.alertText, action),
     selectProjectModel: SelectProjectReducer(state.selectProjectModel, action),
-    deviceSupervisorModel:
-        deviceSupervisorModule1Reducer(state.deviceSupervisorModel, action),
+    deviceSupervisorModel: deviceSupervisorModule1Reducer(state.deviceSupervisorModel, action),
     deviceStaffModel: deviceStaffModelReducer(state.deviceStaffModel, action),
+    buildingOwnerModel: buildingOwnerModelReducer(state.buildingOwnerModel,action),
   );
 }
 

@@ -12,6 +12,7 @@ import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/common/model/model.dart';
 
 import 'package:ifcy/building_owner/pages/building_owner_pages.dart';
+import 'package:ifcy/building_owner/model/building_owner_model.dart';
+import 'package:ifcy/building_owner/thunk/building_owner_thunk.dart';
 
-
-//part 'appbar_component.dart';
+part 'building_owner_app_bar_component.dart';

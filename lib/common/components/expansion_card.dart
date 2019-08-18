@@ -20,12 +20,13 @@ class ExpansionCard extends StatelessWidget {
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w700,
+                fontSize: 12
               ),
               textScaleFactor: 1.3,
             ),
             Badge(
               badgeContent: SizedBox(
-                width: 20,
+                //width: 20,
                 child: Text(
                   messageNum.toString(),
                   style: TextStyle(color: Colors.white),
@@ -33,7 +34,7 @@ class ExpansionCard extends StatelessWidget {
                 ),
               ),
               animationType: BadgeAnimationType.scale,
-              shape: BadgeShape.square,
+              shape:BadgeShape.circle,
               showBadge: messageNum != 0,
             ),
           ],

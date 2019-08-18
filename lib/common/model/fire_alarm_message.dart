@@ -6,6 +6,10 @@ class FireAlarmMessage {
 
   FireAlarmMessage({this.id, this.title, this.content});
 
+  FireAlarmMessage.generate(id)
+  :title='火警消息$id',
+  content="火警内容$id";
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

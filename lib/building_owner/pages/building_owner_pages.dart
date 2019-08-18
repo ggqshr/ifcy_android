@@ -15,8 +15,10 @@ import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/common/model/processed_device_fault_message.dart';
 import 'package:ifcy/common/model/processing_device_fault_message.dart';
 import 'package:ifcy/common/components/components.dart';
+import 'package:ifcy/common/model/model.dart';
 
 import 'package:ifcy/building_owner/component/building_owner_component.dart';
+import 'package:ifcy/building_owner/model/building_owner_model.dart';
 
 part 'owner_page.dart';
 part 'employee_page.dart';

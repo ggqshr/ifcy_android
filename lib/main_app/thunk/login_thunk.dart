@@ -14,8 +14,7 @@ ThunkAction<AppState> loginSubmitAction(
       try {
         Response userInfo = await dio.get("/user"); //获取用户信息
         Response projects = await dio.get("/user/projects"); //获取用户参与的所有项目
-        Response auth = await dio
-            .get("/user/projects/role/${projects.data['data'][0]['id']}");
+        Response auth = await dio.get("/user/projects/role/${projects.data['data'][0]['id']}");
         store.dispatch(
           LoginSuccessAction(
             userId: int.parse(userInfo.data['data']['id']),
@@ -32,8 +31,7 @@ ThunkAction<AppState> loginSubmitAction(
         navigatorCall(); //跳转路由
       } on DioError catch (e) {
         if (e.response != null) {
-          store.dispatch(
-              DioUtils.getInstance().parseResponse2action(e.response));
+          store.dispatch(DioUtils.getInstance().parseResponse2action(e.response));
           loadingDialogAction.cancleLoadingDialog();
         }
       }
@@ -43,5 +41,6 @@ ThunkAction<AppState> loginSubmitAction(
     }
     store.dispatch(InitDeviceSupervisorStateAction.init());
     store.dispatch(InitDeviceStaffStateAction.init());
+    store.dispatch(InitOwnerPageStateAction.init());
   };
 }

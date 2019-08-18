@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'common/utils/utils.dart';
 import 'device_staff/model/device_staff_model.dart';
 import 'device_supervisor/model/device_supervisor_model.dart';
+import 'building_owner/model/building_owner_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
 import 'main_app/model/select_project_model.dart';
@@ -21,8 +22,7 @@ void main() {
   Application.router = router;
 
   runApp(MyApp());
-  SystemUiOverlayStyle systemUiOverlayStyle =
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 }
 
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
         selectProjectModel: SelectProjectModel(),
         deviceSupervisorModel: DeviceSupervisorModel.init(),
         deviceStaffModel: DeviceStaffModel.init(),
+        buildingOwnerModel: BuildingOwnerModel.init(),
       ),
       null);
 

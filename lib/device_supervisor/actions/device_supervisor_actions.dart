@@ -259,7 +259,7 @@ class InitDeviceSupervisorStateAction {
           return BuildingFloorMessage.generate(index.toString());
         }),
         supervisorMessages = List.generate(20, (index) {
-          return SupervisorMessageModel.generste(index.toString());
+          return SupervisorMessageModel.generate(index.toString());
         });
 }
 

@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
             store.dispatch(loginSubmitAction(
               userName,
               passWord,
-              () => Application.router.navigateTo(context, Routes.selectPage),
+                  () => Application.router.navigateTo(context, Routes.selectPage),
             ));
           },
           alertText: store.state.alertText,

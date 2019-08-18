@@ -6,10 +6,10 @@ import 'package:ifcy/building_owner/pages/building_owner_pages.dart';
 import 'package:ifcy/common/components/components.dart';
 
 class BuildingOwner extends StatefulWidget {
-  String auth;
+//  String auth;
   Function drawerCall;
 
-  BuildingOwner(this.auth, this.drawerCall);
+  BuildingOwner();
 
   @override
   _BuildingOwnerState createState() => _BuildingOwnerState();
@@ -32,11 +32,11 @@ class _BuildingOwnerState extends State<BuildingOwner> {
   void initState() {
     super.initState();
     viewList
-      ..add(OwnerPage(widget.drawerCall(context)))
-      ..add(FaultPage(widget.drawerCall(context)))
-      ..add(EmployeePage(widget.drawerCall(context)))
-      ..add(FireWarningPage(widget.drawerCall(context)))
-      ..add(PersonPage(widget.drawerCall(context)));
+      ..add(OwnerPage(widget.drawerCall))
+      ..add(FaultPage(widget.drawerCall))
+      ..add(EmployeePage())
+      ..add(FireWarningPage())
+      ..add(PersonPage(widget.drawerCall));
   }
 
   @override
