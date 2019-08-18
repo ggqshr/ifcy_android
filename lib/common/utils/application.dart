@@ -17,15 +17,14 @@ class Application {
   };
 
   ///封装的flutterToast的方法，使用方法一致
-  static void showToast(
-    String msg, {
-        Toast toastLength,
-        int timeInSecForIos = 1,
-        double fontSize = 16.0,
-        ToastGravity gravity,
-        Color backgroundColor,
-        Color textColor,
-      }) {
+  static void showToast(String msg, {
+    Toast toastLength,
+    int timeInSecForIos = 1,
+    double fontSize = 16.0,
+    ToastGravity gravity,
+    Color backgroundColor,
+    Color textColor,
+  }) {
     Fluttertoast.showToast(
         msg: msg,
         toastLength: toastLength,
@@ -34,5 +33,14 @@ class Application {
         gravity: gravity,
         backgroundColor: backgroundColor,
         textColor: textColor);
+  }
+
+  //用来显示警示用的toast
+  static void showWarnToast(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+      toastLength: Toast.LENGTH_LONG,);
   }
 }

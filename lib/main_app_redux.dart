@@ -42,12 +42,12 @@ Reducer<int> UserIdReducer = combineReducers([
 
 AppState mainAppReducer(AppState state, action) {
   print(action);
-  if (action is InternetAction) {
-    reactToInternetErrorReducer(null, action);
-  } else if (action is ErrorAction) {
-    print(action);
-    Application.showToast("错误${action.msg}",toastLength:Toast.LENGTH_LONG);
-  }
+//  if (action is InternetAction) {
+//    reactToInternetErrorReducer(null, action);
+//  } else if (action is ErrorAction) {
+//    print(action);
+//    Application.showToast("错误${action.msg}", toastLength: Toast.LENGTH_LONG);
+//  }
   return AppState(
     companyName: CompanyNameReducer(state.companyName, action),
     userId: UserIdReducer(state.userId, action),
@@ -64,18 +64,22 @@ AppState mainAppReducer(AppState state, action) {
 Reducer<void> reactToInternetErrorReducer = combineReducers([
   TypedReducer<void, InternalErrorAction>(
     (_, action) => Application.showToast(
-        "服务器内部错误 ${action.code} ${action.msg} ${action.statusCode}"),
+        "服务器内部错误 ${action.code} ${action.msg} ${action.statusCode}",
+        toastLength: Toast.LENGTH_LONG),
   ),
   TypedReducer<void, EmptyUserFieldAction>(
     (_, action) => Application.showToast(
-        "空的用户名或者密码 ${action.code} ${action.msg} ${action.statusCode}"),
+        "空的用户名或者密码 ${action.code} ${action.msg} ${action.statusCode}",
+        toastLength: Toast.LENGTH_LONG),
   ),
   TypedReducer<void, IncorrectUserErrorAction>(
     (_, action) => Application.showToast(
-        "用户名密码不正确 ${action.code} ${action.msg} ${action.statusCode}"),
+        "用户名密码不正确 ${action.code} ${action.msg} ${action.statusCode}",
+        toastLength: Toast.LENGTH_LONG),
   ),
   TypedReducer<void, UnknownErrorAction>(
     (_, action) => Application.showToast(
-        "未知错误 ${action.code} ${action.msg} ${action.statusCode}"),
+        "未知错误 ${action.code} ${action.msg} ${action.statusCode}",
+        toastLength: Toast.LENGTH_LONG),
   ),
 ]);

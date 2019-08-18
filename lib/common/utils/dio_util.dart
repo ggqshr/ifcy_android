@@ -13,6 +13,8 @@ import 'package:ifcy/main_app/actions/main_app_actions.dart';
 
 /// 封装的DIO工具类，封装了dio的拦截器，能够在请求失败的情况下自动请求刷新token并将之前的请求结果返回
 /// 对于错误处理的逻辑也有封装，如果请求出错，那么使用封装的函数就会返回对应的action
+/// 服务器端实现的逻辑为：只有状态吗为200的请求是正确的请求，除了200以外的响应都是问题响应，
+/// 而如果响应的状态码不是200，那么就会
 class DioUtils {
   static Dio _dio;
   static final String baseUrl =
@@ -36,7 +38,7 @@ class DioUtils {
     return _dioUtils;
   }
 
-  void init({con}){
+  void init({con}) {
     context = con;
   }
 
@@ -129,7 +131,7 @@ class DioUtils {
   }
 
   //封装的登陆逻辑
-  Future<InternetAction> login(String userName, String passWord) async {
+  Future<IfcyErrorAction> login(String userName, String passWord) async {
     try {
       Response res = await _login(userName, passWord);
       InternetAction action = parseResponse2action(res);
@@ -138,15 +140,37 @@ class DioUtils {
         return action;
       }
       return action;
-    } on DioError catch (e) {
+    } catch (e) {
       print(e);
-      if (e.response != null) {
-        if (e.response.statusCode == 500) {
-          return InternalErrorAction(statusCode: 500, msg: null, code: null);
-        } else if (e.response.statusCode == 400) {
-          return parseResponse2action(e.response);
-        }
+      return parseError2action(e);
+    }
+  }
+
+  ///处理异常的逻辑，包括DioError，以及非DioError
+  ///会将对应的Error转换为Action，然后在redux的中间件中做出响应
+  ///参考[ErrorMiddleware]
+  IfcyErrorAction parseError2action(Error err) {
+    if (err is DioError) {
+      //如果是Dio的错误
+      switch (err.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          return ConnectTimeOutErrorAction();
+          break;
+        case DioErrorType.SEND_TIMEOUT:
+          return SendTimeOutErrorAction();
+          break;
+        case DioErrorType.RECEIVE_TIMEOUT:
+          return ReceiveTimeOutErrorAction();
+          break;
+        case DioErrorType.RESPONSE:
+          return parseResponse2action(err.response);
+        default:
+          print("Unknown Error $err");
+          break;
       }
+    } else {
+      //其他类型的error
+      return ErrorAction.fromError(err);
     }
   }
 
@@ -163,6 +187,7 @@ class DioUtils {
       //服务器内部错误
       return InternalErrorAction.fromResponse(res);
     } else if (res.data['code'] == '110002') {
+      //空的用户名密码
       return EmptyUserFieldAction.fromResponse(res);
     }
     return UnknownErrorAction.fromResponse(res);

@@ -33,8 +33,11 @@ class OnChangeProjectAction {
   OnChangeProjectAction(this.selectedProject, this.index, this.auth);
 }
 
+///ifcy项目的所有错误action的基类
+abstract class IfcyErrorAction {}
+
 //网络错误的基类
-abstract class InternetAction {
+abstract class InternetAction extends IfcyErrorAction {
   final int statusCode; //状态码
   final String msg; //服务器返回的msg
   final String code; //服务器返回的code
@@ -92,10 +95,10 @@ class UnknownErrorAction extends InternetAction {
 }
 
 //需要重新登陆的action
-class ShouldReLoginAction {}
+class ShouldReLoginAction extends IfcyErrorAction {}
 
 ///错误的action
-class ErrorAction {
+class ErrorAction extends IfcyErrorAction {
   String msg;
   String trace;
 
@@ -107,5 +110,13 @@ class ErrorAction {
   String toString() {
     return 'ErrorAction{msg: $msg, trace: $trace}';
   }
-
 }
+
+///连接超时的错误action
+class ConnectTimeOutErrorAction extends InternetAction {}
+
+///接收超时的错误action
+class ReceiveTimeOutErrorAction extends InternetAction {}
+
+///发送超时的错误action
+class SendTimeOutErrorAction extends InternetAction {}
