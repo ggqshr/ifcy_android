@@ -13,6 +13,7 @@ import 'package:ifcy/common/components/components.dart';
 import 'package:flutter/services.dart';
 import 'package:ifcy/common/model/processed_device_fault_message.dart';
 import 'package:ifcy/common/model/processing_device_fault_message.dart';
+import 'package:ifcy/common/utils/utils.dart';
 
 part 'monitor_page.dart';
 part 'fault_page.dart';

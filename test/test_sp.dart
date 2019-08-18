@@ -17,7 +17,7 @@ void main() {
     String prefixPassWord = prefixKey + PASS_WORD;
     setUp(() {
       SharedPreferences.setMockInitialValues(
-          {prefixUserName: "hyj", prefixPassWord: "123456"});
+          {prefixUserName: "hyj1", prefixPassWord: "123456"});
     });
     test(("read"), () async {
       Application.prefs = await SharedPreferences.getInstance();

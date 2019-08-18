@@ -38,10 +38,10 @@ Widget build(BuildContext context) {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.add),
-          onPressed: () =>
-              scan((data) =>
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text(data)))),
+          onPressed: (){
+            Auth.getInstance().reset();
+            DioUtils.getInstance().resetDio();
+          }
         )
       ],
     ),

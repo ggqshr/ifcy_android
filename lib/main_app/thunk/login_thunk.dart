@@ -29,11 +29,9 @@ ThunkAction<AppState> loginSubmitAction(
         );
         loadingDialogAction.cancleLoadingDialog();
         navigatorCall(); //跳转路由
-      } on DioError catch (e) {
-        if (e.response != null) {
-          store.dispatch(DioUtils.getInstance().parseResponse2action(e.response));
-          loadingDialogAction.cancleLoadingDialog();
-        }
+      } catch (e) {
+        store.dispatch(DioUtils.getInstance().parseError2action(e));
+        loadingDialogAction.cancleLoadingDialog();
       }
     } else {
       store.dispatch(res);

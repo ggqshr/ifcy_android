@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ifcy/common/utils/utils.dart';
 
 class LoadingDialogAction {
   BuildContext context;
 
   LoadingDialogAction(this.context);
 
-  showLoadingDialog([String text2show = ""]) {
+  ///用来显示加载过度框的方法，
+  ///[text2show]参数是显示在进度条下方的文字
+  ///[newContext]用来更新context,为了应对之前初始化时的context已经不可用，在能够传入context时可以传入进行更新
+  showLoadingDialog({String text2show = "", BuildContext newContext}) {
+    if (newContext != null) {
+      context = newContext;
+    }
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -35,7 +42,7 @@ class LoadingDialogAction {
   }
 
   cancleLoadingDialog() {
-    Navigator.of(context).pop();
+    Application.navigatorKey.currentState.pop();
   }
 }
 

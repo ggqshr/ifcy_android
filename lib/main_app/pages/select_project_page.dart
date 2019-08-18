@@ -102,7 +102,7 @@ class SelectProjectPage extends StatelessWidget {
                                 Navigator.of(context).pop();
                                 if (vm.selectedProject != groupValue) {
                                   loadingDialogAction
-                                      .showLoadingDialog("切换项目中..");
+                                      .showLoadingDialog(text2show:"切换项目中..");
                                 }
                               },
                             ),
