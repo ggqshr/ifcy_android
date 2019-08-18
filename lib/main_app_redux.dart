@@ -45,6 +45,7 @@ AppState mainAppReducer(AppState state, action) {
   if (action is InternetAction) {
     reactToInternetErrorReducer(null, action);
   } else if (action is ErrorAction) {
+    print(action);
     Application.showToast("错误${action.msg}",toastLength:Toast.LENGTH_LONG);
   }
   return AppState(

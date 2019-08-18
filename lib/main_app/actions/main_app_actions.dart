@@ -102,4 +102,10 @@ class ErrorAction {
   ErrorAction.fromError(Error err)
       : msg = err.toString(),
         trace = err.stackTrace.toString();
+
+  @override
+  String toString() {
+    return 'ErrorAction{msg: $msg, trace: $trace}';
+  }
+
 }
