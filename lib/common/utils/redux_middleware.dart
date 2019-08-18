@@ -16,6 +16,8 @@ class ErrorMiddleware<State> extends MiddlewareClass<State> {
       //如果是网络类型的错误
       if (action is InternetAction) {
         reactToInternetErrorReducer(null, action);
+        //网络错误类的都需要继续传递
+        next(action);
       } else if (action is ErrorAction) {
         print(action);
         Application.showWarnToast("错误${action.msg}");
@@ -34,6 +36,7 @@ class ErrorMiddleware<State> extends MiddlewareClass<State> {
   ErrorMiddleware();
 }
 
+///用来显示出错时提示的函数
 Reducer<void> reactToInternetErrorReducer = combineReducers([
   TypedReducer<void, InternalErrorAction>(
     (_, action) => Application.showWarnToast(
