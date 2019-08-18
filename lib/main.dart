@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
         ),
         home: MainApp(),
         onGenerateRoute: Application.router.generator,
+        navigatorKey: Application.navigatorKey,
       ),
     );
   }

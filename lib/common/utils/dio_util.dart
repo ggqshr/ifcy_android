@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:ifcy/common/res/res.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
+import 'package:ifcy/main_app/pages/login_page.dart';
 
 /// 封装的DIO工具类，封装了dio的拦截器，能够在请求失败的情况下自动请求刷新token并将之前的请求结果返回
 /// 对于错误处理的逻辑也有封装，如果请求出错，那么使用封装的函数就会返回对应的action
@@ -23,7 +24,6 @@ class DioUtils {
   final int receiveTimeOut = 100000; //接收超时时间
   String _authTokenHeader; //验证需要的token
   final String getImageUrl = baseUrl + "/images/"; //拿去图片的地址
-  BuildContext context;
 
   static DioUtils _dioUtils;
 
@@ -36,10 +36,6 @@ class DioUtils {
       _dioUtils = DioUtils._();
     }
     return _dioUtils;
-  }
-
-  void init({con}) {
-    context = con;
   }
 
   //初始化Dio单例
@@ -92,6 +88,10 @@ class DioUtils {
   //获取单例dio
   Dio getDio() {
     return _dio;
+  }
+
+  void resetDio() {
+    _dio = _initDio();
   }
 
   //获取一个新的dio实例

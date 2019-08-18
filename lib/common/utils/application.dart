@@ -4,13 +4,19 @@ import 'package:ifcy/device_staff/device_staff.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+export 'package:fluttertoast/fluttertoast.dart';
 
 ///@author ggq
 ///@description: 整个应用用到的一些工具，比如路由以及sp
 ///@date :2019/8/1 15:21
 class Application {
+  ///用来处理没有context时进行路由跳转
+  static final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+  ///路由跳转
   static Router router;
+  ///全局的SharedPreferences
   static SharedPreferences prefs;
+  ///后台的权限和前台的页面映射逻辑
   static Map<String, Widget> auth2view = {
     "MAINTAIN_MANAGER": DeviceSupervisor(), //维保主管
     "MAINTAIN_WORKER": DeviceStaff(), //维保工作人员
