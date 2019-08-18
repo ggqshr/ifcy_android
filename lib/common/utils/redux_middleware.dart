@@ -3,14 +3,14 @@
 ///@date :2019/8/18 16:04
 
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
+import 'package:ifcy/main_app/pages/login_page.dart';
 import 'utils.dart';
 import 'package:redux/redux.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 
-class ErrorMiddleware extends MiddlewareClass<AppState> {
+class ErrorMiddleware<State> extends MiddlewareClass<State> {
   @override
-  void call(Store<AppState> store, action, NextDispatcher next) {
+  void call(Store<State> store, dynamic action, NextDispatcher next) {
     //如果是错误类型的action
     if (action is IfcyErrorAction) {
       //如果是网络类型的错误
@@ -21,11 +21,17 @@ class ErrorMiddleware extends MiddlewareClass<AppState> {
         Application.showWarnToast("错误${action.msg}");
       } else if (action is ShouldReLoginAction) {
         //跳转登陆页面
+        Application.showWarnToast("重新登陆");
+        Application.navigatorKey.currentState.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LoginPage()),
+            ModalRoute.withName("/ll"));
       }
     } else {
       next(action);
     }
   }
+
+  ErrorMiddleware();
 }
 
 Reducer<void> reactToInternetErrorReducer = combineReducers([

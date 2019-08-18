@@ -18,12 +18,7 @@ void initBuildList(Store<AppState> store) async {
     //todo 拉取所有的任务
     store.dispatch(InitDeviceStaffStateAction.init());
   }).catchError((err) {
-    if (err is! DioError) {
-      store.dispatch(ErrorAction.fromError(err));
-    }
-    if (err.response != null) {
-      store.dispatch(DioUtils.getInstance().parseResponse2action(err.response));
-    }
+    store.dispatch(DioUtils.getInstance().parseError2action(err));
   }).whenComplete(() {});
 }
 

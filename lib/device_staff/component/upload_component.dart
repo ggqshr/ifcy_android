@@ -44,7 +44,7 @@ class UploadComponent extends StatelessWidget {
                       ? null
                       : () async {
                     loadingDialogAction
-                        .showLoadingDialog("上传中");
+                        .showLoadingDialog(text2show:"上传中");
                     await model.upload2server();
                     loadingDialogAction
                         .cancleLoadingDialog();

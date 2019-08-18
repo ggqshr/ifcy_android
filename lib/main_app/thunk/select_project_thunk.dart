@@ -18,18 +18,10 @@ ThunkAction<AppState> ChangeProjectThunkAction(int thisProjectIndex) {
       String thisAuth = res.data['data']['role_type'];
       store.dispatch(
           OnChangeProjectAction(currentProject, thisProjectIndex, thisAuth));
-    }).catchError((err) {
-      if(err is DioError){
-        if (err.response != null) {
-          store.dispatch(
-              DioUtils.getInstance().parseResponse2action(err.response));
-        }
-      }else{
-        store.dispatch(ErrorAction.fromError(err));
-      }
-
-    }).whenComplete(() {
       loadingDialogAction.cancleLoadingDialog(); //在结束时取消加载框
+    }).catchError((err) {
+      loadingDialogAction.cancleLoadingDialog(); //在结束时取消加载框
+      store.dispatch(DioUtils.getInstance().parseError2action(err));
     });
   };
 }

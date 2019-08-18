@@ -62,7 +62,7 @@ class DioUtils {
         } else {
           //如果不成功，同样解锁，然后返回一个应该重新登陆的action;
           dio.unlock();
-          return dio.resolve(ShouldReLoginAction());
+          return DioError(error: ShouldReLoginAction());
         }
         var request = error.response.request;
         request.headers['authorization'] = token;
@@ -152,6 +152,10 @@ class DioUtils {
   IfcyErrorAction parseError2action(Error err) {
     if (err is DioError) {
       //如果是Dio的错误
+      if (err.error is ShouldReLoginAction) {
+        //如果是重新登陆的错误
+        return err.error;
+      }
       switch (err.type) {
         case DioErrorType.CONNECT_TIMEOUT:
           return ConnectTimeOutErrorAction();

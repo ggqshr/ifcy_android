@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("buildssss");
     return StoreConnector<AppState, LoginPageModel>(
       converter: (Store<AppState> store) {
         return LoginPageModel(
@@ -101,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                     onSubmitted: (_) {
                       userNameFocusNode.unfocus();
                       passWordFocusNode.unfocus();
-                      loadingDialogAction.showLoadingDialog();
+                      loadingDialogAction.showLoadingDialog(newContext: context);
                       vm.submitCall(userName, passWord);
                     },
                   ),
@@ -110,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       userNameFocusNode.unfocus();
                       passWordFocusNode.unfocus();
-                      loadingDialogAction.showLoadingDialog();
+                      loadingDialogAction.showLoadingDialog(newContext: context);
                       vm.submitCall(userName, passWord);
                     },
                   ),
