@@ -75,23 +75,6 @@ class InitDeviceSupervisorStateAction {
               content: "任务2",
               status: TaskStatus.uncompleted),
         ],
-        departmentMessage = [
-          DepartmentMessage(id: '01', title: '技术服务部', personnelList: [
-            PersonnelMessage(id: '001', name: '员工1'),
-            PersonnelMessage(id: '002', name: '员工2'),
-            PersonnelMessage(id: '003', name: '员工3'),
-          ]),
-          DepartmentMessage(id: '02', title: '设计预算部', personnelList: [
-            PersonnelMessage(id: '011', name: '员工1'),
-            PersonnelMessage(id: '022', name: '员工2'),
-            PersonnelMessage(id: '033', name: '员工3'),
-          ]),
-          DepartmentMessage(id: '03', title: '总经办', personnelList: [
-            PersonnelMessage(id: '021', name: '员工1'),
-            PersonnelMessage(id: '022', name: '员工2'),
-            PersonnelMessage(id: '023', name: '员工3'),
-          ]),
-        ],
         taskCycleMessages = [
           TaskCycleModel(cycleId: '1', item: '周检'),
           TaskCycleModel(cycleId: '2', item: '半月检'),
@@ -285,7 +268,7 @@ class DeviceSupervisorInitBuildingList {
 class AddTaskPageInitAction {
   List<Build> buildingList;
   List<InspectionSystem> systems;
-  List<DepartmentMessage> departments;
+  List<PersonnelMessage> departments;
 
   AddTaskPageInitAction(
       this.buildingList, this.systems, this.departments);

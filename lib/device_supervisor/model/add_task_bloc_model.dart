@@ -41,10 +41,10 @@ class AddTaskBlocModel with ChangeNotifier {
   List<InspectionSystem> allInspectionSystem;
 
   ///选择的执行人
-  List<DepartmentMessage> selectedPeople;
+  List<PersonnelMessage> selectedPeople;
 
   ///所有的部门和人员，从store中拿取
-  List<DepartmentMessage> allPeople;
+  List<PersonnelMessage> allPeople;
 
   ///任务独有
 
@@ -59,8 +59,8 @@ class AddTaskBlocModel with ChangeNotifier {
   ///第一次任务发起的时间,针对计划
   String firstStartTime;
 
-  ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成
-  String sustainedTime;
+  ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成,暂定单位为天
+  int sustainedTime;
 
   ///当前选择的巡检周期
   TaskCycleModel taskCycleModel;
@@ -71,6 +71,29 @@ class AddTaskBlocModel with ChangeNotifier {
   ///如果是计划的话，可以选择是否立即开始执行
   bool isEnable;
 
+  ///选择建筑的错误提示
+  String buildingErrorMag;
+
+  ///楼层选择的错误提示
+  String floorErrorMsg;
+
+  ///检察系统的错误提示
+  String checkSystemErrorMsg;
+
+  ///第一次任务开始时间错误提示
+  String firstStartTimeErrorMsg;
+
+  ///开始时间错误提示
+  String startTimeErrorMsg;
+
+  ///结束时间错误提示
+  String endTimeErrorMsg;
+
+  ///执行人员错误提示
+  String peopleErrorMsg;
+
+  Map<int, Function> index2validate;
+
   AddTaskBlocModel(
       {this.allBuilding,
       this.allInspectionSystem,
@@ -79,7 +102,90 @@ class AddTaskBlocModel with ChangeNotifier {
       : inspectionType = NewInspectionType.plan,
         stepperIndex = 0,
         currentFloor = [],
-        selectedSystem = [];
+        selectedSystem = [],
+        selectedPeople = [],
+        isEnable = true,
+        noteText = "",
+        taskCycleModel = allTaskCycle[0] {
+    bool step1Validate() {
+      if (currentBuild != null) {
+        buildingErrorMag = null;
+        notifyListeners();
+        return true;
+      } else {
+        buildingErrorMag = "请选择建筑";
+        notifyListeners();
+        return false;
+      }
+    }
+
+    ///阶段2的检查函数
+    bool step2Validate() {
+      if (currentFloor.isNotEmpty &&
+          selectedSystem
+              .map((item) => item.inspectionItem.length)
+              .any((item) => item > 0)) {
+        floorErrorMsg = null;
+        checkSystemErrorMsg = null;
+        notifyListeners();
+        return true;
+      } else {
+        if (currentFloor.isEmpty) {
+          floorErrorMsg = "请选择楼层";
+        }
+        if (!selectedSystem
+            .map((item) => item.inspectionItem.length)
+            .any((item) => item > 0)) {
+          checkSystemErrorMsg = "请选择检查系统";
+        }
+        notifyListeners();
+        return false;
+      }
+    }
+
+    bool step3Validate() {
+      if (inspectionType == NewInspectionType.plan) {
+        if (firstStartTime == null) {
+          firstStartTimeErrorMsg = "请选择第一次任务开始时间";
+        } else {
+          firstStartTimeErrorMsg = null;
+        }
+        notifyListeners();
+        return firstStartTime != null;
+      } else {
+        if (startTime != null && endTime != null) {
+          startTimeErrorMsg = null;
+          endTimeErrorMsg = null;
+        } else {
+          if (startTime == null) {
+            startTimeErrorMsg = "请选择开始时间";
+          }
+          if (endTime == null) {
+            endTimeErrorMsg = "请选择结束时间";
+          }
+        }
+        notifyListeners();
+        return startTime != null && endTime != null;
+      }
+    }
+
+    bool step4Validate() {
+      if (selectedPeople.isNotEmpty) {
+        peopleErrorMsg = null;
+      } else {
+        peopleErrorMsg = "请选择任务执行人员";
+      }
+      notifyListeners();
+      return selectedPeople.isNotEmpty;
+    }
+
+    index2validate = {
+      0: step1Validate,
+      1: step2Validate,
+      2: step3Validate,
+      3: step4Validate,
+    };
+  }
 
   //更改发布任务的类型
   void changeInspectionType(type) {
@@ -106,7 +212,7 @@ class AddTaskBlocModel with ChangeNotifier {
 
   //下一步按钮回调
   void nextStepperCall() {
-    if (stepperIndex < 1) {
+    if (stepperIndex < 3) {
       stepperIndex = stepperIndex + 1;
     } else {
       stepperIndex = 0;
@@ -179,5 +285,65 @@ class AddTaskBlocModel with ChangeNotifier {
       initSelectSystem();
     }
     notifyListeners();
+  }
+
+  ///更改当前任务周期
+  void changeTaskCycle(value) {
+    taskCycleModel = value;
+    notifyListeners();
+  }
+
+  ///设置开始时间
+  void setFirstStartTime(String time) {
+    firstStartTime = time;
+    notifyListeners();
+  }
+
+  ///设置任务执行时间
+  void setSustainedTime(int value) {
+    sustainedTime = value;
+  }
+
+  ///设置开始时间
+  void setStartTime(String time) {
+    startTime = time;
+    notifyListeners();
+  }
+
+  ///设置结束时间
+  void setEndTime(String time) {
+    endTime = time;
+    notifyListeners();
+  }
+
+  ///选人页面全选的回调
+  void selectAllPeople(bool value) {
+    if (value) {
+      selectedPeople = List.from(allPeople);
+    } else {
+      selectedPeople.clear();
+    }
+    notifyListeners();
+  }
+
+  ///改变当前的选中的人
+  void changeSelectPeople(bool value, int index) {
+    if (value) {
+      selectedPeople.add(allPeople[index]);
+    } else {
+      selectedPeople.remove(allPeople[index]);
+    }
+    notifyListeners();
+  }
+
+  ///改变是否立即启用的回调
+  void changeEnable(bool value) {
+    isEnable = value;
+    notifyListeners();
+  }
+
+  ///改变任务备注的回调
+  void changeNoteText(String text) {
+    noteText = text;
   }
 }

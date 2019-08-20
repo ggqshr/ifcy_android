@@ -41,33 +41,33 @@ class PersonnelListComponent extends StatelessWidget {
               height: 1.0,
             ),
           ),
-          DepartmentEmployeeListComponent(),
+//          DepartmentEmployeeListComponent(),
         ],
       ),
     );
   }
 }
 
-class DepartmentEmployeeListComponent extends StatelessWidget {
-  int childCount;
-  @override
-  Widget build(BuildContext context) {
-    return StoreBuilder(builder: (context, Store<AppState> store) {
-      var vm = store.state.deviceSupervisorModel.departmentMessages;
-      return SliverList(
-          delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          if (vm.length > 0) {
-            childCount = vm.length;
-            print(vm);
-            return DepartmentTile(vm[index]);
-          }
-        },
-        childCount: vm.length,
-      ));
-    });
-  }
-}
+//class DepartmentEmployeeListComponent extends StatelessWidget {
+//  int childCount;
+//  @override
+//  Widget build(BuildContext context) {
+//    return StoreBuilder(builder: (context, Store<AppState> store) {
+//      var vm = store.state.deviceSupervisorModel.departmentMessages;
+//      return SliverList(
+//          delegate: SliverChildBuilderDelegate(
+//        (context, index) {
+//          if (vm.length > 0) {
+//            childCount = vm.length;
+//            print(vm);
+//            return DepartmentTile(vm[index]);
+//          }
+//        },
+//        childCount: vm.length,
+//      ));
+//    });
+//  }
+//}
 
 //员工列表
 class DepartmentTile extends StatelessWidget {

@@ -61,5 +61,19 @@ class TaskCycleModel {
     return 'TaskCycleModel{cycleId: $cycleId, item: $item}';
   }
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is TaskCycleModel &&
+              runtimeType == other.runtimeType &&
+              cycleId == other.cycleId &&
+              item == other.item;
+
+  @override
+  int get hashCode =>
+      cycleId.hashCode ^
+      item.hashCode;
+
+
 
 }

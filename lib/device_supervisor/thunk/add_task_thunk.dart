@@ -10,8 +10,7 @@ part of 'device_supervisor_thunk.dart';
 ///3.获取当前所有的检查系统信息
 void initAddTaskData(Store<AppState> store) async {
   //跳过所有建筑
-  List<Build> allBuilding =
-      store.state.deviceSupervisorModel.buildingList;
+  List<Build> allBuilding = store.state.deviceSupervisorModel.buildingList;
   try {
     Dio dio = DioUtils.getInstance().getDio();
     //获取楼层信息
@@ -21,24 +20,12 @@ void initAddTaskData(Store<AppState> store) async {
           .map<FloorEntity>((item) => FloorEntity.fromJson(item))
           .toList();
     }
-    //todo 获取人员信息
-    List<DepartmentMessage> personList = [
-      DepartmentMessage(id: '01', title: '技术服务部', personnelList: [
-        PersonnelMessage(id: '001', name: '员工1'),
-        PersonnelMessage(id: '002', name: '员工2'),
-        PersonnelMessage(id: '003', name: '员工3'),
-      ]),
-      DepartmentMessage(id: '02', title: '设计预算部', personnelList: [
-        PersonnelMessage(id: '011', name: '员工1'),
-        PersonnelMessage(id: '022', name: '员工2'),
-        PersonnelMessage(id: '033', name: '员工3'),
-      ]),
-      DepartmentMessage(id: '03', title: '总经办', personnelList: [
-        PersonnelMessage(id: '021', name: '员工1'),
-        PersonnelMessage(id: '022', name: '员工2'),
-        PersonnelMessage(id: '023', name: '员工3'),
-      ]),
-    ];
+    //获取人员信息
+    Response res = await dio.get(
+        "/project/${store.state.selectProjectModel.selectedProject.projectId}/users/role/MAINTAIN_WORKER");
+    List<PersonnelMessage> personList = res.data['data']
+        .map<PersonnelMessage>((item) => PersonnelMessage.fromJson(item))
+        .toList();
     Response rse = await dio.get("/patrol/check-systems");
     List<InspectionSystem> inspectionSystems = rse.data['data']
         .map<InspectionSystem>((item) => InspectionSystem.fromJson(item))
