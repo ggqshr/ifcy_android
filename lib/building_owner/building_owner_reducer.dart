@@ -13,7 +13,27 @@ BuildingOwnerModel buildingOwnerModelReducer(BuildingOwnerModel state,action)=>
       taskProgress: ownerHomePageFireNumReducer(state.taskProgress,action),
       fireAlarmMessages: ownerHomePageFireAlarmMessagesReducer(state.fireAlarmMessages,action),
       deviceFaultMessages: ownerHomePageDeviceFaultMessagesReducer(state.deviceFaultMessages,action),
+      processedDeviceFaultList: declarePageDeviceFaultDeclareMessagesReducer(state.processedDeviceFaultList,action),
+      projectStaffList: projectStaffMessageReducer(state.projectStaffList,action),
     );
+
+
+Reducer<Build> currentBuildingReducer = combineReducers([
+  ///初始化当前所在大厦
+  TypedReducer<Build, InitOwnerPageAppBarBuildingList>(
+          (_, action) => action.currentBuilding),
+
+  ///更改当前大厦
+  TypedReducer<Build, BuildingOwnerChangeBuildAction >(
+          (_, action) => action.changedBuilding),
+]);
+
+///初始化大厦列表
+Reducer<List> ownerBuildingListReducer = combineReducers([
+  TypedReducer<List, InitOwnerPageAppBarBuildingList>(
+        (_, action) => action.buildingList,
+  ),
+]);
 
 ///初始化设备故障数
 int initOwnerHomePageFaultNum(int faultNum, InitOwnerPageStateAction action) {
@@ -23,7 +43,7 @@ Reducer<int>  ownerHomePageFaultNumReducer = combineReducers([
   TypedReducer<int, InitOwnerPageStateAction>(initOwnerHomePageFaultNum),
 ]);
 
-///初始化火警数
+///初始化火警警报数
 int initOwnerHomePageFireNum(int faultNum, InitOwnerPageStateAction action) {
   return action.fireNum;
 }
@@ -54,19 +74,18 @@ Reducer<List> ownerHomePageDeviceFaultMessagesReducer = combineReducers([
   TypedReducer<List, InitOwnerPageStateAction>(initOwnerHomePageDeviceFaultMessage),
 ]);
 
-///初始化建筑物列表
-Reducer<List> ownerBuildingListReducer = combineReducers([
-  TypedReducer<List, InitOwnerPageAppBarBuildingList>(
-        (_, action) => action.buildingList,
-  ),
+///初始化设备故障申报
+List initDeclarePageDeviceFaultDeclareMessage(List deviceFalutDeclareMessages, InitOwnerPageStateAction action) {
+  return action.processedDeviceFaultList;
+}
+Reducer<List> declarePageDeviceFaultDeclareMessagesReducer = combineReducers([
+  TypedReducer<List, InitOwnerPageStateAction>(initDeclarePageDeviceFaultDeclareMessage),
 ]);
 
-Reducer<Build> currentBuildingReducer = combineReducers([
-  ///初始化建筑物列表
-  TypedReducer<Build, InitOwnerPageAppBarBuildingList>(
-          (_, action) => action.currentBuilding),
-
-  ///更改当前建筑
-  TypedReducer<Build, BuildingOwnerChangeBuildAction >(
-          (_, action) => action.changedBuilding),
+///初始化项目人员列表
+List initProjectStaffMessage(List projectStaffMessages, InitOwnerPageStateAction action) {
+  return action.projectStaffList;
+}
+Reducer<List> projectStaffMessageReducer = combineReducers([
+  TypedReducer<List, InitOwnerPageStateAction>(initProjectStaffMessage),
 ]);

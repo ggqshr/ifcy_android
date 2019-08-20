@@ -6,6 +6,8 @@ class InitOwnerPageStateAction {
   int taskProgress; //巡检进度
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
   List<DeviceFaultMessage> deviceFaultMessages; //设备故障消息
+  List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的故障申报消息
+  List<PersonnelMessage> projectStaffList; //项目人员列表
 
   InitOwnerPageStateAction({
     this.fireNum,
@@ -13,6 +15,8 @@ class InitOwnerPageStateAction {
     this.taskProgress,
     this.fireAlarmMessages,
     this.deviceFaultMessages,
+    this.processedDeviceFaultList,
+    this.projectStaffList,
   });
 
   InitOwnerPageStateAction.init()
@@ -24,6 +28,12 @@ class InitOwnerPageStateAction {
         }),
         deviceFaultMessages = List.generate(5, (index) {
           return DeviceFaultMessage.generate(index.toString());
+        }),
+        processedDeviceFaultList = List.generate(10, (index) {
+          return ProcessedDeviceFaultMessage.generate(index.toString());
+        }),
+        projectStaffList = List.generate(10, (index) {
+          return PersonnelMessage.generate(index.toString());
         });
 
   @override

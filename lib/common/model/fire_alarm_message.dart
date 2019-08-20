@@ -10,6 +10,12 @@ class FireAlarmMessage {
   :title='火警消息$id',
   content="火警内容$id";
 
+
+  @override
+  String toString() {
+    return 'FireAlarmMessage{id: $id, title: $title, content: $content}';
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
