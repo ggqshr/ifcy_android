@@ -17,8 +17,10 @@ class InitDeviceSupervisorStateAction {
   List<TaskDetailModel> taskDetailList; //任务列表信息
 
   List<OfflineDeviceFaultMessage> offlineDeviceFaultList; //离线设备故障消息列表
-  List<OnlineDeviceFaultSuredMessage> onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
-  List<OnlineDeviceFaultUnsuredMessage> onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
+  List<OnlineDeviceFaultSuredMessage>
+      onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
+  List<OnlineDeviceFaultUnsuredMessage>
+      onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
 
   List<SupervisorMessageModel> supervisorMessages; //主管信息列表
 
@@ -277,4 +279,14 @@ class DeviceSupervisorInitBuildingList {
   Build currentBuilding;
 
   DeviceSupervisorInitBuildingList({this.buildingList, this.currentBuilding});
+}
+
+///增加任务页面获取数据action
+class AddTaskPageInitAction {
+  List<Build> buildingList;
+  List<InspectionSystem> systems;
+  List<DepartmentMessage> departments;
+
+  AddTaskPageInitAction(
+      this.buildingList, this.systems, this.departments);
 }

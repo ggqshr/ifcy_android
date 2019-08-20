@@ -15,10 +15,12 @@ export 'processed_device_fault_message.dart';
 export 'processing_device_fault_message.dart';
 
 export 'building_floor_message.dart';
+export 'inspection_system.dart';
 
 import 'dart:io';
 import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/model/regular_inspection_task.dart';
+import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/task_info_message.dart';
@@ -46,6 +48,8 @@ parseEnumType<S>(S type) {
       return processTypeMap[ProcessType.values.indexOf(type)];
     } else if (type is TaskStatus) {
       return taskStatusEnumMap[TaskStatus.values.indexOf(type)];
+    } else if (type is NewInspectionType) {
+      return newInspectionTypeTypeMap[NewInspectionType.values.indexOf(type)];
     }
   } else {
     if (inspectionResultTypeMap.containsValue(type as String)) {
@@ -60,6 +64,10 @@ parseEnumType<S>(S type) {
       int thisIndex = taskStatusEnumMap.keys
           .toList()[taskStatusEnumMap.values.toList().indexOf(type as String)];
       return TaskStatus.values[thisIndex];
+    } else if (newInspectionTypeTypeMap.containsValue(type as String)) {
+      int thisIndex = newInspectionTypeTypeMap.keys.toList()[
+          newInspectionTypeTypeMap.values.toList().indexOf(type as String)];
+      return NewInspectionType.values[thisIndex];
     }
   }
 }
@@ -105,10 +113,10 @@ abstract class FaultInfo {
   String deviceName; //故障设备名称
   String deviceType; //故障设备类型
   String deviceLocation; //故障设备位置
-  String alarmTimeFirst;//线上设备首次报警时间
-  String alarmTimeLast;//线上设备最后一次报警时间
-  String deviceFaultTime;//设备故障时间
-  String excutor;//线上设备故障确认者
+  String alarmTimeFirst; //线上设备首次报警时间
+  String alarmTimeLast; //线上设备最后一次报警时间
+  String deviceFaultTime; //设备故障时间
+  String excutor; //线上设备故障确认者
 
   FaultInfo({
     this.id,

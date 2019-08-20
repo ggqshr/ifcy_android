@@ -5,6 +5,12 @@ class TaskAddComponent extends StatefulWidget {
   _TaskAddComponentState createState() => _TaskAddComponentState();
 }
 
+/// 计划的字段：周期，第一次的时间，每一次计划的执行时间，是否启用
+/// 任务的字段：开始时间，结束时间，
+/// 1.类型：计划还是任务，选大厦，
+/// 2.选楼层和检察系统，检查项
+/// 3.计划：周期，第一次开始时间，任务：开始和结束时间
+/// 4.选人，任务备注可选，如果是计划可选是否开始执行
 class _TaskAddComponentState extends State<TaskAddComponent> {
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
@@ -168,7 +174,7 @@ class _taskCircleChooseComponentState extends State<taskCircleChooseComponent> {
   }
 }
 
-////下拉选择建筑和楼层组件
+///下拉选择建筑和楼层组件
 class buildingChooseComponent extends StatefulWidget {
   @override
   _buildingChooseComponentState createState() =>
@@ -195,9 +201,8 @@ class _buildingChooseComponentState extends State<buildingChooseComponent> {
           List<String> buildingFloorItems = vm.buildingFloorList.map((i) {
             return i.buildName.toString();
           }).toList();
-          floorList=vm.buildingFloorList[selectedIndex].floorList;
+          floorList = vm.buildingFloorList[selectedIndex].floorList;
           return Container(
-
               padding: EdgeInsets.all(2.0),
               child: Column(
                 children: <Widget>[
@@ -220,7 +225,7 @@ class _buildingChooseComponentState extends State<buildingChooseComponent> {
                             (String dropDownStringItem) {
                           return DropdownMenuItem<String>(
                             value: dropDownStringItem,
-                            child: Text(dropDownStringItem+"         "),
+                            child: Text(dropDownStringItem + "         "),
                           );
                         }).toList(),
                         value: buildingFloorItems[selectedIndex],
@@ -241,8 +246,17 @@ class _buildingChooseComponentState extends State<buildingChooseComponent> {
                         itemCount: floorList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return new ListTile(
-                            title: Text("${floorList[index].floorName}",style: TextStyle(fontSize: 14),),
-                            trailing: IconButton(icon: Icon(Icons.check_circle,color: Colors.green,size: 14,), onPressed: null),
+                            title: Text(
+                              "${floorList[index].floorName}",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            trailing: IconButton(
+                                icon: Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 14,
+                                ),
+                                onPressed: null),
                           );
                         }),
                   ),

@@ -98,8 +98,9 @@ void main() {
           .runtimeType);
     });
     test("testcmp", () async {
-      var ss = await DioUtils.getInstance().login("ggq", "123456");
-      print(await DioUtils.getInstance().getToken());
+      var a = {1,2,3};
+      var b = {1,2,4};
+      print(a.difference(b).isEmpty);
     });
   });
 

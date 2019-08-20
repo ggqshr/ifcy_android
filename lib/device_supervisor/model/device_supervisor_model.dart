@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/model/online_device_fault_sured_message.dart';
 import 'package:ifcy/common/model/online_device_fault_unsrued_message.dart';
@@ -9,6 +10,8 @@ part 'fire_alarm_model.dart';
 part 'device_fault_model.dart';
 
 part 'task_info_model.dart';
+
+part 'add_task_bloc_model.dart';
 
 class DeviceSupervisorModel {
   int faultNum; //故障数
@@ -27,13 +30,17 @@ class DeviceSupervisorModel {
   List<TaskDetailModel> taskDetailList; //任务详情列表
 
   List<OfflineDeviceFaultMessage> offlineDeviceFaultList; //离线故障设备列表
-  List<OnlineDeviceFaultSuredMessage>onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
-  List<OnlineDeviceFaultUnsuredMessage>onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
+  List<OnlineDeviceFaultSuredMessage>
+      onlineDeviceFaultSuredList; //线上已确认故障设备消息列表
+  List<OnlineDeviceFaultUnsuredMessage>
+      onlineDeviceFaultUnSuredList; //线上待确认故障设备消息列表
 
   List<ProcessingDeviceFaultMessage> processingDeviceFaultList; //处理中的设备故障申报
   List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的设备故障申报
 
   List<BuildingFloorMessage> buildingFloorList; //建筑以及楼层信息
+
+  List<InspectionSystem> inspectionSystems; //巡检系统数据
 
   DeviceSupervisorModel({
     this.faultNum,
@@ -55,6 +62,7 @@ class DeviceSupervisorModel {
     this.processedDeviceFaultList,
     this.processingDeviceFaultList,
     this.buildingFloorList,
+    this.inspectionSystems,
   });
 
   DeviceSupervisorModel.init()
@@ -172,12 +180,10 @@ class TaskAddViewModel {
   });
 }
 
-
 ///任务执行视图类
 class TaskListViewModel {
-
-  List<TaskCycleModel> taskCycleList;//任务执行周期
-  List<TaskExecuteModel> taskExecuteList;//任务执行情况统图表
+  List<TaskCycleModel> taskCycleList; //任务执行周期
+  List<TaskExecuteModel> taskExecuteList; //任务执行情况统图表
   List<TaskDetailModel> taskDetailList; //任务执行详细列表
   Function onRefreshCall;
 

@@ -69,7 +69,7 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
             onPressed: () {
               Navigator.push(
                 context,
-                new MaterialPageRoute(builder: (context) => TaskAddComponent()),
+                new MaterialPageRoute(builder: (context) => AddTaskPage()),
               );
             },
           ),
