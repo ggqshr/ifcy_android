@@ -36,7 +36,7 @@ class _AddTaskPageState extends State<AddTaskPage>
         builder: (context, store) {
           DeviceSupervisorModel deviceSupervisorModel =
               store.state.deviceSupervisorModel;
-          if (model == null || model.allInspectionSystem == null) {
+          if (model == null || model.allInspectionSystem == null || model.allPeople == null) {
             model = AddTaskBlocModel(
                 allBuilding:
                     deviceSupervisorModel.buildingList.skip(1).toList(),
@@ -62,6 +62,16 @@ class _AddTaskPageState extends State<AddTaskPage>
                             title: Text("第一步"),
                             content: ListView(
                               children: <Widget>[
+                                ListTile(
+                                  title: Text("任务名"),
+                                  subtitle: TextField(
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(hintText: "任务或计划名称",errorText: vm.nameErrorMsg),
+                                    onChanged: (value) {
+                                      vm.changeName(value);
+                                    },
+                                  ),
+                                ),
                                 ListTile(
                                   title: Text("选择类型"),
                                   subtitle: Row(

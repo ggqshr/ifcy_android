@@ -16,6 +16,9 @@ Map<int, String> newInspectionTypeTypeMap = {
 
 ///发布计划或者任务页面的bloc逻辑类
 class AddTaskBlocModel with ChangeNotifier {
+  ///任务名称
+  String name;
+
   ///Stepper的下标
   int stepperIndex;
 
@@ -74,6 +77,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///选择建筑的错误提示
   String buildingErrorMag;
 
+  ///任务名称错误提示
+  String nameErrorMsg;
+
   ///楼层选择的错误提示
   String floorErrorMsg;
 
@@ -108,15 +114,19 @@ class AddTaskBlocModel with ChangeNotifier {
         noteText = "",
         taskCycleModel = allTaskCycle[0] {
     bool step1Validate() {
-      if (currentBuild != null) {
+      if (currentBuild != null && name != null) {
         buildingErrorMag = null;
-        notifyListeners();
-        return true;
+        nameErrorMsg = null;
       } else {
-        buildingErrorMag = "请选择建筑";
-        notifyListeners();
-        return false;
+        if (currentBuild == null) {
+          buildingErrorMag = "请选择建筑";
+        }
+        if (name == null) {
+          nameErrorMsg = "请输入任务或计划名";
+        }
       }
+      notifyListeners();
+      return currentBuild != null && name != null;
     }
 
     ///阶段2的检查函数
@@ -345,5 +355,10 @@ class AddTaskBlocModel with ChangeNotifier {
   ///改变任务备注的回调
   void changeNoteText(String text) {
     noteText = text;
+  }
+
+  ///更改任务名
+  void changeName(String text) {
+    name = text;
   }
 }
