@@ -1,5 +1,4 @@
-import 'dart:math';
-import 'model.dart';
+part of "model.dart";
 
 ///线下设备故障消息的数据model
 

@@ -1,5 +1,4 @@
-import 'dart:math';
-import 'model.dart';
+part of "model.dart";
 
 ///已确定的线上设备故障消息
 class OnlineDeviceFaultSuredMessage extends FaultInfo {

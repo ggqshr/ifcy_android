@@ -1,30 +1,44 @@
-export 'fire_alarm_message.dart';
-export 'device_fault_message.dart';
-export 'task_info_message.dart';
-export 'personnel_message.dart';
-export 'supervisior_message.dart';
-export 'regular_inspection_task.dart';
-export 'additional_inspection_task.dart';
-export 'fault_inspection_task.dart';
-export 'build.dart';
+library models;
 
-export 'offline_device_fault_message.dart';
-export 'online_device_fault_sured_message.dart';
-export 'online_device_fault_unsrued_message.dart';
-export 'processed_device_fault_message.dart';
-export 'processing_device_fault_message.dart';
-
-export 'building_floor_message.dart';
-export 'inspection_system.dart';
-
+import 'dart:math';
 import 'dart:io';
 import 'package:ifcy/common/dao/dao.dart';
-import 'package:ifcy/common/model/regular_inspection_task.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/foundation.dart';
-import 'package:ifcy/common/model/task_info_message.dart';
 import 'dart:convert';
+part 'model.g.dart';
+part 'fire_alarm_message.dart';
+
+part 'device_fault_message.dart';
+
+part 'task_info_message.dart';
+
+part 'personnel_message.dart';
+
+part 'supervisior_message.dart';
+
+part 'regular_inspection_task.dart';
+
+part 'fault_inspection_task.dart';
+
+part 'offline_device_fault_message.dart';
+
+part 'online_device_fault_sured_message.dart';
+
+part 'online_device_fault_unsrued_message.dart';
+
+part 'processed_device_fault_message.dart';
+
+part 'processing_device_fault_message.dart';
+
+part 'building_floor_message.dart';
+
+part 'inspection_system.dart';
+
+part "additional_inspection_task.dart";
+
+part 'build.dart';
 
 ///检查结果的类型
 enum InspectionResultType {

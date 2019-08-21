@@ -1,3 +1,4 @@
+part of "model.dart";
 ///故障消息实体类
 class DeviceFaultMessage {
   String id;

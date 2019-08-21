@@ -1,7 +1,7 @@
 ///@author ggq
 ///@description: 检查系统实体类
 ///@date :2019/8/19 17:47
-
+part of "model.dart";
 ///检查系统实体类
 class InspectionSystem {
   ///id

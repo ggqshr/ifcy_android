@@ -1,6 +1,4 @@
-import 'dart:math';
-import 'model.dart';
-
+part of "model.dart";
 
 class ProcessedDeviceFaultMessage extends FaultInfo {
   String declareNum;//申报编号

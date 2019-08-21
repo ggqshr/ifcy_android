@@ -1,3 +1,4 @@
+part of "model.dart";
 ///火灾消息实体类
 class FireAlarmMessage {
   String id;

@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'model.dart';
+part of "model.dart";
 
 ///@author ggq
 ///@description: 故障确认任务的数据model

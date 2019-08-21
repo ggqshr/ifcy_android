@@ -1,3 +1,4 @@
+part of "model.dart";
 enum TaskStatus {
   completed, //已完成
   uncompleted, //未完成

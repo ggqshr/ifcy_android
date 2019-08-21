@@ -1,4 +1,4 @@
-
+part of "model.dart";
 class BuildingFloorMessage{
   String id;
   String buildName;

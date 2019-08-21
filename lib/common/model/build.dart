@@ -1,7 +1,7 @@
 ///@author ggq
 ///@description: 和建筑相关的实体类
 ///@date :2019/8/16 14:18
-
+part of "model.dart";
 ///建筑的实体类
 class Build {
   String buildId; //建筑id

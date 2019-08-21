@@ -1,4 +1,4 @@
-
+part of "model.dart";
 /// 部门实体类
 class DepartmentMessage {
   String id;

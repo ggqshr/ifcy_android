@@ -1,12 +1,5 @@
-import 'dart:io';
-import 'dart:math';
+part of "model.dart";
 
-import 'package:flutter/foundation.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:ifcy/common/dao/dao.dart';
-import 'model.dart';
-
-part 'regular_inspection_task.g.dart';
 
 ///@author ggq
 ///@description: 定期巡检任务的数据model

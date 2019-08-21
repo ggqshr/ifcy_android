@@ -1,4 +1,4 @@
-
+part of "model.dart";
 class SupervisorMessageModel {
   String name;
   String id;

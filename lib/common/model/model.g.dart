@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'regular_inspection_task.dart';
+part of models;
 
 // **************************************************************************
 // JsonSerializableGenerator

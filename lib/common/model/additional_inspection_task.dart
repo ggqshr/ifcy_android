@@ -1,6 +1,5 @@
-import 'dart:math';
+part of 'model.dart';
 
-import 'model.dart';
 
 ///@author ggq
 ///@description: 补充巡检任务的数据model

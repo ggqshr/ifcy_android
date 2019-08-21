@@ -1,6 +1,4 @@
-import 'dart:math';
-import 'model.dart';
-
+part of "model.dart";
 
 ///处理中故障申报信息
 

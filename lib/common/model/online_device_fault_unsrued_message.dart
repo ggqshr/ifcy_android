@@ -1,5 +1,4 @@
-import 'dart:math';
-import 'model.dart';
+part of "model.dart";
 
 class OnlineDeviceFaultUnsuredMessage extends FaultInfo {
   OnlineDeviceFaultUnsuredMessage(
