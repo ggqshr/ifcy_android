@@ -359,12 +359,12 @@ class _AddTaskPageState extends State<AddTaskPage>
                                   ),
                                   vm,
                                 ),
-                                if (vm.inspectionType == NewInspectionType.plan)
-                                  SwitchListTile(
-                                    title: Text("是否立即启用"),
-                                    value: vm.isEnable,
-                                    onChanged: vm.changeEnable,
-                                  ),
+//                                if (vm.inspectionType == NewInspectionType.plan)
+//                                  SwitchListTile(
+//                                    title: Text("是否立即启用"),
+//                                    value: vm.isEnable,
+//                                    onChanged: vm.changeEnable,
+//                                  ),
                                 ListTile(
                                   title: Text("备注"),
                                   subtitle: TextField(
