@@ -14,13 +14,10 @@ Map<int, String> newInspectionTypeTypeMap = {
   1: "任务",
 };
 
-///发布计划或者任务页面的bloc逻辑类
-class AddTaskBlocModel with ChangeNotifier {
+///计划或者任务的实体类
+class TaskPlanEntity {
   ///任务名称
   String name;
-
-  ///Stepper的下标
-  int stepperIndex;
 
   ///巡检类型
   NewInspectionType inspectionType;
@@ -31,23 +28,14 @@ class AddTaskBlocModel with ChangeNotifier {
   ///当前选择的建筑
   Build currentBuild;
 
-  ///所有建筑的列表,需要从store中拿去,在初始化时还需加载楼层列表
-  List<Build> allBuilding;
-
   ///当前选择的楼层
   List<FloorEntity> currentFloor;
 
   ///选择的检查系统
   List<InspectionSystem> selectedSystem;
 
-  ///所有的检查系统,从store中拿取
-  List<InspectionSystem> allInspectionSystem;
-
   ///选择的执行人
   List<PersonnelMessage> selectedPeople;
-
-  ///所有的部门和人员，从store中拿取
-  List<PersonnelMessage> allPeople;
 
   ///任务独有
 
@@ -67,6 +55,55 @@ class AddTaskBlocModel with ChangeNotifier {
 
   ///当前选择的巡检周期
   TaskCycleModel taskCycleModel;
+
+  ///如果是计划的话，可以选择是否立即开始执行
+  bool isEnable;
+
+  TaskPlanEntity.init(TaskCycleModel cycleModel) {
+    inspectionType = NewInspectionType.plan;
+    currentFloor = [];
+    selectedSystem = [];
+    selectedPeople = [];
+    isEnable = true;
+    noteText = "";
+    taskCycleModel = cycleModel;
+    sustainedTime = 1;
+  }
+}
+
+///发布计划或者任务页面的bloc逻辑类
+class AddTaskBlocModel with ChangeNotifier {
+  TaskPlanEntity model;
+
+
+  ///Stepper的下标
+  int stepperIndex;
+
+  ///所有建筑的列表,需要从store中拿去,在初始化时还需加载楼层列表
+  List<Build> allBuilding;
+
+
+  ///所有的检查系统,从store中拿取
+  List<InspectionSystem> allInspectionSystem;
+
+  ///所有的部门和人员，从store中拿取
+  List<PersonnelMessage> allPeople;
+
+  ///任务独有
+
+  ///开始时间
+  DateTime startTime;
+
+  ///结束时间
+  DateTime endTime;
+
+  ///计划独有
+
+  ///第一次任务发起的时间,针对计划
+  DateTime firstStartTime;
+
+  ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成,暂定单位为天
+  int sustainedTime;
 
   ///所有的巡检周期,需要从store中拿去
   List<TaskCycleModel> allTaskCycle;
@@ -105,34 +142,28 @@ class AddTaskBlocModel with ChangeNotifier {
       this.allInspectionSystem,
       this.allPeople,
       this.allTaskCycle})
-      : inspectionType = NewInspectionType.plan,
-        stepperIndex = 0,
-        currentFloor = [],
-        selectedSystem = [],
-        selectedPeople = [],
-        isEnable = true,
-        noteText = "",
-        taskCycleModel = allTaskCycle[0],sustainedTime=1 {
+      : stepperIndex = 0 {
+    model = TaskPlanEntity.init(allTaskCycle[0]);
     bool step1Validate() {
-      if (currentBuild != null && name != null) {
+      if (model.currentBuild != null && model.name != null) {
         buildingErrorMag = null;
         nameErrorMsg = null;
       } else {
-        if (currentBuild == null) {
+        if (model.currentBuild == null) {
           buildingErrorMag = "请选择建筑";
         }
-        if (name == null) {
+        if (model.name == null) {
           nameErrorMsg = "请输入任务或计划名";
         }
       }
       notifyListeners();
-      return currentBuild != null && name != null;
+      return model.currentBuild != null && model.name != null;
     }
 
     ///阶段2的检查函数
     bool step2Validate() {
-      if (currentFloor.isNotEmpty &&
-          selectedSystem
+      if (model.currentFloor.isNotEmpty &&
+          model.selectedSystem
               .map((item) => item.inspectionItem.length)
               .any((item) => item > 0)) {
         floorErrorMsg = null;
@@ -140,10 +171,10 @@ class AddTaskBlocModel with ChangeNotifier {
         notifyListeners();
         return true;
       } else {
-        if (currentFloor.isEmpty) {
+        if (model.currentFloor.isEmpty) {
           floorErrorMsg = "请选择楼层";
         }
-        if (!selectedSystem
+        if (!model.selectedSystem
             .map((item) => item.inspectionItem.length)
             .any((item) => item > 0)) {
           checkSystemErrorMsg = "请选择检查系统";
@@ -154,7 +185,7 @@ class AddTaskBlocModel with ChangeNotifier {
     }
 
     bool step3Validate() {
-      if (inspectionType == NewInspectionType.plan) {
+      if (model.inspectionType == NewInspectionType.plan) {
         if (firstStartTime == null) {
           firstStartTimeErrorMsg = "请选择第一次任务开始时间";
         } else {
@@ -180,13 +211,13 @@ class AddTaskBlocModel with ChangeNotifier {
     }
 
     bool step4Validate() {
-      if (selectedPeople.isNotEmpty) {
+      if (model.selectedPeople.isNotEmpty) {
         peopleErrorMsg = null;
       } else {
         peopleErrorMsg = "请选择任务执行人员";
       }
       notifyListeners();
-      return selectedPeople.isNotEmpty;
+      return model.selectedPeople.isNotEmpty;
     }
 
     index2validate = {
@@ -199,14 +230,14 @@ class AddTaskBlocModel with ChangeNotifier {
 
   //更改发布任务的类型
   void changeInspectionType(type) {
-    inspectionType = parseEnumType(type);
+    model.inspectionType = parseEnumType(type);
     notifyListeners();
   }
 
   ///改变当前选中的建筑,同时也需将选择的楼层清空
   void changeCurrentBuilding(Build build) {
-    currentBuild = build;
-    currentFloor.clear();
+    model.currentBuild = build;
+    model.currentFloor.clear();
     notifyListeners();
   }
 
@@ -239,9 +270,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///改变当前选中的楼层
   void changeCurrentFloor(bool value, int index) {
     if (value) {
-      currentFloor.add(currentBuild.floors[index]);
+      model.currentFloor.add(model.currentBuild.floors[index]);
     } else {
-      currentFloor.remove(currentBuild.floors[index]);
+      model.currentFloor.remove(model.currentBuild.floors[index]);
     }
     notifyListeners();
   }
@@ -249,9 +280,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///楼层的全选按钮
   void changAllFloor(bool value) {
     if (value) {
-      currentFloor = List.from(currentBuild.floors);
+      model.currentFloor = List.from(model.currentBuild.floors);
     } else {
-      currentFloor.clear();
+      model.currentFloor.clear();
     }
     notifyListeners();
   }
@@ -259,7 +290,7 @@ class AddTaskBlocModel with ChangeNotifier {
   ///当点击选择系统按钮时调用
   ///按照所有的系统的布局进行初始化
   void initSelectSystem() {
-    selectedSystem = allInspectionSystem
+    model.selectedSystem = allInspectionSystem
         .map((item) => InspectionSystem.copyNullItemList(item))
         .toList();
   }
@@ -267,10 +298,10 @@ class AddTaskBlocModel with ChangeNotifier {
   ///更改选择系统的选择框回掉
   void changeSelectSystem(bool value, int index) {
     if (value) {
-      selectedSystem[index].inspectionItem =
+      model.selectedSystem[index].inspectionItem =
           List.from(allInspectionSystem[index].inspectionItem);
     } else {
-      selectedSystem[index].inspectionItem.clear();
+      model.selectedSystem[index].inspectionItem.clear();
     }
     notifyListeners();
   }
@@ -278,9 +309,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///改变当个检查项目的选择状态
   void changeSelectCheckItem(bool value, int sysIndex, InspectionItem item) {
     if (value) {
-      selectedSystem[sysIndex].inspectionItem.add(item);
+      model.selectedSystem[sysIndex].inspectionItem.add(item);
     } else {
-      selectedSystem[sysIndex].inspectionItem.remove(item);
+      model.selectedSystem[sysIndex].inspectionItem.remove(item);
     }
     notifyListeners();
   }
@@ -288,7 +319,7 @@ class AddTaskBlocModel with ChangeNotifier {
   ///选择所有的检查系统
   void selectAllSystem(bool value) {
     if (value) {
-      selectedSystem = allInspectionSystem
+      model.selectedSystem = allInspectionSystem
           .map((item) => InspectionSystem.copyFull(item))
           .toList();
     } else {
@@ -299,7 +330,7 @@ class AddTaskBlocModel with ChangeNotifier {
 
   ///更改当前任务周期
   void changeTaskCycle(value) {
-    taskCycleModel = value;
+    model.taskCycleModel = value;
     notifyListeners();
   }
 
@@ -329,9 +360,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///选人页面全选的回调
   void selectAllPeople(bool value) {
     if (value) {
-      selectedPeople = List.from(allPeople);
+      model.selectedPeople = List.from(allPeople);
     } else {
-      selectedPeople.clear();
+      model.selectedPeople.clear();
     }
     notifyListeners();
   }
@@ -339,9 +370,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///改变当前的选中的人
   void changeSelectPeople(bool value, int index) {
     if (value) {
-      selectedPeople.add(allPeople[index]);
+      model.selectedPeople.add(allPeople[index]);
     } else {
-      selectedPeople.remove(allPeople[index]);
+      model.selectedPeople.remove(allPeople[index]);
     }
     notifyListeners();
   }
@@ -354,15 +385,16 @@ class AddTaskBlocModel with ChangeNotifier {
 
   ///改变任务备注的回调
   void changeNoteText(String text) {
-    noteText = text;
+    model.noteText = text;
   }
 
   ///更改任务名
   void changeName(String text) {
-    name = text;
+    model.name = text;
   }
+
   ///向服务器提交任务
-  void submitData(Function submitCall){
+  void submitData(Function submitCall) {
     submitCall(this);
   }
 }

@@ -73,7 +73,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                           Radio(
                                             value: item,
                                             groupValue: parseEnumType(
-                                                vm.inspectionType),
+                                                vm.model.inspectionType),
                                             onChanged:
                                                 model.changeInspectionType,
                                           ),
@@ -93,7 +93,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                       );
                                     }).toList(),
                                     onChanged: vm.changeCurrentBuilding,
-                                    value: vm.currentBuild,
+                                    value: vm.model.currentBuild,
                                     hint: Text("请选择大厦"),
                                     decoration: InputDecoration(
                                         errorText: vm.buildingErrorMag),
@@ -127,7 +127,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                     trailing: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Text("已选${vm.currentFloor.length}层"),
+                                        Text("已选${vm.model.currentFloor.length}层"),
                                         SizedBox(
                                           width: 20,
                                         ),
@@ -159,13 +159,13 @@ class _AddTaskPageState extends State<AddTaskPage>
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         Text(
-                                            "已选${vm.selectedSystem.map((item) => item.inspectionItem.length).where((item) => item > 0).length}项"),
+                                            "已选${vm.model.selectedSystem.map((item) => item.inspectionItem.length).where((item) => item > 0).length}项"),
                                         SizedBox(
                                           width: 20,
                                         ),
                                         RaisedButton(
                                           onPressed: () {
-                                            if (vm.selectedSystem.isEmpty) {
+                                            if (vm.model.selectedSystem.isEmpty) {
                                               vm.initSelectSystem();
                                             }
                                             showModalBottomSheet(
@@ -192,7 +192,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                             ),
                             isActive: true,
                           ),
-                          if (vm.inspectionType == NewInspectionType.plan)
+                          if (vm.model.inspectionType == NewInspectionType.plan)
                             Step(
                               isActive: true,
                               title: Text("第三步"),
@@ -209,7 +209,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                         );
                                       }).toList(),
                                       onChanged: vm.changeTaskCycle,
-                                      value: vm.taskCycleModel,
+                                      value: vm.model.taskCycleModel,
                                     ),
                                   ),
                                   ChildWithInputDecorator(
@@ -258,7 +258,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                 shrinkWrap: true,
                               ),
                             ),
-                          if (vm.inspectionType == NewInspectionType.task)
+                          if (vm.model.inspectionType == NewInspectionType.task)
                             Step(
                               isActive: true,
                               title: Text("第三步"),
@@ -335,7 +335,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                     trailing: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Text("已选${vm.selectedPeople.length}人"),
+                                        Text("已选${vm.model.selectedPeople.length}人"),
                                         SizedBox(
                                           width: 20,
                                         ),
@@ -467,19 +467,19 @@ class SelectFloorPage extends StatelessWidget {
                     title: Text("全选"),
                     onChanged: vm.changAllFloor,
                     value:
-                        vm.currentFloor.length == vm.currentBuild.floors.length,
+                        vm.model.currentFloor.length == vm.model.currentBuild.floors.length,
                   );
                 }
                 return CheckboxListTile(
-                  title: Text(vm.currentBuild.floors[index - 1].name),
-                  value: vm.currentFloor
-                      .contains(vm.currentBuild.floors[index - 1]),
+                  title: Text(vm.model.currentBuild.floors[index - 1].name),
+                  value: vm.model.currentFloor
+                      .contains(vm.model.currentBuild.floors[index - 1]),
                   onChanged: (value) {
                     vm.changeCurrentFloor(value, index - 1);
                   },
                 );
               },
-              itemCount: vm.currentBuild.floors.length + 1,
+              itemCount: vm.model.currentBuild.floors.length + 1,
               shrinkWrap: true,
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
@@ -519,14 +519,14 @@ class SelectCheckSystemPage extends StatelessWidget {
                   return ExpansionTile(
                     title: Text(thisSystem.name),
                     leading: Checkbox(
-                        value: vm.selectedSystem[index - 1].inspectionItem
+                        value: vm.model.selectedSystem[index - 1].inspectionItem
                                 .length ==
                             thisSystem.inspectionItem.length,
                         onChanged: (value) =>
                             vm.changeSelectSystem(value, index - 1)),
                     children: thisSystem.inspectionItem.map((item) {
                       return CheckboxListTile(
-                        value: vm.selectedSystem[index - 1].inspectionItem
+                        value: vm.model.selectedSystem[index - 1].inspectionItem
                             .contains(item),
                         onChanged: (value) =>
                             vm.changeSelectCheckItem(value, index - 1, item),
@@ -538,7 +538,7 @@ class SelectCheckSystemPage extends StatelessWidget {
                   return ListTile(
                     title: Text("全选"),
                     leading: Checkbox(
-                        value: vm.selectedSystem
+                        value: vm.model.selectedSystem
                             .map((item) => item.inspectionItem.length)
                             .toSet()
                             .difference(vm.allInspectionSystem
@@ -580,13 +580,13 @@ class SelectPeoplePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return CheckboxListTile(
-                    value: vm.allPeople.length == vm.selectedPeople.length,
+                    value: vm.allPeople.length == vm.model.selectedPeople.length,
                     onChanged: vm.selectAllPeople,
                     title: Text("全选"),
                   );
                 } else {
                   return CheckboxListTile(
-                    value: vm.selectedPeople.contains(vm.allPeople[index - 1]),
+                    value: vm.model.selectedPeople.contains(vm.allPeople[index - 1]),
                     onChanged: (value) =>
                         vm.changeSelectPeople(value, index - 1),
                     title: Text(vm.allPeople[index - 1].name),

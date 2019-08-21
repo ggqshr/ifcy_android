@@ -43,7 +43,7 @@ ThunkAction<AppState> submitInspectionTask(AddTaskBlocModel model) {
   return (Store<AppState> store) async {
     try {
       Response res;
-      if (model.inspectionType == NewInspectionType.plan) {
+      if (model.model.inspectionType == NewInspectionType.plan) {
         res = await DioUtils.getInstance().submitPlan(model,store.state.selectProjectModel.selectedProject.projectId);
       } else {
         res = await DioUtils.getInstance().submitTask(model);
