@@ -13,8 +13,6 @@ import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:ifcy/common/components/components.dart';
 import 'package:flutter/services.dart';
-import 'package:ifcy/common/model/processed_device_fault_message.dart';
-import 'package:ifcy/common/model/processing_device_fault_message.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_supervisor/thunk/device_supervisor_thunk.dart';
 
@@ -25,5 +23,7 @@ part 'task_add_page.dart';
 part 'supervisor_list_page.dart';
 part 'falut_declare_page.dart';
 part 'add_task_page.dart';
+part 'work_pages.dart';
+part "plan_list_page.dart";
 
 

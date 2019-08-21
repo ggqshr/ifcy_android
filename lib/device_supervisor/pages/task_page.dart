@@ -1,9 +1,6 @@
 part of "device_supvisor_pages.dart";
 
 class TaskPage extends StatefulWidget {
-  final Function drawerCall;
-
-  TaskPage(this.drawerCall);
 
   @override
   _TaskPageState createState() => _TaskPageState();
@@ -41,11 +38,6 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
             ),
             centerTitle: true,
             automaticallyImplyLeading: false,
-            leading: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  widget.drawerCall();
-                }),
             //动态渲染tabbar
             bottom: TabBar(
               isScrollable: true,
@@ -62,16 +54,6 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
                 );
               }).toList(),
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            backgroundColor: Colors.green,
-            onPressed: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(builder: (context) => AddTaskPage()),
-              );
-            },
           ),
           body: TabBarView(
             controller: _tabController,

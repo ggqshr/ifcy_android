@@ -210,12 +210,12 @@ class DioUtils {
     dataMap['check_building_floor_list'] = model.model.currentFloor;
     dataMap['check_building_id'] = int.parse(model.model.currentBuild.buildId);
     dataMap['check_system_list'] =model.model.selectedSystem;
-    dataMap['cycle'] = model.model.taskCycleModel.toEnum;
+    dataMap['cycle'] = model.model.cycle.toEnum;
     dataMap['name'] = model.model.name;
     dataMap['plan_user_list'] = model.model.selectedPeople;
     dataMap['project_id'] = int.parse(projectId);
     dataMap['start_deploy_time'] = model.firstStartTime.millisecondsSinceEpoch;
-    dataMap['task_execute_time'] = model.model.sustainedTime*86400000;
+    dataMap['task_execute_time'] = model.model.taskExecuteTime*86400000;
     return _dio.post("/patrol/plan",data: jsonEncode(dataMap));
   }
 

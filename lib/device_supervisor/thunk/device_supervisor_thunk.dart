@@ -14,3 +14,4 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 part 'monitor_page_thunk.dart';
 part 'add_task_thunk.dart';
+part 'plan_list_page_thunk.dart';

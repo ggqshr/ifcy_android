@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/model.dart';
-import 'package:ifcy/common/model/online_device_fault_sured_message.dart';
-import 'package:ifcy/common/model/online_device_fault_unsrued_message.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'monitor_page_model.dart';
 
@@ -12,6 +11,9 @@ part 'device_fault_model.dart';
 part 'task_info_model.dart';
 
 part 'add_task_bloc_model.dart';
+
+part 'plan_list_page_model.dart';
+part 'device_supervisor_model.g.dart';
 
 class DeviceSupervisorModel {
   int faultNum; //故障数
@@ -24,6 +26,7 @@ class DeviceSupervisorModel {
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
   List<SupervisorMessageModel> supervisorMessages; //主管信息
   List<PersonnelMessage> departmentMessages; //维保公司员工信息
+  PlanListPageModel planPageModel; //计划页面的数据模型
 
   List<TaskCycleModel> taskCycleMessages; //任务类型信息
   List<TaskExecuteModel> taskExecuteList; //任务执行统计
@@ -67,6 +70,7 @@ class DeviceSupervisorModel {
 
   DeviceSupervisorModel.init()
       : faultNum = 0,
+        planPageModel = PlanListPageModel.init(),
         taskRate = 0,
         buildingList = [Build(buildId: null, buildName: "所有建筑")],
         currentBuilding = Build(buildId: null, buildName: "所有建筑"),

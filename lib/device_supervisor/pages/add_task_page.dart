@@ -209,7 +209,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                         );
                                       }).toList(),
                                       onChanged: vm.changeTaskCycle,
-                                      value: vm.model.taskCycleModel,
+                                      value: vm.model.cycle,
                                     ),
                                   ),
                                   ChildWithInputDecorator(

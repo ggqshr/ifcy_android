@@ -14,27 +14,56 @@ Map<int, String> newInspectionTypeTypeMap = {
   1: "任务",
 };
 
+Build buildJsonFunc(int id) {
+  return Build(buildId: id.toString());
+}
+String buildFromJson(Build build ){
+  return build.buildId;
+}
+
+DateTime timeFromJson(String temp) {
+  return DateTime.fromMicrosecondsSinceEpoch(int.parse(temp));
+}
+
+int executeTimeFromJson(String time) {
+  return int.parse(time) ~/ 8624000;
+}
+
+TaskCycleModel cycleFromJson(String cycle) {
+  return TaskCycleModel.fromString(cycle);
+}
+String cycleToJson(TaskCycleModel cycle) {
+  return cycle.toEnum;
+}
+
 ///计划或者任务的实体类
+@JsonSerializable()
 class TaskPlanEntity {
   ///任务名称
   String name;
 
   ///巡检类型
+  @JsonKey(ignore: true)
   NewInspectionType inspectionType;
 
   ///任务的备注
+  @JsonKey(ignore: true)
   String noteText;
 
   ///当前选择的建筑
+  @JsonKey(fromJson: buildJsonFunc, name: "check_building_id",toJson: buildFromJson)
   Build currentBuild;
 
   ///当前选择的楼层
+  @JsonKey(name: "check_building_floor_list")
   List<FloorEntity> currentFloor;
 
   ///选择的检查系统
+  @JsonKey(name: "check_system_list")
   List<InspectionSystem> selectedSystem;
 
   ///选择的执行人
+  @JsonKey(name: "plan_user_list")
   List<PersonnelMessage> selectedPeople;
 
   ///任务独有
@@ -48,16 +77,21 @@ class TaskPlanEntity {
   ///计划独有
 
   ///第一次任务发起的时间,针对计划
+  @JsonKey(name: "start_deploy_time", fromJson: timeFromJson)
   DateTime firstStartTime;
 
   ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成,暂定单位为天
-  int sustainedTime;
+  @JsonKey(name: "task_execute_time", fromJson: executeTimeFromJson)
+  int taskExecuteTime;
 
   ///当前选择的巡检周期
-  TaskCycleModel taskCycleModel;
+  @JsonKey(name: "cycle", fromJson: cycleFromJson,toJson: cycleToJson)
+  TaskCycleModel cycle;
 
   ///如果是计划的话，可以选择是否立即开始执行
   bool isEnable;
+
+  TaskPlanEntity();
 
   TaskPlanEntity.init(TaskCycleModel cycleModel) {
     inspectionType = NewInspectionType.plan;
@@ -66,22 +100,25 @@ class TaskPlanEntity {
     selectedPeople = [];
     isEnable = true;
     noteText = "";
-    taskCycleModel = cycleModel;
-    sustainedTime = 1;
+    cycle = cycleModel;
+    taskExecuteTime = 1;
   }
+  factory TaskPlanEntity.fromJson(Map<String, dynamic> json) =>
+      _$TaskPlanEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskPlanEntityToJson(this);
+
 }
 
 ///发布计划或者任务页面的bloc逻辑类
 class AddTaskBlocModel with ChangeNotifier {
   TaskPlanEntity model;
 
-
   ///Stepper的下标
   int stepperIndex;
 
   ///所有建筑的列表,需要从store中拿去,在初始化时还需加载楼层列表
   List<Build> allBuilding;
-
 
   ///所有的检查系统,从store中拿取
   List<InspectionSystem> allInspectionSystem;
@@ -330,7 +367,7 @@ class AddTaskBlocModel with ChangeNotifier {
 
   ///更改当前任务周期
   void changeTaskCycle(value) {
-    model.taskCycleModel = value;
+    model.cycle = value;
     notifyListeners();
   }
 

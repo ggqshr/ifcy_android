@@ -62,6 +62,14 @@ Map<String, String> cycleToEnum = {
   "周检": "WEEK",
   "日检": "DAY",
 };
+Map<String, String> enumToCycle = {
+  "YEAR": "年检",
+  "HALF_YEAR": "半年检",
+  "QUARTER": "季度检",
+  "MONTH": "月检",
+  "WEEK": "周检",
+  "DAY": "日检",
+};
 
 ///任务周期实体类
 class TaskCycleModel {
@@ -69,6 +77,8 @@ class TaskCycleModel {
   String item;
 
   TaskCycleModel({this.cycleId, this.item});
+
+  TaskCycleModel.fromString(String str) : item = enumToCycle[str];
 
   String get toEnum => cycleToEnum[item];
 

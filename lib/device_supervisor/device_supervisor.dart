@@ -30,7 +30,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
   List<String> iconTextList = [
     "大厦",
     "故障",
-    "任务",
+    "工作",
     "我的",
   ];
 
@@ -40,7 +40,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
     viewList
       ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
       ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
-      ..add(TaskPage(() => Scaffold.of(context).openDrawer()))
+      ..add(WorkPage())
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
 
