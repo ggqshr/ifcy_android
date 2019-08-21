@@ -77,7 +77,7 @@ class InitDeviceSupervisorStateAction {
         ],
         taskCycleMessages = [
           TaskCycleModel(cycleId: '1', item: '周检'),
-          TaskCycleModel(cycleId: '2', item: '半月检'),
+          TaskCycleModel(cycleId: '2', item: '日检'),
           TaskCycleModel(cycleId: '3', item: '月检'),
           TaskCycleModel(cycleId: '4', item: '季度检'),
           TaskCycleModel(cycleId: '5', item: '半年检'),

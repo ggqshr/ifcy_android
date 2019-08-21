@@ -36,7 +36,9 @@ class _AddTaskPageState extends State<AddTaskPage>
         builder: (context, store) {
           DeviceSupervisorModel deviceSupervisorModel =
               store.state.deviceSupervisorModel;
-          if (model == null || model.allInspectionSystem == null || model.allPeople == null) {
+          if (model == null ||
+              model.allInspectionSystem == null ||
+              model.allPeople == null) {
             model = AddTaskBlocModel(
                 allBuilding:
                     deviceSupervisorModel.buildingList.skip(1).toList(),
@@ -62,16 +64,6 @@ class _AddTaskPageState extends State<AddTaskPage>
                             title: Text("第一步"),
                             content: ListView(
                               children: <Widget>[
-                                ListTile(
-                                  title: Text("任务名"),
-                                  subtitle: TextField(
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(hintText: "任务或计划名称",errorText: vm.nameErrorMsg),
-                                    onChanged: (value) {
-                                      vm.changeName(value);
-                                    },
-                                  ),
-                                ),
                                 ListTile(
                                   title: Text("选择类型"),
                                   subtitle: Row(
@@ -105,6 +97,18 @@ class _AddTaskPageState extends State<AddTaskPage>
                                     hint: Text("请选择大厦"),
                                     decoration: InputDecoration(
                                         errorText: vm.buildingErrorMag),
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text("任务名"),
+                                  subtitle: TextField(
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                        hintText: "任务或计划名称",
+                                        errorText: vm.nameErrorMsg),
+                                    onChanged: (value) {
+                                      vm.changeName(value);
+                                    },
                                   ),
                                 ),
                               ],
@@ -223,14 +227,16 @@ class _AddTaskPageState extends State<AddTaskPage>
                                               lastDate: DateTime(2050),
                                               locale: myLocale);
                                           if (dd != null) {
-                                            vm.setFirstStartTime(
-                                                dd.toString().substring(0, 10));
+                                            vm.setFirstStartTime(dd);
                                           }
                                         },
                                         child: Text("选择时间"),
                                       ),
-                                      subtitle:
-                                          Text(vm.firstStartTime ?? "未选择"),
+                                      subtitle: Text(vm.firstStartTime != null
+                                          ? vm.firstStartTime
+                                              .toString()
+                                              .substring(0, 10)
+                                          : "未选择"),
                                     ),
                                     vm,
                                   ),
@@ -261,26 +267,28 @@ class _AddTaskPageState extends State<AddTaskPage>
                                   ChildWithInputDecorator(
                                     vm.startTimeErrorMsg,
                                     ListTile(
-                                      title: Text("任务开始时间"),
-                                      trailing: RaisedButton(
-                                        onPressed: () async {
-                                          Locale myLocale =
-                                              Localizations.localeOf(context);
-                                          DateTime dd = await showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2019),
-                                              lastDate: DateTime(2050),
-                                              locale: myLocale);
-                                          if (dd != null) {
-                                            vm.setStartTime(
-                                                dd.toString().substring(0, 10));
-                                          }
-                                        },
-                                        child: Text("选择时间"),
-                                      ),
-                                      subtitle: Text(vm.startTime ?? "未选择"),
-                                    ),
+                                        title: Text("任务开始时间"),
+                                        trailing: RaisedButton(
+                                          onPressed: () async {
+                                            Locale myLocale =
+                                                Localizations.localeOf(context);
+                                            DateTime dd = await showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2019),
+                                                lastDate: DateTime(2050),
+                                                locale: myLocale);
+                                            if (dd != null) {
+                                              vm.setStartTime(dd);
+                                            }
+                                          },
+                                          child: Text("选择时间"),
+                                        ),
+                                        subtitle: Text(vm.startTime != null
+                                            ? vm.startTime
+                                                .toString()
+                                                .substring(0, 10)
+                                            : "未选择")),
                                     vm,
                                   ),
                                   ChildWithInputDecorator(
@@ -298,13 +306,16 @@ class _AddTaskPageState extends State<AddTaskPage>
                                               lastDate: DateTime(2050),
                                               locale: myLocale);
                                           if (dd != null) {
-                                            vm.setEndTime(
-                                                dd.toString().substring(0, 10));
+                                            vm.setEndTime(dd);
                                           }
                                         },
                                         child: Text("选择时间"),
                                       ),
-                                      subtitle: Text(vm.endTime ?? "未选择"),
+                                      subtitle: Text(vm.endTime != null
+                                          ? vm.endTime
+                                              .toString()
+                                              .substring(0, 10)
+                                          : "未选择"),
                                     ),
                                     vm,
                                   ),
@@ -402,8 +413,11 @@ class _AddTaskPageState extends State<AddTaskPage>
                                   color: Colors.blue,
                                   onPressed: () {
                                     if (vm.index2validate[vm.stepperIndex]()) {
-                                      //todo 预览并提交
-                                      vm.nextStepperCall();
+                                      loadingDialogAction.showLoadingDialog(
+                                          text2show: "提交中",
+                                          newContext: context);
+                                      vm.submitData((model) => store.dispatch(
+                                          submitInspectionTask(model)));
                                     }
                                   },
                                   child: Text(

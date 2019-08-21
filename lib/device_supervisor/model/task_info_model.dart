@@ -8,7 +8,6 @@ class TaskInfoModel {
   TaskInfoModel({this.messageNum, this.completedTask, this.uncompletedTask});
 }
 
-
 ///任务执行情况数据统计类
 class TaskExecuteModel {
   String taskCycle;
@@ -16,11 +15,11 @@ class TaskExecuteModel {
   int taskCompletedNum;
   int taskUnCompletedNum;
 
-  TaskExecuteModel({
-    this.taskCycle,
-    this.taskNum,
-    this.taskCompletedNum,
-    this.taskUnCompletedNum});
+  TaskExecuteModel(
+      {this.taskCycle,
+      this.taskNum,
+      this.taskCompletedNum,
+      this.taskUnCompletedNum});
 
   @override
   String toString() {
@@ -30,24 +29,39 @@ class TaskExecuteModel {
 
 /// 单个任务详情类
 class TaskDetailModel {
+  String id; //任务编号
+  String des; //任务描述
+  String type; //任务类型（巡检/任务）
+  String executor; //任务执行者
+  double progress; //任务执行进度
+  String taskStartTime; //任务开始时间
+  String taskEndTime; //任务结束时间
+  String cycle; //任务周期描述
 
-  String id;//任务编号
-  String des;//任务描述
-  String type;//任务类型（巡检/任务）
-  String executor;//任务执行者
-  double progress;//任务执行进度
-  String taskStartTime;//任务开始时间
-  String taskEndTime;//任务结束时间
-  String cycle;//任务周期描述
-
-  TaskDetailModel({this.id,this.des, this.type, this.executor, this.progress,this.taskStartTime,this.taskEndTime,this.cycle});
+  TaskDetailModel(
+      {this.id,
+      this.des,
+      this.type,
+      this.executor,
+      this.progress,
+      this.taskStartTime,
+      this.taskEndTime,
+      this.cycle});
 
   @override
   String toString() {
     return 'TaskDetailModel{id: $id, des: $des, type: $type, executor: $executor, progress: $progress, taskStartTime: $taskStartTime, taskEndTime: $taskEndTime, cycle: $cycle}';
   }
-
 }
+
+Map<String, String> cycleToEnum = {
+  "年检": "YEAR",
+  "半年检": "HALF_YEAR",
+  "季度检": "QUARTER",
+  "月检": "MONTH",
+  "周检": "WEEK",
+  "日检": "DAY",
+};
 
 ///任务周期实体类
 class TaskCycleModel {
@@ -55,6 +69,8 @@ class TaskCycleModel {
   String item;
 
   TaskCycleModel({this.cycleId, this.item});
+
+  String get toEnum => cycleToEnum[item];
 
   @override
   String toString() {
@@ -64,16 +80,11 @@ class TaskCycleModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is TaskCycleModel &&
-              runtimeType == other.runtimeType &&
-              cycleId == other.cycleId &&
-              item == other.item;
+      other is TaskCycleModel &&
+          runtimeType == other.runtimeType &&
+          cycleId == other.cycleId &&
+          item == other.item;
 
   @override
-  int get hashCode =>
-      cycleId.hashCode ^
-      item.hashCode;
-
-
-
+  int get hashCode => cycleId.hashCode ^ item.hashCode;
 }

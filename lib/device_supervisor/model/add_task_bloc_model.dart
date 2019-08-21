@@ -52,15 +52,15 @@ class AddTaskBlocModel with ChangeNotifier {
   ///任务独有
 
   ///开始时间
-  String startTime;
+  DateTime startTime;
 
   ///结束时间
-  String endTime;
+  DateTime endTime;
 
   ///计划独有
 
   ///第一次任务发起的时间,针对计划
-  String firstStartTime;
+  DateTime firstStartTime;
 
   ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成,暂定单位为天
   int sustainedTime;
@@ -112,7 +112,7 @@ class AddTaskBlocModel with ChangeNotifier {
         selectedPeople = [],
         isEnable = true,
         noteText = "",
-        taskCycleModel = allTaskCycle[0] {
+        taskCycleModel = allTaskCycle[0],sustainedTime=1 {
     bool step1Validate() {
       if (currentBuild != null && name != null) {
         buildingErrorMag = null;
@@ -304,7 +304,7 @@ class AddTaskBlocModel with ChangeNotifier {
   }
 
   ///设置开始时间
-  void setFirstStartTime(String time) {
+  void setFirstStartTime(DateTime time) {
     firstStartTime = time;
     notifyListeners();
   }
@@ -315,13 +315,13 @@ class AddTaskBlocModel with ChangeNotifier {
   }
 
   ///设置开始时间
-  void setStartTime(String time) {
+  void setStartTime(DateTime time) {
     startTime = time;
     notifyListeners();
   }
 
   ///设置结束时间
-  void setEndTime(String time) {
+  void setEndTime(DateTime time) {
     endTime = time;
     notifyListeners();
   }
@@ -360,5 +360,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///更改任务名
   void changeName(String text) {
     name = text;
+  }
+  ///向服务器提交任务
+  void submitData(Function submitCall){
+    submitCall(this);
   }
 }

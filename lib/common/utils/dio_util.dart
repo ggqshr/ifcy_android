@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ifcy/common/res/res.dart';
 import 'package:ifcy/common/utils/utils.dart';
+import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/pages/login_page.dart';
 
@@ -81,7 +82,7 @@ class DioUtils {
         }
       }
     }));
-    dio.interceptors.add(LogInterceptor(responseBody: true)); //开启日志
+    dio.interceptors.add(LogInterceptor(responseBody: true,requestBody: true)); //开启日志
     return dio;
   }
 
@@ -202,6 +203,24 @@ class DioUtils {
     return getNewDIo().post("/anonymous/login",
         data: '{"password": "$passWord", "username": "$userName"}');
   }
+
+  ///提交计划的接口封装
+  Future<Response> submitPlan(AddTaskBlocModel model, String projectId) {
+    Map<String, dynamic> dataMap = {};
+    dataMap['check_building_floor_list'] = model.currentFloor;
+    dataMap['check_building_id'] = int.parse(model.currentBuild.buildId);
+    dataMap['check_system_list'] =model.selectedSystem;
+    dataMap['cycle'] = model.taskCycleModel.toEnum;
+    dataMap['name'] = model.name;
+    dataMap['plan_user_list'] = model.selectedPeople;
+    dataMap['project_id'] = int.parse(projectId);
+    dataMap['start_deploy_time'] = model.firstStartTime.millisecondsSinceEpoch;
+    dataMap['task_execute_time'] = model.sustainedTime*86400000;
+    return _dio.post("/patrol/plan",data: jsonEncode(dataMap));
+  }
+
+  ///提交任务的接口封装
+  Future<Response> submitTask(AddTaskBlocModel model) {}
 }
 
 _parseAndDecode(String response) {

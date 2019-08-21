@@ -37,3 +37,26 @@ void initAddTaskData(Store<AppState> store) async {
     store.dispatch(DioUtils.getInstance().parseError2action(e));
   }
 }
+
+///提交新建的任务或者计划
+ThunkAction<AppState> submitInspectionTask(AddTaskBlocModel model) {
+  return (Store<AppState> store) async {
+    try {
+      Response res;
+      if (model.inspectionType == NewInspectionType.plan) {
+        res = await DioUtils.getInstance().submitPlan(model,store.state.selectProjectModel.selectedProject.projectId);
+      } else {
+        res = await DioUtils.getInstance().submitTask(model);
+      }
+      if(res.data['msg']=="成功"){
+        loadingDialogAction.cancleLoadingDialog();
+        Application.showToast("提交成功!",toastLength: Toast.LENGTH_LONG);
+        await Future.delayed(Duration(seconds: 1));
+        loadingDialogAction.cancleLoadingDialog();
+      }
+    } catch (e) {
+      loadingDialogAction.cancleLoadingDialog();
+      store.dispatch(DioUtils.getInstance().parseError2action(e));
+    }
+  };
+}

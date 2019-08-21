@@ -98,9 +98,13 @@ void main() {
           .runtimeType);
     });
     test("testcmp", () async {
-      var a = {1,2,3};
-      var b = {1,2,4};
+      var a = {1, 2, 3};
+      var b = {1, 2, 4};
       print(a.difference(b).isEmpty);
+    });
+    test("testdateTime", () async {
+      var a = InspectionSystem.generate(1);
+      print(jsonEncode(a));
     });
   });
 

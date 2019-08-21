@@ -62,7 +62,7 @@ class FloorEntity {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['number'] = this.number;
+//    data['number'] = this.number;
     data['code'] = this.code;
     data['name'] = this.name;
     data['id'] = this.id;
