@@ -39,9 +39,26 @@ class OwnerPage extends StatelessWidget {
             SliverPadding(
               padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
             ),
+
             FireAlarmComponent(),
             DeviceFaultComponent(),
-            //TaskInfoComponent(),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  return Container(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text("今日值班人员",style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12
+                    ),
+                      textScaleFactor: 1.3,),
+                  );
+                },
+                childCount: 1,
+              ),
+            ),
+            StaffComponent(),
             SliverPadding(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
             ),
@@ -56,17 +73,17 @@ class OwnerPage extends StatelessWidget {
 class DataStatisticsComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, BuildingOwnerMainViewModel>(
+    return StoreConnector<AppState, HomePageModel>(
         distinct: true,
         converter: (Store<AppState> store) {
           BuildingOwnerModel model = store.state.buildingOwnerModel;
-          return BuildingOwnerMainViewModel(
+          return HomePageModel(
             faultNum: model.deviceFaultMessages.length,
             fireNum: model.fireAlarmMessages.length,
             taskProgress: model.taskProgress,
           );
         },
-        builder: (BuildContext context, BuildingOwnerMainViewModel vm) {
+        builder: (BuildContext context, HomePageModel vm) {
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -247,16 +264,16 @@ class FireAlarmComponent extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, BuildingOwnerMainViewModel>(
+          return StoreConnector<AppState, HomePageModel>(
             converter: (Store<AppState> store) {
-              return BuildingOwnerMainViewModel(
+              return HomePageModel(
                 fireNum:
                     store.state.buildingOwnerModel.fireAlarmMessages.length,
                 fireAlarmMessageList:
                     store.state.buildingOwnerModel.fireAlarmMessages,
               );
             },
-            builder: (BuildContext context, BuildingOwnerMainViewModel vm) {
+            builder: (BuildContext context, HomePageModel vm) {
               List<Widget> viewList = <Widget>[];
               //若没有消息应该显示空白以及提示
               if (vm.fireNum == 0) {
@@ -264,7 +281,8 @@ class FireAlarmComponent extends StatelessWidget {
                   title: Text("当前无火警消息"),
                 ));
               } else {
-                viewList = vm.fireAlarmMessageList.map<Widget>((FireAlarmMessage meg) {
+                viewList =
+                    vm.fireAlarmMessageList.map<Widget>((FireAlarmMessage meg) {
                   return FireMessageTile(meg);
                 }).toList();
               }
@@ -320,16 +338,16 @@ class DeviceFaultComponent extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, BuildingOwnerMainViewModel>(
+          return StoreConnector<AppState, HomePageModel>(
             converter: (Store<AppState> store) {
-              return BuildingOwnerMainViewModel(
+              return HomePageModel(
                 faultNum:
                     store.state.buildingOwnerModel.deviceFaultMessages.length,
                 deviceFaultMessageList:
                     store.state.buildingOwnerModel.deviceFaultMessages,
               );
             },
-            builder: (BuildContext context, BuildingOwnerMainViewModel vm) {
+            builder: (BuildContext context, HomePageModel vm) {
               List<Widget> viewList = <Widget>[];
 
               //若没有消息应该显示空白以及提示
@@ -392,6 +410,32 @@ class DeviceFaultTile extends StatelessWidget {
 class StaffComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return StoreConnector<AppState, HomePageModel>(
+        converter: (Store<AppState> store) {
+      return HomePageModel(
+          watchkeeperList: store.state.buildingOwnerModel.projectStaffList);
+    }, builder: (BuildContext context, HomePageModel vm) {
+      return SliverPadding(
+        padding: const EdgeInsets.all(10.0),
+        sliver: SliverGrid(
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 10.0,
+            childAspectRatio: 3.0,
+            crossAxisSpacing: 10.0,
+          ),
+          delegate: new SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return new Container(
+                alignment: Alignment.center,
+                color: Colors.cyan[100 * (index % 9)],
+                child: new Text(vm.watchkeeperList[index].name),
+              );
+            },
+            childCount: vm.watchkeeperList.length,
+          ),
+        ),
+      );
+    });
   }
 }

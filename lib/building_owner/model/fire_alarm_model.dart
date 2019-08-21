@@ -4,8 +4,8 @@
 part of 'building_owner_model.dart';
 class FireAlarmModel{
 
-  List<FireAlarmMessage> fireAlarmMessageList;//已处理的设备故障申报消息
+  List<FireAlarmMessage> fireAlarmHistoryMessages;//已处理的设备故障申报消息
   Function onRefreshCall;
 
-  FireAlarmModel({fireAlarmMessageList, this.onRefreshCall});
+  FireAlarmModel({this.fireAlarmHistoryMessages, this.onRefreshCall});
 }

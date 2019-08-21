@@ -23,9 +23,9 @@ class FireWarningPage extends StatelessWidget {
              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
            ),
           FireAlarmListComponent(),
-           SliverPadding(
-             padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-           ),
+//           SliverPadding(
+//             padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+//           ),
          ],
        ),
        onRefresh: () async {
@@ -46,7 +46,7 @@ class  FireAlarmListComponent extends StatelessWidget {
             converter: (Store<AppState> store) {
               BuildingOwnerModel model = store.state.buildingOwnerModel;
               return FireAlarmModel(
-                fireAlarmMessageList: model.fireAlarmMessages,
+               fireAlarmHistoryMessages: model.fireAlarmMessages,
                 onRefreshCall: () async {
                   //todo 刷新回调
                   await Future.delayed(Duration(seconds: 2));
@@ -55,11 +55,11 @@ class  FireAlarmListComponent extends StatelessWidget {
             },
             builder: (BuildContext context, FireAlarmModel vm) {
               List<Widget> viewList = <Widget>[];
-              if (vm.fireAlarmMessageList.length == 0) {
+              if (vm.fireAlarmHistoryMessages.length == 0) {
                 viewList.add(ListTile(title: Text("当前无火警警报记录"),
                 ));
               } else {
-                viewList = vm.fireAlarmMessageList.map<Widget>((FireAlarmMessage msg) {
+                viewList = vm.fireAlarmHistoryMessages.map<Widget>((FireAlarmMessage msg) {
                   return FireAlarmMessageCard(msg);
                 }).toList();
               }
@@ -92,11 +92,15 @@ class FireAlarmMessageCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         child: ExpansionTile(
           key: PageStorageKey("${msg.id}"),
+          leading: Icon(
+            FontAwesomeIcons.fireAlt,
+            color: Colors.grey,
+          ),
           title: Text(
             msg.title,
             textAlign: TextAlign.start,
             style: TextStyle(
-              color: Colors.red,
+              color:Colors.grey,
               fontSize: 14,
             ),
           ),
@@ -116,9 +120,6 @@ class FireAlarmMessageCard extends StatelessWidget {
               dense: true,
               title: Text(
                   "具体内容:       ${msg.content}"),
-            ),
-            Divider(
-              color: Colors.black,
             ),
           ],
         ),

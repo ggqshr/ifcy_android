@@ -49,7 +49,8 @@ class ProjectStaffListComponent extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(10, 15, 15, 10),
                     child: Text(
                       "项目人员组成",
-                      style: TextStyle(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16.0),
                     ),
                   ),
                 ),
@@ -64,14 +65,16 @@ class ProjectStaffListComponent extends StatelessWidget {
                       title: Text("当前无业主信息"),
                     ));
                   }else {
+                    viewList.add(Divider(color: Colors.black,));
                     viewList.add(ListTile(
+                      leading:Icon(Icons.person,color: Colors.lightGreen,),
                       title: Text("XX业主"),
                       subtitle: Text("联系电话：1266321487"),
                     ));
                   }
                   return ExpansionCard(
                     title: "业主信息",
-//                    messageNum: vm.fireNum,
+                    messageNum: 0,
                     viewList: viewList,
                   );
                 },
@@ -90,17 +93,18 @@ class ProjectStaffListComponent extends StatelessWidget {
                       title: Text("当前无维保主管"),
                     ));
                   }else {
-                    viewList.add(ListTile(
-                        //contentPadding:EdgeInsets.symmetric(10.0),
-                        leading:Icon(Icons.person),
+                    viewList.add(Divider(color: Colors.black,));
+                    viewList.add(
+                        ListTile(
+                        leading:Icon(Icons.person,color: Colors.lightGreen,),
                       title: Text("XX维保主管"),
-                      subtitle: Text(   "联系电话：1266321487                                     所属公司:xxx维保公司"),
-                        trailing:IconButton(icon:Icon(Icons.delete,color: Colors.red,), onPressed: null)
+                      subtitle: Text("联系电话：1266321487                                     所属公司:xxx维保公司"),
+                        trailing:IconButton(icon:Icon(Icons.edit,color: Colors.lightGreen,), onPressed: null)
                     ));
                   }
                   return ExpansionCard(
                     title: "维保主管信息",
-//                    messageNum: vm.fireNum,
+                    messageNum: 0,
                     viewList: viewList,
                   );
                 },
@@ -121,16 +125,16 @@ class ProjectStaffListComponent extends StatelessWidget {
                   }else {
                     viewList=staffList.map<Widget>((staff){
                       return ListTile(
-                        leading:Icon(Icons.person),
+                        leading:Icon(Icons.people,color: Colors.lightGreen,),
                         title:Text(staff.name),
                         subtitle:Text("联系电话:${staff.contact}                                    所属公司:${staff.companyName} "),
-                          trailing:IconButton(icon:Icon(Icons.delete,color: Colors.red,), onPressed: null)
+                          trailing:IconButton(icon:Icon(Icons.edit,color: Colors.lightGreen,), onPressed: null)
                       );
                     }).toList();
                   }
                   return ExpansionCard(
                     title: "维保工作人员信息",
-//                    messageNum: vm.fireNum,
+                    messageNum: 0,
                     viewList: viewList,
                   );
                 },
@@ -150,16 +154,15 @@ class ProjectStaffListComponent extends StatelessWidget {
                     ));
                   }else {
                     viewList.add(ListTile(
-                      //contentPadding:EdgeInsets.symmetric(10.0),
-                        leading:Icon(Icons.person),
+                        leading:Icon(Icons.person,color: Colors.lightGreen,),
                         title: Text("XX物业主管"),
                         subtitle: Text("联系电话：1266321487                                     所属公司:xxx物业公司"),
-                        trailing:IconButton(icon:Icon(Icons.delete,color: Colors.red,), onPressed: null)
+                        trailing:IconButton(icon:Icon(Icons.edit,color: Colors.lightGreen,), onPressed: null)
                     ));
                   }
                   return ExpansionCard(
                     title: "物业主管信息",
-//                    messageNum: vm.fireNum,
+                    messageNum: 0,
                     viewList: viewList,
                   );
                 },
@@ -180,16 +183,16 @@ class ProjectStaffListComponent extends StatelessWidget {
                   }else {
                     viewList=staffList.map<Widget>((staff){
                       return ListTile(
-                          leading:Icon(Icons.person),
+                          leading:Icon(Icons.people,color: Colors.lightGreen,),
                           title:Text(staff.name),
                           subtitle:Text("联系电话:${staff.contact}                                    所属公司:${staff.companyName} "),
-                          trailing:IconButton(icon:Icon(Icons.delete,color: Colors.red,), onPressed: null)
+                          trailing:IconButton(icon:Icon(Icons.edit,color: Colors.lightGreen,), onPressed: null)
                       );
                     }).toList();
                   }
                   return ExpansionCard(
                     title: "物业工作人员信息",
-//                    messageNum: vm.fireNum,
+                    messageNum: 0,
                     viewList: viewList,
                   );
                 },

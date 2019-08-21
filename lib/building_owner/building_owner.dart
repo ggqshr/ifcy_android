@@ -23,7 +23,7 @@ class _BuildingOwnerState extends State<BuildingOwner> {
     Icon(Icons.warning),
     Icon(Icons.add),
     Icon(Icons.notification_important),
-    Icon(Icons.people_outline),
+    Icon(Icons.person),
   ];
   List<String> iconTextList = ["大厦", "故障", "人员", "火警", "我"];
   List<int> bottomBadgeNumList = [1, 0, 0, 0, 0];
