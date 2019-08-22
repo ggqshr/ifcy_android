@@ -14,7 +14,9 @@ class AppBarComponent extends StatelessWidget {
         );
       },
       onInit: (store) {
-        store.dispatch(DeviceSuperVisorInitBuildList);
+        if(store.state.deviceSupervisorModel.buildingList.length==1){
+          store.dispatch(DeviceSuperVisorInitBuildList);
+        }
       },
       builder: (BuildContext context, MonitorPageAppBarModel vm) {
         return DropdownButton(

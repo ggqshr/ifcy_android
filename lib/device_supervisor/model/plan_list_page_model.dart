@@ -27,7 +27,7 @@ class PlanListPageModel {
       this.totalElementNum});
 
   PlanListPageModel.init()
-      : currentPageNum = 0,
+      : currentPageNum = null,
         totalElementNum = 0,
         totalPageNum = 0,
         planLists = [];

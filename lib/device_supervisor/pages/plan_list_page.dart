@@ -16,13 +16,17 @@ class _PlanListPageState extends State<PlanListPage> with AutomaticKeepAliveClie
     _controller = EasyRefreshController();
   }
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(
       onInit: (store) {
-        store.dispatch(initPlanListThunkAction);
-//        if(store.state.deviceSupervisorModel.planPageModel.planLists==null){
-//
-//        }
+        if(store.state.deviceSupervisorModel.planPageModel.currentPageNum==null){
+          store.dispatch(initPlanListThunkAction);
+        }
       },
       builder: (context, store) {
         PlanListPageModel model =
