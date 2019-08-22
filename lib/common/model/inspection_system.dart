@@ -5,7 +5,7 @@ part of "model.dart";
 ///检查系统实体类
 class InspectionSystem {
   ///id
-  int id;
+  String id;
 
   ///名称
   String name;
@@ -23,10 +23,10 @@ class InspectionSystem {
       : id = data.id,
         name = data.name,inspectionItem=List.from(data.inspectionItem);
 
-  InspectionSystem.generate(this.id)
-      : name = "系统$id",
-        inspectionItem =
-            List.generate(15, (index) => InspectionItem.generate("系统$id", id));
+//  InspectionSystem.generate(this.id)
+//      : name = "系统$id",
+//        inspectionItem =
+//            List.generate(15, (index) => InspectionItem.generate("系统$id", id));
 
 
   @override
@@ -67,7 +67,7 @@ class InspectionSystem {
 ///检查项目
 class InspectionItem {
   ///id
-  int id;
+  String id;
 
   ///名称
   String name;

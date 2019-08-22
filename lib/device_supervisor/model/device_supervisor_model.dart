@@ -109,15 +109,15 @@ class DeviceSupervisorModel {
           )
         ],
         departmentMessages = [
-          PersonnelMessage(id: 1, name: '员工1'),
-          PersonnelMessage(id: 2, name: '员工2'),
-          PersonnelMessage(id: 3, name: '员工3'),
-          PersonnelMessage(id: 1, name: '员工1'),
-          PersonnelMessage(id: 2, name: '员工2'),
-          PersonnelMessage(id: 3, name: '员工3'),
-          PersonnelMessage(id: 1, name: '员工1'),
-          PersonnelMessage(id: 2, name: '员工2'),
-          PersonnelMessage(id: 3, name: '员工3'),
+          PersonnelMessage(id: "1", name: '员工1'),
+          PersonnelMessage(id: "2", name: '员工2'),
+          PersonnelMessage(id: "3", name: '员工3'),
+          PersonnelMessage(id: "1", name: '员工1'),
+          PersonnelMessage(id: "2", name: '员工2'),
+          PersonnelMessage(id: "3", name: '员工3'),
+          PersonnelMessage(id: "1", name: '员工1'),
+          PersonnelMessage(id: "2", name: '员工2'),
+          PersonnelMessage(id: "3", name: '员工3'),
         ];
 
   @override

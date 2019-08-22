@@ -95,7 +95,7 @@ FloorEntity _$FloorEntityFromJson(Map<String, dynamic> json) {
   return FloorEntity(
     code: json['code'] as String,
     name: json['name'] as String,
-    id: json['id'] as int,
+    id: json['id'] as String,
   );
 }
 

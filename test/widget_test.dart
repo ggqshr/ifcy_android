@@ -106,9 +106,9 @@ void main() {
     test("testdateTime", () async {
       Dio dio = DioUtils.getInstance().getDio();
       await DioUtils.getInstance().login("hyj", "123456");
-      Response res = await dio.get("/patrol/plan/project/17");
-      var aa = PlanListPageModel.fromJson(res.data['data']);
-      print(aa);
+      Response res = await dio.get("/user/projects/role/17");
+      Response re = await dio.get("/building/project/17");
+      print(re);
     });
   });
 

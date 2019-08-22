@@ -51,7 +51,7 @@ class FloorEntity {
   String name;
 
   ///楼层id
-  int id;
+  String id;
 
   FloorEntity({this.number, this.code, this.name, this.id});
 

@@ -14,19 +14,19 @@ Map<int, String> newInspectionTypeTypeMap = {
   1: "任务",
 };
 
-Build buildJsonFunc(int id) {
+Build buildJsonFunc(String id) {
   return Build(buildId: id.toString());
 }
 String buildFromJson(Build build ){
   return build.buildId;
 }
 
-DateTime timeFromJson(int temp) {
-  return DateTime.fromMillisecondsSinceEpoch(temp);
+DateTime timeFromJson(String temp) {
+  return DateTime.fromMillisecondsSinceEpoch(int.parse(temp));
 }
 
-int executeTimeFromJson(int time) {
-  return time ~/ 86400000;
+int executeTimeFromJson(String time) {
+  return int.parse(time) ~/ 86400000;
 }
 
 TaskCycleModel cycleFromJson(String cycle) {

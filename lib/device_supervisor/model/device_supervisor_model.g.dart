@@ -9,7 +9,7 @@ part of 'device_supervisor_model.dart';
 TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
   return TaskPlanEntity()
     ..name = json['name'] as String
-    ..currentBuild = buildJsonFunc(json['check_building_id'] as int)
+    ..currentBuild = buildJsonFunc(json['check_building_id'] as String)
     ..currentFloor = (json['check_building_floor_list'] as List)
         ?.map((e) =>
             e == null ? null : FloorEntity.fromJson(e as Map<String, dynamic>))
@@ -30,8 +30,8 @@ TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
     ..endTime = json['endTime'] == null
         ? null
         : DateTime.parse(json['endTime'] as String)
-    ..firstStartTime = timeFromJson(json['start_deploy_time'] as int)
-    ..taskExecuteTime = executeTimeFromJson(json['task_execute_time'] as int)
+    ..firstStartTime = timeFromJson(json['start_deploy_time'] as String)
+    ..taskExecuteTime = executeTimeFromJson(json['task_execute_time'] as String)
     ..cycle = cycleFromJson(json['cycle'] as String)
     ..isEnable = json['isEnable'] as bool;
 }
