@@ -28,6 +28,7 @@ void initPlanListThunkAction(Store<AppState> store) async {
 ThunkAction<AppState> planLoadMoreDataThunkAction(
     EasyRefreshController controller) {
   return (Store<AppState> store) async {
+    controller.resetLoadState();
     Dio dio = DioUtils.getInstance().getDio();
     var model = store.state.deviceSupervisorModel.planPageModel;
     try {
@@ -39,13 +40,10 @@ ThunkAction<AppState> planLoadMoreDataThunkAction(
         PlanListPageModel mm = PlanListPageModel.fromJson(res.data['data']);
         store.dispatch(DeviceSuperVisorNextPageAction(mm));
         controller.finishLoad(success: true);
-        controller.resetLoadState();
       } else {
-        controller.resetLoadState();
         controller.finishLoad(success: true, noMore: true);
       }
     } catch (e) {
-      controller.resetLoadState();
       controller.finishLoad(success: false);
       store.dispatch(DioUtils.getInstance().parseError2action(e));
     }

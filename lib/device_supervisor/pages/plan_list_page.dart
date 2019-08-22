@@ -19,9 +19,10 @@ class _PlanListPageState extends State<PlanListPage> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(
       onInit: (store) {
-        if(store.state.deviceSupervisorModel.planPageModel.planLists==null){
-          store.dispatch(initPlanListThunkAction);
-        }
+        store.dispatch(initPlanListThunkAction);
+//        if(store.state.deviceSupervisorModel.planPageModel.planLists==null){
+//
+//        }
       },
       builder: (context, store) {
         PlanListPageModel model =
@@ -39,6 +40,11 @@ class _PlanListPageState extends State<PlanListPage> with AutomaticKeepAliveClie
           bottomBouncing:false,
           enableControlFinishLoad: true,
           controller: _controller,
+          onRefresh: ()async{
+            await Future.delayed(Duration(seconds: 1));
+            store.dispatch(initPlanListThunkAction);
+            _controller.resetLoadState();
+          },
           onLoad: ()async{
             await Future.delayed(Duration(seconds: 1));
             store.dispatch(planLoadMoreDataThunkAction(_controller));
