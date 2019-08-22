@@ -13,6 +13,7 @@ part 'task_info_model.dart';
 part 'add_task_bloc_model.dart';
 
 part 'plan_list_page_model.dart';
+
 part 'device_supervisor_model.g.dart';
 
 class DeviceSupervisorModel {
@@ -66,6 +67,7 @@ class DeviceSupervisorModel {
     this.processingDeviceFaultList,
     this.buildingFloorList,
     this.inspectionSystems,
+    this.planPageModel,
   });
 
   DeviceSupervisorModel.init()

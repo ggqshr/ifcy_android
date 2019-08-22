@@ -90,3 +90,18 @@ const _$TaskStatusEnumMap = {
   TaskStatus.completed: 'completed',
   TaskStatus.uncompleted: 'uncompleted',
 };
+
+FloorEntity _$FloorEntityFromJson(Map<String, dynamic> json) {
+  return FloorEntity(
+    code: json['code'] as String,
+    name: json['name'] as String,
+    id: json['id'] as int,
+  );
+}
+
+Map<String, dynamic> _$FloorEntityToJson(FloorEntity instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+      'id': instance.id,
+    };

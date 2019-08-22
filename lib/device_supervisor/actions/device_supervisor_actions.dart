@@ -270,6 +270,18 @@ class AddTaskPageInitAction {
   List<InspectionSystem> systems;
   List<PersonnelMessage> departments;
 
-  AddTaskPageInitAction(
-      this.buildingList, this.systems, this.departments);
+  AddTaskPageInitAction(this.buildingList, this.systems, this.departments);
+}
+
+///初始化计划列表的action
+class InitPlanListPageAction {
+  PlanListPageModel model;
+
+  InitPlanListPageAction(this.model);
+}
+
+class DeviceSuperVisorNextPageAction{
+  PlanListPageModel model;
+
+  DeviceSuperVisorNextPageAction(this.model);
 }

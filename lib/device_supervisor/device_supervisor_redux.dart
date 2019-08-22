@@ -42,6 +42,7 @@ DeviceSupervisorModel deviceSupervisorModule1Reducer(
           buildingFloorMessgaesReducer(state.buildingFloorList, action),
       inspectionSystems:
           inspectionSystemsReducer(state.inspectionSystems, action),
+      planPageModel: planPageModelReducer(state.planPageModel, action),
     );
 
 int initFaultNum(int faultNum, InitDeviceSupervisorStateAction action) {
@@ -235,4 +236,17 @@ Reducer<List> buildingFloorMessgaesReducer = combineReducers([
 
 Reducer<List> inspectionSystemsReducer = combineReducers([
   TypedReducer<List, AddTaskPageInitAction>((_, action) => action.systems),
+]);
+
+PlanListPageModel nextPageCall(
+    PlanListPageModel model, DeviceSuperVisorNextPageAction action) {
+  model.currentPageNum += 1;
+  model.planLists.addAll(action.model.planLists);
+  return model;
+}
+
+Reducer<PlanListPageModel> planPageModelReducer = combineReducers([
+  TypedReducer<PlanListPageModel, InitPlanListPageAction>(
+      (_, action) => action.model),
+  TypedReducer<PlanListPageModel, DeviceSuperVisorNextPageAction>(nextPageCall),
 ]);

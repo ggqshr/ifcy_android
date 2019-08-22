@@ -30,8 +30,8 @@ TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
     ..endTime = json['endTime'] == null
         ? null
         : DateTime.parse(json['endTime'] as String)
-    ..firstStartTime = timeFromJson(json['start_deploy_time'] as String)
-    ..taskExecuteTime = executeTimeFromJson(json['task_execute_time'] as String)
+    ..firstStartTime = timeFromJson(json['start_deploy_time'] as int)
+    ..taskExecuteTime = executeTimeFromJson(json['task_execute_time'] as int)
     ..cycle = cycleFromJson(json['cycle'] as String)
     ..isEnable = json['isEnable'] as bool;
 }

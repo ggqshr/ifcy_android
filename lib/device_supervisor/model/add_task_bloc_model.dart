@@ -21,12 +21,12 @@ String buildFromJson(Build build ){
   return build.buildId;
 }
 
-DateTime timeFromJson(String temp) {
-  return DateTime.fromMicrosecondsSinceEpoch(int.parse(temp));
+DateTime timeFromJson(int temp) {
+  return DateTime.fromMillisecondsSinceEpoch(temp);
 }
 
-int executeTimeFromJson(String time) {
-  return int.parse(time) ~/ 8624000;
+int executeTimeFromJson(int time) {
+  return time ~/ 86400000;
 }
 
 TaskCycleModel cycleFromJson(String cycle) {

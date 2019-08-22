@@ -38,8 +38,10 @@ class Build {
 }
 
 ///楼层的实体类
+@JsonSerializable()
 class FloorEntity {
   ///楼层数
+  @JsonKey(ignore: true)
   int number;
 
   /// 楼层编码
@@ -49,25 +51,10 @@ class FloorEntity {
   String name;
 
   ///楼层id
-  String id;
+  int id;
 
   FloorEntity({this.number, this.code, this.name, this.id});
 
-  FloorEntity.fromJson(Map<String, dynamic> json) {
-    number = json['number'];
-    code = json['code'];
-    name = json['name'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-//    data['number'] = this.number;
-    data['code'] = this.code;
-    data['name'] = this.name;
-    data['id'] = this.id;
-    return data;
-  }
 
   @override
   bool operator ==(Object other) =>
@@ -86,5 +73,8 @@ class FloorEntity {
       name.hashCode ^
       id.hashCode;
 
+  factory FloorEntity.fromJson(Map<String, dynamic> json) =>
+      _$FloorEntityFromJson(json);
 
+  Map<String, dynamic> toJson() => _$FloorEntityToJson(this);
 }

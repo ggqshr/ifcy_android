@@ -1,5 +1,6 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart' ;
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/actions/device_supervisor_actions.dart';
