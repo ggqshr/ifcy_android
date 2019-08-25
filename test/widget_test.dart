@@ -110,6 +110,10 @@ void main() {
       Response re = await dio.get("/building/project/17");
       print(re);
     });
+    test("testadd", () async {
+      var a = [1,2,3];
+      print(a+[4,5,6]);
+    });
   });
 
   group(("mocking testsp"), () {

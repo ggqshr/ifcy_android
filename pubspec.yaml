@@ -51,6 +51,9 @@ dependencies:
   flutter_secure_storage: ^3.2.1+1
   fluttertoast: ^3.1.0
   flutter_easyrefresh: ^2.0.3
+  meta: ^1.1.7
+  bloc: ^0.15.0
+  flutter_bloc: ^0.21.0
 
 
 dev_dependencies:

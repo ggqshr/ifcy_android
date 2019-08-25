@@ -2,6 +2,7 @@
 ///@description: 计划列表分页数据类
 ///@date :2019/8/21 18:00
 part of 'device_supervisor_model.dart';
+
 @JsonSerializable()
 class PlanListPageModel {
   ///数据列表
@@ -20,6 +21,8 @@ class PlanListPageModel {
   @JsonKey(name: "total_elements")
   int totalElementNum;
 
+  bool get hasReachMax => totalPageNum == currentPageNum;
+
   PlanListPageModel(
       {this.planLists,
       this.currentPageNum,
@@ -32,9 +35,17 @@ class PlanListPageModel {
         totalPageNum = 0,
         planLists = [];
 
+  PlanListPageModel nextPage(PlanListPageModel pageModel) {
+    return PlanListPageModel(
+      planLists: this.planLists + pageModel.planLists,
+      currentPageNum: pageModel.currentPageNum,
+      totalElementNum: this.totalPageNum,
+      totalPageNum: this.totalPageNum,
+    );
+  }
+
   factory PlanListPageModel.fromJson(Map<String, dynamic> json) =>
       _$PlanListPageModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlanListPageModelToJson(this);
-
 }
