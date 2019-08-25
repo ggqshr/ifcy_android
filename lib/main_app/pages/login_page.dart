@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/common/utils/utils.dart';
+import 'package:ifcy/main_app/blocs/login/bloc.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
 import 'package:ifcy/common/utils/loading.dart';
 import 'package:redux/redux.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -14,27 +19,27 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   FocusNode userNameFocusNode;
   FocusNode passWordFocusNode;
-  String userName;
-  String passWord;
   TextEditingController userNameController;
   TextEditingController passWordController;
-
+  LoginBloc loginBloc;
 
   @override
   void initState() {
     super.initState();
-    passWordController = TextEditingController()
-      ..addListener(() {
-        passWord = passWordController.text;
-      });
-    userNameController = TextEditingController()
-      ..addListener(() {
-        userName = userNameController.text;
-      });
+    loginBloc = BlocProvider.of<LoginBloc>(context);
+    passWordController = TextEditingController()..addListener(_changePW);
+    userNameController = TextEditingController()..addListener(_changeUN);
     userNameFocusNode = new FocusNode();
     passWordFocusNode = new FocusNode();
   }
 
+  void _changePW() {
+    loginBloc.dispatch(PasswordChanged(password: passWordController.text));
+  }
+
+  void _changeUN() {
+    loginBloc.dispatch(UserNameChanged(userName: userNameController.text));
+  }
 
   @override
   void dispose() {
@@ -47,23 +52,41 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, LoginPageModel>(
-      converter: (Store<AppState> store) {
-        return LoginPageModel(
-          submitCall: (userName, passWord) {
-            store.dispatch(loginSubmitAction(
-              userName,
-              passWord,
-                  () => Application.router.navigateTo(context, Routes.selectPage),
-            ));
-          },
-          alertText: store.state.alertText,
-        );
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.isFailure) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text('Login Failure'), Icon(Icons.error)],
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+        if (state.isSubmitting) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Logging In...'),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            );
+        }
       },
-      distinct: true,
-      builder: (BuildContext context, vm) {
-        return Scaffold(
-          body: GestureDetector(
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          return Scaffold(
+              body: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               userNameFocusNode.unfocus();
@@ -72,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               child: Column(
                 children: <Widget>[
-                  TextField(
+                  TextFormField(
                     autofocus: true,
                     controller: userNameController,
                     focusNode: userNameFocusNode,
@@ -80,37 +103,32 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: "请输入用户名",
                       hintText: "用户名",
                       prefixIcon: Icon(Icons.verified_user),
-                      errorText: vm.alertText,
                       errorStyle: TextStyle(color: Colors.red, fontSize: 18),
                     ),
+                    validator: (_) => state.isUserNameValid ? null : "请输入用户名",
                     keyboardType: TextInputType.text,
                   ),
-                  TextField(
+                  TextFormField(
                     focusNode: passWordFocusNode,
                     controller: passWordController,
                     decoration: InputDecoration(
                       labelText: "请输入密码",
                       hintText: "密码",
                       prefixIcon: Icon(Icons.vpn_key),
-                      errorText: vm.alertText,
                       errorStyle: TextStyle(color: Colors.red, fontSize: 18),
                     ),
                     keyboardType: TextInputType.text,
                     obscureText: true,
-                    onSubmitted: (_) {
-                      userNameFocusNode.unfocus();
-                      passWordFocusNode.unfocus();
-                      loadingDialogAction.showLoadingDialog(newContext: context);
-                      vm.submitCall(userName, passWord);
-                    },
+                    validator: (_) => state.isPasswordValid ? null : "请输入密码",
                   ),
                   RaisedButton(
                     child: Text("登陆"),
                     onPressed: () {
                       userNameFocusNode.unfocus();
                       passWordFocusNode.unfocus();
-                      loadingDialogAction.showLoadingDialog(newContext: context);
-                      vm.submitCall(userName, passWord);
+                      loginBloc.dispatch(LoginWithCredentialsPressed(
+                          username: userNameController.text,
+                          password: passWordController.text));
                     },
                   ),
                 ],
@@ -119,9 +137,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               height: double.maxFinite,
             ),
-          ),
-        );
-      },
+          ));
+        },
+      ),
     );
   }
 }

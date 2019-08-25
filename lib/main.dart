@@ -1,8 +1,14 @@
+import 'package:bloc/bloc.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
+import 'package:ifcy/main_app/blocs/authorization/authorization_event.dart';
+import 'package:ifcy/main_app/blocs/error_process_delegate.dart';
+import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'common/utils/utils.dart';
@@ -19,7 +25,7 @@ void main() {
   Router router = Router();
   Routes.configureRoutes(router);
   Application.router = router;
-
+  BlocSupervisor.delegate = ErrorProcessDelegate();
   runApp(MyApp());
   SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -48,14 +54,22 @@ class MyApp extends StatelessWidget {
 
     return StoreProvider<AppState>(
       store: _store,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primaryColor: Colors.green[300],
+      child: RepositoryProvider(
+        builder: (context) => UserLoginRepositories(alwaysLogin: true),
+        child: BlocProvider(
+          builder: (context) =>
+              AuthorizationBloc(RepositoryProvider.of(context))
+                ..dispatch(AppStart()),
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primaryColor: Colors.green[300],
+            ),
+            home: MainApp(),
+            onGenerateRoute: Application.router.generator,
+            navigatorKey: Application.navigatorKey,
+          ),
         ),
-        home: MainApp(),
-        onGenerateRoute: Application.router.generator,
-        navigatorKey: Application.navigatorKey,
       ),
     );
   }

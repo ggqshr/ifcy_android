@@ -11,6 +11,7 @@ import 'package:ifcy/common/res/res.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
+import 'package:ifcy/main_app/blocs/error_process_delegate.dart';
 import 'package:ifcy/main_app/pages/login_page.dart';
 
 /// 封装的DIO工具类，封装了dio的拦截器，能够在请求失败的情况下自动请求刷新token并将之前的请求结果返回
@@ -63,7 +64,7 @@ class DioUtils {
         } else {
           //如果不成功，同样解锁，然后返回一个应该重新登陆的action;
           dio.unlock();
-          return DioError(error: ShouldReLoginAction());
+          return DioError(error: ShouldReLoginError());
         }
         var request = error.response.request;
         request.headers['authorization'] = token;
@@ -82,7 +83,8 @@ class DioUtils {
         }
       }
     }));
-    dio.interceptors.add(LogInterceptor(responseBody: true,requestBody: true)); //开启日志
+    dio.interceptors
+        .add(LogInterceptor(responseBody: true, requestBody: true)); //开启日志
     return dio;
   }
 
@@ -132,19 +134,10 @@ class DioUtils {
   }
 
   //封装的登陆逻辑
-  Future<IfcyErrorAction> login(String userName, String passWord) async {
-    try {
-      Response res = await _login(userName, passWord);
-      InternetAction action = parseResponse2action(res);
-      if (action is SuccessAction) {
-        setToken(res.headers.value("authorization"));
-        return action;
-      }
-      return action;
-    } catch (e) {
-      print(e);
-      return parseError2action(e);
-    }
+  Future<Response> login(String userName, String passWord) async {
+    Response res = await _login(userName, passWord);
+    setToken(res.headers.value("authorization"));
+    return res;
   }
 
   ///处理异常的逻辑，包括DioError，以及非DioError
@@ -209,14 +202,14 @@ class DioUtils {
     Map<String, dynamic> dataMap = {};
     dataMap['check_building_floor_list'] = model.model.currentFloor;
     dataMap['check_building_id'] = int.parse(model.model.currentBuild.buildId);
-    dataMap['check_system_list'] =model.model.selectedSystem;
+    dataMap['check_system_list'] = model.model.selectedSystem;
     dataMap['cycle'] = model.model.cycle.toEnum;
     dataMap['name'] = model.model.name;
     dataMap['plan_user_list'] = model.model.selectedPeople;
     dataMap['project_id'] = int.parse(projectId);
     dataMap['start_deploy_time'] = model.firstStartTime.millisecondsSinceEpoch;
-    dataMap['task_execute_time'] = model.model.taskExecuteTime*86400000;
-    return _dio.post("/patrol/plan",data: jsonEncode(dataMap));
+    dataMap['task_execute_time'] = model.model.taskExecuteTime * 86400000;
+    return _dio.post("/patrol/plan", data: jsonEncode(dataMap));
   }
 
   ///提交任务的接口封装

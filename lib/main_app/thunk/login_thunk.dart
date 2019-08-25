@@ -5,40 +5,40 @@ part of "main_app_thunk.dart";
 ThunkAction<AppState> loginSubmitAction(
     String userName, String passWord, Function navigatorCall) {
   return (Store<AppState> store) async {
-    Dio dio = DioUtils.getInstance().getDio(); //获取实例
-    InternetAction res =
-        await DioUtils.getInstance().login(userName, passWord); //获取登陆结果
-    if (res is SuccessAction) {
-      //如果登陆成功
-      await Auth.getInstance().save(userName, passWord); //将内容缓存起来
-      try {
-        Response userInfo = await dio.get("/user"); //获取用户信息
-        Response projects = await dio.get("/user/projects"); //获取用户参与的所有项目
-        Response auth = await dio
-            .get("/user/projects/role/${projects.data['data'][0]['id']}");
-        store.dispatch(
-          LoginSuccessAction(
-            userId: int.parse(userInfo.data['data']['id']),
-            userName: userInfo.data['data']['username'],
-            companyName: userInfo.data['data']['company_name'],
-            projectList: projects.data['data']
-                .map((item) => Projects.fromMap(item))
-                .toList(),
-            currentProIndex: 0,
-            auth: auth.data['data']['role_type'],
-          ),
-        );
-        loadingDialogAction.cancleLoadingDialog();
-        navigatorCall(); //跳转路由
-      } catch (e) {
-        store.dispatch(DioUtils.getInstance().parseError2action(e));
-        loadingDialogAction.cancleLoadingDialog();
-      }
-    } else {
-      store.dispatch(res);
-      loadingDialogAction.cancleLoadingDialog();
-    }
-    store.dispatch(InitDeviceSupervisorStateAction.init());
-    store.dispatch(InitDeviceStaffStateAction.init());
+//    Dio dio = DioUtils.getInstance().getDio(); //获取实例
+//    InternetAction res =
+//        await DioUtils.getInstance().login(userName, passWord); //获取登陆结果
+//    if (res is SuccessAction) {
+//      //如果登陆成功
+//      await Auth.getInstance().save(userName, passWord); //将内容缓存起来
+//      try {
+//        Response userInfo = await dio.get("/user"); //获取用户信息
+//        Response projects = await dio.get("/user/projects"); //获取用户参与的所有项目
+//        Response auth = await dio
+//            .get("/user/projects/role/${projects.data['data'][0]['id']}");
+//        store.dispatch(
+//          LoginSuccessAction(
+//            userId: int.parse(userInfo.data['data']['id']),
+//            userName: userInfo.data['data']['username'],
+//            companyName: userInfo.data['data']['company_name'],
+//            projectList: projects.data['data']
+//                .map((item) => Projects.fromMap(item))
+//                .toList(),
+//            currentProIndex: 0,
+//            auth: auth.data['data']['role_type'],
+//          ),
+//        );
+//        loadingDialogAction.cancleLoadingDialog();
+//        navigatorCall(); //跳转路由
+//      } catch (e) {
+//        store.dispatch(DioUtils.getInstance().parseError2action(e));
+//        loadingDialogAction.cancleLoadingDialog();
+//      }
+//    } else {
+//      store.dispatch(res);
+//      loadingDialogAction.cancleLoadingDialog();
+//    }
+//    store.dispatch(InitDeviceSupervisorStateAction.init());
+//    store.dispatch(InitDeviceStaffStateAction.init());
   };
 }
