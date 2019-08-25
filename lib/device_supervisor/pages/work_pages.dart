@@ -30,6 +30,7 @@ class _WorkPageState extends State<WorkPage>
 
   @override
   Widget build(BuildContext context) {
+    AppState state = StoreProvider.of<AppState>(context).state;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -54,10 +55,18 @@ class _WorkPageState extends State<WorkPage>
           isScrollable: false,
         ),
       ),
-      body: TabBarView(
-        children: tabViews,
-        controller: _controller,
-        physics: NeverScrollableScrollPhysics(),
+      body: BlocProvider<PlanListBloc>(
+        builder: (context) {
+          PlanListRepositories repositories = PlanListRepositories(
+              state.deviceSupervisorModel.buildingList,
+              state.selectProjectModel.selectedProject.projectId);
+          return PlanListBloc(repositories);
+        },
+        child: TabBarView(
+          children: tabViews,
+          controller: _controller,
+          physics: NeverScrollableScrollPhysics(),
+        ),
       ),
     );
   }

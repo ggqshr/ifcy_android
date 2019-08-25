@@ -38,7 +38,7 @@ class PlanListPageModel {
   PlanListPageModel nextPage(PlanListPageModel pageModel) {
     return PlanListPageModel(
       planLists: this.planLists + pageModel.planLists,
-      currentPageNum: pageModel.currentPageNum,
+      currentPageNum: pageModel.currentPageNum+1,
       totalElementNum: this.totalPageNum,
       totalPageNum: this.totalPageNum,
     );

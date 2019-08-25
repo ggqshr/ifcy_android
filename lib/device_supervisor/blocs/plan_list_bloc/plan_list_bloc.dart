@@ -19,7 +19,8 @@ class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {
   Stream<PlanListState> mapEventToState(
     PlanListEvent event,
   ) async* {
-    if (event is Fetch && _hasReachMax(currentState)) {
+    print(event);
+    if (event is Fetch && !_hasReachMax(currentState)) {
       try {
         if (currentState is InitialPlanListState) {
           final PlanListPageModel model = await repositories.getFirstPage();
@@ -42,6 +43,11 @@ class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {
       } catch (e) {
         yield FetchErrorPlanListState();
       }
+    }
+    if(event is Refresh){
+      final PlanListPageModel model = await repositories.getFirstPage();
+      yield FetchedPlanListState(model: model);
+      return;
     }
   }
 }

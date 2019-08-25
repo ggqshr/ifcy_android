@@ -1,11 +1,14 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart' ;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/actions/device_supervisor_actions.dart';
+import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';
 import 'package:ifcy/common/components/components.dart';
+import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';

@@ -11,7 +11,7 @@ class FetchedPlanListState extends PlanListState {
   final PlanListPageModel model;
   final bool isReachMax;
 
-  FetchedPlanListState({this.model, this.isReachMax});
+  FetchedPlanListState({this.model, this.isReachMax=false});
 
   FetchedPlanListState copyWith({isReachMax, mm}) {
     return FetchedPlanListState(

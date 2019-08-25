@@ -4,3 +4,5 @@ import 'package:meta/meta.dart';
 abstract class PlanListEvent {}
 
 class Fetch extends PlanListEvent {}
+
+class Refresh extends PlanListEvent {}
