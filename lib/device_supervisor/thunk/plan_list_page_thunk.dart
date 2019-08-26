@@ -14,10 +14,10 @@ void initPlanListThunkAction(Store<AppState> store) async {
         queryParameters: {"list_rows": 1});
     PlanListPageModel model = PlanListPageModel.fromJson(res.data['data']);
     model.currentPageNum += 1; //第一页返回的num是0,所以需要加1
-    for (var build in model.planLists) {
-      build.currentBuild = store.state.deviceSupervisorModel.buildingList
-          .singleWhere((item) => item.buildId == build.currentBuild.buildId);
-    }
+//    for (var build in model.planLists) {
+//      build.currentBuild = store.state.deviceSupervisorModel.buildingList
+//          .singleWhere((item) => item.buildId == build.currentBuild.buildId);
+//    }
     store.dispatch(InitPlanListPageAction(model));
   } catch (e) {
     store.dispatch(DioUtils.getInstance().parseError2action(e));

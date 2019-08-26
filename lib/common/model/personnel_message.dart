@@ -1,4 +1,5 @@
 part of "model.dart";
+
 /// 部门实体类
 class DepartmentMessage {
   String id;
@@ -9,34 +10,31 @@ class DepartmentMessage {
 }
 
 ///人员信息
-class PersonnelMessage{
+@JsonSerializable()
+class PersonnelMessage {
   String id;
+  @JsonKey(name: "real_name")
   String name;
-  PersonnelMessage({this.id,this.name});
+  String mobile;
+  @JsonKey(name: "role_type")
+  String roleType;
+  bool enable;
 
-  PersonnelMessage.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['real_name'];
-  }
+  PersonnelMessage({this.id, this.name,this.roleType,this.enable,this.mobile});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PersonnelMessage &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              name == other.name;
+      other is PersonnelMessage &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['real_name'] = this.name;
-    data['id'] = this.id;
-    return data;
-  }
+  factory PersonnelMessage.fromJson(Map<String, dynamic> json) =>
+      _$PersonnelMessageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PersonnelMessageToJson(this);
 }
-

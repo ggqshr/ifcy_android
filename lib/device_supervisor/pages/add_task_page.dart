@@ -13,429 +13,502 @@ class _AddTaskPageState extends State<AddTaskPage>
     with AutomaticKeepAliveClientMixin {
   TextEditingController _textEditingController;
   AddTaskBlocModel model;
+  AddTaskPlanBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController = TextEditingController.fromValue(
+      TextEditingValue(
+        text: "1",
+        selection: TextSelection.fromPosition(
+          TextPosition(affinity: TextAffinity.downstream, offset: 1),
+        ),
+      ),
+    );
+    bloc =
+        AddTaskPlanBloc(RepositoryProvider.of<UserLoginRepositories>(context))
+          ..dispatch(FetchData());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textEditingController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<AppState>(
-        key: PageStorageKey("add_task_page"),
-        onInit: (store) {
-          //初始化数据
-          store.dispatch(initAddTaskData);
-          _textEditingController = TextEditingController.fromValue(
-            TextEditingValue(
-              text: "1",
-              selection: TextSelection.fromPosition(
-                TextPosition(affinity: TextAffinity.downstream, offset: 1),
-              ),
-            ),
-          );
-        },
-        onDispose: (store) {
-          _textEditingController.dispose();
-        },
-        builder: (context, store) {
-          DeviceSupervisorModel deviceSupervisorModel =
-              store.state.deviceSupervisorModel;
-          if (model == null ||
-              model.allInspectionSystem == null ||
-              model.allPeople == null) {
-            model = AddTaskBlocModel(
-                allBuilding:
-                    deviceSupervisorModel.buildingList.skip(1).toList(),
-                allInspectionSystem: deviceSupervisorModel.inspectionSystems,
-                allPeople: deviceSupervisorModel.departmentMessages,
-                allTaskCycle: deviceSupervisorModel.taskCycleMessages);
+    return Scaffold(
+      key: PageStorageKey("add_task_stepper"),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("发布新任务或计划"),
+      ),
+      body: BlocListener<AddTaskPlanBloc, AddTaskPlanState>(
+        bloc: bloc,
+        listener: (context, state) async{
+          if (state is AfterFetchedState) {
+            if (state.isSubmittingFault) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text('提交失败，请稍后再试'), Icon(Icons.error)],
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+            }
+            if (state.isSubmitting) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('提交中'),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  ),
+                );
+            }
+            if (state.isSubmittingSuccess){
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('提交成功'),
+                        Icon(Icons.check),
+                      ],
+                    ),
+                  ),
+                );
+              await Future.delayed(Duration(seconds: 1));
+              Navigator.of(context).pop();
+            }
           }
-          return ChangeNotifierProvider<AddTaskBlocModel>.value(
-            value: model,
-            child: Scaffold(
-              key: PageStorageKey("add_task_stepper"),
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: Text("发布新任务或计划"),
-              ),
-              body: Consumer<AddTaskBlocModel>(builder: (context, vm, child) {
-                return Container(
-                  child: Form(
-                    child: Builder(builder: (context) {
-                      return Stepper(
-                        steps: [
-                          Step(
-                            title: Text("第一步"),
-                            content: ListView(
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text("选择类型"),
-                                  subtitle: Row(
-                                    children: ["计划", "任务"].map((item) {
-                                      return Row(
-                                        children: <Widget>[
-                                          Radio(
-                                            value: item,
-                                            groupValue: parseEnumType(
-                                                vm.model.inspectionType),
-                                            onChanged:
-                                                model.changeInspectionType,
+        },
+        child: BlocBuilder(
+          // ignore: missing_return
+          builder: (context, state) {
+            if (state is UnInitialAddTaskPlanState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is AfterFetchedState) {
+              if (state.isFetchSuccess) {
+                model ??= AddTaskBlocModel(
+                    currentBuilding: state.thisBuild,
+                    allInspectionSystem: state.systems,
+                    allPeople: state.personnelMessage,
+                    allTaskCycle: state.cycleModel);
+                return ChangeNotifierProvider<AddTaskBlocModel>.value(
+                  value: model,
+                  child:
+                      Consumer<AddTaskBlocModel>(builder: (context, vm, child) {
+                    return Container(
+                      child: Form(
+                        child: Builder(builder: (context) {
+                          return Stepper(
+                            steps: [
+                              Step(
+                                title: Text("第一步"),
+                                content: ListView(
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text("选择类型"),
+                                      subtitle: Row(
+                                        children: ["计划", "任务"].map((item) {
+                                          return Row(
+                                            children: <Widget>[
+                                              Radio(
+                                                value: item,
+                                                groupValue: parseEnumType(
+                                                    vm.model.inspectionType),
+                                                onChanged:
+                                                    model.changeInspectionType,
+                                              ),
+                                              Text(item)
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text("任务名"),
+                                      subtitle: TextField(
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            hintText: "任务或计划名称",
+                                            errorText: vm.nameErrorMsg),
+                                        onChanged: (value) {
+                                          vm.changeName(value);
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                  shrinkWrap: true,
+                                ),
+                                isActive: true,
+                              ),
+                              Step(
+                                title: Text("第二步"),
+                                content: ListView(
+                                  children: <Widget>[
+                                    ChildWithInputDecorator(
+                                      vm.floorErrorMsg,
+                                      ListTile(
+                                        title: Text("选择楼层"),
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                                "已选${vm.model.currentFloor.length}层"),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            RaisedButton(
+                                              onPressed: () {
+                                                showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return ChangeNotifierProvider<
+                                                          AddTaskBlocModel>.value(
+                                                        value: vm,
+                                                        child:
+                                                            SelectFloorPage(),
+                                                      );
+                                                    });
+                                              },
+                                              child: Text("选择楼层"),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      vm,
+                                    ),
+                                    ChildWithInputDecorator(
+                                      vm.checkSystemErrorMsg,
+                                      ListTile(
+                                        title: Text("选择检查系统"),
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                                "已选${vm.model.selectedSystem.map((item) => item.inspectionItem.length).where((item) => item > 0).length}项"),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            RaisedButton(
+                                              onPressed: () {
+                                                if (vm.model.selectedSystem
+                                                    .isEmpty) {
+                                                  vm.initSelectSystem();
+                                                }
+                                                showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return ChangeNotifierProvider<
+                                                          AddTaskBlocModel>.value(
+                                                        value: vm,
+                                                        child:
+                                                            SelectCheckSystemPage(),
+                                                      );
+                                                    });
+                                              },
+                                              child: Text("选择系统"),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      vm,
+                                    ),
+                                  ],
+                                  shrinkWrap: true,
+                                ),
+                                isActive: true,
+                              ),
+                              if (vm.model.inspectionType ==
+                                  NewInspectionType.plan)
+                                Step(
+                                  isActive: true,
+                                  title: Text("第三步"),
+                                  content: ListView(
+                                    children: <Widget>[
+                                      ListTile(
+                                        title: Text("任务执行周期"),
+                                        subtitle: DropdownButtonFormField(
+                                          hint: Text("选择任务执行周期"),
+                                          items: vm.allTaskCycle.map((item) {
+                                            return DropdownMenuItem(
+                                              child: Text(item.item),
+                                              value: item,
+                                            );
+                                          }).toList(),
+                                          onChanged: vm.changeTaskCycle,
+                                          value: vm.model.cycle,
+                                        ),
+                                      ),
+                                      ChildWithInputDecorator(
+                                        vm.firstStartTimeErrorMsg,
+                                        ListTile(
+                                          title: Text("第一次任务开始时间"),
+                                          trailing: RaisedButton(
+                                            onPressed: () async {
+                                              Locale myLocale =
+                                                  Localizations.localeOf(
+                                                      context);
+                                              DateTime dd =
+                                                  await showDatePicker(
+                                                      context: context,
+                                                      initialDate:
+                                                          DateTime.now(),
+                                                      firstDate: DateTime(2019),
+                                                      lastDate: DateTime(2050),
+                                                      locale: myLocale);
+                                              if (dd != null) {
+                                                vm.setFirstStartTime(dd);
+                                              }
+                                            },
+                                            child: Text("选择时间"),
                                           ),
-                                          Text(item)
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text("选择大厦"),
-                                  subtitle: DropdownButtonFormField(
-                                    items: vm.allBuilding.map((item) {
-                                      return DropdownMenuItem(
-                                        child: Text(item.buildName),
-                                        value: item,
-                                      );
-                                    }).toList(),
-                                    onChanged: vm.changeCurrentBuilding,
-                                    value: vm.model.currentBuild,
-                                    hint: Text("请选择大厦"),
-                                    decoration: InputDecoration(
-                                        errorText: vm.buildingErrorMag),
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text("任务名"),
-                                  subtitle: TextField(
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                        hintText: "任务或计划名称",
-                                        errorText: vm.nameErrorMsg),
-                                    onChanged: (value) {
-                                      vm.changeName(value);
-                                    },
-                                  ),
-                                ),
-                              ],
-                              shrinkWrap: true,
-                            ),
-                            isActive: true,
-                          ),
-                          Step(
-                            title: Text("第二步"),
-                            content: ListView(
-                              children: <Widget>[
-                                ChildWithInputDecorator(
-                                  vm.floorErrorMsg,
-                                  ListTile(
-                                    title: Text("选择楼层"),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text("已选${vm.model.currentFloor.length}层"),
-                                        SizedBox(
-                                          width: 20,
+                                          subtitle: Text(
+                                              vm.model.firstStartTime != null
+                                                  ? vm.model.firstStartTime
+                                                      .toString()
+                                                      .substring(0, 10)
+                                                  : "未选择"),
                                         ),
-                                        RaisedButton(
-                                          onPressed: () {
-                                            showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return ChangeNotifierProvider<
-                                                      AddTaskBlocModel>.value(
-                                                    value: vm,
-                                                    child: SelectFloorPage(),
-                                                  );
-                                                });
-                                          },
-                                          child: Text("选择楼层"),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  vm,
-                                ),
-                                ChildWithInputDecorator(
-                                  vm.checkSystemErrorMsg,
-                                  ListTile(
-                                    title: Text("选择检查系统"),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                            "已选${vm.model.selectedSystem.map((item) => item.inspectionItem.length).where((item) => item > 0).length}项"),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        RaisedButton(
-                                          onPressed: () {
-                                            if (vm.model.selectedSystem.isEmpty) {
-                                              vm.initSelectSystem();
-                                            }
-                                            showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return ChangeNotifierProvider<
-                                                      AddTaskBlocModel>.value(
-                                                    value: vm,
-                                                    child:
-                                                        SelectCheckSystemPage(),
-                                                  );
-                                                });
-                                          },
-                                          child: Text("选择系统"),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  vm,
-                                ),
-                              ],
-                              shrinkWrap: true,
-                            ),
-                            isActive: true,
-                          ),
-                          if (vm.model.inspectionType == NewInspectionType.plan)
-                            Step(
-                              isActive: true,
-                              title: Text("第三步"),
-                              content: ListView(
-                                children: <Widget>[
-                                  ListTile(
-                                    title: Text("任务执行周期"),
-                                    subtitle: DropdownButtonFormField(
-                                      hint: Text("选择任务执行周期"),
-                                      items: vm.allTaskCycle.map((item) {
-                                        return DropdownMenuItem(
-                                          child: Text(item.item),
-                                          value: item,
-                                        );
-                                      }).toList(),
-                                      onChanged: vm.changeTaskCycle,
-                                      value: vm.model.cycle,
-                                    ),
-                                  ),
-                                  ChildWithInputDecorator(
-                                    vm.firstStartTimeErrorMsg,
-                                    ListTile(
-                                      title: Text("第一次任务开始时间"),
-                                      trailing: RaisedButton(
-                                        onPressed: () async {
-                                          Locale myLocale =
-                                              Localizations.localeOf(context);
-                                          DateTime dd = await showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2019),
-                                              lastDate: DateTime(2050),
-                                              locale: myLocale);
-                                          if (dd != null) {
-                                            vm.setFirstStartTime(dd);
-                                          }
-                                        },
-                                        child: Text("选择时间"),
+                                        vm,
                                       ),
-                                      subtitle: Text(vm.firstStartTime != null
-                                          ? vm.firstStartTime
-                                              .toString()
-                                              .substring(0, 10)
-                                          : "未选择"),
-                                    ),
-                                    vm,
-                                  ),
-                                  ListTile(
-                                    title: Text("选择任务执行时间"),
-                                    subtitle: TextField(
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                        suffixText: "天",
-                                      ),
-                                      controller: _textEditingController
-                                        ..addListener(() {
-                                          vm.setSustainedTime(int.parse(
-                                              _textEditingController.text));
-                                        }),
-                                    ),
-                                  ),
-                                ],
-                                shrinkWrap: true,
-                              ),
-                            ),
-                          if (vm.model.inspectionType == NewInspectionType.task)
-                            Step(
-                              isActive: true,
-                              title: Text("第三步"),
-                              content: ListView(
-                                children: <Widget>[
-                                  ChildWithInputDecorator(
-                                    vm.startTimeErrorMsg,
-                                    ListTile(
-                                        title: Text("任务开始时间"),
-                                        trailing: RaisedButton(
-                                          onPressed: () async {
-                                            Locale myLocale =
-                                                Localizations.localeOf(context);
-                                            DateTime dd = await showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime(2019),
-                                                lastDate: DateTime(2050),
-                                                locale: myLocale);
-                                            if (dd != null) {
-                                              vm.setStartTime(dd);
-                                            }
-                                          },
-                                          child: Text("选择时间"),
+                                      ListTile(
+                                        title: Text("选择任务执行时间"),
+                                        subtitle: TextField(
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            suffixText: "天",
+                                          ),
+                                          controller: _textEditingController
+                                            ..addListener(() {
+                                              vm.setSustainedTime(int.parse(
+                                                  _textEditingController.text));
+                                            }),
                                         ),
-                                        subtitle: Text(vm.startTime != null
-                                            ? vm.startTime
-                                                .toString()
-                                                .substring(0, 10)
-                                            : "未选择")),
-                                    vm,
-                                  ),
-                                  ChildWithInputDecorator(
-                                    vm.endTimeErrorMsg,
-                                    ListTile(
-                                      title: Text("任务结束时间"),
-                                      trailing: RaisedButton(
-                                        onPressed: () async {
-                                          Locale myLocale =
-                                              Localizations.localeOf(context);
-                                          DateTime dd = await showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2019),
-                                              lastDate: DateTime(2050),
-                                              locale: myLocale);
-                                          if (dd != null) {
-                                            vm.setEndTime(dd);
-                                          }
-                                        },
-                                        child: Text("选择时间"),
                                       ),
-                                      subtitle: Text(vm.endTime != null
-                                          ? vm.endTime
-                                              .toString()
-                                              .substring(0, 10)
-                                          : "未选择"),
-                                    ),
-                                    vm,
+                                    ],
+                                    shrinkWrap: true,
                                   ),
-                                ],
-                                shrinkWrap: true,
-                              ),
-                            ),
-                          Step(
-                            isActive: true,
-                            title: Text("第四步"),
-                            content: ListView(
-                              children: <Widget>[
-                                ChildWithInputDecorator(
-                                  vm.peopleErrorMsg,
-                                  ListTile(
-                                    title: Text("选择执行人员"),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text("已选${vm.model.selectedPeople.length}人"),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        RaisedButton(
-                                          onPressed: () {
-                                            showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return ChangeNotifierProvider<
-                                                      AddTaskBlocModel>.value(
-                                                    value: vm,
-                                                    child: SelectPeoplePage(),
-                                                  );
-                                                });
-                                          },
-                                          child: Text("选择人员"),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  vm,
                                 ),
+                              if (vm.model.inspectionType ==
+                                  NewInspectionType.task)
+                                Step(
+                                  isActive: true,
+                                  title: Text("第三步"),
+                                  content: ListView(
+                                    children: <Widget>[
+                                      ChildWithInputDecorator(
+                                        vm.startTimeErrorMsg,
+                                        ListTile(
+                                            title: Text("任务开始时间"),
+                                            trailing: RaisedButton(
+                                              onPressed: () async {
+                                                Locale myLocale =
+                                                    Localizations.localeOf(
+                                                        context);
+                                                DateTime dd =
+                                                    await showDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            DateTime.now(),
+                                                        firstDate:
+                                                            DateTime(2019),
+                                                        lastDate:
+                                                            DateTime(2050),
+                                                        locale: myLocale);
+                                                if (dd != null) {
+                                                  vm.setStartTime(dd);
+                                                }
+                                              },
+                                              child: Text("选择时间"),
+                                            ),
+                                            subtitle: Text(
+                                                vm.model.startTime != null
+                                                    ? vm.model.startTime
+                                                        .toString()
+                                                        .substring(0, 10)
+                                                    : "未选择")),
+                                        vm,
+                                      ),
+                                      ChildWithInputDecorator(
+                                        vm.endTimeErrorMsg,
+                                        ListTile(
+                                          title: Text("任务结束时间"),
+                                          trailing: RaisedButton(
+                                            onPressed: () async {
+                                              Locale myLocale =
+                                                  Localizations.localeOf(
+                                                      context);
+                                              DateTime dd =
+                                                  await showDatePicker(
+                                                      context: context,
+                                                      initialDate:
+                                                          DateTime.now(),
+                                                      firstDate: DateTime(2019),
+                                                      lastDate: DateTime(2050),
+                                                      locale: myLocale);
+                                              if (dd != null) {
+                                                vm.setEndTime(dd);
+                                              }
+                                            },
+                                            child: Text("选择时间"),
+                                          ),
+                                          subtitle: Text(
+                                              vm.model.endTime != null
+                                                  ? vm.model.endTime
+                                                      .toString()
+                                                      .substring(0, 10)
+                                                  : "未选择"),
+                                        ),
+                                        vm,
+                                      ),
+                                    ],
+                                    shrinkWrap: true,
+                                  ),
+                                ),
+                              Step(
+                                isActive: true,
+                                title: Text("第四步"),
+                                content: ListView(
+                                  children: <Widget>[
+                                    ChildWithInputDecorator(
+                                      vm.peopleErrorMsg,
+                                      ListTile(
+                                        title: Text("选择执行人员"),
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                                "已选${vm.model.selectedPeople.length}人"),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            RaisedButton(
+                                              onPressed: () {
+                                                showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return ChangeNotifierProvider<
+                                                          AddTaskBlocModel>.value(
+                                                        value: vm,
+                                                        child:
+                                                            SelectPeoplePage(),
+                                                      );
+                                                    });
+                                              },
+                                              child: Text("选择人员"),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      vm,
+                                    ),
 //                                if (vm.inspectionType == NewInspectionType.plan)
 //                                  SwitchListTile(
 //                                    title: Text("是否立即启用"),
 //                                    value: vm.isEnable,
 //                                    onChanged: vm.changeEnable,
 //                                  ),
-                                ListTile(
-                                  title: Text("备注"),
-                                  subtitle: TextField(
-                                    keyboardType: TextInputType.text,
-                                    onChanged: (value) {
-                                      vm.changeNoteText(value);
-                                    },
-                                  ),
+                                    ListTile(
+                                      title: Text("备注"),
+                                      subtitle: TextField(
+                                        keyboardType: TextInputType.text,
+                                        onChanged: (value) {
+                                          vm.changeNoteText(value);
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                  shrinkWrap: true,
                                 ),
-                              ],
-                              shrinkWrap: true,
-                            ),
-                          )
-                        ],
-                        currentStep: vm.stepperIndex,
-                        onStepCancel: vm.cancelStepperCall,
-                        onStepContinue: vm.nextStepperCall,
-                        onStepTapped: (index) {
-                          if (Form.of(context).validate()) {
-                            vm.stepperCall(index);
-                          }
-                        },
-                        controlsBuilder: (BuildContext context,
-                            {VoidCallback onStepContinue,
-                            VoidCallback onStepCancel}) {
-                          return Row(
-                            children: <Widget>[
-                              if (vm.stepperIndex != 0)
-                                FlatButton(
-                                  onPressed: () {
-                                    vm.cancelStepperCall();
-                                  },
-                                  child: Text("上一步"),
-                                ),
-                              if (vm.stepperIndex != 3)
-                                FlatButton(
-                                  onPressed: () {
-                                    if (vm.index2validate[vm.stepperIndex]()) {
-                                      vm.nextStepperCall();
-                                    }
-                                  },
-                                  child: Text("下一步"),
-                                ),
-                              if (vm.stepperIndex == 3)
-                                FlatButton(
-                                  color: Colors.blue,
-                                  onPressed: () {
-                                    if (vm.index2validate[vm.stepperIndex]()) {
-                                      loadingDialogAction.showLoadingDialog(
-                                          text2show: "提交中",
-                                          newContext: context);
-                                      vm.submitData((model) => store.dispatch(
-                                          submitInspectionTask(model)));
-                                    }
-                                  },
-                                  child: Text(
-                                    "提交",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
+                              )
                             ],
+                            currentStep: vm.stepperIndex,
+                            onStepCancel: vm.cancelStepperCall,
+                            onStepContinue: vm.nextStepperCall,
+//                            onStepTapped: (index) {
+//                              if (Form.of(context).validate()) {
+//                                vm.stepperCall(index);
+//                              }
+//                            },
+                            controlsBuilder: (BuildContext context,
+                                {VoidCallback onStepContinue,
+                                VoidCallback onStepCancel}) {
+                              return Row(
+                                children: <Widget>[
+                                  if (vm.stepperIndex != 0)
+                                    FlatButton(
+                                      onPressed: () {
+                                        vm.cancelStepperCall();
+                                      },
+                                      child: Text("上一步"),
+                                    ),
+                                  if (vm.stepperIndex != 3)
+                                    FlatButton(
+                                      onPressed: () {
+                                        if (vm.index2validate[
+                                            vm.stepperIndex]()) {
+                                          vm.nextStepperCall();
+                                        }
+                                      },
+                                      child: Text("下一步"),
+                                    ),
+                                  if (vm.stepperIndex == 3)
+                                    FlatButton(
+                                      color: Colors.blue,
+                                      onPressed: () {
+                                        if (vm.index2validate[
+                                            vm.stepperIndex]()) {
+                                          vm.submitData((model) =>
+                                              bloc.dispatch(SubmitData(model)));
+                                        }
+                                      },
+                                      child: Text(
+                                        "提交",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
                           );
-                        },
-                      );
-                    }),
-                  ),
+                        }),
+                      ),
+                    );
+                  }),
                 );
-              }),
-            ),
-          );
-        });
+              } else {
+                return Center(
+                  child: Text("网络出现错误，请重新加载"),
+                );
+              }
+            }
+          },
+          bloc: bloc,
+        ),
+      ),
+    );
   }
 
   @override
@@ -466,20 +539,20 @@ class SelectFloorPage extends StatelessWidget {
                   return CheckboxListTile(
                     title: Text("全选"),
                     onChanged: vm.changAllFloor,
-                    value:
-                        vm.model.currentFloor.length == vm.model.currentBuild.floors.length,
+                    value: vm.model.currentFloor.length ==
+                        vm.currentBuilding.floors.length,
                   );
                 }
                 return CheckboxListTile(
-                  title: Text(vm.model.currentBuild.floors[index - 1].name),
+                  title: Text(vm.currentBuilding.floors[index - 1].name),
                   value: vm.model.currentFloor
-                      .contains(vm.model.currentBuild.floors[index - 1]),
+                      .contains(vm.currentBuilding.floors[index - 1]),
                   onChanged: (value) {
                     vm.changeCurrentFloor(value, index - 1);
                   },
                 );
               },
-              itemCount: vm.model.currentBuild.floors.length + 1,
+              itemCount: vm.currentBuilding.floors.length + 1,
               shrinkWrap: true,
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
@@ -580,13 +653,15 @@ class SelectPeoplePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return CheckboxListTile(
-                    value: vm.allPeople.length == vm.model.selectedPeople.length,
+                    value:
+                        vm.allPeople.length == vm.model.selectedPeople.length,
                     onChanged: vm.selectAllPeople,
                     title: Text("全选"),
                   );
                 } else {
                   return CheckboxListTile(
-                    value: vm.model.selectedPeople.contains(vm.allPeople[index - 1]),
+                    value: vm.model.selectedPeople
+                        .contains(vm.allPeople[index - 1]),
                     onChanged: (value) =>
                         vm.changeSelectPeople(value, index - 1),
                     title: Text(vm.allPeople[index - 1].name),

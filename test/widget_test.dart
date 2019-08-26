@@ -111,10 +111,10 @@ void main() {
       print(re);
     });
     test("testadd", () async {
-      Dio dio = DioUtils.getInstance().getDio();
-      await DioUtils.getInstance().login("hyj", "123456");
-      Response res = await dio.get("/building");
-      print(Build.fromJson(res.data['data']));
+      Map m = {1: 1, 2: 2};
+      print(m);
+      m.remove(1);
+      print(m);
     });
   });
 

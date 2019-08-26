@@ -14,24 +14,32 @@ Map<int, String> newInspectionTypeTypeMap = {
   1: "任务",
 };
 
-Build buildJsonFunc(String id) {
-  return Build(buildId: id.toString());
-}
-String buildFromJson(Build build ){
-  return build.buildId;
+DateTime timeFromJson(String temp) {
+  return temp == null
+      ? null
+      : DateTime.fromMillisecondsSinceEpoch(int.parse(temp));
 }
 
-DateTime timeFromJson(String temp) {
-  return DateTime.fromMillisecondsSinceEpoch(int.parse(temp));
+String timeToJson(DateTime d) {
+  return d?.millisecondsSinceEpoch.toString();
 }
 
 int executeTimeFromJson(String time) {
-  return int.parse(time) ~/ 86400000;
+  return time==null?null:int.parse(time) ~/ 86400000;
+}
+
+String executeTimeToJson(int t) {
+  return (t * 86400000).toString();
+}
+
+String firstStartTimeToJson(DateTime d) {
+  return d?.millisecondsSinceEpoch.toString();
 }
 
 TaskCycleModel cycleFromJson(String cycle) {
-  return TaskCycleModel.fromString(cycle);
+  return cycle==null?null:TaskCycleModel.fromString(cycle);
 }
+
 String cycleToJson(TaskCycleModel cycle) {
   return cycle.toEnum;
 }
@@ -47,12 +55,8 @@ class TaskPlanEntity {
   NewInspectionType inspectionType;
 
   ///任务的备注
-  @JsonKey(ignore: true)
+  @JsonKey(name: "comment")
   String noteText;
-
-  ///当前选择的建筑
-  @JsonKey(fromJson: buildJsonFunc, name: "check_building_id",toJson: buildFromJson)
-  Build currentBuild;
 
   ///当前选择的楼层
   @JsonKey(name: "check_building_floor_list")
@@ -63,32 +67,41 @@ class TaskPlanEntity {
   List<InspectionSystem> selectedSystem;
 
   ///选择的执行人
-  @JsonKey(name: "plan_user_list")
+  @JsonKey(name: "user_list")
   List<PersonnelMessage> selectedPeople;
 
   ///任务独有
 
   ///开始时间
+  @JsonKey(name:"start_time",toJson: timeToJson, fromJson: timeFromJson)
   DateTime startTime;
 
   ///结束时间
+  @JsonKey(name:"end_time",toJson: timeToJson, fromJson: timeFromJson)
   DateTime endTime;
 
   ///计划独有
 
   ///第一次任务发起的时间,针对计划
-  @JsonKey(name: "start_deploy_time", fromJson: timeFromJson)
+  @JsonKey(
+      name: "start_deploy_time",
+      fromJson: timeFromJson,
+      toJson: firstStartTimeToJson)
   DateTime firstStartTime;
 
   ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成,暂定单位为天
-  @JsonKey(name: "task_execute_time", fromJson: executeTimeFromJson)
+  @JsonKey(
+      name: "task_execute_time",
+      fromJson: executeTimeFromJson,
+      toJson: executeTimeToJson)
   int taskExecuteTime;
 
   ///当前选择的巡检周期
-  @JsonKey(name: "cycle", fromJson: cycleFromJson,toJson: cycleToJson)
+  @JsonKey(name: "cycle", fromJson: cycleFromJson, toJson: cycleToJson)
   TaskCycleModel cycle;
 
   ///如果是计划的话，可以选择是否立即开始执行
+  @JsonKey(ignore: true)
   bool isEnable;
 
   TaskPlanEntity();
@@ -103,11 +116,11 @@ class TaskPlanEntity {
     cycle = cycleModel;
     taskExecuteTime = 1;
   }
+
   factory TaskPlanEntity.fromJson(Map<String, dynamic> json) =>
       _$TaskPlanEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskPlanEntityToJson(this);
-
 }
 
 ///发布计划或者任务页面的bloc逻辑类
@@ -118,7 +131,7 @@ class AddTaskBlocModel with ChangeNotifier {
   int stepperIndex;
 
   ///所有建筑的列表,需要从store中拿去,在初始化时还需加载楼层列表
-  List<Build> allBuilding;
+  Build currentBuilding;
 
   ///所有的检查系统,从store中拿取
   List<InspectionSystem> allInspectionSystem;
@@ -126,30 +139,8 @@ class AddTaskBlocModel with ChangeNotifier {
   ///所有的部门和人员，从store中拿取
   List<PersonnelMessage> allPeople;
 
-  ///任务独有
-
-  ///开始时间
-  DateTime startTime;
-
-  ///结束时间
-  DateTime endTime;
-
-  ///计划独有
-
-  ///第一次任务发起的时间,针对计划
-  DateTime firstStartTime;
-
-  ///针对计划，每次任务的执行持续时间，即每次需要多长时间完成,暂定单位为天
-  int sustainedTime;
-
   ///所有的巡检周期,需要从store中拿去
   List<TaskCycleModel> allTaskCycle;
-
-  ///如果是计划的话，可以选择是否立即开始执行
-  bool isEnable;
-
-  ///选择建筑的错误提示
-  String buildingErrorMag;
 
   ///任务名称错误提示
   String nameErrorMsg;
@@ -175,26 +166,22 @@ class AddTaskBlocModel with ChangeNotifier {
   Map<int, Function> index2validate;
 
   AddTaskBlocModel(
-      {this.allBuilding,
+      {this.currentBuilding,
       this.allInspectionSystem,
       this.allPeople,
       this.allTaskCycle})
       : stepperIndex = 0 {
     model = TaskPlanEntity.init(allTaskCycle[0]);
     bool step1Validate() {
-      if (model.currentBuild != null && model.name != null) {
-        buildingErrorMag = null;
+      if (model.name != null) {
         nameErrorMsg = null;
       } else {
-        if (model.currentBuild == null) {
-          buildingErrorMag = "请选择建筑";
-        }
         if (model.name == null) {
           nameErrorMsg = "请输入任务或计划名";
         }
       }
       notifyListeners();
-      return model.currentBuild != null && model.name != null;
+      return model.name != null;
     }
 
     ///阶段2的检查函数
@@ -223,27 +210,27 @@ class AddTaskBlocModel with ChangeNotifier {
 
     bool step3Validate() {
       if (model.inspectionType == NewInspectionType.plan) {
-        if (firstStartTime == null) {
+        if (model.firstStartTime == null) {
           firstStartTimeErrorMsg = "请选择第一次任务开始时间";
         } else {
           firstStartTimeErrorMsg = null;
         }
         notifyListeners();
-        return firstStartTime != null;
+        return model.firstStartTime != null;
       } else {
-        if (startTime != null && endTime != null) {
+        if (model.startTime != null && model.endTime != null) {
           startTimeErrorMsg = null;
           endTimeErrorMsg = null;
         } else {
-          if (startTime == null) {
+          if (model.startTime == null) {
             startTimeErrorMsg = "请选择开始时间";
           }
-          if (endTime == null) {
+          if (model.endTime == null) {
             endTimeErrorMsg = "请选择结束时间";
           }
         }
         notifyListeners();
-        return startTime != null && endTime != null;
+        return model.startTime != null && model.endTime != null;
       }
     }
 
@@ -268,13 +255,6 @@ class AddTaskBlocModel with ChangeNotifier {
   //更改发布任务的类型
   void changeInspectionType(type) {
     model.inspectionType = parseEnumType(type);
-    notifyListeners();
-  }
-
-  ///改变当前选中的建筑,同时也需将选择的楼层清空
-  void changeCurrentBuilding(Build build) {
-    model.currentBuild = build;
-    model.currentFloor.clear();
     notifyListeners();
   }
 
@@ -307,9 +287,9 @@ class AddTaskBlocModel with ChangeNotifier {
   ///改变当前选中的楼层
   void changeCurrentFloor(bool value, int index) {
     if (value) {
-      model.currentFloor.add(model.currentBuild.floors[index]);
+      model.currentFloor.add(currentBuilding.floors[index]);
     } else {
-      model.currentFloor.remove(model.currentBuild.floors[index]);
+      model.currentFloor.remove(currentBuilding.floors[index]);
     }
     notifyListeners();
   }
@@ -317,7 +297,7 @@ class AddTaskBlocModel with ChangeNotifier {
   ///楼层的全选按钮
   void changAllFloor(bool value) {
     if (value) {
-      model.currentFloor = List.from(model.currentBuild.floors);
+      model.currentFloor = List.from(currentBuilding.floors);
     } else {
       model.currentFloor.clear();
     }
@@ -373,24 +353,24 @@ class AddTaskBlocModel with ChangeNotifier {
 
   ///设置开始时间
   void setFirstStartTime(DateTime time) {
-    firstStartTime = time;
+    model.firstStartTime = time;
     notifyListeners();
   }
 
   ///设置任务执行时间
   void setSustainedTime(int value) {
-    sustainedTime = value;
+    model.taskExecuteTime = value;
   }
 
   ///设置开始时间
   void setStartTime(DateTime time) {
-    startTime = time;
+    model.startTime = time;
     notifyListeners();
   }
 
   ///设置结束时间
   void setEndTime(DateTime time) {
-    endTime = time;
+    model.endTime = time;
     notifyListeners();
   }
 
@@ -414,12 +394,6 @@ class AddTaskBlocModel with ChangeNotifier {
     notifyListeners();
   }
 
-  ///改变是否立即启用的回调
-  void changeEnable(bool value) {
-    isEnable = value;
-    notifyListeners();
-  }
-
   ///改变任务备注的回调
   void changeNoteText(String text) {
     model.noteText = text;
@@ -432,6 +406,6 @@ class AddTaskBlocModel with ChangeNotifier {
 
   ///向服务器提交任务
   void submitData(Function submitCall) {
-    submitCall(this);
+    submitCall(this.model);
   }
 }

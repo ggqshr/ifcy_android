@@ -16,10 +16,15 @@ class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {
   PlanListState get initialState => InitialPlanListState();
 
   @override
+  void onError(Object error, StackTrace stacktrace) {
+    super.onError(error, stacktrace);
+  }
+
+  @override
   Stream<PlanListState> mapEventToState(
     PlanListEvent event,
   ) async* {
-    print(event);
+    print("${event.runtimeType} $event");
     if (event is Fetch && !_hasReachMax(currentState)) {
       try {
         if (currentState is InitialPlanListState) {

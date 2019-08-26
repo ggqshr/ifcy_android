@@ -9,7 +9,7 @@ part of 'device_supervisor_model.dart';
 TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
   return TaskPlanEntity()
     ..name = json['name'] as String
-    ..currentBuild = buildJsonFunc(json['check_building_id'] as String)
+    ..noteText = json['comment'] as String
     ..currentFloor = (json['check_building_floor_list'] as List)
         ?.map((e) =>
             e == null ? null : FloorEntity.fromJson(e as Map<String, dynamic>))
@@ -19,36 +19,30 @@ TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
             ? null
             : InspectionSystem.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..selectedPeople = (json['plan_user_list'] as List)
+    ..selectedPeople = (json['user_list'] as List)
         ?.map((e) => e == null
             ? null
             : PersonnelMessage.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..startTime = json['startTime'] == null
-        ? null
-        : DateTime.parse(json['startTime'] as String)
-    ..endTime = json['endTime'] == null
-        ? null
-        : DateTime.parse(json['endTime'] as String)
+    ..startTime = timeFromJson(json['start_time'] as String)
+    ..endTime = timeFromJson(json['end_time'] as String)
     ..firstStartTime = timeFromJson(json['start_deploy_time'] as String)
     ..taskExecuteTime = executeTimeFromJson(json['task_execute_time'] as String)
-    ..cycle = cycleFromJson(json['cycle'] as String)
-    ..isEnable = json['isEnable'] as bool;
+    ..cycle = cycleFromJson(json['cycle'] as String);
 }
 
 Map<String, dynamic> _$TaskPlanEntityToJson(TaskPlanEntity instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'check_building_id': buildFromJson(instance.currentBuild),
+      'comment': instance.noteText,
       'check_building_floor_list': instance.currentFloor,
       'check_system_list': instance.selectedSystem,
-      'plan_user_list': instance.selectedPeople,
-      'startTime': instance.startTime?.toIso8601String(),
-      'endTime': instance.endTime?.toIso8601String(),
-      'start_deploy_time': instance.firstStartTime?.toIso8601String(),
-      'task_execute_time': instance.taskExecuteTime,
+      'user_list': instance.selectedPeople,
+      'start_time': timeToJson(instance.startTime),
+      'end_time': timeToJson(instance.endTime),
+      'start_deploy_time': firstStartTimeToJson(instance.firstStartTime),
+      'task_execute_time': executeTimeToJson(instance.taskExecuteTime),
       'cycle': cycleToJson(instance.cycle),
-      'isEnable': instance.isEnable,
     };
 
 PlanListPageModel _$PlanListPageModelFromJson(Map<String, dynamic> json) {

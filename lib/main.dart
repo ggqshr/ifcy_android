@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: _store,
       child: RepositoryProvider(
-        builder: (context) => UserLoginRepositories(alwaysLogin: true),
+        builder: (context) => UserLoginRepositories(),
         child: BlocProvider(
           builder: (context) =>
               AuthorizationBloc(RepositoryProvider.of(context))

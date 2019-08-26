@@ -197,20 +197,6 @@ class DioUtils {
         data: '{"password": "$passWord", "username": "$userName"}');
   }
 
-  ///提交计划的接口封装
-  Future<Response> submitPlan(AddTaskBlocModel model, String projectId) {
-    Map<String, dynamic> dataMap = {};
-    dataMap['check_building_floor_list'] = model.model.currentFloor;
-    dataMap['check_building_id'] = int.parse(model.model.currentBuild.buildId);
-    dataMap['check_system_list'] = model.model.selectedSystem;
-    dataMap['cycle'] = model.model.cycle.toEnum;
-    dataMap['name'] = model.model.name;
-    dataMap['plan_user_list'] = model.model.selectedPeople;
-    dataMap['project_id'] = int.parse(projectId);
-    dataMap['start_deploy_time'] = model.firstStartTime.millisecondsSinceEpoch;
-    dataMap['task_execute_time'] = model.model.taskExecuteTime * 86400000;
-    return _dio.post("/patrol/plan", data: jsonEncode(dataMap));
-  }
 
   ///提交任务的接口封装
   Future<Response> submitTask(AddTaskBlocModel model) {}

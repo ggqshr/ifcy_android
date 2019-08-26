@@ -23,15 +23,15 @@ void initAddTaskData(Store<AppState> store) async {
     //获取人员信息
     Response res = await dio.get(
         "/project/${store.state.selectProjectModel.selectedProject.projectId}/users/role/MAINTAIN_WORKER");
-    List<PersonnelMessage> personList = res.data['data']
-        .map<PersonnelMessage>((item) => PersonnelMessage.fromJson(item))
-        .toList();
+//    List<PersonnelMessage> personList = res.data['data']
+//        .map<PersonnelMessage>((item) => PersonnelMessage.fromJson(item))
+//        .toList();
     Response rse = await dio.get("/patrol/check-systems");
     List<InspectionSystem> inspectionSystems = rse.data['data']
         .map<InspectionSystem>((item) => InspectionSystem.fromJson(item))
         .toList();
-    store.dispatch(
-        AddTaskPageInitAction(allBuilding, inspectionSystems, personList));
+//    store.dispatch(
+//        AddTaskPageInitAction(allBuilding, inspectionSystems, personList));
   } catch (e) {
     print(e);
     store.dispatch(DioUtils.getInstance().parseError2action(e));
@@ -43,11 +43,11 @@ ThunkAction<AppState> submitInspectionTask(AddTaskBlocModel model) {
   return (Store<AppState> store) async {
     try {
       Response res;
-      if (model.model.inspectionType == NewInspectionType.plan) {
-        res = await DioUtils.getInstance().submitPlan(model,store.state.selectProjectModel.selectedProject.projectId);
-      } else {
-        res = await DioUtils.getInstance().submitTask(model);
-      }
+//      if (model.model.inspectionType == NewInspectionType.plan) {
+//        res = await DioUtils.getInstance().submitPlan(model,store.state.selectProjectModel.selectedProject.projectId);
+//      } else {
+//        res = await DioUtils.getInstance().submitTask(model);
+//      }
       if(res.data['msg']=="成功"){
         loadingDialogAction.cancleLoadingDialog();
         Application.showToast("提交成功!",toastLength: Toast.LENGTH_LONG);

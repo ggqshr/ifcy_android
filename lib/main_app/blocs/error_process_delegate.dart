@@ -55,6 +55,7 @@ class ErrorProcessDelegate extends BlocDelegate {
       }
     }else{
       print(error);
+      print(stacktrace);
       Application.showWarnToast("错误${error.toString()}");
     }
     super.onError(bloc, error, stacktrace);

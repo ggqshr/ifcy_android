@@ -6,6 +6,25 @@ part of models;
 // JsonSerializableGenerator
 // **************************************************************************
 
+PersonnelMessage _$PersonnelMessageFromJson(Map<String, dynamic> json) {
+  return PersonnelMessage(
+    id: json['id'] as String,
+    name: json['real_name'] as String,
+    roleType: json['role_type'] as String,
+    enable: json['enable'] as bool,
+    mobile: json['mobile'] as String,
+  );
+}
+
+Map<String, dynamic> _$PersonnelMessageToJson(PersonnelMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'real_name': instance.name,
+      'mobile': instance.mobile,
+      'role_type': instance.roleType,
+      'enable': instance.enable,
+    };
+
 RegularInspectionTaskDetail _$RegularInspectionTaskDetailFromJson(
     Map<String, dynamic> json) {
   return RegularInspectionTaskDetail(
