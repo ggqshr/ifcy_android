@@ -16,20 +16,12 @@ class PlanListRepositories {
     PlanListPageModel model =
         await dataProvider.getPlanListByProjectId();
     model.currentPageNum = 1;
-    for (var p in model.planLists) {
-      p.currentBuild = buildList
-          .singleWhere((item) => item.buildId == p.currentBuild.buildId);
-    }
     return model;
   }
 
   Future<PlanListPageModel> getNextPage(int pageNum) async {
     PlanListPageModel model =
         await dataProvider.getPlanListByProjectId(page: pageNum);
-    for (var p in model.planLists) {
-      p.currentBuild = buildList
-          .singleWhere((item) => item.buildId == p.currentBuild.buildId);
-    }
     return model;
   }
 }

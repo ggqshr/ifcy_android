@@ -91,6 +91,53 @@ const _$TaskStatusEnumMap = {
   TaskStatus.uncompleted: 'uncompleted',
 };
 
+Build _$BuildFromJson(Map<String, dynamic> json) {
+  return Build(
+    buildName: json['name'] as String,
+    floors: (json['floors'] as List)
+        ?.map((e) =>
+            e == null ? null : FloorEntity.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  )
+    ..aboveFloorNum = json['above_floor_num'] as String
+    ..acreage = json['acreage'] as String
+    ..addressDetail = json['address_detail'] as String
+    ..area = json['area'] as String
+    ..buildDate = json['build_date'] as String
+    ..city = json['city'] as String
+    ..danger = json['danger'] as String
+    ..description = json['description'] as String
+    ..latitude = json['latitude'] as String
+    ..longitude = json['longitude'] as String
+    ..mainEngineCode = json['main_engine_code'] as String
+    ..nature = json['nature'] as String
+    ..province = json['province'] as String
+    ..refractory = json['refractory'] as String
+    ..type = json['type'] as String
+    ..underFloorNum = json['under_floor_num'] as String;
+}
+
+Map<String, dynamic> _$BuildToJson(Build instance) => <String, dynamic>{
+      'name': instance.buildName,
+      'floors': instance.floors,
+      'above_floor_num': instance.aboveFloorNum,
+      'acreage': instance.acreage,
+      'address_detail': instance.addressDetail,
+      'area': instance.area,
+      'build_date': instance.buildDate,
+      'city': instance.city,
+      'danger': instance.danger,
+      'description': instance.description,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'main_engine_code': instance.mainEngineCode,
+      'nature': instance.nature,
+      'province': instance.province,
+      'refractory': instance.refractory,
+      'type': instance.type,
+      'under_floor_num': instance.underFloorNum,
+    };
+
 FloorEntity _$FloorEntityFromJson(Map<String, dynamic> json) {
   return FloorEntity(
     code: json['code'] as String,

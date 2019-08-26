@@ -12,10 +12,12 @@ class _PlanListPageState extends State<PlanListPage>
     with AutomaticKeepAliveClientMixin {
   EasyRefreshController _controller;
   PlanListBloc bloc;
+  UserLoginRepositories userLoginRepositories;
 
   @override
   void initState() {
     super.initState();
+    userLoginRepositories = RepositoryProvider.of<UserLoginRepositories>(context);
     _controller = EasyRefreshController();
     bloc = BlocProvider.of(context);
   }
@@ -96,7 +98,7 @@ class _PlanListPageState extends State<PlanListPage>
                         ListTile(
                           dense: true,
                           title:
-                              Text("检查大厦:${thisPlan.currentBuild.buildName}"),
+                              Text("检查大厦:${userLoginRepositories.currentBuild.buildName}"),
                         ),
                         ListTile(
                           dense: true,

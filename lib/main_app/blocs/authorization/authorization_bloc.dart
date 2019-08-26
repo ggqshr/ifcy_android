@@ -30,8 +30,8 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     try {
       final isSignIn = await userLoginRepositories.isLoginIn();
       if (isSignIn) {
-        yield Authenticated(
-            userEntity: await userLoginRepositories.loginWithLocal());
+        await userLoginRepositories.loginWithLocal();
+        yield Authenticated(userEntity: userLoginRepositories.getUser);
       } else {
         yield Unauthenticated();
       }
@@ -43,7 +43,7 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
 
   Stream<AuthorizationState> _mapLoginInEventToState(
       AuthorizationEvent event) async* {
-    yield Authenticated(userEntity: (event as LoginIn).userEntity.copyWith());
+    yield Authenticated(userEntity: userLoginRepositories.getUser);
   }
 
   Stream<AuthorizationState> _mapLoggedOutToState() async* {

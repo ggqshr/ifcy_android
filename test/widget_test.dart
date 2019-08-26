@@ -111,8 +111,10 @@ void main() {
       print(re);
     });
     test("testadd", () async {
-      var a = [1,2,3];
-      print(a+[4,5,6]);
+      Dio dio = DioUtils.getInstance().getDio();
+      await DioUtils.getInstance().login("hyj", "123456");
+      Response res = await dio.get("/building");
+      print(Build.fromJson(res.data['data']));
     });
   });
 

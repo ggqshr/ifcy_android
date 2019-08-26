@@ -9,10 +9,6 @@ abstract class AuthorizationEvent extends Equatable {
 
 class AppStart extends AuthorizationEvent {}
 
-class LoginIn extends AuthorizationEvent {
-  final UserEntity userEntity;
-
-  LoginIn({this.userEntity}) : super([userEntity]);
-}
+class LoginIn extends AuthorizationEvent {}
 
 class LoginOut extends AuthorizationEvent {}
