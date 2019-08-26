@@ -43,13 +43,7 @@ class __MainAppState extends State<_MainApp> {
           return SelectProjectPage();
         }
         if (state is Unauthenticated) {
-          return BlocProvider(
-            builder: (context) => LoginBloc(
-                userLoginRepositories:
-                    RepositoryProvider.of<UserLoginRepositories>(context),
-                authorizationBloc: BlocProvider.of<AuthorizationBloc>(context)),
-            child: LoginPage(),
-          );
+          return LoginPage();
         }
       },
     );
