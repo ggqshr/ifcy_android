@@ -49,11 +49,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapEmailChangedToState(String userName) async* {
-    yield currentState.update(isUserNameValid: userName != null);
+    yield currentState.update(isUserNameValid: userName.isNotEmpty);
   }
 
   Stream<LoginState> _mapPasswordChangedToState(String password) async* {
-    yield currentState.update(isPasswordValid: password != null);
+    yield currentState.update(isPasswordValid: password.isNotEmpty);
   }
 
   Stream<LoginState> _mapLoginWithCredentialsPressedToState(

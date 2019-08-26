@@ -23,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passWordController;
   LoginBloc loginBloc;
 
+  bool isLoginButtonEnable(LoginState state) =>
+      state.isPasswordValid && state.isUserNameValid;
+
   @override
   void initState() {
     super.initState();
@@ -93,47 +96,53 @@ class _LoginPageState extends State<LoginPage> {
               passWordFocusNode.unfocus();
             },
             child: Container(
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    autofocus: true,
-                    controller: userNameController,
-                    focusNode: userNameFocusNode,
-                    decoration: InputDecoration(
-                      labelText: "请输入用户名",
-                      hintText: "用户名",
-                      prefixIcon: Icon(Icons.verified_user),
-                      errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+              child: Form(
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      autofocus: true,
+                      controller: userNameController,
+                      focusNode: userNameFocusNode,
+                      decoration: InputDecoration(
+                        labelText: "请输入用户名",
+                        hintText: "用户名",
+                        prefixIcon: Icon(Icons.verified_user),
+                        errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                      ),
+                      validator: (_) => state.isUserNameValid ? null : "请输入用户名",
+                      keyboardType: TextInputType.text,
+                      autovalidate: true,
                     ),
-                    validator: (_) => state.isUserNameValid ? null : "请输入用户名",
-                    keyboardType: TextInputType.text,
-                  ),
-                  TextFormField(
-                    focusNode: passWordFocusNode,
-                    controller: passWordController,
-                    decoration: InputDecoration(
-                      labelText: "请输入密码",
-                      hintText: "密码",
-                      prefixIcon: Icon(Icons.vpn_key),
-                      errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                    TextFormField(
+                      autovalidate: true,
+                      focusNode: passWordFocusNode,
+                      controller: passWordController,
+                      decoration: InputDecoration(
+                        labelText: "请输入密码",
+                        hintText: "密码",
+                        prefixIcon: Icon(Icons.vpn_key),
+                        errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                      ),
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      validator: (_) => state.isPasswordValid ? null : "请输入密码",
                     ),
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    validator: (_) => state.isPasswordValid ? null : "请输入密码",
-                  ),
-                  RaisedButton(
-                    child: Text("登陆"),
-                    onPressed: () {
-                      userNameFocusNode.unfocus();
-                      passWordFocusNode.unfocus();
-                      loginBloc.dispatch(LoginWithCredentialsPressed(
-                          username: userNameController.text,
-                          password: passWordController.text));
-                    },
-                  ),
-                ],
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
+                    RaisedButton(
+                      child: Text("登陆"),
+                      onPressed: isLoginButtonEnable(state)
+                          ? () {
+                        userNameFocusNode.unfocus();
+                        passWordFocusNode.unfocus();
+                        loginBloc.dispatch(LoginWithCredentialsPressed(
+                            username: userNameController.text,
+                            password: passWordController.text));
+                      }
+                          : null,
+                    ),
+                  ],
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
               ),
               height: double.maxFinite,
             ),
