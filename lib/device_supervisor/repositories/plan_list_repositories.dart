@@ -8,14 +8,13 @@ import 'package:ifcy/device_supervisor/repositories/plan_list_provider.dart';
 class PlanListRepositories {
   final PlanListDataProvider dataProvider;
   final List<Build> buildList;
-  final String projectId;
 
-  PlanListRepositories(this.buildList, this.projectId)
+  PlanListRepositories(this.buildList)
       : dataProvider = PlanListDataProvider();
 
   Future<PlanListPageModel> getFirstPage() async {
     PlanListPageModel model =
-        await dataProvider.getPlanListByProjectId(projectId);
+        await dataProvider.getPlanListByProjectId();
     model.currentPageNum = 1;
     for (var p in model.planLists) {
       p.currentBuild = buildList
@@ -26,7 +25,7 @@ class PlanListRepositories {
 
   Future<PlanListPageModel> getNextPage(int pageNum) async {
     PlanListPageModel model =
-        await dataProvider.getPlanListByProjectId(projectId, page: pageNum);
+        await dataProvider.getPlanListByProjectId(page: pageNum);
     for (var p in model.planLists) {
       p.currentBuild = buildList
           .singleWhere((item) => item.buildId == p.currentBuild.buildId);

@@ -42,6 +42,7 @@ class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {
         }
       } catch (e) {
         yield FetchErrorPlanListState();
+        rethrow;
       }
     }
     if(event is Refresh){

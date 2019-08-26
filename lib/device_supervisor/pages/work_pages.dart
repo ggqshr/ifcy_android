@@ -58,8 +58,8 @@ class _WorkPageState extends State<WorkPage>
       body: BlocProvider<PlanListBloc>(
         builder: (context) {
           PlanListRepositories repositories = PlanListRepositories(
-              state.deviceSupervisorModel.buildingList,
-              state.selectProjectModel.selectedProject.projectId);
+            state.deviceSupervisorModel.buildingList,
+          );
           return PlanListBloc(repositories);
         },
         child: TabBarView(

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/common/utils/StoreCreater.dart';
+import 'blocs/supervisor_blocs.dart';
 import 'model/device_supervisor_model.dart';
 import 'device_supervisor_redux.dart';
 import 'pages/device_supvisor_pages.dart';
 import 'package:ifcy/common/components/components.dart';
 
-
 class DeviceSupervisor extends StatefulWidget {
-
   DeviceSupervisor();
 
   @override
@@ -46,38 +46,44 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 10,
-        type: BottomNavigationBarType.fixed,
-        items: iconList.map<BottomNavigationBarItem>((i) {
-          int currentIndex = iconList.indexOf(i);
-          int currentBadge = StoreProvider.of<AppState>(context)
-              .state
-              .deviceSupervisorModel
-              .bottomBadgeNumList[currentIndex];
-          return BottomNavigationBarItem(
-            icon: Badge(
-              child: i,
-              badgeContent: Text(
-                currentBadge.toString(),
-                style: TextStyle(color: Colors.white),
-              ),
-              showBadge: currentBadge != 0,
-            ),
-            title: Text(
-              iconTextList[currentIndex],
-            ),
-          );
-        }).toList(),
-        onTap: (v) {
-          setState(() {
-            currentIndex = v;
-          });
-        },
-        currentIndex: currentIndex,
-      ),
-      body: viewList[currentIndex],
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<BadgeBloc>(
+            builder: (context) => BadgeBloc(),
+          ),
+        ],
+        child: Scaffold(
+          bottomNavigationBar:
+              BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
+            return BottomNavigationBar(
+              elevation: 10,
+              type: BottomNavigationBarType.fixed,
+              items: iconList.map<BottomNavigationBarItem>((i) {
+                int currentIndex = iconList.indexOf(i);
+                int currentBadge = state[currentIndex];
+                return BottomNavigationBarItem(
+                  icon: Badge(
+                    child: i,
+                    badgeContent: Text(
+                      currentBadge.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    showBadge: currentBadge != 0,
+                  ),
+                  title: Text(
+                    iconTextList[currentIndex],
+                  ),
+                );
+              }).toList(),
+              onTap: (v) {
+                setState(() {
+                  currentIndex = v;
+                });
+              },
+              currentIndex: currentIndex,
+            );
+          }),
+          body: viewList[currentIndex],
+        ));
   }
 }
