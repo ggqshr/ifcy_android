@@ -12,7 +12,7 @@ void initPlanListThunkAction(Store<AppState> store) async {
     Response res = await dio.get(
         "/patrol/plan/project/${store.state.selectProjectModel.selectedProject.projectId}",
         queryParameters: {"list_rows": 1});
-    PlanListPageModel model = PlanListPageModel.fromJson(res.data['data']);
+    PlanTaskListPageModel model = PlanTaskListPageModel.fromJson(res.data['data']);
     model.currentPageNum += 1; //第一页返回的num是0,所以需要加1
 //    for (var build in model.planLists) {
 //      build.currentBuild = store.state.deviceSupervisorModel.buildingList
@@ -37,7 +37,7 @@ ThunkAction<AppState> planLoadMoreDataThunkAction(
         Response res = await dio.get(
             "/patrol/plan/project/${store.state.selectProjectModel.selectedProject.projectId}",
             queryParameters: {"page": model.currentPageNum + 1,"list_rows":1});
-        PlanListPageModel mm = PlanListPageModel.fromJson(res.data['data']);
+        PlanTaskListPageModel mm = PlanTaskListPageModel.fromJson(res.data['data']);
         store.dispatch(DeviceSuperVisorNextPageAction(mm));
         controller.finishLoad(success: true);
       } else {

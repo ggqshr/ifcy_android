@@ -45,8 +45,8 @@ Map<String, dynamic> _$TaskPlanEntityToJson(TaskPlanEntity instance) =>
       'cycle': cycleToJson(instance.cycle),
     };
 
-PlanListPageModel _$PlanListPageModelFromJson(Map<String, dynamic> json) {
-  return PlanListPageModel(
+PlanTaskListPageModel _$PlanListPageModelFromJson(Map<String, dynamic> json) {
+  return PlanTaskListPageModel(
     planLists: (json['content'] as List)
         ?.map((e) => e == null
             ? null
@@ -58,7 +58,7 @@ PlanListPageModel _$PlanListPageModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PlanListPageModelToJson(PlanListPageModel instance) =>
+Map<String, dynamic> _$PlanListPageModelToJson(PlanTaskListPageModel instance) =>
     <String, dynamic>{
       'content': instance.planLists,
       'number': instance.currentPageNum,

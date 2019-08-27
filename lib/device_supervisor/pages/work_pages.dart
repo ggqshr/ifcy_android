@@ -25,7 +25,7 @@ class _WorkPageState extends State<WorkPage>
   void initState() {
     super.initState();
     _controller = TabController(length: tabs.length, vsync: this);
-    tabViews..add(PlanListPage())..add(TaskPage());
+    tabViews..add(PlanListPage())..add(TaskListPage());
   }
 
   @override
@@ -55,13 +55,21 @@ class _WorkPageState extends State<WorkPage>
           isScrollable: false,
         ),
       ),
-      body: BlocProvider<PlanListBloc>(
-        builder: (context) {
-          PlanListRepositories repositories = PlanListRepositories(
-            state.deviceSupervisorModel.buildingList,
-          );
-          return PlanListBloc(repositories);
-        },
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<PlanListBloc>(
+            builder: (context) {
+              PlanListRepositories repositories = PlanListRepositories();
+              return PlanListBloc(repositories);
+            },
+          ),
+          BlocProvider<TaskListBloc>(
+            builder: (context) {
+              TaskListRepositories repositories = TaskListRepositories();
+              return TaskListBloc(repositories);
+            },
+          ),
+        ],
         child: TabBarView(
           children: tabViews,
           controller: _controller,
