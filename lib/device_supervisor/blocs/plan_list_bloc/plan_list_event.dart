@@ -3,6 +3,6 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class PlanListEvent {}
 
-class Fetch extends PlanListEvent {}
+class FetchPlan extends PlanListEvent {}
 
-class Refresh extends PlanListEvent {}
+class RefreshPlan extends PlanListEvent {}

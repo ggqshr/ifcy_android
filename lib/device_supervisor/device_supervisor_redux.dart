@@ -238,15 +238,15 @@ Reducer<List> inspectionSystemsReducer = combineReducers([
   TypedReducer<List, AddTaskPageInitAction>((_, action) => action.systems),
 ]);
 
-PlanListPageModel nextPageCall(
-    PlanListPageModel model, DeviceSuperVisorNextPageAction action) {
+PlanTaskListPageModel nextPageCall(
+    PlanTaskListPageModel model, DeviceSuperVisorNextPageAction action) {
   model.currentPageNum += 1;
   model.planLists.addAll(action.model.planLists);
   return model;
 }
 
-Reducer<PlanListPageModel> planPageModelReducer = combineReducers([
-  TypedReducer<PlanListPageModel, InitPlanListPageAction>(
+Reducer<PlanTaskListPageModel> planPageModelReducer = combineReducers([
+  TypedReducer<PlanTaskListPageModel, InitPlanListPageAction>(
       (_, action) => action.model),
-  TypedReducer<PlanListPageModel, DeviceSuperVisorNextPageAction>(nextPageCall),
+  TypedReducer<PlanTaskListPageModel, DeviceSuperVisorNextPageAction>(nextPageCall),
 ]);
