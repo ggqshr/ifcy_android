@@ -4,7 +4,7 @@
 part of 'device_supervisor_model.dart';
 
 @JsonSerializable()
-class PlanListPageModel {
+class PlanTaskListPageModel {
   ///数据列表
   @JsonKey(name: "content")
   List<TaskPlanEntity> planLists;
@@ -23,20 +23,20 @@ class PlanListPageModel {
 
   bool get hasReachMax => totalPageNum == currentPageNum;
 
-  PlanListPageModel(
+  PlanTaskListPageModel(
       {this.planLists,
       this.currentPageNum,
       this.totalPageNum,
       this.totalElementNum});
 
-  PlanListPageModel.init()
+  PlanTaskListPageModel.init()
       : currentPageNum = null,
         totalElementNum = 0,
         totalPageNum = 0,
         planLists = [];
 
-  PlanListPageModel nextPage(PlanListPageModel pageModel) {
-    return PlanListPageModel(
+  PlanTaskListPageModel nextPage(PlanTaskListPageModel pageModel) {
+    return PlanTaskListPageModel(
       planLists: this.planLists + pageModel.planLists,
       currentPageNum: pageModel.currentPageNum+1,
       totalElementNum: this.totalPageNum,
@@ -44,7 +44,7 @@ class PlanListPageModel {
     );
   }
 
-  factory PlanListPageModel.fromJson(Map<String, dynamic> json) =>
+  factory PlanTaskListPageModel.fromJson(Map<String, dynamic> json) =>
       _$PlanListPageModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlanListPageModelToJson(this);

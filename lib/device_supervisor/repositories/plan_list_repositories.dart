@@ -7,21 +7,17 @@ import 'package:ifcy/device_supervisor/repositories/plan_list_provider.dart';
 ///@date :2019/8/24 9:49
 class PlanListRepositories {
   final PlanListDataProvider dataProvider;
-  final List<Build> buildList;
 
-  PlanListRepositories(this.buildList)
-      : dataProvider = PlanListDataProvider();
+  PlanListRepositories() : dataProvider = PlanListDataProvider();
 
-  Future<PlanListPageModel> getFirstPage() async {
-    PlanListPageModel model =
-        await dataProvider.getPlanListByProjectId();
+  Future<PlanTaskListPageModel> getFirstPage() async {
+    PlanTaskListPageModel model = await dataProvider.getPlanList();
     model.currentPageNum = 1;
     return model;
   }
 
-  Future<PlanListPageModel> getNextPage(int pageNum) async {
-    PlanListPageModel model =
-        await dataProvider.getPlanListByProjectId(page: pageNum);
+  Future<PlanTaskListPageModel> getNextPage(int pageNum) async {
+    PlanTaskListPageModel model = await dataProvider.getPlanList(page: pageNum);
     return model;
   }
 }

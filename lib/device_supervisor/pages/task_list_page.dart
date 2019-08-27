@@ -3,15 +3,15 @@
 ///@date :2019/8/21 15:47
 part of 'device_supvisor_pages.dart';
 
-class PlanListPage extends StatefulWidget {
+class TaskListPage extends StatefulWidget {
   @override
-  _PlanListPageState createState() => _PlanListPageState();
+  _TaskListPageState createState() => _TaskListPageState();
 }
 
-class _PlanListPageState extends State<PlanListPage>
+class _TaskListPageState extends State<TaskListPage>
     with AutomaticKeepAliveClientMixin {
   EasyRefreshController _controller;
-  PlanListBloc bloc;
+  TaskListBloc bloc;
   UserLoginRepositories userLoginRepositories;
 
   @override
@@ -19,7 +19,7 @@ class _PlanListPageState extends State<PlanListPage>
     super.initState();
     userLoginRepositories = RepositoryProvider.of<UserLoginRepositories>(context);
     _controller = EasyRefreshController();
-    bloc = BlocProvider.of<PlanListBloc>(context);
+    bloc = BlocProvider.of<TaskListBloc>(context);
   }
 
   @override
@@ -30,11 +30,11 @@ class _PlanListPageState extends State<PlanListPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PlanListBloc, PlanListState>(
+    return BlocListener<TaskListBloc, TaskListState>(
       listener: (context, state) {
         _controller.resetLoadState();
-        if (state is FetchedPlanListState) {
-          print(state);
+        print("@@@@@$state");
+        if (state is FetchedTaskListState) {
           if (state.isReachMax) {
             _controller.finishLoad(success: true, noMore: true);
           } else {
@@ -42,18 +42,18 @@ class _PlanListPageState extends State<PlanListPage>
           }
         }
       },
-      child: BlocBuilder<PlanListBloc, PlanListState>(
+      child: BlocBuilder<TaskListBloc, TaskListState>(
         builder: (context, state) {
-          if (state is FetchErrorPlanListState) {
+          if (state is FetchErrorTaskListState) {
             return Center(
               child: Text("网络出现错误"),
             );
-          } else if (state is InitialPlanListState) {
-            bloc.dispatch(FetchPlan());
+          } else if (state is InitialTaskListState) {
+            bloc.dispatch(FetchTask());
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is FetchedPlanListState) {
+          } else if (state is FetchedTaskListState) {
             PlanTaskListPageModel model = state.model;
             return EasyRefresh(
               footer: ClassicalFooter(
@@ -69,15 +69,15 @@ class _PlanListPageState extends State<PlanListPage>
               enableControlFinishLoad: true,
               controller: _controller,
               onRefresh: () async {
-                bloc.dispatch(RefreshPlan());
+                bloc.dispatch(RefreshTask());
               },
               onLoad: () async {
-                bloc.dispatch(FetchPlan());
+                bloc.dispatch(FetchTask());
               },
               child: ListView.builder(
                 itemCount: model.planLists.length,
                 itemBuilder: (context, index) {
-                  var thisPlan = model.planLists[index];
+                  var thisTask = model.planLists[index];
                   return Card(
                     elevation: 5,
                     margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
@@ -89,7 +89,7 @@ class _PlanListPageState extends State<PlanListPage>
                         Flexible(
                           flex: 2,
                           child: ListTile(
-                            title: Text(thisPlan.name),
+                            title: Text(thisTask.name),
                           ),
                         ),
                         Divider(
@@ -103,11 +103,11 @@ class _PlanListPageState extends State<PlanListPage>
                         ListTile(
                           dense: true,
                           title: Text(
-                              "第一次开始时间：${thisPlan.firstStartTime.toString().substring(0, 10)}"),
+                              "开始时间：${thisTask.startTime.toString().substring(0, 10)}"),
                         ),
                         ListTile(
                           dense: true,
-                          title: Text("持续时间：${thisPlan.taskExecuteTime}天"),
+                          title: Text("结束时间：${thisTask.endTime}天"),
                         ),
                       ],
                     ),

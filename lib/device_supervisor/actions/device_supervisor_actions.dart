@@ -275,13 +275,13 @@ class AddTaskPageInitAction {
 
 ///初始化计划列表的action
 class InitPlanListPageAction {
-  PlanListPageModel model;
+  PlanTaskListPageModel model;
 
   InitPlanListPageAction(this.model);
 }
 
 class DeviceSuperVisorNextPageAction{
-  PlanListPageModel model;
+  PlanTaskListPageModel model;
 
   DeviceSuperVisorNextPageAction(this.model);
 }

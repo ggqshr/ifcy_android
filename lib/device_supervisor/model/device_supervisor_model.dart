@@ -27,7 +27,7 @@ class DeviceSupervisorModel {
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
   List<SupervisorMessageModel> supervisorMessages; //主管信息
   List<PersonnelMessage> departmentMessages; //维保公司员工信息
-  PlanListPageModel planPageModel; //计划页面的数据模型
+  PlanTaskListPageModel planPageModel; //计划页面的数据模型
 
   List<TaskCycleModel> taskCycleMessages; //任务类型信息
   List<TaskExecuteModel> taskExecuteList; //任务执行统计
@@ -72,7 +72,7 @@ class DeviceSupervisorModel {
 
   DeviceSupervisorModel.init()
       : faultNum = 0,
-        planPageModel = PlanListPageModel.init(),
+        planPageModel = PlanTaskListPageModel.init(),
         taskRate = 0,
         buildingList = [Build(buildId: null, buildName: "所有建筑")],
         currentBuilding = Build(buildId: null, buildName: "所有建筑"),

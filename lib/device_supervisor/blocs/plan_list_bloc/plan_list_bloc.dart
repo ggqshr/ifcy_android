@@ -25,15 +25,15 @@ class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {
     PlanListEvent event,
   ) async* {
     print("${event.runtimeType} $event");
-    if (event is Fetch && !_hasReachMax(currentState)) {
+    if (event is FetchPlan && !_hasReachMax(currentState)) {
       try {
         if (currentState is InitialPlanListState) {
-          final PlanListPageModel model = await repositories.getFirstPage();
+          final PlanTaskListPageModel model = await repositories.getFirstPage();
           yield FetchedPlanListState(model: model);
           return;
         }
         if (currentState is FetchedPlanListState) {
-          final PlanListPageModel model = await repositories.getNextPage(
+          final PlanTaskListPageModel model = await repositories.getNextPage(
               (currentState as FetchedPlanListState).model.currentPageNum + 1);
           yield model.planLists.isEmpty
               ? (currentState as FetchedPlanListState)
@@ -50,8 +50,8 @@ class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {
         rethrow;
       }
     }
-    if(event is Refresh){
-      final PlanListPageModel model = await repositories.getFirstPage();
+    if(event is RefreshPlan){
+      final PlanTaskListPageModel model = await repositories.getFirstPage();
       yield FetchedPlanListState(model: model);
       return;
     }

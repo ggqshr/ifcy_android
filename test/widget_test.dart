@@ -23,6 +23,7 @@ import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
+import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/module1/action/Moudle1Action.dart';
@@ -111,10 +112,9 @@ void main() {
       print(re);
     });
     test("testadd", () async {
-      Map m = {1: 1, 2: 2};
-      print(m);
-      m.remove(1);
-      print(m);
+      await DioUtils.getInstance().login("hyj", "123456");
+      AddTaskPlanDataProvider planDataProvider = AddTaskPlanDataProvider();
+      print(await planDataProvider.getPersonnelMessage());
     });
   });
 

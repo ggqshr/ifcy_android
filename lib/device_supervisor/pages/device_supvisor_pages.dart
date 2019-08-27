@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/actions/device_supervisor_actions.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
+import 'package:ifcy/device_supervisor/blocs/task_list_bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
@@ -30,5 +31,6 @@ part 'falut_declare_page.dart';
 part 'add_task_page.dart';
 part 'work_pages.dart';
 part "plan_list_page.dart";
+part 'task_list_page.dart';
 
 
