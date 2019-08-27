@@ -54,7 +54,11 @@ class DioUtils {
         parseJson; //将解析json的工作放入后台
     // ignore: missing_return
     dio.interceptors.add(InterceptorsWrapper(onError: (error) async {
-      if (error.response != null && error.response.statusCode == 400) {
+      if (error.response != null &&
+          error.response.statusCode == 400 &&
+          error.response.data['code'] == '100001' &&
+          error.response.data['code'] == '100002' &&
+          error.response.data['code'] == '100003') {
         Dio dio = DioUtils.getInstance().getDio();
         dio.lock();
         String token = await _getToken();
@@ -196,7 +200,6 @@ class DioUtils {
     return getNewDIo().post("/anonymous/login",
         data: '{"password": "$passWord", "username": "$userName"}');
   }
-
 
   ///提交任务的接口封装
   Future<Response> submitTask(AddTaskBlocModel model) {}
