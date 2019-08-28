@@ -3,6 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/device_supervisor/repositories/monitor_repositories.dart';
+import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:redux/redux.dart';
@@ -62,6 +63,18 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
             BlocProvider<MonitorBloc>(
               builder: (context) => MonitorBloc(
                   RepositoryProvider.of<MonitorRepositories>(context))..dispatch(FetchMonitorDataEvent()),
+            ),
+            BlocProvider<PlanListBloc>(
+              builder: (context) {
+                PlanListRepositories repositories = PlanListRepositories();
+                return PlanListBloc(repositories);
+              },
+            ),
+            BlocProvider<TaskListBloc>(
+              builder: (context) {
+                TaskListRepositories repositories = TaskListRepositories();
+                return TaskListBloc(repositories);
+              },
             ),
           ],
           child: MultiRepositoryProvider(

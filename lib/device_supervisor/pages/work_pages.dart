@@ -55,26 +55,10 @@ class _WorkPageState extends State<WorkPage>
           isScrollable: false,
         ),
       ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider<PlanListBloc>(
-            builder: (context) {
-              PlanListRepositories repositories = PlanListRepositories();
-              return PlanListBloc(repositories);
-            },
-          ),
-          BlocProvider<TaskListBloc>(
-            builder: (context) {
-              TaskListRepositories repositories = TaskListRepositories();
-              return TaskListBloc(repositories);
-            },
-          ),
-        ],
-        child: TabBarView(
-          children: tabViews,
-          controller: _controller,
-          physics: NeverScrollableScrollPhysics(),
-        ),
+      body: TabBarView(
+        children: tabViews,
+        controller: _controller,
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }
