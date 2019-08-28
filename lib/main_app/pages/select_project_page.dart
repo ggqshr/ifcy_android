@@ -47,6 +47,12 @@ class SelectProjectPage extends StatelessWidget {
                     accountEmail: Text(""),
                   ),
                   ListTile(
+                    title: Text("注销"),
+                    onTap: (){
+                      BlocProvider.of<AuthorizationBloc>(context).dispatch(LoginOut());
+                    },
+                  ),
+                  ListTile(
                     title: Text("升级app"),
                     onTap: () async {
                       PermissionStatus permission = await PermissionHandler()
