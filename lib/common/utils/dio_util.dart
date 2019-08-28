@@ -56,9 +56,9 @@ class DioUtils {
     dio.interceptors.add(InterceptorsWrapper(onError: (error) async {
       if (error.response != null &&
           error.response.statusCode == 400 &&
-          error.response.data['code'] == '100001' &&
-          error.response.data['code'] == '100002' &&
-          error.response.data['code'] == '100003') {
+          (error.response.data['code'] == '100001' ||
+              error.response.data['code'] == '100002' ||
+              error.response.data['code'] == '100003')) {
         Dio dio = DioUtils.getInstance().getDio();
         dio.lock();
         String token = await _getToken();

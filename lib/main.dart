@@ -25,7 +25,6 @@ void main() {
   Router router = Router();
   Routes.configureRoutes(router);
   Application.router = router;
-  BlocSupervisor.delegate = ErrorProcessDelegate();
   runApp(MyApp());
   SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -57,9 +56,12 @@ class MyApp extends StatelessWidget {
       child: RepositoryProvider(
         builder: (context) => UserLoginRepositories(),
         child: BlocProvider(
-          builder: (context) =>
-              AuthorizationBloc(RepositoryProvider.of(context))
-                ..dispatch(AppStart()),
+          builder: (context) {
+            var bloc = AuthorizationBloc(RepositoryProvider.of(context))
+              ..dispatch(AppStart());
+            BlocSupervisor.delegate = ErrorProcessDelegate(bloc);
+            return bloc;
+          },
           child: MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(

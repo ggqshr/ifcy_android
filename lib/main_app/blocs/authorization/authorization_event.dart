@@ -12,3 +12,5 @@ class AppStart extends AuthorizationEvent {}
 class LoginIn extends AuthorizationEvent {}
 
 class LoginOut extends AuthorizationEvent {}
+
+class ShouldReLogin extends AuthorizationEvent{}

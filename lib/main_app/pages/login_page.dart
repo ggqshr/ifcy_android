@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     loginBloc = LoginBloc(
         userLoginRepositories:
-        RepositoryProvider.of<UserLoginRepositories>(context),
+            RepositoryProvider.of<UserLoginRepositories>(context),
         authorizationBloc: BlocProvider.of<AuthorizationBloc>(context));
     passWordController = TextEditingController()..addListener(_changePW);
     userNameController = TextEditingController()..addListener(_changeUN);
@@ -60,101 +60,102 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      bloc: loginBloc,
-      listener: (context, state) {
-        if (state.isFailure) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('Login Failure'), Icon(Icons.error)],
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
-        }
-        if (state.isSubmitting) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Logging In...'),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            );
-        }
-      },
-      child: BlocBuilder<LoginBloc, LoginState>(
+    return Scaffold(
+      body: BlocListener<LoginBloc, LoginState>(
         bloc: loginBloc,
-        builder: (context, state) {
-          return Scaffold(
-              body: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              userNameFocusNode.unfocus();
-              passWordFocusNode.unfocus();
-            },
-            child: Container(
-              child: Form(
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      autofocus: true,
-                      controller: userNameController,
-                      focusNode: userNameFocusNode,
-                      decoration: InputDecoration(
-                        labelText: "请输入用户名",
-                        hintText: "用户名",
-                        prefixIcon: Icon(Icons.verified_user),
-                        errorStyle: TextStyle(color: Colors.red, fontSize: 18),
-                      ),
-                      validator: (_) => state.isUserNameValid ? null : "请输入用户名",
-                      keyboardType: TextInputType.text,
-                      autovalidate: true,
-                    ),
-                    TextFormField(
-                      autovalidate: true,
-                      focusNode: passWordFocusNode,
-                      controller: passWordController,
-                      decoration: InputDecoration(
-                        labelText: "请输入密码",
-                        hintText: "密码",
-                        prefixIcon: Icon(Icons.vpn_key),
-                        errorStyle: TextStyle(color: Colors.red, fontSize: 18),
-                      ),
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                      validator: (_) => state.isPasswordValid ? null : "请输入密码",
-                    ),
-                    RaisedButton(
-                      child: Text("登陆"),
-                      onPressed: isLoginButtonEnable(state)
-                          ? () {
-                        userNameFocusNode.unfocus();
-                        passWordFocusNode.unfocus();
-                        loginBloc.dispatch(LoginWithCredentialsPressed(
-                            username: userNameController.text,
-                            password: passWordController.text));
-                      }
-                          : null,
-                    ),
-                  ],
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
+        listener: (context, state) {
+          if (state.isFailure) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [Text('Login Failure'), Icon(Icons.error)],
+                  ),
+                  backgroundColor: Colors.red,
                 ),
-              ),
-              height: double.maxFinite,
-            ),
-          ));
+              );
+          }
+          if (state.isSubmitting) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Logging In...'),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              );
+          }
         },
+        child: BlocBuilder<LoginBloc, LoginState>(
+          bloc: loginBloc,
+          builder: (context, state) {
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                userNameFocusNode.unfocus();
+                passWordFocusNode.unfocus();
+              },
+              child: Container(
+                child: Form(
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        autofocus: true,
+                        controller: userNameController,
+                        focusNode: userNameFocusNode,
+                        decoration: InputDecoration(
+                          labelText: "请输入用户名",
+                          hintText: "用户名",
+                          prefixIcon: Icon(Icons.verified_user),
+                          errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
+                        validator: (_) => state.isUserNameValid ? null : "请输入用户名",
+                        keyboardType: TextInputType.text,
+                        autovalidate: true,
+                      ),
+                      TextFormField(
+                        autovalidate: true,
+                        focusNode: passWordFocusNode,
+                        controller: passWordController,
+                        decoration: InputDecoration(
+                          labelText: "请输入密码",
+                          hintText: "密码",
+                          prefixIcon: Icon(Icons.vpn_key),
+                          errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        validator: (_) => state.isPasswordValid ? null : "请输入密码",
+                      ),
+                      RaisedButton(
+                        child: Text("登陆"),
+                        onPressed: isLoginButtonEnable(state)
+                            ? () {
+                          userNameFocusNode.unfocus();
+                          passWordFocusNode.unfocus();
+                          loginBloc.dispatch(LoginWithCredentialsPressed(
+                              username: userNameController.text,
+                              password: passWordController.text));
+                        }
+                            : null,
+                      ),
+                    ],
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                ),
+                height: double.maxFinite,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

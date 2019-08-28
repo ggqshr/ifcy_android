@@ -2,21 +2,27 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ifcy/common/utils/utils.dart';
+import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
+import 'package:ifcy/main_app/blocs/authorization/authorization_event.dart';
 import 'package:ifcy/main_app/pages/login_page.dart';
 
 ///@author ggq
 ///@description:
 ///@date :2019/8/25 19:23
 class ErrorProcessDelegate extends BlocDelegate {
+  AuthorizationBloc bloc;
+
+  ErrorProcessDelegate(this.bloc);
 
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     if (error is DioError) {
       if (error.error is ShouldReLoginError) {
         Application.showWarnToast("重新登陆");
-        Application.navigatorKey.currentState.pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => LoginPage()),
-            ModalRoute.withName("/ll"));
+//        Application.navigatorKey.currentState.pushAndRemoveUntil(
+//            MaterialPageRoute(builder: (context) => LoginPage()),
+//            ModalRoute.withName("/ll"));
+        this.bloc.dispatch(ShouldReLogin());
         return;
       }
       switch (error.type) {

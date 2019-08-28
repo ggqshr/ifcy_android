@@ -24,6 +24,9 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     if (event is LoginOut) {
       yield* _mapLoggedOutToState();
     }
+    if(event is ShouldReLogin){
+      yield Unauthenticated();
+    }
   }
 
   Stream<AuthorizationState> _mapAppStartEventToState() async* {
