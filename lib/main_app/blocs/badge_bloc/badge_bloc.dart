@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import './bloc.dart';
+import 'bloc.dart';
 
 class BadgeBloc extends Bloc<BadgeEvent, List<int>> {
+  final List<int> blocInitState;
+
+  BadgeBloc(this.blocInitState);
+
   @override
-  List<int> get initialState => [1,0,0,0];
+  List<int> get initialState => blocInitState;
 
   @override
   Stream<List<int>> mapEventToState(

@@ -11,7 +11,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/device_staff/thunk/device_staff_thunk.dart';
 
 part 'regular_inspection_component.dart';
-part 'additional_inspection_component.dart';
 part 'fault_inspection_component.dart';
 part 'scan_code_toinspection_component.dart';
 part 'upload_component.dart';

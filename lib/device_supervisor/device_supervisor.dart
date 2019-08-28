@@ -3,6 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/device_supervisor/repositories/monitor_repositories.dart';
+import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/common/utils/StoreCreater.dart';
@@ -56,7 +57,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
         child: MultiBlocProvider(
           providers: [
             BlocProvider<BadgeBloc>(
-              builder: (context) => BadgeBloc(),
+              builder: (context) => BadgeBloc([1,1,2,0]),
             ),
             BlocProvider<MonitorBloc>(
               builder: (context) => MonitorBloc(

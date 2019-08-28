@@ -36,7 +36,6 @@ part 'building_floor_message.dart';
 
 part 'inspection_system.dart';
 
-part "additional_inspection_task.dart";
 
 part 'build.dart';
 

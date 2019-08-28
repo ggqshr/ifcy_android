@@ -8,7 +8,6 @@ DeviceStaffModel deviceStaffModelReducer(DeviceStaffModel state, action) =>
     DeviceStaffModel(
       badgeNumList: badgeNumListReducer(state.badgeNumList, action),
       regularTasks: regularTasksReducer(state.regularTasks, action),
-      additionalTasks: additionalTasksReducer(state.additionalTasks, action),
       faultTasks: faultTasksReducer(state.faultTasks, action),
       buildingList: buildingListReducer(state.buildingList, action),
       currentBuilding: currentBuildingReducer(state.currentBuilding, action),
@@ -30,13 +29,6 @@ Reducer<List> regularTasksReducer = combineReducers([
   TypedReducer<List, InitDeviceStaffStateAction>(initRegularTask),
 ]);
 
-List initAdditionalTasks(List _, InitDeviceStaffStateAction action) {
-  return action.additionalTasks;
-}
-
-Reducer<List> additionalTasksReducer = combineReducers([
-  TypedReducer<List, InitDeviceStaffStateAction>(initAdditionalTasks),
-]);
 
 List initFaultTasks(List _, InitDeviceStaffStateAction action) {
   return action.faultTasks;
