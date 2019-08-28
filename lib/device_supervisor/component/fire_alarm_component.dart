@@ -1,38 +1,32 @@
 part of 'device_supervisor_component.dart';
 
 class FireAlarmComponent extends StatelessWidget {
+  final List<FireAlarmMessage> msgs;
+
+  FireAlarmComponent(this.msgs);
+
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, FireAlarmModel>(
-            converter: (Store<AppState> store) {
-              return FireAlarmModel(
-                messageNum: store.state.deviceSupervisorModel.fireAlarmMessages.length,
-                messages: store.state.deviceSupervisorModel.fireAlarmMessages,
-              );
-            },
-            builder: (BuildContext context, FireAlarmModel vm) {
-              List<Widget> viewList = <Widget>[];
+          List<Widget> viewList = <Widget>[];
+          int messageNum = msgs.length;
+          //若没有消息应该显示空白以及提示
+          if (messageNum == 0) {
+            viewList.add(ListTile(
+              title: Text("当前无消息"),
+            ));
+          } else {
+            viewList = msgs.map<Widget>((FireAlarmMessage meg) {
+              return FireMessageTile(meg);
+            }).toList();
+          }
 
-              //若没有消息应该显示空白以及提示
-              if (vm.messageNum == 0) {
-                viewList.add(ListTile(
-                  title: Text("当前无消息"),
-                ));
-              } else {
-                viewList = vm.messages.map<Widget>((FireAlarmMessage meg) {
-                  return FireMessageTile(meg);
-                }).toList();
-              }
-
-              return ExpansionCard(
-                title: "紧急火警消息",
-                messageNum: vm.messageNum,
-                viewList: viewList,
-              );
-            },
+          return ExpansionCard(
+            title: "紧急火警消息",
+            messageNum: messageNum,
+            viewList: viewList,
           );
         },
         childCount: 1,

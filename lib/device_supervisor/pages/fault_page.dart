@@ -31,7 +31,7 @@ class _FaultPageState extends State<FaultPage> with SingleTickerProviderStateMix
     return Scaffold(
        appBar: AppBar(
          automaticallyImplyLeading: false,
-         title:AppBarComponent(),
+         title:Text(RepositoryProvider.of<UserLoginRepositories>(context).currentBuild.buildName),
          centerTitle: true,
          bottom: TabBar(
            tabs: tabs,

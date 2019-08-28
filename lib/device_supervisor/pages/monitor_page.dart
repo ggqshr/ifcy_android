@@ -23,84 +23,105 @@ class MonitorPage extends StatelessWidget {
     }
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      centerTitle: true,
-      automaticallyImplyLeading: false,
-      title: AppBarComponent(),
-      leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            drawerCall();
-          }),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: (){
-            Auth.getInstance().reset();
-            DioUtils.getInstance().resetDio();
-          }
-        )
-      ],
-    ),
-    body: RefreshIndicator(
-      //todo 刷新回调
-      onRefresh: () async {
-        await Future.delayed(Duration(seconds: 2));
-      },
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-              child: Card(
-                elevation: 5,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Flexible(
-                        flex: 3,
-                        child: GestureDetector(
-                          //todo 跳转页面逻辑
-                          onTap: () =>
-                              Scaffold.of(context)
-                                  .showSnackBar(
-                                  SnackBar(content: Text("test"))),
-                          child: FaultNumComponent(),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 3,
-                        child: GestureDetector(
-                          child: TaskRateComponent(),
-                          //todo 跳转到任务
-                          onTap: () =>
-                              Scaffold.of(context)
-                                  .showSnackBar(
-                                  SnackBar(content: Text("跳转任务"))),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-          ),
-          FireAlarmComponent(),
-          DeviceFaultComponent(),
-          TaskInfoComponent(),
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-          ),
+  @override
+  Widget build(BuildContext context) {
+    MonitorBloc bloc = BlocProvider.of<MonitorBloc>(context);
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: Text(RepositoryProvider.of<UserLoginRepositories>(context)
+            .currentBuild
+            .buildName),
+        leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              drawerCall();
+            }),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Auth.getInstance().reset();
+                DioUtils.getInstance().resetDio();
+              })
         ],
       ),
-    ),
-  );
-}}
+      body: BlocBuilder<MonitorBloc, MonitorState>(
+          // ignore: missing_return
+          builder: (context, state) {
+        if (state is LoadedErrorMonitorState) {
+          return Center(
+            child: Text("网络出现错误"),
+          );
+        }
+        if (state is UnInitializationMonitorState) {
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                Text("加载中"),
+              ],
+            ),
+          );
+        }
+        if (state is LoadedMonitorState) {
+          return RefreshIndicator(
+            //todo 刷新回调
+            onRefresh: () async {
+              bloc.dispatch(FetchMonitorDataEvent());
+            },
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                    child: Card(
+                      elevation: 5,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Flexible(
+                              flex: 3,
+                              child: GestureDetector(
+                                //todo 跳转页面逻辑
+                                onTap: () => Scaffold.of(context).showSnackBar(
+                                    SnackBar(content: Text("test"))),
+                                child: FaultNumComponent(state.deviceFaultNum.toString()),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 3,
+                              child: GestureDetector(
+                                child: TaskRateComponent(state.taskCompleteRate),
+                                //todo 跳转到任务
+                                onTap: () => Scaffold.of(context).showSnackBar(
+                                    SnackBar(content: Text("跳转任务"))),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                ),
+                FireAlarmComponent(state.fireAlarmMsg),
+                DeviceFaultComponent(state.deviceFaultMsg),
+                TaskInfoComponent(state.taskInfoMsg),
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+                ),
+              ],
+            ),
+          );
+        }
+      }),
+    );
+  }
+}

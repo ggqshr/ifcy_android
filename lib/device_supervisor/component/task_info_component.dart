@@ -1,59 +1,50 @@
 part of 'device_supervisor_component.dart';
 
 class TaskInfoComponent extends StatelessWidget {
+  final List<TaskInfoMessage> msgs;
+
+  TaskInfoComponent(this.msgs);
+
   @override
   Widget build(BuildContext context) {
+    int messageNum = msgs.length;
+    List<TaskInfoMessage> completedTask = List.from(msgs.where((item)=>item.status==TaskStatus.completed));
+    List<TaskInfoMessage> unCompletedTask = List.from(msgs.where((item)=>item.status==TaskStatus.uncompleted));
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, TaskInfoModel>(
-            converter: (Store<AppState> store) {
-              DeviceSupervisorModel state = store.state.deviceSupervisorModel;
-              return TaskInfoModel(
-                messageNum: state.taskInfoMessages.length,
-                completedTask: state.taskInfoMessages.where((msg) {
-                  return msg.status == TaskStatus.completed;
-                }).toList(),
-                uncompletedTask: state.taskInfoMessages.where((msg) {
-                  return msg.status == TaskStatus.uncompleted;
-                }).toList(),
-              );
-            },
-            builder: (BuildContext context, TaskInfoModel vm) {
-              List<Widget> viewList = <Widget>[];
+          List<Widget> viewList = <Widget>[];
 
-              //若没有消息应该显示空白以及提示
-              if (vm.messageNum == 0) {
-                viewList.add(ListTile(
-                  title: Text("当前无消息"),
-                ));
-              } else {
-                viewList
-                  ..add(
-                    TaskTile(
-                      vm.completedTask,
-                      Icon(
-                        Icons.check_circle_outline,
-                        color: Colors.green,
-                      ),
-                    ),
-                  )
-                  ..add(
-                    TaskTile(
-                      vm.uncompletedTask,
-                      Icon(
-                        FontAwesomeIcons.playCircle,
-                        color: Colors.yellow.shade700,
-                      ),
-                    ),
-                  );
-              }
-              return ExpansionCard(
-                title: "今日任务执行情况",
-                messageNum: vm.messageNum,
-                viewList: viewList,
+          //若没有消息应该显示空白以及提示
+          if (messageNum == 0) {
+            viewList.add(ListTile(
+              title: Text("当前无消息"),
+            ));
+          } else {
+            viewList
+              ..add(
+                TaskTile(
+                  completedTask,
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                  ),
+                ),
+              )
+              ..add(
+                TaskTile(
+                  unCompletedTask,
+                  Icon(
+                    FontAwesomeIcons.playCircle,
+                    color: Colors.yellow.shade700,
+                  ),
+                ),
               );
-            },
+          }
+          return ExpansionCard(
+            title: "今日任务执行情况",
+            messageNum: messageNum,
+            viewList: viewList,
           );
         },
         childCount: 1,
@@ -70,6 +61,7 @@ class TaskTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String showText = msgs[0].status==TaskStatus.uncompleted?"未完成任务":"已完成任务";
     List<Widget> viewList = [];
     if (msgs.length == 0) {
       viewList.add(
@@ -91,14 +83,11 @@ class TaskTile extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Card(
         child: ExpansionTile(
-          leading: Icon(
-            Icons.check_circle_outline,
-            color: Colors.green,
-          ),
+          leading: showIcon,
           trailing: Icon(
             Icons.chevron_right,
           ),
-          title: Text("已完成任务 ${msgs.length}"),
+          title: Text("$showText ${msgs.length}"),
           children: viewList,
           initiallyExpanded: true,
         ),

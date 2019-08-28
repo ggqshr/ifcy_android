@@ -1,10 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
-import 'package:ifcy/device_supervisor/repositories/plan_list_provider.dart';
 
 ///@author ggq
 ///@description:
 ///@date :2019/8/24 9:49
+class PlanListDataProvider {
+  Future<PlanTaskListPageModel> getPlanList(
+      {int listRow = 1, int page = 1}) async {
+    Dio dio = DioUtils.getInstance().getDio();
+    Response res = await dio.get("/patrol/plans",
+        queryParameters: {"page": page, "list_rows": listRow});
+    return PlanTaskListPageModel.fromJson(res.data['data']);
+  }
+}
+
 class PlanListRepositories {
   final PlanListDataProvider dataProvider;
 

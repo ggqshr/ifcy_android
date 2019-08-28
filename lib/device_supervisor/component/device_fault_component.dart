@@ -1,40 +1,33 @@
 part of "device_supervisor_component.dart";
 
 class DeviceFaultComponent extends StatelessWidget {
+  final List<DeviceFaultMessage> msgs;
+
+  DeviceFaultComponent(this.msgs);
+
   @override
   Widget build(BuildContext context) {
+    int messageNum = msgs.length;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, DeviceFaultModel>(
-            converter: (Store<AppState> store) {
-              return DeviceFaultModel(
-                messageNum: store
-                    .state.deviceSupervisorModel.deviceFaultMessages.length,
-                messages:
-                    store.state.deviceSupervisorModel.deviceFaultMessages,
-              );
-            },
-            builder: (BuildContext context, DeviceFaultModel vm) {
-              List<Widget> viewList = <Widget>[];
+          List<Widget> viewList = <Widget>[];
 
-              //若没有消息应该显示空白以及提示
-              if (vm.messageNum == 0) {
-                viewList.add(ListTile(
-                  title: Text("当前无消息"),
-                ));
-              } else {
-                viewList = vm.messages.map<Widget>((DeviceFaultMessage meg) {
-                  return DeviceFaultTile(meg);
-                }).toList();
-              }
+          //若没有消息应该显示空白以及提示
+          if (messageNum == 0) {
+            viewList.add(ListTile(
+              title: Text("当前无消息"),
+            ));
+          } else {
+            viewList = msgs.map<Widget>((DeviceFaultMessage meg) {
+              return DeviceFaultTile(meg);
+            }).toList();
+          }
 
-              return ExpansionCard(
-                title: "今日设备故障",
-                messageNum: vm.messageNum,
-                viewList: viewList,
-              );
-            },
+          return ExpansionCard(
+            title: "今日设备故障",
+            messageNum: messageNum,
+            viewList: viewList,
           );
         },
         childCount: 1,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/device_supervisor/repositories/monitor_repositories.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/common/utils/StoreCreater.dart';
@@ -46,44 +47,62 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
         providers: [
-          BlocProvider<BadgeBloc>(
-            builder: (context) => BadgeBloc(),
-          ),
+          RepositoryProvider<MonitorRepositories>(
+            builder: (context) => MonitorRepositories(),
+          )
         ],
-        child: Scaffold(
-          bottomNavigationBar:
-              BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
-            return BottomNavigationBar(
-              elevation: 10,
-              type: BottomNavigationBarType.fixed,
-              items: iconList.map<BottomNavigationBarItem>((i) {
-                int currentIndex = iconList.indexOf(i);
-                int currentBadge = state[currentIndex];
-                return BottomNavigationBarItem(
-                  icon: Badge(
-                    child: i,
-                    badgeContent: Text(
-                      currentBadge.toString(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    showBadge: currentBadge != 0,
-                  ),
-                  title: Text(
-                    iconTextList[currentIndex],
-                  ),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<BadgeBloc>(
+              builder: (context) => BadgeBloc(),
+            ),
+            BlocProvider<MonitorBloc>(
+              builder: (context) => MonitorBloc(
+                  RepositoryProvider.of<MonitorRepositories>(context))..dispatch(FetchMonitorDataEvent()),
+            ),
+          ],
+          child: MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider(
+                builder: (context) => MonitorRepositories(),
+              )
+            ],
+            child: Scaffold(
+              bottomNavigationBar:
+                  BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
+                return BottomNavigationBar(
+                  elevation: 10,
+                  type: BottomNavigationBarType.fixed,
+                  items: iconList.map<BottomNavigationBarItem>((i) {
+                    int currentIndex = iconList.indexOf(i);
+                    int currentBadge = state[currentIndex];
+                    return BottomNavigationBarItem(
+                      icon: Badge(
+                        child: i,
+                        badgeContent: Text(
+                          currentBadge.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        showBadge: currentBadge != 0,
+                      ),
+                      title: Text(
+                        iconTextList[currentIndex],
+                      ),
+                    );
+                  }).toList(),
+                  onTap: (v) {
+                    setState(() {
+                      currentIndex = v;
+                    });
+                  },
+                  currentIndex: currentIndex,
                 );
-              }).toList(),
-              onTap: (v) {
-                setState(() {
-                  currentIndex = v;
-                });
-              },
-              currentIndex: currentIndex,
-            );
-          }),
-          body: viewList[currentIndex],
+              }),
+              body: viewList[currentIndex],
+            ),
+          ),
         ));
   }
 }

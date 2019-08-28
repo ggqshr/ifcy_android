@@ -1,6 +1,10 @@
 part of 'device_supervisor_component.dart';
 
 class FaultNumComponent extends StatelessWidget {
+  final String deviceFaultNum;
+
+  FaultNumComponent(this.deviceFaultNum);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -8,11 +12,7 @@ class FaultNumComponent extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Text(
-            StoreProvider.of<AppState>(context)
-                .state
-                .deviceSupervisorModel
-                .faultNum
-                .toString(),
+            deviceFaultNum,
             style: TextStyle(
               color: Colors.red,
               fontWeight: FontWeight.bold,
