@@ -108,6 +108,9 @@ const _$ProcessTypeEnumMap = {
 const _$TaskStatusEnumMap = {
   TaskStatus.completed: 'completed',
   TaskStatus.uncompleted: 'uncompleted',
+  TaskStatus.unreached: 'unreached',
+  TaskStatus.running: 'running',
+  TaskStatus.out_time_completed: 'out_time_completed',
 };
 
 Build _$BuildFromJson(Map<String, dynamic> json) {

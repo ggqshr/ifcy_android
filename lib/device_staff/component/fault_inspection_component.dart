@@ -65,10 +65,6 @@ class _FaultInspectionComponentState extends State<FaultInspectionComponent> {
                   ),
                   ListTile(
                     dense: true,
-                    title: Text("委派人员：${vm.tasks[index].taskPeople}"),
-                  ),
-                  ListTile(
-                    dense: true,
                     title: Text("任务创建时间：${vm.tasks[index].taskCreateTime}"),
                   ),
                   Divider(),

@@ -45,7 +45,7 @@ class PlanTaskListPageModel {
   }
 
   factory PlanTaskListPageModel.fromJson(Map<String, dynamic> json) =>
-      _$PlanListPageModelFromJson(json);
+      _$PlanTaskListPageModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PlanListPageModelToJson(this);
+  Map<String, dynamic> toJson() => _$PlanTaskListPageModelToJson(this);
 }

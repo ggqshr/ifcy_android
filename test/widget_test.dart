@@ -22,6 +22,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/utils/utils.dart';
+import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
@@ -113,8 +114,10 @@ void main() {
     });
     test("testadd", () async {
       await DioUtils.getInstance().login("hyj", "123456");
-      AddTaskPlanDataProvider planDataProvider = AddTaskPlanDataProvider();
-      print(await planDataProvider.getPersonnelMessage());
+      Response res =
+          await DioUtils.getInstance().getDio().get("/patrol/tasks");
+      var aa = InspectionTaskPageModel.fromJson(res.data['data']);
+      print(aa);
     });
   });
 

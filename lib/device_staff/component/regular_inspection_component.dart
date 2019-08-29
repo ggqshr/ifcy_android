@@ -10,18 +10,27 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
   ScrollController _scrollController;
+  EasyRefreshController _completeController;
+  EasyRefreshController _unCompleteController;
+  DeviceStaffTaskListBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
     _scrollController = ScrollController(initialScrollOffset: 0);
+    _completeController = EasyRefreshController();
+    _unCompleteController = EasyRefreshController();
+    _bloc = BlocProvider.of<DeviceStaffTaskListBloc>(context);
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+    _scrollController.dispose();
+    _completeController.dispose();
+    _unCompleteController.dispose();
   }
 
   scroToTopCall() {
@@ -33,172 +42,198 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      scrollDirection: Axis.vertical,
-      slivers: <Widget>[
-        SliverPersistentHeader(
-          delegate: ChangeTaskState(_controller, scroToTopCall),
-        ),
-        SliverFillRemaining(
-          child: Container(
-            child: TabBarView(
-              children: [
-                getUnFinishTask(),
-                getFinishTask(),
-              ],
-              controller: _controller,
-            ),
-          ),
-        ),
-      ],
+    return BlocListener<DeviceStaffTaskListBloc, DeviceStaffTaskListState>(
+      listener: (context, state) {
+        _unCompleteController.resetLoadState();
+        _completeController.resetLoadState();
+        if (state is LoadedDeviceStaffTaskListState) {
+          if (state.unCompleteIsReachMax) {
+            _unCompleteController.finishLoad(success: true, noMore: true);
+          } else if (state.completeIsReachMax) {
+            _completeController.finishLoad(success: true, noMore: true);
+          } else if (!state.completeIsReachMax) {
+            _completeController.finishLoad(success: true);
+          } else if (!state.unCompleteIsReachMax) {
+            _unCompleteController.finishLoad(success: true);
+          }
+        }
+      },
+      child: BlocBuilder<DeviceStaffTaskListBloc, DeviceStaffTaskListState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            scrollDirection: Axis.vertical,
+            slivers: <Widget>[
+              SliverPersistentHeader(
+                delegate: ChangeTaskState(_controller, scroToTopCall),
+              ),
+              SliverFillRemaining(
+                child: Container(
+                  child: TabBarView(
+                    children: [
+                      if (state is UnInitialDeviceStaffTaskListState) ...[
+                        Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                      if (state is LoadErrorDeviceStaffTaskList) ...[
+                        Center(
+                          child: Text("网络出现错误,请稍候重试"),
+                        ),
+                        Center(
+                          child: Text("网络出现错误,请稍候重试"),
+                        ),
+                      ],
+                      if (state is LoadedDeviceStaffTaskListState) ...[
+                        getTasks(
+                            controller: _unCompleteController,
+                            tasks: state.unCompleteTask.taskInfoList,
+                            actionButton: getUnCompleteActionButton,
+                            refreshType: RefreshUnComplete(),
+                            fetchType: FetchUnComplete()),
+                        getTasks(
+                            controller: _completeController,
+                            tasks: state.completeTask.taskInfoList,
+                            actionButton: getCompleteActionButton,
+                            refreshType: RefreshComplete(),
+                            fetchType: FetchComplete()),
+                      ],
+                    ],
+                    controller: _controller,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
-  getFinishTask() {
-    return StoreConnector<AppState, RegularInspectionViewModel>(
-      converter: (Store<AppState> store) {
-        DeviceStaffModel model = store.state.deviceStaffModel;
-        return RegularInspectionViewModel(
-          completeTasks: model.regularTasks
-              .where((item) => item.taskStatus == TaskStatus.completed)
-              .toList(),
-          onRefreshCall: () async {
-            //todo 刷新回调
-            await Future.delayed(Duration(seconds: 2));
-          },
-        );
-      },
-      builder: (BuildContext context, RegularInspectionViewModel vm) {
-        return RefreshIndicator(
-          child: ListView.builder(
-            itemCount: vm.completeTasks.length,
-            key: PageStorageKey("RegularInspectionComponentgetFinishTask"),
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 5,
-                margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      flex: 2,
-                      child: ListTile(
-                        title: Text(vm.completeTasks[index].taskTitle),
-                        trailing: FlatButton.icon(
-                          onPressed: () => Scaffold.of(context).showSnackBar(
-                                SnackBar(
-                                  content:
-                                      Text("跳转到${vm.completeTasks[index].id}"),
-                                ),
-                              ),
-                          icon: Icon(
-                            Icons.check_circle_outline,
-                            color: Colors.green,
-                          ),
-                          label: Text("已完成"),
-                        ),
+  getTasks({
+    EasyRefreshController controller,
+    List<InspectionTaskModel> tasks,
+    Function actionButton,
+    DeviceStaffTaskListEvent refreshType,
+    DeviceStaffTaskListEvent fetchType,
+  }) {
+    if (tasks.isEmpty) {
+      return Center(
+        child: Text("列表为空"),
+      );
+    } else {
+      return EasyRefresh(
+        footer: ClassicalFooter(
+          loadText: "释放加载更多",
+          loadReadyText: "释放加载更多",
+          loadingText: "正在加载",
+          loadedText: "加载成功",
+          loadFailedText: "加载失败",
+          noMoreText: "没有更多数据",
+          infoText: "更新于 %T",
+        ),
+        bottomBouncing: false,
+        enableControlFinishLoad: true,
+        controller: controller,
+        onRefresh: () async {
+          _bloc.dispatch(refreshType);
+        },
+        onLoad: () async {
+          _bloc.dispatch(fetchType);
+        },
+        child: ListView.builder(
+          itemCount: tasks.length,
+          key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
+          controller: _scrollController,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 5,
+              margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: actionButton(tasks, index),
+                  ),
+                  Divider(
+                    color: Colors.black,
+                  ),
+                  ListTile(
+                    dense: true,
+                    title: Text("备注:${tasks[index].noteText}"),
+                  ),
+                  ListTile(
+                    dense: true,
+                    title: Text(
+                        "开始时间：${tasks[index].startTime.toString().substring(0, 10)}"),
+                  ),
+                  ListTile(
+                    dense: true,
+                    title: Text(
+                        "开始时间：${tasks[index].endTime.toString().substring(0, 10)}"),
+                  ),
+                  ListTile(
+                    dense: true,
+                    title: Text(
+                        "巡检情况：总设备数    ${tasks[index].deviceNum},已巡检    ${tasks[index].checkedDeviceNum}"),
+                  ),
+                  ListTile(
+                    dense: true,
+                    title: Text("进度"),
+                    subtitle: SizedBox(
+                      height: 10,
+                      child: LinearProgressIndicator(
+                        value: int.parse(tasks[index].deviceNum) == 0
+                            ? 0
+                            : double.parse(tasks[index].checkedDeviceNum) /
+                                double.parse(tasks[index].deviceNum),
                       ),
                     ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      dense: true,
-                      title:
-                          Text("任务内容:${vm.completeTasks[index].taskContent}"),
-                    ),
-                    ListTile(
-                      dense: true,
-                      title: Text("委派人员：${vm.completeTasks[index].taskPeople}"),
-                    ),
-                    ListTile(
-                      dense: true,
-                      title: Text("起始时间：${vm.completeTasks[index].taskTime}"),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          onRefresh: () async {
-            await vm.onRefreshCall();
+                  ),
+                ],
+              ),
+            );
           },
-        );
-      },
+        ),
+      );
+    }
+  }
+
+  Widget getUnCompleteActionButton(List<InspectionTaskModel> tasks, int index) {
+    return ListTile(
+      title: Text(tasks[index].name),
+      trailing: FlatButton.icon(
+        onPressed: tasks[index].taskStatus == TaskStatus.running
+            ? () => Application.router.navigateTo(
+                context, Routes.regularInspection,
+                transition: TransitionType.inFromBottom)
+            : null,
+        icon: Icon(Icons.play_arrow),
+        label: Text("执行"),
+      ),
     );
   }
 
-  getUnFinishTask() {
-    return StoreConnector<AppState, RegularInspectionViewModel>(
-      converter: (Store<AppState> store) {
-        DeviceStaffModel model = store.state.deviceStaffModel;
-        return RegularInspectionViewModel(
-          unCompleteTasks: model.regularTasks
-              .where((item) => item.taskStatus == TaskStatus.uncompleted)
-              .toList(),
-          onRefreshCall: () async {
-            //todo 刷新回调
-            await Future.delayed(Duration(seconds: 2));
-          },
-        );
-      },
-      builder: (BuildContext context, RegularInspectionViewModel vm) {
-        return RefreshIndicator(
-          child: ListView.builder(
-            itemCount: vm.unCompleteTasks.length,
-            key: PageStorageKey("RegularInspectionComponentgetUnFinishTask"),
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 5,
-                margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      flex: 2,
-                      child: ListTile(
-                        title: Text(vm.unCompleteTasks[index].taskTitle),
-                        trailing: FlatButton.icon(
-                          onPressed: () => Application.router
-                              .navigateTo(context, Routes.regularInspection,transition: TransitionType.inFromBottom),
-                          icon: Icon(Icons.play_arrow),
-                          label: Text("执行"),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      dense: true,
-                      title:
-                          Text("任务内容:${vm.unCompleteTasks[index].taskContent}"),
-                    ),
-                    ListTile(
-                      dense: true,
-                      title:
-                          Text("委派人员：${vm.unCompleteTasks[index].taskPeople}"),
-                    ),
-                    ListTile(
-                      dense: true,
-                      title: Text("起始时间：${vm.unCompleteTasks[index].taskTime}"),
-                    ),
-                  ],
-                ),
-              );
-            },
+  Widget getCompleteActionButton(List<InspectionTaskModel> tasks, int index) {
+    return ListTile(
+      title: Text(tasks[index].name),
+      trailing: FlatButton.icon(
+        onPressed: () => Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text("跳转到${tasks[index].id}"),
           ),
-          onRefresh: () async {
-            await vm.onRefreshCall();
-          },
-        );
-      },
+        ),
+        icon: Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        ),
+        label: Text(taskStatusToString[tasks[index].taskStatus]),
+      ),
     );
   }
 

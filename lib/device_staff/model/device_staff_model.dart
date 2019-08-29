@@ -1,12 +1,15 @@
 import 'package:ifcy/common/model/model.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart' show timeFromJson,timeToJson;
 
 part 'regular_inspection_model.dart';
 
 
 part 'fault_inspection_model.dart';
 
-part 'device_staff_appbar_model.dart';
+part 'inspection_task_page_model.dart';
 
+part 'device_staff_model.g.dart';
 ///@author ggq
 ///@description: 维保工作人员的模块model
 ///@date :2019/8/2 8:58

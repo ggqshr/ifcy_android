@@ -18,9 +18,6 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
       child: Text("定期巡检"),
     ),
     Tab(
-      child: Text("补充任务"),
-    ),
-    Tab(
       child: Text("故障确认"),
     ),
   ];
@@ -41,7 +38,9 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
         automaticallyImplyLeading: false,
         leading:
             IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCall),
-        title: DeviceStaffAppBarComponent(),
+        title: Text(RepositoryProvider.of<UserLoginRepositories>(context)
+            .currentBuild
+            .buildName),
         centerTitle: true,
         bottom: TabBar(
           tabs: tabs,

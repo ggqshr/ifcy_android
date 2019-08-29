@@ -39,14 +39,14 @@ class TaskListBloc extends Bloc<TaskListEvent, TaskListState> {
           );
           return;
         }
+        if(event is RefreshTask){
+          final PlanTaskListPageModel model = await repositories.getFirstPage();
+          yield FetchedTaskListState(model: model);
+        }
       } catch (e) {
         yield FetchErrorTaskListState();
         rethrow;
       }
-    }
-    if(event is RefreshTask){
-      final PlanTaskListPageModel model = await repositories.getFirstPage();
-      yield FetchedTaskListState(model: model);
     }
   }
 }
