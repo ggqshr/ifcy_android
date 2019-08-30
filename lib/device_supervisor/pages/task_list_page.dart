@@ -12,12 +12,10 @@ class _TaskListPageState extends State<TaskListPage>
     with AutomaticKeepAliveClientMixin {
   EasyRefreshController _controller;
   TaskListBloc bloc;
-  UserLoginRepositories userLoginRepositories;
 
   @override
   void initState() {
     super.initState();
-    userLoginRepositories = RepositoryProvider.of<UserLoginRepositories>(context);
     _controller = EasyRefreshController();
     bloc = BlocProvider.of<TaskListBloc>(context);
   }
@@ -96,8 +94,8 @@ class _TaskListPageState extends State<TaskListPage>
                         ),
                         ListTile(
                           dense: true,
-                          title:
-                              Text("检查大厦:${userLoginRepositories.currentBuild.buildName}"),
+                          title: Text(
+                              "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
                         ),
                         ListTile(
                           dense: true,

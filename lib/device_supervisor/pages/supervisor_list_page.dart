@@ -5,7 +5,10 @@ class SupervisorListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(RepositoryProvider.of<UserLoginRepositories>(context).currentBuild.buildName),
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+                as Authenticated)
+            .currentBuild
+            .buildName),
         centerTitle: true,
         automaticallyImplyLeading: true,
         actions: <Widget>[

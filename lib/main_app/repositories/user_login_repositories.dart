@@ -27,27 +27,23 @@ class UserLoginDataProvider {
 class UserLoginRepositories {
   final bool alwaysLogin;
   final UserLoginDataProvider userLoginDataProvider;
-  UserEntity _userEntity;
-  Build _currentBuild;
-
-  UserEntity get getUser => _userEntity;
-
-  Build get currentBuild => _currentBuild;
 
   UserLoginRepositories({
     this.alwaysLogin = false,
   }) : userLoginDataProvider = UserLoginDataProvider();
 
-  Future<void> login(String userName, String passWord) async {
-    _userEntity = await userLoginDataProvider.login(userName, passWord);
-    _currentBuild = await userLoginDataProvider.getCurrentBuild();
+  Future<UserEntity> login(String userName, String passWord) async {
+    return await userLoginDataProvider.login(userName, passWord);
   }
 
-  Future<void> loginWithLocal() async {
+  Future<UserEntity> loginWithLocal() async {
     String userName = await Auth.getInstance().getString(USER_NAME);
     String passWord = await Auth.getInstance().getString(PASS_WORD);
-    _userEntity = await userLoginDataProvider.login(userName, passWord);
-    _currentBuild = await userLoginDataProvider.getCurrentBuild();
+    return await userLoginDataProvider.login(userName, passWord);
+  }
+
+  Future<Build> getCurrentBuilding() async {
+    return await userLoginDataProvider.getCurrentBuild();
   }
 
   Future<bool> isLoginIn() async {

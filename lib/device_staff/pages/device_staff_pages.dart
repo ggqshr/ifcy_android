@@ -12,6 +12,8 @@ import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_staff/component/device_staff_components.dart';
+import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
+import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moor_flutter/moor_flutter.dart' as moor;

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import './bloc.dart';
 
@@ -24,7 +25,7 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     if (event is LoginOut) {
       yield* _mapLoggedOutToState();
     }
-    if(event is ShouldReLogin){
+    if (event is ShouldReLogin) {
       yield Unauthenticated();
     }
   }
@@ -33,8 +34,10 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     try {
       final isSignIn = await userLoginRepositories.isLoginIn();
       if (isSignIn) {
-        await userLoginRepositories.loginWithLocal();
-        yield Authenticated(userEntity: userLoginRepositories.getUser);
+        UserEntity user = await userLoginRepositories.loginWithLocal();
+        yield Authenticated(
+            userEntity: user,
+            currentBuild: await userLoginRepositories.getCurrentBuilding());
       } else {
         yield Unauthenticated();
       }
@@ -46,7 +49,14 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
 
   Stream<AuthorizationState> _mapLoginInEventToState(
       AuthorizationEvent event) async* {
-    yield Authenticated(userEntity: userLoginRepositories.getUser);
+    try {
+      yield Authenticated(
+          userEntity: (event as LoginIn).userEntity,
+          currentBuild: await userLoginRepositories.getCurrentBuilding());
+    } catch (e) {
+      yield Unauthenticated();
+      rethrow;
+    }
   }
 
   Stream<AuthorizationState> _mapLoggedOutToState() async* {

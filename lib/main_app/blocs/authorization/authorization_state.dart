@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:meta/meta.dart';
 
@@ -13,8 +14,9 @@ class Uninitialized extends AuthorizationState {}
 ///已授权
 class Authenticated extends AuthorizationState {
   final UserEntity userEntity;
+  final Build currentBuild;
 
-  Authenticated({this.userEntity}) : super([userEntity]);
+  Authenticated({@required this.userEntity,@required this.currentBuild}) : super([userEntity,currentBuild]);
 }
 
 ///未授权

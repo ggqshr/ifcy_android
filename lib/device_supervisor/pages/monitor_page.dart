@@ -30,7 +30,8 @@ class MonitorPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text(RepositoryProvider.of<UserLoginRepositories>(context)
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+                as Authenticated)
             .currentBuild
             .buildName),
         leading: IconButton(
@@ -90,13 +91,15 @@ class MonitorPage extends StatelessWidget {
                                 //todo 跳转页面逻辑
                                 onTap: () => Scaffold.of(context).showSnackBar(
                                     SnackBar(content: Text("test"))),
-                                child: FaultNumComponent(state.deviceFaultNum.toString()),
+                                child: FaultNumComponent(
+                                    state.deviceFaultNum.toString()),
                               ),
                             ),
                             Flexible(
                               flex: 3,
                               child: GestureDetector(
-                                child: TaskRateComponent(state.taskCompleteRate),
+                                child:
+                                    TaskRateComponent(state.taskCompleteRate),
                                 //todo 跳转到任务
                                 onTap: () => Scaffold.of(context).showSnackBar(
                                     SnackBar(content: Text("跳转任务"))),

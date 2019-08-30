@@ -26,9 +26,8 @@ class _AddTaskPageState extends State<AddTaskPage>
         ),
       ),
     );
-    bloc =
-        AddTaskPlanBloc(RepositoryProvider.of<UserLoginRepositories>(context))
-          ..dispatch(FetchData());
+    bloc = AddTaskPlanBloc(BlocProvider.of<AuthorizationBloc>(context))
+      ..dispatch(FetchData());
   }
 
   @override
@@ -47,7 +46,7 @@ class _AddTaskPageState extends State<AddTaskPage>
       ),
       body: BlocListener<AddTaskPlanBloc, AddTaskPlanState>(
         bloc: bloc,
-        listener: (context, state) async{
+        listener: (context, state) async {
           if (state is AfterFetchedState) {
             if (state.isSubmittingFault) {
               Scaffold.of(context)
@@ -77,7 +76,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                   ),
                 );
             }
-            if (state.isSubmittingSuccess){
+            if (state.isSubmittingSuccess) {
               Scaffold.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(

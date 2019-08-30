@@ -10,6 +10,7 @@ import 'package:ifcy/device_supervisor/blocs/task_list_bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
+import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import 'package:provider/provider.dart';

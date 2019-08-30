@@ -38,7 +38,8 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
         automaticallyImplyLeading: false,
         leading:
             IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCall),
-        title: Text(RepositoryProvider.of<UserLoginRepositories>(context)
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+                as Authenticated)
             .currentBuild
             .buildName),
         centerTitle: true,
