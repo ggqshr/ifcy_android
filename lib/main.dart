@@ -1,3 +1,4 @@
+import 'package:bloc/bloc.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,27 +26,6 @@ void main() {
   Router router = Router();
   Routes.configureRoutes(router);
   Application.router = router;
-  JPush jpush = new JPush();
-  jpush.addEventHandler(
-    // 接收通知回调方法。
-    onReceiveNotification: (Map<String, dynamic> message) async {
-      print("flutter onReceiveNotification: $message");
-    },
-    // 点击通知回调方法。
-    onOpenNotification: (Map<String, dynamic> message) async {
-      print("flutter onOpenNotification: $message");
-    },
-    // 接收自定义消息回调方法。
-    onReceiveMessage: (Map<String, dynamic> message) async {
-      print("flutter onReceiveMessage: $message");
-    },
-  );
-  jpush.setup(
-    appKey: "82a1ab81c8b060a42cdc62e1",
-    channel: "theChannel",
-    production: false,
-    debug: false, // 设置是否打印 debug 日志
-  );
   runApp(MyApp());
   SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
