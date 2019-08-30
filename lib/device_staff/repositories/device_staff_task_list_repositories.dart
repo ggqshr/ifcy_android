@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
@@ -13,7 +15,7 @@ class DeviceStaffTaskListDataProvider {
       : _dio = dio ?? DioUtils.getInstance().getDio();
 
   Future<InspectionTaskPageModel> getTaskList(
-      {int listRow = 1, int page = 1, String taskStatus}) async {
+      {int listRow = 1, int page, String taskStatus}) async {
     Response res = await _dio.get("/patrol/user/tasks/search",
         queryParameters: {
           "page": page,
@@ -21,6 +23,24 @@ class DeviceStaffTaskListDataProvider {
           "taskStatus": taskStatus
         });
     return InspectionTaskPageModel.fromJson(res.data['data']);
+  }
+
+  Future<InspectionTaskPageModel> getCompleteTask(
+      {int listRow, int page = 1}) async {
+    InspectionTaskPageModel completeModel = await getTaskList(
+        taskStatus:
+            "${taskStatusToString[TaskStatus.completed]},${taskStatusToString[TaskStatus.out_time_completed]}",
+        page: page);
+    return completeModel;
+  }
+
+  Future<InspectionTaskPageModel> getUnCompleteTask(
+      {int listRow, int page = 1}) async {
+    InspectionTaskPageModel unCompleteModel = await getTaskList(
+        page: page,
+        taskStatus:
+            "${taskStatusToString[TaskStatus.running]},${taskStatusToString[TaskStatus.unreached]},${taskStatusToString[TaskStatus.uncompleted]}");
+    return unCompleteModel;
   }
 }
 
@@ -31,52 +51,26 @@ class DeviceStaffTaskListRepositories {
       : dataProvider = dataProvider ?? DeviceStaffTaskListDataProvider();
 
   Future<InspectionTaskPageModel> getFirstPageComplete() async {
-    InspectionTaskPageModel completeModel = await dataProvider.getTaskList(
-        taskStatus: taskStatusToString[TaskStatus.completed]);
-    InspectionTaskPageModel unCompleteModel = await dataProvider.getTaskList(
-        taskStatus: taskStatusToString[TaskStatus.uncompleted]);
-    InspectionTaskPageModel outTimeCompleteModel =
-        await dataProvider.getTaskList(
-            taskStatus: taskStatusToString[TaskStatus.out_time_completed]);
-
-    return unCompleteModel.copy(completeModel).copy(outTimeCompleteModel)
-      ..currentPageNum = 1;
+    InspectionTaskPageModel completeModel =
+        await dataProvider.getCompleteTask()..currentPageNum = 1;
+    return completeModel;
   }
 
   Future<InspectionTaskPageModel> getFirstPageUnComplete() async {
-    InspectionTaskPageModel runningModel = await dataProvider.getTaskList(
-        taskStatus: taskStatusToString[TaskStatus.running]);
-    InspectionTaskPageModel unReachModel = await dataProvider.getTaskList(
-        taskStatus: taskStatusToString[TaskStatus.unreached]);
-    return unReachModel.copy(runningModel)..currentPageNum = 1;
+    InspectionTaskPageModel unCompleteModel =
+        await dataProvider.getUnCompleteTask()..currentPageNum = 1;
+    return unCompleteModel;
   }
 
   Future<InspectionTaskPageModel> getNextPageComplete(int pageNum) async {
-    InspectionTaskPageModel completeModel = await dataProvider.getTaskList(
-      taskStatus: taskStatusToString[TaskStatus.completed],
-      page: pageNum,
-    );
-    InspectionTaskPageModel unCompleteModel = await dataProvider.getTaskList(
-      taskStatus: taskStatusToString[TaskStatus.uncompleted],
-      page: pageNum,
-    );
-    InspectionTaskPageModel outTimeCompleteModel =
-        await dataProvider.getTaskList(
-      taskStatus: taskStatusToString[TaskStatus.out_time_completed],
-      page: pageNum,
-    );
-    return unCompleteModel.copy(completeModel).copy(outTimeCompleteModel);
+    InspectionTaskPageModel completeModel =
+        await dataProvider.getCompleteTask(page: pageNum);
+    return completeModel;
   }
 
   Future<InspectionTaskPageModel> getNextPageUnComplete(int pageNum) async {
-    InspectionTaskPageModel runningModel = await dataProvider.getTaskList(
-      taskStatus: taskStatusToString[TaskStatus.running],
-      page: pageNum,
-    );
-    InspectionTaskPageModel unReachModel = await dataProvider.getTaskList(
-      taskStatus: taskStatusToString[TaskStatus.unreached],
-      page: pageNum,
-    );
-    return unReachModel.copy(runningModel);
+    InspectionTaskPageModel unCompleteModel =
+        await dataProvider.getUnCompleteTask(page: pageNum);
+    return unCompleteModel;
   }
 }

@@ -49,13 +49,20 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
         if (state is LoadedDeviceStaffTaskListState) {
           if (state.unCompleteIsReachMax) {
             _unCompleteController.finishLoad(success: true, noMore: true);
-          } else if (state.completeIsReachMax) {
+          }
+          if (state.completeIsReachMax) {
             _completeController.finishLoad(success: true, noMore: true);
-          } else if (!state.completeIsReachMax) {
+          }
+          if (!state.completeIsReachMax) {
             _completeController.finishLoad(success: true);
-          } else if (!state.unCompleteIsReachMax) {
+          }
+          if (!state.unCompleteIsReachMax) {
             _unCompleteController.finishLoad(success: true);
           }
+        }
+        if (state is LoadErrorDeviceStaffTaskList) {
+          _unCompleteController.finishLoad(success: false);
+          _completeController.finishLoad(success: false);
         }
       },
       child: BlocBuilder<DeviceStaffTaskListBloc, DeviceStaffTaskListState>(
@@ -80,10 +87,28 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                       ],
                       if (state is LoadErrorDeviceStaffTaskList) ...[
                         Center(
-                          child: Text("网络出现错误,请稍候重试"),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text("网络出现错误,请稍候重试"),
+                              RaisedButton(
+                                child: Text("重新加载"),
+                                onPressed: () => _bloc.dispatch(FetchAll()),
+                              ),
+                            ],
+                          ),
                         ),
                         Center(
-                          child: Text("网络出现错误,请稍候重试"),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text("网络出现错误,请稍候重试"),
+                              RaisedButton(
+                                child: Text("重新加载"),
+                                onPressed: () => _bloc.dispatch(FetchAll()),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                       if (state is LoadedDeviceStaffTaskListState) ...[
