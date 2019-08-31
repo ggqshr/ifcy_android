@@ -147,15 +147,10 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          print(models);
-                          return BlocProvider<DeviceDetailBloc>(
-                            builder: (context){
-                              return DeviceDetailBloc(_bloc)
-                                ..dispatch(LoadData(
-                                  models[index],
-                                ));
-                            },
-                            child: InspectionTaskDetailPanel(),
+                          return ReadOnlyInspectionTaskDetailPanel(
+                            model: models[index],
+                            floorList: (_bloc.currentState as DeviceListLoaded)
+                                .floorList,
                           );
                         },
                         childCount: models.length,
@@ -279,7 +274,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 if (resIndex == -1) {
                   //没有找到对应id的设备
                   Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text("无效的二维码")) );
+                      .showSnackBar(SnackBar(content: Text("无效的二维码")));
                 } else {
                   InspectionDeviceModel bachRes =
                       await Navigator.push(context, MaterialPageRoute(
@@ -430,45 +425,47 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
               ? Container(
                   child: IconButton(
                     icon: Icon(Icons.camera_enhance),
-                    onPressed: !isEdit?null:() {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return Container(
-                              color: Color.fromRGBO(117, 117, 117, 1),
-                              height: 120,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).canvasColor,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(15),
-                                    topRight: const Radius.circular(15),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    getPicImageTile(
-                                      Icon(Icons.linked_camera),
-                                      "使用相机拍摄",
-                                      ImageSource.camera,
-                                      updateImage,
-                                      0,
-                                      context,
+                    onPressed: !isEdit
+                        ? null
+                        : () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    color: Color.fromRGBO(117, 117, 117, 1),
+                                    height: 120,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).canvasColor,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: const Radius.circular(15),
+                                          topRight: const Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          getPicImageTile(
+                                            Icon(Icons.linked_camera),
+                                            "使用相机拍摄",
+                                            ImageSource.camera,
+                                            updateImage,
+                                            0,
+                                            context,
+                                          ),
+                                          getPicImageTile(
+                                            Icon(Icons.photo),
+                                            "从相册选择",
+                                            ImageSource.gallery,
+                                            updateImage,
+                                            0,
+                                            context,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    getPicImageTile(
-                                      Icon(Icons.photo),
-                                      "从相册选择",
-                                      ImageSource.gallery,
-                                      updateImage,
-                                      0,
-                                      context,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    },
+                                  );
+                                });
+                          },
                   ),
                   constraints: BoxConstraints.tight(Size(80, 80)),
                   margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
@@ -483,45 +480,47 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
               ? Container(
                   child: IconButton(
                     icon: Icon(Icons.camera_enhance),
-                    onPressed: !isEdit?null:() {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return Container(
-                              color: Color.fromRGBO(117, 117, 117, 1),
-                              height: 120,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).canvasColor,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(15),
-                                    topRight: const Radius.circular(15),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    getPicImageTile(
-                                      Icon(Icons.linked_camera),
-                                      "使用相机拍摄",
-                                      ImageSource.camera,
-                                      updateImage,
-                                      1,
-                                      context,
+                    onPressed: !isEdit
+                        ? null
+                        : () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    color: Color.fromRGBO(117, 117, 117, 1),
+                                    height: 120,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).canvasColor,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: const Radius.circular(15),
+                                          topRight: const Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          getPicImageTile(
+                                            Icon(Icons.linked_camera),
+                                            "使用相机拍摄",
+                                            ImageSource.camera,
+                                            updateImage,
+                                            1,
+                                            context,
+                                          ),
+                                          getPicImageTile(
+                                            Icon(Icons.photo),
+                                            "从相册选择",
+                                            ImageSource.gallery,
+                                            updateImage,
+                                            1,
+                                            context,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    getPicImageTile(
-                                      Icon(Icons.photo),
-                                      "从相册选择",
-                                      ImageSource.gallery,
-                                      updateImage,
-                                      1,
-                                      context,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    },
+                                  );
+                                });
+                          },
                   ),
                   constraints: BoxConstraints.tight(Size(80, 80)),
                   margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
@@ -531,7 +530,12 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                     ),
                   ),
                 )
-              : getImageWithCloseIcon(model.pic2, context, updateImage, 1,),
+              : getImageWithCloseIcon(
+                  model.pic2,
+                  context,
+                  updateImage,
+                  1,
+                ),
         ],
       ),
       contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 5),
@@ -566,35 +570,37 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
           size: 18,
           color: Colors.white,
         ),
-        onTap: !isEdit?null:() async {
-          var result = await showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text("警告"),
-                content: Text("确认删除这张图片么？"),
-                actions: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                    child: Text("确认"),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                    child: Text("取消"),
-                  )
-                ],
-              );
-            },
-          );
-          if (result) {
-            updateCall(null, index);
-            IfcyCacheManager().removeFile(thisImg);
-          }
-        },
+        onTap: !isEdit
+            ? null
+            : () async {
+                var result = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("警告"),
+                      content: Text("确认删除这张图片么？"),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text("确认"),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                          child: Text("取消"),
+                        )
+                      ],
+                    );
+                  },
+                );
+                if (result) {
+                  updateCall(null, index);
+                  IfcyCacheManager().removeFile(thisImg);
+                }
+              },
       ),
     );
   }
@@ -615,6 +621,175 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
           Navigator.of(context).pop();
         }
       },
+    );
+  }
+}
+
+class ReadOnlyInspectionTaskDetailPanel extends StatelessWidget {
+  final bool isExpansion;
+  final InspectionDeviceModel model;
+  final List<FloorEntity> floorList;
+
+  ReadOnlyInspectionTaskDetailPanel(
+      {this.isExpansion = false, this.model, this.floorList});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: ExpansionTile(
+        initiallyExpanded: isExpansion,
+        title: Container(
+          width: 200,
+          child: Row(
+            children: <Widget>[
+              Text(model.name),
+              Spacer(),
+              Chip(
+                label: Text(
+                  parseEnumType(model.checkStatus),
+                  style: TextStyle(
+                    color: model.checkStatus == CheckStatus.checked
+                        ? Colors.black
+                        : Colors.red,
+                  ),
+                ),
+              ),
+              Chip(
+                label: Text(
+                  "${floorList.singleWhere((item) => item.id == model.buildingFloorId).name}",
+                ),
+              ),
+            ],
+          ),
+        ),
+        children: <Widget>[
+          Divider(
+            color: Colors.black,
+          ),
+          ListTile(
+            title: Text("检查结果"),
+            subtitle: Row(
+              children: ["正常", "故障"].map((item) {
+                return Row(
+                  children: <Widget>[
+                    Radio(
+                      value: item,
+                      groupValue: parseEnumType(model.checkResult),
+                    ),
+                    Text(item)
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+          ListTile(
+            title: Text("备注："),
+            subtitle: TextField(
+              maxLines: 3,
+              minLines: 1,
+              maxLength: 80,
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: "请输入备注",
+              ),
+              controller: TextEditingController.fromValue(
+                TextEditingValue(
+                  text: model.comment ?? "",
+                  selection: TextSelection.fromPosition(
+                    TextPosition(
+                        affinity: TextAffinity.downstream,
+                        offset: (model.comment ?? "").length),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text("上传图片"),
+          ),
+          getPIckImg(
+            model,
+            context,
+          ),
+        ],
+      ),
+    );
+  }
+
+  getPIckImg(InspectionDeviceModel model, context) {
+    return ListTile(
+      title: Row(
+        children: <Widget>[
+          model.pic1 == null || model.pic1 == "null"
+              ? Container(
+                  child: IconButton(
+                    icon: Icon(Icons.camera_enhance),
+                    onPressed: null,
+                  ),
+                  constraints: BoxConstraints.tight(Size(80, 80)),
+                  margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              : getImageWithCloseIcon(model.pic1, context, 0),
+          model.pic2 == null && model.pic2 != "null"
+              ? Container(
+                  child: IconButton(
+                    icon: Icon(Icons.camera_enhance),
+                    onPressed: null,
+                  ),
+                  constraints: BoxConstraints.tight(Size(80, 80)),
+                  margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              : getImageWithCloseIcon(
+                  model.pic2,
+                  context,
+                  1,
+                ),
+        ],
+      ),
+      contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 5),
+    );
+  }
+
+  ///传入一个图像，返回一个带有右上角取消图标的图像
+  getImageWithCloseIcon(String thisImg, context, int index) {
+    return Badge(
+      padding: EdgeInsets.all(0),
+      position: BadgePosition.topRight(right: 2, top: -5),
+      child: Container(
+        constraints: BoxConstraints.tight(Size(80, 80)),
+        child: CachedNetworkImage(
+          cacheManager: IfcyCacheManager(),
+          imageUrl: thisImg,
+          imageBuilder: (context, imageProvider) {
+            return Image(
+              image: imageProvider,
+              fit: BoxFit.fill,
+            );
+          },
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
+        margin: EdgeInsets.fromLTRB(0, 3, 10, 0),
+      ),
+      badgeContent: GestureDetector(
+        child: Icon(
+          Icons.close,
+          size: 18,
+          color: Colors.white,
+        ),
+        onTap: null,
+      ),
     );
   }
 }
