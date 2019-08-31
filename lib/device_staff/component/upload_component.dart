@@ -2,66 +2,124 @@
 ///@description: 上传列表的页面
 ///@date :2019/8/14 10:31
 part of 'device_staff_components.dart';
+
 class UploadComponent extends StatelessWidget {
-  final TaskInfoDetailListBloc<RegularInspectionTaskDetail> model;
-
-  UploadComponent(this.model);
-
+  final List<FloorEntity> floorList;
+  UploadComponent(this.floorList);
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: model,
-      child: Consumer<
-          TaskInfoDetailListBloc<
-              RegularInspectionTaskDetail>>(
-          builder: (context, mm, child) {
-            return Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: Text("待上传列表"),
-              ),
-              body: model.list2upload.isEmpty
-                  ? Center(child: Text("空"))
-                  : ListView.builder(
-                itemBuilder: (context, index) {
-                  return ChangeNotifierProvider.value(
-                    value: mm.list2upload.toList()[index],
-                    child: InspectionTaskDetailPanel(),
-                  );
-                },
-                itemCount: model.list2upload.length,
-              ),
-              bottomNavigationBar: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                child: FlatButton(
-                  onPressed: model.list2upload.isEmpty
-                      ? null
-                      : () async {
-                    loadingDialogAction
-                        .showLoadingDialog(text2show:"上传中");
-                    await model.upload2server();
-                    loadingDialogAction
-                        .cancleLoadingDialog();
-                  },
-                  child: Text(
-                    "上传",
-                    style: TextStyle(
-                      color: Colors.white,
+    DeviceUploadBloc _bloc = BlocProvider.of<DeviceUploadBloc>(context);
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("待上传列表"),
+      ),
+      body: BlocListener<DeviceUploadBloc, DeviceUploadState>(
+        listener: (context, state) {
+          if (state is LoadedUploadDevice) {
+            if (state.isUploading) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('提交中...'),
+                        CircularProgressIndicator(),
+                      ],
                     ),
                   ),
-                  color: Colors.blue,
-                  disabledColor: Colors.grey,
-                  disabledTextColor: Colors.black,
+                );
+            }
+            if (state.isFault) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text('提交失败'), Icon(Icons.error)],
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+            }
+            if (state.isSuccess) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('提交中'),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  ),
+                );
+            }
+          }
+        },
+        child: BlocBuilder(
+          builder: (context, state) {
+            if (state is InitialDeviceUploadState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is LoadedUploadDevice) {
+              if (state.models.isEmpty) {
+                return Center(
+                  child: Text("无需要上传的设备"),
+                );
+              } else {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ReadOnlyInspectionTaskDetailPanel(
+                      model: state.models[index],
+                      floorList: floorList,
+                    );
+                  },
+                  itemCount: state.models.length,
+                );
+              }
+            }
+          },
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: BlocBuilder(
+          builder: (context, state) {
+            if (state is LoadedUploadDevice) {
+              return FlatButton(
+                onPressed: state.models.isEmpty
+                    ? null
+                    : () async {
+                        _bloc.dispatch(UploadToServer());
+                      },
+                child: Text(
+                  "上传",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            );
-          }),
+                color: Colors.blue,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

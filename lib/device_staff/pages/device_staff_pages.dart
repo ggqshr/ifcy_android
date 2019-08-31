@@ -12,6 +12,8 @@ import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
+import 'package:ifcy/device_staff/blocs/device_staff_device_check_bloc/bloc.dart';
+import 'package:ifcy/device_staff/blocs/device_upload_bloc/device_upload_bloc.dart';
 import 'package:ifcy/device_staff/component/device_staff_components.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
@@ -23,6 +25,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:path/path.dart' as p;
+
+import '../repositories/repositories.dart';
 
 part 'device_work_page.dart';
 part 'regular_inspection_page.dart';

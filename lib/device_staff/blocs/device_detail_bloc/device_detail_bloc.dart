@@ -55,8 +55,5 @@ class DeviceDetailBloc extends Bloc<DeviceDetailEvent, DeviceDetailState> {
         );
       }
     }
-    if (event is UpdateLocal) {
-      _bloc.dispatch(UpdateDevice((currentState as LoadedDetail).model));
-    }
   }
 }

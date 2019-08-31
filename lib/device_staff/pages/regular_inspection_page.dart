@@ -230,15 +230,21 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             child: FloatingActionButton(
               tooltip: "待上传列表",
               heroTag: "waiting_upload_list",
-//              onPressed: () {
-//                //点击弹出待上传列表页面，
-//                // 可以将已经扫码的设备进行上传，点击上传后，
-//                // 将待上传列表中的设备和服务器进行同步，每上传一个，就更新一个状态
-//                Navigator.of(context)
-//                    .push(MaterialPageRoute(builder: (context) {
-//                  return UploadComponent(model);
-//                }));
-//              },
+              onPressed: () {
+                //点击弹出待上传列表页面，
+                // 可以将已经扫码的设备进行上传，点击上传后，
+                // 将待上传列表中的设备和服务器进行同步，每上传一个，就更新一个状态
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return BlocProvider(
+                      builder: (context) => DeviceUploadBloc(
+                        RepositoryProvider.of<DeviceCheckRepositories>(context),
+                      )..dispatch(GetUploadData(model)),
+                      child: UploadComponent((_bloc.currentState as DeviceListLoaded).floorList),
+                    );
+                  },
+                ));
+              },
               child: Icon(Icons.format_list_bulleted),
             ),
           ),

@@ -37,5 +37,3 @@ class UpdateImages extends DeviceDetailEvent {
   }
 
 }
-
-class UpdateLocal extends DeviceDetailEvent {}
