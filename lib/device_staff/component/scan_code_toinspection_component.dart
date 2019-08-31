@@ -4,26 +4,34 @@
 part of 'device_staff_components.dart';
 
 class ScanCodeToInspectionComponent extends StatelessWidget {
-  final RegularInspectionTaskDetail taskDetail;
-
-  ScanCodeToInspectionComponent(this.taskDetail);
+  ScanCodeToInspectionComponent();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: taskDetail,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("${taskDetail.deviceName}"),
-        ),
-        body: ListView(
-          children: <Widget>[
-            InspectionTaskDetailPanel(true),
-          ],
-        ),
-        bottomNavigationBar: Consumer<RegularInspectionTaskDetail>(
-          builder: (context, model, child) {
-            return Container(
+    DeviceDetailBloc bloc = BlocProvider.of<DeviceDetailBloc>(context);
+    return BlocBuilder<DeviceDetailBloc,DeviceDetailState>(
+      // ignore: missing_return
+      builder: (context, state) {
+        if (state is LoadingDetail) {
+          return Scaffold(
+            body: Text("加载中"),
+          );
+        }
+        if (state is LoadedDetail) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("${state.model.name}"),
+            ),
+            body: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                InspectionTaskDetailPanel(
+                  isExpansion: true,
+                  isEdit: true,
+                ),
+              ],
+            ),
+            bottomNavigationBar: Container(
               height: 50,
               width: 250,
               child: Flex(
@@ -32,7 +40,7 @@ class ScanCodeToInspectionComponent extends StatelessWidget {
                   Expanded(
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.of(context).pop(model);
+                        Navigator.of(context).pop(state.model);
                       },
                       child: Text(
                         "添加到待上传列表",
@@ -43,10 +51,10 @@ class ScanCodeToInspectionComponent extends StatelessWidget {
                   ),
                 ],
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -87,8 +87,8 @@ class DioUtils {
         }
       }
     }));
-    dio.interceptors
-        .add(LogInterceptor(responseBody: true, requestBody: true)); //开启日志
+//    dio.interceptors
+//        .add(LogInterceptor(responseBody: true, requestBody: true)); //开启日志
     return dio;
   }
 

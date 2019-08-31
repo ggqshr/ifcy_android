@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'regular_inspection_task_dao.dart';
+part of 'dao.dart';
 
 // **************************************************************************
 // MoorGenerator
@@ -636,4 +636,446 @@ abstract class _$RITaskDetailDatabase extends GeneratedDatabase {
           $RegularInspectionTaskDetailEntryTable(this);
   @override
   List<TableInfo> get allTables => [regularInspectionTaskDetailEntry];
+}
+
+// ignore_for_file: unnecessary_brace_in_string_interps
+class DeviceData extends DataClass implements Insertable<DeviceData> {
+  final String taskId;
+  final String name;
+  final String id;
+  final String code;
+  final String comment;
+  final String checkStatus;
+  final String checkResult;
+  final String buildingFloorId;
+  final String images;
+  DeviceData(
+      {@required this.taskId,
+      @required this.name,
+      @required this.id,
+      @required this.code,
+      @required this.comment,
+      @required this.checkStatus,
+      @required this.checkResult,
+      @required this.buildingFloorId,
+      this.images});
+  factory DeviceData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return DeviceData(
+      taskId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}task_id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      code: stringType.mapFromDatabaseResponse(data['${effectivePrefix}code']),
+      comment:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}comment']),
+      checkStatus: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}check_status']),
+      checkResult: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}check_result']),
+      buildingFloorId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}building_floor_id']),
+      images:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}images']),
+    );
+  }
+  factory DeviceData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DeviceData(
+      taskId: serializer.fromJson<String>(json['taskId']),
+      name: serializer.fromJson<String>(json['name']),
+      id: serializer.fromJson<String>(json['id']),
+      code: serializer.fromJson<String>(json['code']),
+      comment: serializer.fromJson<String>(json['comment']),
+      checkStatus: serializer.fromJson<String>(json['checkStatus']),
+      checkResult: serializer.fromJson<String>(json['checkResult']),
+      buildingFloorId: serializer.fromJson<String>(json['buildingFloorId']),
+      images: serializer.fromJson<String>(json['images']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'taskId': serializer.toJson<String>(taskId),
+      'name': serializer.toJson<String>(name),
+      'id': serializer.toJson<String>(id),
+      'code': serializer.toJson<String>(code),
+      'comment': serializer.toJson<String>(comment),
+      'checkStatus': serializer.toJson<String>(checkStatus),
+      'checkResult': serializer.toJson<String>(checkResult),
+      'buildingFloorId': serializer.toJson<String>(buildingFloorId),
+      'images': serializer.toJson<String>(images),
+    };
+  }
+
+  @override
+  T createCompanion<T extends UpdateCompanion<DeviceData>>(bool nullToAbsent) {
+    return DeviceCompanion(
+      taskId:
+          taskId == null && nullToAbsent ? const Value.absent() : Value(taskId),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      code: code == null && nullToAbsent ? const Value.absent() : Value(code),
+      comment: comment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(comment),
+      checkStatus: checkStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(checkStatus),
+      checkResult: checkResult == null && nullToAbsent
+          ? const Value.absent()
+          : Value(checkResult),
+      buildingFloorId: buildingFloorId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(buildingFloorId),
+      images:
+          images == null && nullToAbsent ? const Value.absent() : Value(images),
+    ) as T;
+  }
+
+  DeviceData copyWith(
+          {String taskId,
+          String name,
+          String id,
+          String code,
+          String comment,
+          String checkStatus,
+          String checkResult,
+          String buildingFloorId,
+          String images}) =>
+      DeviceData(
+        taskId: taskId ?? this.taskId,
+        name: name ?? this.name,
+        id: id ?? this.id,
+        code: code ?? this.code,
+        comment: comment ?? this.comment,
+        checkStatus: checkStatus ?? this.checkStatus,
+        checkResult: checkResult ?? this.checkResult,
+        buildingFloorId: buildingFloorId ?? this.buildingFloorId,
+        images: images ?? this.images,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DeviceData(')
+          ..write('taskId: $taskId, ')
+          ..write('name: $name, ')
+          ..write('id: $id, ')
+          ..write('code: $code, ')
+          ..write('comment: $comment, ')
+          ..write('checkStatus: $checkStatus, ')
+          ..write('checkResult: $checkResult, ')
+          ..write('buildingFloorId: $buildingFloorId, ')
+          ..write('images: $images')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      $mrjc(
+          $mrjc(
+              $mrjc(
+                  $mrjc(
+                      $mrjc(
+                          $mrjc($mrjc($mrjc(0, taskId.hashCode), name.hashCode),
+                              id.hashCode),
+                          code.hashCode),
+                      comment.hashCode),
+                  checkStatus.hashCode),
+              checkResult.hashCode),
+          buildingFloorId.hashCode),
+      images.hashCode));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DeviceData &&
+          other.taskId == taskId &&
+          other.name == name &&
+          other.id == id &&
+          other.code == code &&
+          other.comment == comment &&
+          other.checkStatus == checkStatus &&
+          other.checkResult == checkResult &&
+          other.buildingFloorId == buildingFloorId &&
+          other.images == images);
+}
+
+class DeviceCompanion extends UpdateCompanion<DeviceData> {
+  final Value<String> taskId;
+  final Value<String> name;
+  final Value<String> id;
+  final Value<String> code;
+  final Value<String> comment;
+  final Value<String> checkStatus;
+  final Value<String> checkResult;
+  final Value<String> buildingFloorId;
+  final Value<String> images;
+  const DeviceCompanion({
+    this.taskId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.id = const Value.absent(),
+    this.code = const Value.absent(),
+    this.comment = const Value.absent(),
+    this.checkStatus = const Value.absent(),
+    this.checkResult = const Value.absent(),
+    this.buildingFloorId = const Value.absent(),
+    this.images = const Value.absent(),
+  });
+}
+
+class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DeviceTable(this._db, [this._alias]);
+  final VerificationMeta _taskIdMeta = const VerificationMeta('taskId');
+  GeneratedTextColumn _taskId;
+  @override
+  GeneratedTextColumn get taskId => _taskId ??= _constructTaskId();
+  GeneratedTextColumn _constructTaskId() {
+    return GeneratedTextColumn(
+      'task_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  @override
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _codeMeta = const VerificationMeta('code');
+  GeneratedTextColumn _code;
+  @override
+  GeneratedTextColumn get code => _code ??= _constructCode();
+  GeneratedTextColumn _constructCode() {
+    return GeneratedTextColumn(
+      'code',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _commentMeta = const VerificationMeta('comment');
+  GeneratedTextColumn _comment;
+  @override
+  GeneratedTextColumn get comment => _comment ??= _constructComment();
+  GeneratedTextColumn _constructComment() {
+    return GeneratedTextColumn(
+      'comment',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _checkStatusMeta =
+      const VerificationMeta('checkStatus');
+  GeneratedTextColumn _checkStatus;
+  @override
+  GeneratedTextColumn get checkStatus =>
+      _checkStatus ??= _constructCheckStatus();
+  GeneratedTextColumn _constructCheckStatus() {
+    return GeneratedTextColumn(
+      'check_status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _checkResultMeta =
+      const VerificationMeta('checkResult');
+  GeneratedTextColumn _checkResult;
+  @override
+  GeneratedTextColumn get checkResult =>
+      _checkResult ??= _constructCheckResult();
+  GeneratedTextColumn _constructCheckResult() {
+    return GeneratedTextColumn(
+      'check_result',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _buildingFloorIdMeta =
+      const VerificationMeta('buildingFloorId');
+  GeneratedTextColumn _buildingFloorId;
+  @override
+  GeneratedTextColumn get buildingFloorId =>
+      _buildingFloorId ??= _constructBuildingFloorId();
+  GeneratedTextColumn _constructBuildingFloorId() {
+    return GeneratedTextColumn(
+      'building_floor_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _imagesMeta = const VerificationMeta('images');
+  GeneratedTextColumn _images;
+  @override
+  GeneratedTextColumn get images => _images ??= _constructImages();
+  GeneratedTextColumn _constructImages() {
+    return GeneratedTextColumn(
+      'images',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        taskId,
+        name,
+        id,
+        code,
+        comment,
+        checkStatus,
+        checkResult,
+        buildingFloorId,
+        images
+      ];
+  @override
+  $DeviceTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'device';
+  @override
+  final String actualTableName = 'device';
+  @override
+  VerificationContext validateIntegrity(DeviceCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.taskId.present) {
+      context.handle(
+          _taskIdMeta, taskId.isAcceptableValue(d.taskId.value, _taskIdMeta));
+    } else if (taskId.isRequired && isInserting) {
+      context.missing(_taskIdMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.code.present) {
+      context.handle(
+          _codeMeta, code.isAcceptableValue(d.code.value, _codeMeta));
+    } else if (code.isRequired && isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (d.comment.present) {
+      context.handle(_commentMeta,
+          comment.isAcceptableValue(d.comment.value, _commentMeta));
+    } else if (comment.isRequired && isInserting) {
+      context.missing(_commentMeta);
+    }
+    if (d.checkStatus.present) {
+      context.handle(_checkStatusMeta,
+          checkStatus.isAcceptableValue(d.checkStatus.value, _checkStatusMeta));
+    } else if (checkStatus.isRequired && isInserting) {
+      context.missing(_checkStatusMeta);
+    }
+    if (d.checkResult.present) {
+      context.handle(_checkResultMeta,
+          checkResult.isAcceptableValue(d.checkResult.value, _checkResultMeta));
+    } else if (checkResult.isRequired && isInserting) {
+      context.missing(_checkResultMeta);
+    }
+    if (d.buildingFloorId.present) {
+      context.handle(
+          _buildingFloorIdMeta,
+          buildingFloorId.isAcceptableValue(
+              d.buildingFloorId.value, _buildingFloorIdMeta));
+    } else if (buildingFloorId.isRequired && isInserting) {
+      context.missing(_buildingFloorIdMeta);
+    }
+    if (d.images.present) {
+      context.handle(
+          _imagesMeta, images.isAcceptableValue(d.images.value, _imagesMeta));
+    } else if (images.isRequired && isInserting) {
+      context.missing(_imagesMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  DeviceData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DeviceData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DeviceCompanion d) {
+    final map = <String, Variable>{};
+    if (d.taskId.present) {
+      map['task_id'] = Variable<String, StringType>(d.taskId.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.id.present) {
+      map['id'] = Variable<String, StringType>(d.id.value);
+    }
+    if (d.code.present) {
+      map['code'] = Variable<String, StringType>(d.code.value);
+    }
+    if (d.comment.present) {
+      map['comment'] = Variable<String, StringType>(d.comment.value);
+    }
+    if (d.checkStatus.present) {
+      map['check_status'] = Variable<String, StringType>(d.checkStatus.value);
+    }
+    if (d.checkResult.present) {
+      map['check_result'] = Variable<String, StringType>(d.checkResult.value);
+    }
+    if (d.buildingFloorId.present) {
+      map['building_floor_id'] =
+          Variable<String, StringType>(d.buildingFloorId.value);
+    }
+    if (d.images.present) {
+      map['images'] = Variable<String, StringType>(d.images.value);
+    }
+    return map;
+  }
+
+  @override
+  $DeviceTable createAlias(String alias) {
+    return $DeviceTable(_db, alias);
+  }
+}
+
+abstract class _$DeviceDB extends GeneratedDatabase {
+  _$DeviceDB(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
+  $DeviceTable _device;
+  $DeviceTable get device => _device ??= $DeviceTable(this);
+  @override
+  List<TableInfo> get allTables => [device];
 }

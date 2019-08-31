@@ -25,7 +25,11 @@ InspectionTaskModel _$InspectionTaskModelFromJson(Map<String, dynamic> json) {
         ?.toList(),
     timeFromJson(json['start_time'] as String),
     timeFromJson(json['end_time'] as String),
-  );
+  )..devices = (json['check_device_list'] as List)
+      ?.map((e) => e == null
+          ? null
+          : InspectionDeviceModel.fromJson(e as Map<String, dynamic>))
+      ?.toList();
 }
 
 Map<String, dynamic> _$InspectionTaskModelToJson(
@@ -39,6 +43,7 @@ Map<String, dynamic> _$InspectionTaskModelToJson(
       'checked_device_num': instance.checkedDeviceNum,
       'check_building_floor_list': instance.currentFloor,
       'check_system_list': instance.selectedSystem,
+      'check_device_list': instance.devices,
       'start_time': timeToJson(instance.startTime),
       'end_time': timeToJson(instance.endTime),
     };
@@ -64,4 +69,33 @@ Map<String, dynamic> _$InspectionTaskPageModelToJson(
       'number': instance.currentPageNum,
       'total_pages': instance.totalPageNum,
       'total_elements': instance.totalElementNum,
+    };
+
+InspectionDeviceModel _$InspectionDeviceModelFromJson(
+    Map<String, dynamic> json) {
+  return InspectionDeviceModel(
+    name: json['name'] as String,
+    id: json['id'] as String,
+    code: json['code'] as String,
+    comment: json['comment'] as String,
+    checkStatus: checkStatusFromJson(json['checked'] as bool),
+    checkResult: checkResultFromJson(json['check_device_status'] as String),
+    buildingFloorId: json['building_floor_id'] as String,
+    pic1: json['pic1'] as String,
+    pic2: json['pic2'] as String,
+  );
+}
+
+Map<String, dynamic> _$InspectionDeviceModelToJson(
+        InspectionDeviceModel instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'id': instance.id,
+      'code': instance.code,
+      'comment': instance.comment,
+      'checked': checkStatusToJson(instance.checkStatus),
+      'check_device_status': checkResultToJson(instance.checkResult),
+      'building_floor_id': instance.buildingFloorId,
+      'pic1': instance.pic1,
+      'pic2': instance.pic2,
     };

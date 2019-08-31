@@ -233,10 +233,21 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     return ListTile(
       title: Text(tasks[index].name),
       trailing: FlatButton.icon(
-        onPressed: tasks[index].taskStatus == TaskStatus.running
-            ? () => Application.router.navigateTo(
-                context, Routes.regularInspection,
-                transition: TransitionType.inFromBottom)
+        onPressed: tasks[index].taskStatus != TaskStatus.unreached
+            ? () =>
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return RepositoryProvider<DeviceCheckRepositories>(
+                    builder: (context) =>
+                        DeviceCheckRepositories(tasks[index].id),
+                    child: BlocProvider<DeviceStaffDeviceCheckBloc>(
+                      builder: (context) => DeviceStaffDeviceCheckBloc(
+                        RepositoryProvider.of<DeviceCheckRepositories>(context),
+                        RepositoryProvider.of<AuthorizationBloc>(context),
+                      )..dispatch(LoadDevice(tasks[index].devices)),
+                      child: RegularInspectionPage(),
+                    ),
+                  );
+                }))
             : null,
         icon: Icon(Icons.play_arrow),
         label: Text("执行"),

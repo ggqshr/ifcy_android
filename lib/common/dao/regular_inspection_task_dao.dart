@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 ///@author ggq
 ///@description: 日常巡检任务的数据持久化层
 ///@date :2019/8/12 13:21
-import 'package:moor_flutter/moor_flutter.dart';
-import 'package:ifcy/common/model/model.dart';
-import 'dart:async';
 
-part 'regular_inspection_task_dao.g.dart';
+part of "dao.dart";
+
+
 
 class RegularInspectionTaskDetailEntry extends Table {
   TextColumn get deviceId => text()();

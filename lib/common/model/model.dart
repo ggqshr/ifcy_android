@@ -3,11 +3,14 @@ library models;
 import 'dart:math';
 import 'dart:io';
 import 'package:ifcy/common/dao/dao.dart';
+import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
+
 part 'model.g.dart';
+
 part 'fire_alarm_message.dart';
 
 part 'device_fault_message.dart';
@@ -36,7 +39,6 @@ part 'building_floor_message.dart';
 
 part 'inspection_system.dart';
 
-
 part 'build.dart';
 
 ///检查结果的类型
@@ -63,9 +65,17 @@ parseEnumType<S>(S type) {
       return taskStatusEnumMap[TaskStatus.values.indexOf(type)];
     } else if (type is NewInspectionType) {
       return newInspectionTypeTypeMap[NewInspectionType.values.indexOf(type)];
+    } else if (type is CheckResult) {
+      return checkResultTypeMap[CheckResult.values.indexOf(type)];
+    } else if (type is CheckStatus) {
+      return checkStatusTypeMap[CheckStatus.values.indexOf(type)];
     }
   } else {
-    if (inspectionResultTypeMap.containsValue(type as String)) {
+    if (checkResultTypeMap.containsValue(type as String)) {
+      int thisIndex = checkResultTypeMap.keys
+          .toList()[checkResultTypeMap.values.toList().indexOf(type as String)];
+      return CheckResult.values[thisIndex];
+    } else if (inspectionResultTypeMap.containsValue(type as String)) {
       int thisIndex = inspectionResultTypeMap.keys.toList()[
           inspectionResultTypeMap.values.toList().indexOf(type as String)];
       return InspectionResultType.values[thisIndex];
@@ -81,6 +91,10 @@ parseEnumType<S>(S type) {
       int thisIndex = newInspectionTypeTypeMap.keys.toList()[
           newInspectionTypeTypeMap.values.toList().indexOf(type as String)];
       return NewInspectionType.values[thisIndex];
+    } else if (checkStatusTypeMap.containsValue(type as String)) {
+      int thisIndex = checkStatusTypeMap.keys
+          .toList()[checkStatusTypeMap.values.toList().indexOf(type as String)];
+      return CheckStatus.values[thisIndex];
     }
   }
 }
