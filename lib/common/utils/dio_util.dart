@@ -25,7 +25,7 @@ class DioUtils {
   final int connectTimeOut = 5000; //连接超时时间
   final int receiveTimeOut = 100000; //接收超时时间
   String _authTokenHeader; //验证需要的token
-  final String getImageUrl = baseUrl + "/images/"; //拿去图片的地址
+  final String getImageUrl = "http://116.56.140.193/business/sys/stand/img/"; //拿去图片的地址
 
   static DioUtils _dioUtils;
 

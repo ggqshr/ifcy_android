@@ -36,7 +36,7 @@ class IfcyCacheManager extends BaseCacheManager {
   //自定义的请求类
   static Future<FileFetcherResponse> _customHttpGetter(String url,
       {Map<String, String> headers}) async {
-    String realUrl = DioUtils.getInstance().getImageUrl+"url";
+    String realUrl = DioUtils.getInstance().getImageUrl+url;
     headers['authorization'] = await DioUtils.getInstance().getToken();
     return HttpFileFetcherResponse(await http.get(url, headers: headers));
   }
