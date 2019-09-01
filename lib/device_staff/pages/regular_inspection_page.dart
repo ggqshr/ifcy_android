@@ -17,6 +17,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   ScrollController _scrollController;
   TaskInfoDetailListBloc<RegularInspectionTaskDetail> _taskDetailsBloc;
   DeviceStaffDeviceCheckBloc _bloc;
+  DeviceCheckRepositories _deviceCheckRepositories;
+
 
   @override
   void initState() {
@@ -48,6 +50,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
     _animationController.forward();
 //    _taskDetailsBloc = TaskInfoDetailListBloc.localInit("1");
     _bloc = BlocProvider.of<DeviceStaffDeviceCheckBloc>(context);
+    _deviceCheckRepositories = RepositoryProvider.of<DeviceCheckRepositories>(context);
   }
 
   @override
@@ -238,7 +241,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   builder: (context) {
                     return BlocProvider(
                       builder: (context) => DeviceUploadBloc(
-                        RepositoryProvider.of<DeviceCheckRepositories>(context),
+                        _deviceCheckRepositories,
                       )..dispatch(GetUploadData(model)),
                       child: UploadComponent((_bloc.currentState as DeviceListLoaded).floorList),
                     );

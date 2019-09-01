@@ -1,5 +1,12 @@
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ifcy/common/dao/dao.dart';
+import 'package:ifcy/common/utils/cache_manager.dart';
+import 'package:ifcy/common/utils/dio_util.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
 
 ///@author ggq
@@ -33,6 +40,13 @@ class DeviceCheckDataProvider {
   Future deleteAndUpdate(List<InspectionDeviceModel> models) async {
     List<DeviceData> datas = models.map((item) => item.toData(taskId)).toList();
     await _db.deleteAndUpdate(taskId, datas);
+  }
+
+  Future<List<String>> uploadToServer(Map map) async {
+    Dio dio = DioUtils.getInstance().getDio();
+    Response res = await dio.patch("/patrol/task/$taskId/check-device",
+        data: FormData.from(map),options: Options(contentType: ContentType.parse("multipart/form-data")));
+    return jsonDecode(res.data['data']);
   }
 }
 
@@ -71,5 +85,23 @@ class DeviceCheckRepositories {
   }
 
   ///和服务器进行同步
-  Future uploadDevice(List<InspectionDeviceModel> models) async {}
+  Future uploadDevice(List<InspectionDeviceModel> models) async {
+    for (var model in models) {
+      Map dataMap = model.toJson();
+      List<UploadFileInfo> pics = [];
+      //从缓存中读取图片，并转化成上传的对象
+      for (var key in ["pic1", "pic2"]) {
+        File pic = await IfcyCacheManager().getSingleFile(dataMap[key]);
+        pics.add(UploadFileInfo(pic, key));
+        dataMap.remove(key);//删除不需要的字段
+      }
+      dataMap['pics'] = pics;
+      List<String> fileNames = await provider.uploadToServer(dataMap);
+      model
+        ..pic1 = fileNames[0]
+        ..pic2 = fileNames[1]
+        ..checkStatus = CheckStatus.checked;
+      await provider.updateLocal(model);
+    }
+  }
 }

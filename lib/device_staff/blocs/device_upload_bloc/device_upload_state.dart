@@ -35,10 +35,16 @@ class LoadedUploadDevice extends DeviceUploadState {
   }
   LoadedUploadDevice fault() {
     return LoadedUploadDevice(
-      isFault: false,
+      isFault: true,
       isSuccess: false,
       isUploading: false,
       models: this.models,
     );
   }
+
+  @override
+  String toString() {
+    return 'LoadedUploadDevice{models: $models, isSuccess: $isSuccess, isFault: $isFault, isUploading: $isUploading}';
+  }
+
 }

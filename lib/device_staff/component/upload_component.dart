@@ -53,8 +53,8 @@ class UploadComponent extends StatelessWidget {
                     content: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('提交中'),
-                        CircularProgressIndicator(),
+                        Text('提交成功'),
+                        Icon(Icons.check),
                       ],
                     ),
                   ),
@@ -62,7 +62,8 @@ class UploadComponent extends StatelessWidget {
             }
           }
         },
-        child: BlocBuilder(
+        child: BlocBuilder<DeviceUploadBloc,DeviceUploadState>(
+          // ignore: missing_return
           builder: (context, state) {
             if (state is InitialDeviceUploadState) {
               return Center(
@@ -80,6 +81,7 @@ class UploadComponent extends StatelessWidget {
                     return ReadOnlyInspectionTaskDetailPanel(
                       model: state.models[index],
                       floorList: floorList,
+                      isExpansion: true,
                     );
                   },
                   itemCount: state.models.length,
@@ -97,8 +99,12 @@ class UploadComponent extends StatelessWidget {
             topRight: Radius.circular(10),
           ),
         ),
-        child: BlocBuilder(
+        child: BlocBuilder<DeviceUploadBloc,DeviceUploadState>(
+          // ignore: missing_return
           builder: (context, state) {
+            if(state is InitialDeviceUploadState){
+              return CircularProgressIndicator();
+            }
             if (state is LoadedUploadDevice) {
               return FlatButton(
                 onPressed: state.models.isEmpty
