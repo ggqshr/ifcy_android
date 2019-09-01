@@ -1,9 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/common/utils/dio_util.dart';
 
 ///@author ggq
 ///@description:
 ///@date :2019/8/28 15:49
 class MonitorDataProvider {
+  Dio _dio;
+
+  MonitorDataProvider([dio]) : _dio = dio ?? DioUtils.getInstance().getDio();
+
   Future<int> getDeviceFaultNum() async {
     return 1;
   }
@@ -13,10 +19,10 @@ class MonitorDataProvider {
   }
 
   Future<List<FireAlarmMessage>> getFireAlarmMsg() async {
-    return [
-      FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
-      FireAlarmMessage(id: "2", title: "你好1", content: "火灾1")
-    ];
+    Response res = await _dio.get("/warning-msg/messages/FIRE");
+    return res.data['data']
+        .map<FireAlarmMessage>((item) => FireAlarmMessage.fromJson(item))
+        .toList();
   }
 
   Future<List<DeviceFaultMessage>> getDeviceFaultMsg() async {

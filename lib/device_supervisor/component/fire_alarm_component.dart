@@ -42,7 +42,6 @@ class FireMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Card(
@@ -54,11 +53,11 @@ class FireMessageTile extends StatelessWidget {
           trailing: Icon(
             Icons.chevron_right,
           ),
-          title: Text(meg.content),
-          subtitle: Text(meg.content),
+          title: Text(meg.deviceName),
+          subtitle: Text("设备在${meg.sendTime.toString().substring(0, 10)}发出警报"),
           onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text("跳转${meg.id}"),
-              )),
+            content: Text("跳转${meg.eventId}"),
+          )),
         ),
         elevation: 10,
       ),

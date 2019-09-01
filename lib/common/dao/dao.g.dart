@@ -654,7 +654,7 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
       @required this.name,
       @required this.id,
       @required this.code,
-      @required this.comment,
+      this.comment,
       @required this.checkStatus,
       @required this.checkResult,
       @required this.buildingFloorId,
@@ -886,7 +886,7 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
     return GeneratedTextColumn(
       'comment',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -911,11 +911,8 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
   GeneratedTextColumn get checkResult =>
       _checkResult ??= _constructCheckResult();
   GeneratedTextColumn _constructCheckResult() {
-    return GeneratedTextColumn(
-      'check_result',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('check_result', $tableName, false,
+        defaultValue: Constant("RUNNING"));
   }
 
   final VerificationMeta _buildingFloorIdMeta =

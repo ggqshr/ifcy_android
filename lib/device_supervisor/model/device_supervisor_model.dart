@@ -77,10 +77,10 @@ class DeviceSupervisorModel {
         buildingList = [Build(buildId: null, buildName: "所有建筑")],
         currentBuilding = Build(buildId: null, buildName: "所有建筑"),
         bottomBadgeNumList = [0, 0, 0, 0],
-        fireAlarmMessages = [
-          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
-          FireAlarmMessage(id: "2", title: "你好1", content: "火灾1")
-        ],
+//        fireAlarmMessages = [
+//          FireAlarmMessage(eventId: "1", deviceName: "你好", sendTime: "火灾"),
+//          FireAlarmMessage(eventId: "2", deviceName: "你好1", sendTime: "火灾1")
+//        ],
         deviceFaultMessages = [
           DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
           DeviceFaultMessage(id: "2", title: "故障1", content: "故障1")

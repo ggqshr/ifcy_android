@@ -6,6 +6,27 @@ part of models;
 // JsonSerializableGenerator
 // **************************************************************************
 
+FireAlarmMessage _$FireAlarmMessageFromJson(Map<String, dynamic> json) {
+  return FireAlarmMessage(
+    eventId: json['event_id'] as String,
+    deviceName: json['device_name'] as String,
+    sendTime: timeFromJson(json['send_time'] as String),
+    deviceCode: json['device_code'] as String,
+    checked: json['checked'] as bool,
+    mainEngineCode: json['main_engine_code'] as String,
+  );
+}
+
+Map<String, dynamic> _$FireAlarmMessageToJson(FireAlarmMessage instance) =>
+    <String, dynamic>{
+      'event_id': instance.eventId,
+      'device_name': instance.deviceName,
+      'send_time': timeToJson(instance.sendTime),
+      'device_code': instance.deviceCode,
+      'checked': instance.checked,
+      'main_engine_code': instance.mainEngineCode,
+    };
+
 PersonnelMessage _$PersonnelMessageFromJson(Map<String, dynamic> json) {
   return PersonnelMessage(
     id: json['id'] as String,

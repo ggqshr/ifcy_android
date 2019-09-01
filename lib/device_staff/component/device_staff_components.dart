@@ -17,7 +17,6 @@ import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ifcy/device_staff/thunk/device_staff_thunk.dart';
 
 part 'regular_inspection_component.dart';
 part 'fault_inspection_component.dart';
