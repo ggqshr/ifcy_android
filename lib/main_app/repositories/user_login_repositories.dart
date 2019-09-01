@@ -22,7 +22,10 @@ class UserLoginDataProvider {
     return model;
   }
 
-  Future setUpJpush(String alias, String tag) async {
+  Future setUpJpush(UserEntity userEntity) async {
+    String tag = "FIRE_${userEntity.buildingCode}";
+    String alias = "USER_${userEntity.userName}";
+    String faultTag = "FAULT_${userEntity.buildingCode}";
     jPush.addEventHandler(
       // 接收通知回调方法。
       onReceiveNotification: (Map<String, dynamic> message) async {
@@ -46,6 +49,11 @@ class UserLoginDataProvider {
     Map tags = await jPush.getAllTags();
     if (!tags.containsValue(tag)) {
       await jPush.setTags([tag]);
+      //如果是维保主管和维保工作人员就设置故障tag，接收推送消息
+      if (userEntity.roleType == "MAINTAIN_WORKER" ||
+          userEntity.roleType == 'MAINTAIN_MANAGER') {
+        await jPush.setTags([faultTag]);
+      }
     }
     Map a = await jPush.setAlias(alias);
     print(a);
@@ -67,27 +75,24 @@ class UserLoginRepositories {
   }) : userLoginDataProvider = UserLoginDataProvider();
 
   Future<UserEntity> login(String userName, String passWord) async {
-    return await userLoginDataProvider.login(userName, passWord);
-  Future<void> login(String userName, String passWord) async {
-    await _login(userName, passWord);
+    return await _login(userName, passWord);
   }
 
   Future<UserEntity> loginWithLocal() async {
     String userName = await Auth.getInstance().getString(USER_NAME);
     String passWord = await Auth.getInstance().getString(PASS_WORD);
-    return await userLoginDataProvider.login(userName, passWord);
+    return await _login(userName, passWord);
   }
 
   Future<Build> getCurrentBuilding() async {
     return await userLoginDataProvider.getCurrentBuild();
-    await _login(userName, passWord);
   }
 
-  Future<void> _login(String userName, String passWord) async {
-    _userEntity = await userLoginDataProvider.login(userName, passWord);
-    _currentBuild = await userLoginDataProvider.getCurrentBuild();
-    await userLoginDataProvider.setUpJpush(
-        "USER_${_userEntity.userName}", "FIRE_${_userEntity.buildingCode}");
+  Future<UserEntity> _login(String userName, String passWord) async {
+    UserEntity _userEntity =
+        await userLoginDataProvider.login(userName, passWord);
+    userLoginDataProvider.setUpJpush(_userEntity);
+    return _userEntity;
   }
 
   Future<bool> isLoginIn() async {
