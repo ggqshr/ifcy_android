@@ -11,10 +11,12 @@ class UserEntity {
   String realName;
   @JsonKey(name: "role_type")
   String roleType;
+  @JsonKey(name:"building_code")
+  String buildingCode;
 
-  UserEntity({this.userName, this.realName, this.roleType});
+  UserEntity({this.userName, this.realName, this.roleType,this.buildingCode});
 
-  UserEntity copyWith({userName, realName, roleType}) {
+  UserEntity copyWith({userName, realName, roleType,buildingCode}) {
     return UserEntity(
       userName: userName ?? this.userName,
       realName: realName ?? this.realName,

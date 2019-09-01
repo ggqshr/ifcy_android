@@ -88,7 +88,7 @@ class UserLoginRepositories {
     _userEntity = await userLoginDataProvider.login(userName, passWord);
     _currentBuild = await userLoginDataProvider.getCurrentBuild();
     await userLoginDataProvider.setUpJpush(
-        "USER_${_userEntity.userName}", "FIRE_${_currentBuild.buildId}");
+        "USER_${_userEntity.userName}", "FIRE_${_userEntity.buildingCode}");
   }
 
   Future<bool> isLoginIn() async {
