@@ -57,9 +57,6 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
         ],
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<BadgeBloc>(
-              builder: (context) => BadgeBloc([1,1,2,0]),
-            ),
             BlocProvider<MonitorBloc>(
               builder: (context) => MonitorBloc(
                   RepositoryProvider.of<MonitorRepositories>(context))..dispatch(FetchMonitorDataEvent()),
@@ -75,6 +72,9 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
                 TaskListRepositories repositories = TaskListRepositories();
                 return TaskListBloc(repositories);
               },
+            ),
+            BlocProvider<BadgeBloc>(
+              builder: (context) => BadgeBloc([1,1,2,0],monitorBloc: BlocProvider.of<MonitorBloc>(context)),
             ),
           ],
           child: MultiRepositoryProvider(

@@ -23,6 +23,18 @@ class AddBadgeNum extends BadgeEvent {
   }
 }
 
+class SetBadgeNum extends BadgeEvent {
+  final int badgeNum;
+  final int badgeIndex;
+
+  SetBadgeNum({this.badgeNum, this.badgeIndex}) : super([badgeNum, badgeIndex]);
+
+  @override
+  String toString() {
+    return 'SetBadgeNum{badgeNum: $badgeNum, badgeIndex: $badgeIndex}';
+  }
+}
+
 ///减少徽章数量
 class DecreaseBadgeNum extends BadgeEvent {
   ///要减少的徽章数量

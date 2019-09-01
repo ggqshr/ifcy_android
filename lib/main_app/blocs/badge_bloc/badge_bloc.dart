@@ -1,11 +1,24 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'bloc.dart';
 
 class BadgeBloc extends Bloc<BadgeEvent, List<int>> {
   final List<int> blocInitState;
+  final MonitorBloc monitorBloc;
+  StreamSubscription monitorSubscription;
 
-  BadgeBloc(this.blocInitState);
+
+  BadgeBloc(this.blocInitState,{this.monitorBloc}){
+    if(monitorBloc!=null){
+      monitorSubscription = monitorBloc.state.listen((sta){
+        if(sta is LoadedMonitorState){
+          int totalCount = sta.fireAlarmMsg.length+sta.deviceFaultMsg.length+sta.taskInfoMsg.length;
+          dispatch(SetBadgeNum(badgeNum: totalCount,badgeIndex: 0));
+        }
+      });
+    }
+  }
 
   @override
   List<int> get initialState => blocInitState;
@@ -24,5 +37,17 @@ class BadgeBloc extends Bloc<BadgeEvent, List<int>> {
       newList[event.badgeIndex]-=event.badgeNum;
       yield newList;
     }
+    if(event is SetBadgeNum){
+      List<int> newList = List.from(currentState);
+      newList[event.badgeIndex]=event.badgeNum;
+      yield newList;
+    }
   }
+
+  @override
+  void dispose() {
+    monitorSubscription.cancel();
+    super.dispose();
+  }
+
 }
