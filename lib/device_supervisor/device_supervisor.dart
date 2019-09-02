@@ -54,9 +54,6 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
           RepositoryProvider<MonitorRepositories>(
             builder: (context) => MonitorRepositories(),
           ),
-          RepositoryProvider<AddTaskPlanRepositories>(
-            builder: (context) => AddTaskPlanRepositories(),
-          )
         ],
         child: MultiBlocProvider(
           providers: [
@@ -82,45 +79,38 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
                   monitorBloc: BlocProvider.of<MonitorBloc>(context)),
             ),
           ],
-          child: MultiRepositoryProvider(
-            providers: [
-              RepositoryProvider(
-                builder: (context) => MonitorRepositories(),
-              )
-            ],
-            child: Scaffold(
-              bottomNavigationBar:
-                  BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
-                return BottomNavigationBar(
-                  elevation: 10,
-                  type: BottomNavigationBarType.fixed,
-                  items: iconList.map<BottomNavigationBarItem>((i) {
-                    int currentIndex = iconList.indexOf(i);
-                    int currentBadge = state[currentIndex];
-                    return BottomNavigationBarItem(
-                      icon: Badge(
-                        child: i,
-                        badgeContent: Text(
-                          currentBadge.toString(),
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        showBadge: currentBadge != 0,
+          child: Scaffold(
+            bottomNavigationBar:
+            BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
+              return BottomNavigationBar(
+                elevation: 10,
+                type: BottomNavigationBarType.fixed,
+                items: iconList.map<BottomNavigationBarItem>((i) {
+                  int currentIndex = iconList.indexOf(i);
+                  int currentBadge = state[currentIndex];
+                  return BottomNavigationBarItem(
+                    icon: Badge(
+                      child: i,
+                      badgeContent: Text(
+                        currentBadge.toString(),
+                        style: TextStyle(color: Colors.white),
                       ),
-                      title: Text(
-                        iconTextList[currentIndex],
-                      ),
-                    );
-                  }).toList(),
-                  onTap: (v) {
-                    setState(() {
-                      currentIndex = v;
-                    });
-                  },
-                  currentIndex: currentIndex,
-                );
-              }),
-              body: viewList[currentIndex],
-            ),
+                      showBadge: currentBadge != 0,
+                    ),
+                    title: Text(
+                      iconTextList[currentIndex],
+                    ),
+                  );
+                }).toList(),
+                onTap: (v) {
+                  setState(() {
+                    currentIndex = v;
+                  });
+                },
+                currentIndex: currentIndex,
+              );
+            }),
+            body: viewList[currentIndex],
           ),
         ));
   }

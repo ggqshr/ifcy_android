@@ -30,7 +30,6 @@ class _WorkPageState extends State<WorkPage>
 
   @override
   Widget build(BuildContext context) {
-    AppState state = StoreProvider.of<AppState>(context).state;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -38,7 +37,18 @@ class _WorkPageState extends State<WorkPage>
         onPressed: () {
           Navigator.push(
             context,
-            new MaterialPageRoute(builder: (context) => AddTaskPage()),
+            new MaterialPageRoute(
+              builder: (context) => RepositoryProvider(
+                builder: (context) => AddTaskPlanRepositories(),
+                child: BlocProvider<AddTaskPlanBloc>(
+                  builder: (context) => AddTaskPlanBloc(
+                    RepositoryProvider.of<AddTaskPlanRepositories>(context),
+                    RepositoryProvider.of<UserLoginRepositories>(context),
+                  )..dispatch(FetchData()),
+                  child: AddTaskPage(),
+                ),
+              ),
+            ),
           );
         },
       ),

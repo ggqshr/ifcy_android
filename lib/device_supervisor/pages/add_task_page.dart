@@ -26,10 +26,7 @@ class _AddTaskPageState extends State<AddTaskPage>
         ),
       ),
     );
-    bloc = AddTaskPlanBloc(
-      RepositoryProvider.of<AddTaskPlanRepositories>(context),
-      RepositoryProvider.of<UserLoginRepositories>(context),
-    )..dispatch(FetchData());
+    bloc = BlocProvider.of<AddTaskPlanBloc>(context);
   }
 
   @override

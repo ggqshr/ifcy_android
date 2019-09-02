@@ -363,7 +363,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                 ListTile(
                   title: Text("检查结果"),
                   subtitle: Row(
-                    children: ["正常", "故障"].map((item) {
+                    children: ["正常", "故障","缺陷"].map((item) {
                       return Row(
                         children: <Widget>[
                           Radio(

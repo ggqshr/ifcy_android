@@ -151,6 +151,8 @@ enum CheckResult {
 
   ///故障
   fault,
+  ///缺陷
+  detect,
 }
 
 Map<int, String> checkStatusTypeMap = {
@@ -173,11 +175,13 @@ enum CheckStatus {
 Map<int, String> checkResultTypeMap = {
   0: "正常",
   1: "故障",
+  2:"缺陷",
 };
 
 Map<CheckResult, String> checkResultToString = {
   CheckResult.running: "RUNNING",
   CheckResult.fault: "FAULT",
+  CheckResult.detect: "DEFECT",
 };
 Map<String, CheckResult> stringToCheckResult =
     checkResultToString.map((k, v) => MapEntry(v, k));
