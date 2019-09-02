@@ -11,9 +11,7 @@ class ExpansionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ExpansionTile(
-        title: Wrap(
-          spacing: 5,
-          crossAxisAlignment: WrapCrossAlignment.center,
+        title: Row(
           children: <Widget>[
             Text(
               title,
@@ -33,8 +31,21 @@ class ExpansionCard extends StatelessWidget {
                 ),
               ),
               animationType: BadgeAnimationType.scale,
-              shape: BadgeShape.square,
               showBadge: messageNum != 0,
+            ),
+            Spacer(),
+            GestureDetector(
+              child: Chip(
+                label: Text(
+                  "查看历史",
+                  style: TextStyle(
+                    color:Colors.black,
+                  ),
+                ),
+              ),
+              onTap: (){
+                print("11111");
+              },
             ),
           ],
         ),

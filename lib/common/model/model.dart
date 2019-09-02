@@ -13,7 +13,7 @@ part 'model.g.dart';
 
 part 'alarm_message.dart';
 
-
+part "pagable_model.dart";
 part 'task_info_message.dart';
 
 part 'personnel_message.dart';

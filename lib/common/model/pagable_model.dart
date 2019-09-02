@@ -1,0 +1,78 @@
+///@author ggq
+///@description:
+///@date :2019/9/2 19:21
+part of "model.dart";
+class PageDataModel<T>{
+  List<T> dataList;
+  int totalPage;
+  int currentPage;
+
+//<editor-fold desc="Data Methods" defaultstate="collapsed">
+
+
+  PageDataModel({
+    @required this.dataList,
+    @required this.totalPage,
+    @required this.currentPage,
+  });
+
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          (other is PageDataModel &&
+              runtimeType == other.runtimeType &&
+              dataList == other.dataList &&
+              totalPage == other.totalPage &&
+              currentPage == other.currentPage
+          );
+
+
+  @override
+  int get hashCode =>
+      dataList.hashCode ^
+      totalPage.hashCode ^
+      currentPage.hashCode;
+
+
+  @override
+  String toString() {
+    return 'PageDataModel{' +
+        ' dataList: $dataList,' +
+        ' totalPage: $totalPage,' +
+        ' currentPage: $currentPage,' +
+        '}';
+  }
+
+
+  PageDataModel copyWith({
+    List<T> dataList,
+    int totalPage,
+    int currentPage,
+  }) {
+    return PageDataModel(
+      dataList: dataList ?? this.dataList,
+      totalPage: totalPage ?? this.totalPage,
+      currentPage: currentPage ?? this.currentPage,
+    );
+  }
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      'dataList': this.dataList,
+      'totalPage': this.totalPage,
+      'currentPage': this.currentPage,
+    };
+  }
+
+  factory PageDataModel.fromMap(Map<String, dynamic> map) {
+    return PageDataModel(
+      dataList: map['dataList'] as List<T>,
+      totalPage: map['totalPage'] as int,
+      currentPage: map['currentPage'] as int,
+    );
+  }
+
+//</editor-fold>
+}

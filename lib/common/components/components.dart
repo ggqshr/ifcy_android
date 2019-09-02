@@ -1,7 +1,10 @@
 import 'package:badges/badges.dart';
+import 'package:bloc/bloc.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'dart:ui';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
@@ -15,3 +18,4 @@ part 'expansion_card.dart';
 part 'person_info_component.dart';
 //part 'package:ifcy/device_supervisor/component/person_list_component.dart';
 part "person_page.dart";
+part "pageable_page.dart";
