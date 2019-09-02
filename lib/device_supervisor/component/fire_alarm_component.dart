@@ -55,9 +55,20 @@ class FireMessageTile extends StatelessWidget {
           ),
           title: Text(meg.deviceName),
           subtitle: Text("设备在${meg.sendTime.toString().substring(0, 10)}发出警报"),
-          onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("跳转${meg.eventId}"),
-          )),
+          onTap: () async{
+            await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return BlocProvider<ConfirmMessageBloc>(
+                builder: (context) => ConfirmMessageBloc(
+                  meg,
+                  ConfirmMessageRepositories(),
+                )..dispatch(
+                    StartToConfirm(),
+                  ),
+                child: ConfirmMessagePage(),
+              );
+            }));
+            BlocProvider.of<MonitorBloc>(context).dispatch(FetchMonitorDataEvent());
+          },
         ),
         elevation: 10,
       ),

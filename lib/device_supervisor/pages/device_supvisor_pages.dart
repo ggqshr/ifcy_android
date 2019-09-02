@@ -31,5 +31,6 @@ part 'add_task_page.dart';
 part 'work_pages.dart';
 part "plan_list_page.dart";
 part 'task_list_page.dart';
+part "confirm_message_page.dart";
 
 

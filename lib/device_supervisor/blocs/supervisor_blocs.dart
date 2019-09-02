@@ -5,3 +5,4 @@ export "plan_list_bloc/bloc.dart";
 export "add_task_plan_bloc/bloc.dart";
 export 'monitor_bloc/bloc.dart';
 export 'task_list_bloc/bloc.dart';
+export "confirm_message_bloc/bloc.dart";

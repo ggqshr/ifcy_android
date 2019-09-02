@@ -1,8 +1,18 @@
 part of "model.dart";
 
+abstract class AlarmMessage{
+  String eventId;
+  String deviceName;
+  DateTime sendTime;
+  String deviceCode;
+  bool checked;
+  String mainEngineCode;
+  String id;
+}
+
 ///火灾消息实体类
 @JsonSerializable()
-class FireAlarmMessage {
+class FireAlarmMessage extends AlarmMessage{
   @JsonKey(name: "event_id")
   String eventId;
   @JsonKey(name: "device_name")
@@ -14,6 +24,7 @@ class FireAlarmMessage {
   bool checked;
   @JsonKey(name: "main_engine_code")
   String mainEngineCode;
+  String id;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
@@ -87,7 +98,7 @@ class FireAlarmMessage {
 
 ///设备故障报警
 @JsonSerializable()
-class DeviceFaultAlarmMessage {
+class DeviceFaultAlarmMessage extends AlarmMessage{
   @JsonKey(name: "event_id")
   String eventId;
   @JsonKey(name: "device_name")
@@ -99,6 +110,7 @@ class DeviceFaultAlarmMessage {
   bool checked;
   @JsonKey(name: "main_engine_code")
   String mainEngineCode;
+  String id;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
