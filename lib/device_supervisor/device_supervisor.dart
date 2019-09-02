@@ -53,13 +53,17 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
         providers: [
           RepositoryProvider<MonitorRepositories>(
             builder: (context) => MonitorRepositories(),
+          ),
+          RepositoryProvider<AddTaskPlanRepositories>(
+            builder: (context) => AddTaskPlanRepositories(),
           )
         ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider<MonitorBloc>(
               builder: (context) => MonitorBloc(
-                  RepositoryProvider.of<MonitorRepositories>(context))..dispatch(FetchMonitorDataEvent()),
+                  RepositoryProvider.of<MonitorRepositories>(context))
+                ..dispatch(FetchMonitorDataEvent()),
             ),
             BlocProvider<PlanListBloc>(
               builder: (context) {
@@ -74,7 +78,8 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
               },
             ),
             BlocProvider<BadgeBloc>(
-              builder: (context) => BadgeBloc([1,1,2,0],monitorBloc: BlocProvider.of<MonitorBloc>(context)),
+              builder: (context) => BadgeBloc([1, 1, 2, 0],
+                  monitorBloc: BlocProvider.of<MonitorBloc>(context)),
             ),
           ],
           child: MultiRepositoryProvider(

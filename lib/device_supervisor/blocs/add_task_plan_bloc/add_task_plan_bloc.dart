@@ -9,10 +9,9 @@ import './bloc.dart';
 
 class AddTaskPlanBloc extends Bloc<AddTaskPlanEvent, AddTaskPlanState> {
   final AddTaskPlanRepositories addTaskPlanRepositories;
-  final AuthorizationBloc bloc;
+  final UserLoginRepositories userLoginRepositories;
 
-  AddTaskPlanBloc(this.bloc, [repo])
-      : addTaskPlanRepositories = repo ?? AddTaskPlanRepositories();
+  AddTaskPlanBloc(this.addTaskPlanRepositories,this.userLoginRepositories);
 
   @override
   AddTaskPlanState get initialState => UnInitialAddTaskPlanState();
@@ -30,7 +29,7 @@ class AddTaskPlanBloc extends Bloc<AddTaskPlanEvent, AddTaskPlanState> {
         List<InspectionSystem> systems =
             await addTaskPlanRepositories.getSystem();
         yield AfterFetchedState.fetchSuccess(systems, cycles, persons,
-            (bloc.currentState as Authenticated).currentBuild);
+            userLoginRepositories.currentBuild);
       } catch (e) {
         yield AfterFetchedState.fetchFault();
         rethrow;

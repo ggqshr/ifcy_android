@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import './bloc.dart';
 
@@ -34,10 +33,10 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     try {
       final isSignIn = await userLoginRepositories.isLoginIn();
       if (isSignIn) {
-        UserEntity user = await userLoginRepositories.loginWithLocal();
+        await userLoginRepositories.loginWithLocal();
         yield Authenticated(
-            userEntity: user,
-            currentBuild: await userLoginRepositories.getCurrentBuilding());
+            userEntity: userLoginRepositories.getUser,
+            currentBuild: userLoginRepositories.currentBuild);
       } else {
         yield Unauthenticated();
       }
@@ -49,14 +48,7 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
 
   Stream<AuthorizationState> _mapLoginInEventToState(
       AuthorizationEvent event) async* {
-    try {
-      yield Authenticated(
-          userEntity: (event as LoginIn).userEntity,
-          currentBuild: await userLoginRepositories.getCurrentBuilding());
-    } catch (e) {
-      yield Unauthenticated();
-      rethrow;
-    }
+    yield Authenticated(userEntity: userLoginRepositories.getUser,currentBuild: userLoginRepositories.currentBuild);
   }
 
   Stream<AuthorizationState> _mapLoggedOutToState() async* {

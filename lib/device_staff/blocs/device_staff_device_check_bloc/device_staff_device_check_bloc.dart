@@ -4,15 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_staff/repositories/device_check_repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
+import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import './bloc.dart';
 
 class DeviceStaffDeviceCheckBloc
     extends Bloc<DeviceStaffDeviceCheckEvent, DeviceStaffDeviceCheckState> {
   final DeviceCheckRepositories _repositories;
-  final AuthorizationBloc authorizationBloc;
+  final UserLoginRepositories userLoginRepositories;
   StreamSubscription _subscription;
 
-  DeviceStaffDeviceCheckBloc(this._repositories, this.authorizationBloc);
+  DeviceStaffDeviceCheckBloc(this._repositories,this.userLoginRepositories);
 
   @override
   DeviceStaffDeviceCheckState get initialState => DeviceListLoading();
@@ -60,15 +61,13 @@ class DeviceStaffDeviceCheckBloc
   Stream<DeviceStaffDeviceCheckState> _mapDeviceUpdateToState(
       DeviceUpdate event) async* {
     List<FloorEntity> floorList = [];
-    if (authorizationBloc.currentState is Authenticated) {
-      Set<String> floorIdList =
-          event.models.map((item) => item.buildingFloorId).toSet();
-      floorList = (authorizationBloc.currentState as Authenticated)
-          .currentBuild
-          .floors
-          .where((item) => floorIdList.contains(item.id))
-          .toList();
-    }
+    Set<String> floorIdList =
+    event.models.map((item) => item.buildingFloorId).toSet();
+    floorList = userLoginRepositories
+        .currentBuild
+        .floors
+        .where((item) => floorIdList.contains(item.id))
+        .toList();
     yield DeviceListLoaded(event.models, floorList);
   }
 

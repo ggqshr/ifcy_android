@@ -69,6 +69,12 @@ class UserLoginDataProvider {
 class UserLoginRepositories {
   final bool alwaysLogin;
   final UserLoginDataProvider userLoginDataProvider;
+  UserEntity _userEntity;
+  Build _currentBuild;
+
+  UserEntity get getUser => _userEntity;
+
+  Build get currentBuild => _currentBuild;
 
   UserLoginRepositories({
     this.alwaysLogin = false,
@@ -89,8 +95,9 @@ class UserLoginRepositories {
   }
 
   Future<UserEntity> _login(String userName, String passWord) async {
-    UserEntity _userEntity =
+    _userEntity =
         await userLoginDataProvider.login(userName, passWord);
+    _currentBuild = await userLoginDataProvider.getCurrentBuild();
     userLoginDataProvider.setUpJpush(_userEntity);
     return _userEntity;
   }

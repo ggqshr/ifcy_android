@@ -60,9 +60,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       {String username, String password}) async* {
     yield LoginState.loading();
     try {
-      UserEntity user = await userLoginRepositories.login(username, password);
+      await userLoginRepositories.login(username, password);
       yield LoginState.success();
-      authorizationBloc.dispatch(LoginIn(userEntity: user));
+      authorizationBloc.dispatch(LoginIn());
     } catch (_) {
       yield LoginState.failure();
       rethrow;

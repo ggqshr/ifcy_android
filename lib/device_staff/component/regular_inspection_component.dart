@@ -242,7 +242,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                     child: BlocProvider<DeviceStaffDeviceCheckBloc>(
                       builder: (context) => DeviceStaffDeviceCheckBloc(
                         RepositoryProvider.of<DeviceCheckRepositories>(context),
-                        RepositoryProvider.of<AuthorizationBloc>(context),
+                        RepositoryProvider.of<UserLoginRepositories>(context),
                       )..dispatch(LoadDevice(tasks[index].devices)),
                       child: RegularInspectionPage(),
                     ),
