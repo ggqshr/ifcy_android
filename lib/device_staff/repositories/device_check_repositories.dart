@@ -111,7 +111,7 @@ class DeviceCheckRepositories {
         if (fileNames['pic1'] != null) {
           if (model.pic1 == null) {
             //如果本地第一个为空，那么将返回的文件名付给第二个图片
-            model.pic2 = await resetCacheImage(fileNames, model.pic2, "pic2");
+            model.pic2 = await resetCacheImage(fileNames, model.pic2, "pic1");
           } else if (model.pic1 != null) {
             //如果本地的第一个不空，那么将返回的文件名付给第一个
             model.pic1 = await resetCacheImage(fileNames, model.pic1, "pic1");
@@ -126,9 +126,9 @@ class DeviceCheckRepositories {
   Future<String> resetCacheImage(
       Map fileNames, String fileName, String keyName) async {
     File pic = await IfcyCacheManager().getSingleFile(fileName); //拿到第一张图片
-    await IfcyCacheManager().removeFile(fileName); //删除第一张图片
     String newFileName = fileNames[keyName];
     await IfcyCacheManager().putFile(newFileName, await pic.readAsBytes());
+    IfcyCacheManager().removeFile(fileName); //删除第一张图片
     return newFileName;
   }
 }

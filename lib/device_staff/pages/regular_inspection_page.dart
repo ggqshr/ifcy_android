@@ -257,7 +257,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           FloatingActionButton(
             tooltip: "扫码",
             onPressed: () async {
-              String BRCodeScanRes = "B7_5-AF1-A1-1"; //二维码扫描结果
+              String BRCodeScanRes = "B7_5-AF1-A1-2"; //二维码扫描结果
 //            try {
 //              BRCodeScanRes = await BarcodeScanner.scan();
 //            } on PlatformException catch (e) {
@@ -285,19 +285,26 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text("无效的二维码")));
                 } else {
-                  InspectionDeviceModel bachRes =
-                      await Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return BlocProvider<DeviceDetailBloc>(
-                        builder: (_) => DeviceDetailBloc(_deviceBloc)
-                          ..dispatch(LoadData(models[resIndex])),
-                        child: ScanCodeToInspectionComponent(),
-                      );
-                    },
-                  ));
-                  if (bachRes != null) {
-                    bachRes.checkStatus = CheckStatus.localCheck;
-                    _deviceBloc.dispatch(UpdateDevice(bachRes));
+                  InspectionDeviceModel thisModel = models[resIndex];
+                  if(thisModel.checkStatus==CheckStatus.checked){
+                    Scaffold.of(context)
+                        .showSnackBar(SnackBar(content: Text("已检查过的设备")));
+                  }
+                  else{
+                    InspectionDeviceModel bachRes =
+                    await Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return BlocProvider<DeviceDetailBloc>(
+                          builder: (_) => DeviceDetailBloc(_deviceBloc)
+                            ..dispatch(LoadData(thisModel)),
+                          child: ScanCodeToInspectionComponent(),
+                        );
+                      },
+                    ));
+                    if (bachRes != null) {
+                      bachRes.checkStatus = CheckStatus.localCheck;
+                      _deviceBloc.dispatch(UpdateDevice(bachRes));
+                    }
                   }
                 }
               }
@@ -679,7 +686,7 @@ class ReadOnlyInspectionTaskDetailPanel extends StatelessWidget {
           ListTile(
             title: Text("检查结果"),
             subtitle: Row(
-              children: ["正常", "故障"].map((item) {
+              children: ["正常", "故障","缺陷"].map((item) {
                 return Row(
                   children: <Widget>[
                     Radio(
@@ -1041,7 +1048,11 @@ class TaskStateProcessHeader extends SliverPersistentHeaderDelegate {
                 );
               },
             ),
-            Text("当前进度: 50%"),
+            AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Text("当前进度: ${(animation.value*100).toInt()}%");
+                })
           ],
         ),
       ],

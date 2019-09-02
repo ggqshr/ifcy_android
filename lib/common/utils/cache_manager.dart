@@ -38,6 +38,6 @@ class IfcyCacheManager extends BaseCacheManager {
       {Map<String, String> headers}) async {
     String realUrl = DioUtils.getInstance().getImageUrl+url;
     headers['authorization'] = await DioUtils.getInstance().getToken();
-    return HttpFileFetcherResponse(await http.get(url, headers: headers));
+    return HttpFileFetcherResponse(await http.get(realUrl, headers: headers));
   }
 }
