@@ -1,7 +1,7 @@
 part of "device_supervisor_component.dart";
 
 class DeviceFaultComponent extends StatelessWidget {
-  final List<DeviceFaultMessage> msgs;
+  final List<DeviceFaultAlarmMessage> msgs;
 
   DeviceFaultComponent(this.msgs);
 
@@ -19,7 +19,7 @@ class DeviceFaultComponent extends StatelessWidget {
               title: Text("当前无消息"),
             ));
           } else {
-            viewList = msgs.map<Widget>((DeviceFaultMessage meg) {
+            viewList = msgs.map<Widget>((DeviceFaultAlarmMessage meg) {
               return DeviceFaultTile(meg);
             }).toList();
           }
@@ -37,7 +37,7 @@ class DeviceFaultComponent extends StatelessWidget {
 }
 
 class DeviceFaultTile extends StatelessWidget {
-  final DeviceFaultMessage meg;
+  final DeviceFaultAlarmMessage meg;
 
   DeviceFaultTile(this.meg);
 
@@ -54,10 +54,10 @@ class DeviceFaultTile extends StatelessWidget {
           trailing: Icon(
             Icons.chevron_right,
           ),
-          title: Text(meg.title),
-          subtitle: Text(meg.content),
+          title: Text(meg.deviceName),
+          subtitle: Text("设备在${meg.sendTime.toString().substring(0,10)}发出故障警报"),
           onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text("跳转${meg.id}"),
+                content: Text("跳转${meg.eventId}"),
               )),
         ),
         elevation: 10,

@@ -15,8 +15,6 @@ DeviceSupervisorModel deviceSupervisorModule1Reducer(
           bottomBadgeNumListReducer(state.bottomBadgeNumList, action),
       fireAlarmMessages:
           fireAlarmMessagesReducer(state.fireAlarmMessages, action),
-      deviceFaultMessages:
-          deviceFaultMessagesReducer(state.deviceFaultMessages, action),
       taskInfoMessages: taskInfoMessagesReducer(state.taskInfoMessages, action),
       supervisorMessages:
           supervisiorMessagesReducer(state.supervisorMessages, action),
@@ -103,14 +101,6 @@ Reducer<List> fireAlarmMessagesReducer = combineReducers([
   TypedReducer<List, InitDeviceSupervisorStateAction>(initFireMessage),
 ]);
 
-List initdeviceFaultMessage(
-    List deviceMessages, InitDeviceSupervisorStateAction action) {
-  return action.deviceFaultMessage;
-}
-
-Reducer<List> deviceFaultMessagesReducer = combineReducers([
-  TypedReducer<List, InitDeviceSupervisorStateAction>(initdeviceFaultMessage),
-]);
 
 List inittaskInfoMessages(
     List taskInfoMessages, InitDeviceSupervisorStateAction action) {

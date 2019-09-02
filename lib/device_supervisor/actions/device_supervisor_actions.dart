@@ -8,7 +8,6 @@ class InitDeviceSupervisorStateAction {
   Build currentBuilding;
   List<int> bottomBadgeNumList;
   List<FireAlarmMessage> fireMessage;
-  List<DeviceFaultMessage> deviceFaultMessage;
   List<TaskInfoMessage> taskInfoMessage;
   List<DepartmentMessage> departmentMessage;
 
@@ -36,7 +35,6 @@ class InitDeviceSupervisorStateAction {
     this.currentBuilding,
     this.bottomBadgeNumList,
     this.fireMessage,
-    this.deviceFaultMessage,
     this.taskInfoMessage,
     this.departmentMessage,
     this.taskCycleMessages,
@@ -58,10 +56,6 @@ class InitDeviceSupervisorStateAction {
         fireMessage = [
 //          FireAlarmMessage(id: "1", title: "你好", content: "火灾"),
 //          FireAlarmMessage(id: "2", title: "你好1", content: "火灾1")
-        ],
-        deviceFaultMessage = [
-          DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
-          DeviceFaultMessage(id: "2", title: "故障1", content: "故障1"),
         ],
         taskInfoMessage = [
           TaskInfoMessage(

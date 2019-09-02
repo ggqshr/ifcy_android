@@ -25,11 +25,11 @@ class MonitorDataProvider {
         .toList();
   }
 
-  Future<List<DeviceFaultMessage>> getDeviceFaultMsg() async {
-    return [
-      DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
-      DeviceFaultMessage(id: "2", title: "故障1", content: "故障1"),
-    ];
+  Future<List<DeviceFaultAlarmMessage>> getDeviceFaultMsg() async {
+    Response res = await _dio.get("/warning-msg/messages/FAULT");
+    return res.data['data']
+        .map<DeviceFaultAlarmMessage>((item) => DeviceFaultAlarmMessage.fromJson(item))
+        .toList();
   }
 
   Future<List<TaskInfoMessage>> getTaskInfoMsg() async {
@@ -62,7 +62,7 @@ class MonitorRepositories {
     return await provider.getFireAlarmMsg();
   }
 
-  Future<List<DeviceFaultMessage>> getDeviceFaultMsg() async {
+  Future<List<DeviceFaultAlarmMessage>> getDeviceFaultMsg() async {
     return await provider.getDeviceFaultMsg();
   }
 

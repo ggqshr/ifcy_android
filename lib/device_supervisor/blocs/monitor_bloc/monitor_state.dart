@@ -21,7 +21,7 @@ class LoadedMonitorState extends MonitorState {
   final List<FireAlarmMessage> fireAlarmMsg;
 
   ///设备顾航
-  final List<DeviceFaultMessage> deviceFaultMsg;
+  final List<DeviceFaultAlarmMessage> deviceFaultMsg;
 
   ///任务信息
   final List<TaskInfoMessage> taskInfoMsg;

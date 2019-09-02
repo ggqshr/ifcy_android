@@ -11,9 +11,8 @@ import 'dart:convert';
 
 part 'model.g.dart';
 
-part 'fire_alarm_message.dart';
+part 'alarm_message.dart';
 
-part 'device_fault_message.dart';
 
 part 'task_info_message.dart';
 

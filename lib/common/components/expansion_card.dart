@@ -38,7 +38,7 @@ class ExpansionCard extends StatelessWidget {
             ),
           ],
         ),
-        initiallyExpanded: true,
+        initiallyExpanded: false,
         children: viewList,
       ),
     );

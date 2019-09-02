@@ -6,7 +6,6 @@ part 'monitor_page_model.dart';
 
 part 'fire_alarm_model.dart';
 
-part 'device_fault_model.dart';
 
 part 'task_info_model.dart';
 
@@ -23,7 +22,6 @@ class DeviceSupervisorModel {
   Build currentBuilding; //当前选中的大厦
   List<int> bottomBadgeNumList; // 底部导航栏的徽章数
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
-  List<DeviceFaultMessage> deviceFaultMessages;
   List<TaskInfoMessage> taskInfoMessages; // 任务执行情况消息
   List<SupervisorMessageModel> supervisorMessages; //主管信息
   List<PersonnelMessage> departmentMessages; //维保公司员工信息
@@ -53,7 +51,6 @@ class DeviceSupervisorModel {
     this.currentBuilding,
     this.bottomBadgeNumList,
     this.fireAlarmMessages,
-    this.deviceFaultMessages,
     this.taskInfoMessages,
     this.supervisorMessages,
     this.departmentMessages,
@@ -81,10 +78,6 @@ class DeviceSupervisorModel {
 //          FireAlarmMessage(eventId: "1", deviceName: "你好", sendTime: "火灾"),
 //          FireAlarmMessage(eventId: "2", deviceName: "你好1", sendTime: "火灾1")
 //        ],
-        deviceFaultMessages = [
-          DeviceFaultMessage(id: "1", title: "故障", content: "故障"),
-          DeviceFaultMessage(id: "2", title: "故障1", content: "故障1")
-        ],
         taskInfoMessages = [
           TaskInfoMessage(
               id: "1",
