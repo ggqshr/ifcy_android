@@ -59,7 +59,7 @@ class ErrorProcessDelegate extends BlocDelegate {
           print("Unknown Error $error");
           break;
       }
-    }else{
+    } else {
       print(error);
       print(stacktrace);
       Application.showWarnToast("错误${error.toString()}");
@@ -78,7 +78,6 @@ class ErrorProcessDelegate extends BlocDelegate {
     super.onTransition(bloc, transition);
     print(transition);
   }
-
 }
 
 class ShouldReLoginError extends Error {}
