@@ -4,8 +4,9 @@ class ExpansionCard extends StatelessWidget {
   final String title;
   final int messageNum;
   final List<Widget> viewList;
+  final Function onTalCall;
 
-  ExpansionCard({this.title, this.messageNum, this.viewList});
+  ExpansionCard({this.title, this.messageNum, this.viewList, this.onTalCall});
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +40,11 @@ class ExpansionCard extends StatelessWidget {
                 label: Text(
                   "查看历史",
                   style: TextStyle(
-                    color:Colors.black,
+                    color: Colors.black,
                   ),
                 ),
               ),
-              onTap: (){
-                print("11111");
-              },
+              onTap: onTalCall == null ? null : () => onTalCall(context),
             ),
           ],
         ),

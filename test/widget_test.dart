@@ -112,9 +112,10 @@ void main() {
     test("testadd", () async {
       await DioUtils.getInstance().login("hyj", "123456");
       Response res =
-          await DioUtils.getInstance().getDio().get("/patrol/tasks");
-      var aa = InspectionTaskPageModel.fromJson(res.data['data']);
-      print(aa);
+          await DioUtils.getInstance().getDio().get("/warning-msg/fire-records");
+      var aa = PageDataModel.fromJson(res.data['data']);
+      aa.dataList = aa.dataList.map<FireCheckAlarmMessage>((item)=>FireCheckAlarmMessage.fromJson(item)).toList();
+      print(aa.dataList[0].runtimeType);
     });
   });
 

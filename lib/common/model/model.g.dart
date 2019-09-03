@@ -52,6 +52,91 @@ Map<String, dynamic> _$DeviceFaultAlarmMessageToJson(
       'id': instance.id,
     };
 
+FireCheckAlarmMessage _$FireCheckAlarmMessageFromJson(
+    Map<String, dynamic> json) {
+  return FireCheckAlarmMessage(
+    eventId: json['event_id'] as String,
+    deviceName: json['device_name'] as String,
+    recordTime: timeFromJson(json['record_time'] as String),
+    deviceCode: json['device_code'] as String,
+    checked: json['checked'] as bool,
+    engineCode: json['engine_code'] as String,
+    id: json['id'] as String,
+    checkUserId: json['check_user_id'] as String,
+    warningMessageId: json['warning_message_id'] as String,
+    fireType: json['fire_type'] as String,
+  )
+    ..checkTIme = json['check_time'] as String
+    ..checkUserRealName = json['check_user_real_name'] as String;
+}
+
+Map<String, dynamic> _$FireCheckAlarmMessageToJson(
+        FireCheckAlarmMessage instance) =>
+    <String, dynamic>{
+      'event_id': instance.eventId,
+      'device_name': instance.deviceName,
+      'record_time': timeToJson(instance.recordTime),
+      'device_code': instance.deviceCode,
+      'checked': instance.checked,
+      'engine_code': instance.engineCode,
+      'id': instance.id,
+      'check_user_id': instance.checkUserId,
+      'warning_message_id': instance.warningMessageId,
+      'fire_type': instance.fireType,
+      'check_time': instance.checkTIme,
+      'check_user_real_name': instance.checkUserRealName,
+    };
+
+DeviceCheckedAlarmMessage _$DeviceCheckedAlarmMessageFromJson(
+    Map<String, dynamic> json) {
+  return DeviceCheckedAlarmMessage(
+    eventId: json['event_id'] as String,
+    deviceName: json['device_name'] as String,
+    recordTime: timeFromJson(json['record_time'] as String),
+    deviceCode: json['device_code'] as String,
+    checked: json['checked'] as bool,
+    engineCode: json['engine_code'] as String,
+    id: json['id'] as String,
+    checkUserId: json['check_user_id'] as String,
+    warningMessageId: json['warning_message_id'] as String,
+    faultType: json['fault_type'] as String,
+    checkTIme: json['check_time'] as String,
+    checkUserRealName: json['check_user_real_name'] as String,
+  );
+}
+
+Map<String, dynamic> _$DeviceCheckedAlarmMessageToJson(
+        DeviceCheckedAlarmMessage instance) =>
+    <String, dynamic>{
+      'event_id': instance.eventId,
+      'device_name': instance.deviceName,
+      'record_time': timeToJson(instance.recordTime),
+      'device_code': instance.deviceCode,
+      'checked': instance.checked,
+      'engine_code': instance.engineCode,
+      'id': instance.id,
+      'check_user_id': instance.checkUserId,
+      'warning_message_id': instance.warningMessageId,
+      'fault_type': instance.faultType,
+      'check_time': instance.checkTIme,
+      'check_user_real_name': instance.checkUserRealName,
+    };
+
+PageDataModel _$PageDataModelFromJson(Map<String, dynamic> json) {
+  return PageDataModel(
+    dataList: json['content'] as List,
+    totalPage: json['total_pages'] as int,
+    currentPage: json['number'] as int,
+  );
+}
+
+Map<String, dynamic> _$PageDataModelToJson(PageDataModel instance) =>
+    <String, dynamic>{
+      'content': instance.dataList,
+      'total_pages': instance.totalPage,
+      'number': instance.currentPage,
+    };
+
 PersonnelMessage _$PersonnelMessageFromJson(Map<String, dynamic> json) {
   return PersonnelMessage(
     id: json['id'] as String,

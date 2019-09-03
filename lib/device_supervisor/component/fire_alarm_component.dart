@@ -27,6 +27,22 @@ class FireAlarmComponent extends StatelessWidget {
             title: "紧急火警消息",
             messageNum: messageNum,
             viewList: viewList,
+            onTalCall: (context) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return BlocProvider<CheckAlarmListBloc>(
+                  builder: (context) =>
+                      CheckAlarmListBloc(CheckAlarmRepositories())
+                        ..dispatch(FetchCheckedAlarmData(true)),
+                  child: CheckedAlarmPage(
+                    (thisTask) => CheckResultComponent(
+                        (thisTask as FireCheckAlarmMessage).fireType ==
+                                "TRULY_ALARM"
+                            ? "真火警"
+                            : "误报"),
+                  ),
+                );
+              }));
+            },
           );
         },
         childCount: 1,
@@ -55,8 +71,9 @@ class FireMessageTile extends StatelessWidget {
           ),
           title: Text(meg.deviceName),
           subtitle: Text("设备在${meg.sendTime.toString().substring(0, 10)}发出警报"),
-          onTap: () async{
-            await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          onTap: () async {
+            await Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) {
               return BlocProvider<ConfirmMessageBloc>(
                 builder: (context) => ConfirmMessageBloc(
                   meg,
@@ -67,7 +84,8 @@ class FireMessageTile extends StatelessWidget {
                 child: ConfirmMessagePage(),
               );
             }));
-            BlocProvider.of<MonitorBloc>(context).dispatch(FetchMonitorDataEvent());
+            BlocProvider.of<MonitorBloc>(context)
+                .dispatch(FetchMonitorDataEvent());
           },
         ),
         elevation: 10,

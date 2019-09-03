@@ -28,6 +28,22 @@ class DeviceFaultComponent extends StatelessWidget {
             title: "今日设备故障",
             messageNum: messageNum,
             viewList: viewList,
+            onTalCall: (context) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return BlocProvider<CheckAlarmListBloc>(
+                  builder: (context) =>
+                  CheckAlarmListBloc(CheckAlarmRepositories())
+                    ..dispatch(FetchCheckedAlarmData(false)),
+                  child: CheckedAlarmPage(
+                        (thisTask) => CheckResultComponent(
+                        (thisTask as FireCheckAlarmMessage).fireType ==
+                            "PROCESSED"
+                            ? "已处理"
+                            : "未处理"),
+                  ),
+                );
+              }));
+            },
           );
         },
         childCount: 1,

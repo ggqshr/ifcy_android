@@ -32,5 +32,6 @@ part 'work_pages.dart';
 part "plan_list_page.dart";
 part 'task_list_page.dart';
 part "confirm_message_page.dart";
+part "checked_alarm_page.dart";
 
 

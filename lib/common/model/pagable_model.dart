@@ -2,13 +2,17 @@
 ///@description:
 ///@date :2019/9/2 19:21
 part of "model.dart";
-class PageDataModel<T>{
-  List<T> dataList;
+
+@JsonSerializable(explicitToJson:true)
+class PageDataModel {
+  @JsonKey(name: "content")
+  List dataList;
+  @JsonKey(name: "total_pages")
   int totalPage;
+  @JsonKey(name: "number")
   int currentPage;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
-
 
   PageDataModel({
     @required this.dataList,
@@ -16,24 +20,18 @@ class PageDataModel<T>{
     @required this.currentPage,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is PageDataModel &&
-              runtimeType == other.runtimeType &&
-              dataList == other.dataList &&
-              totalPage == other.totalPage &&
-              currentPage == other.currentPage
-          );
-
+      (other is PageDataModel &&
+          runtimeType == other.runtimeType &&
+          dataList == other.dataList &&
+          totalPage == other.totalPage &&
+          currentPage == other.currentPage);
 
   @override
   int get hashCode =>
-      dataList.hashCode ^
-      totalPage.hashCode ^
-      currentPage.hashCode;
-
+      dataList.hashCode ^ totalPage.hashCode ^ currentPage.hashCode;
 
   @override
   String toString() {
@@ -44,9 +42,8 @@ class PageDataModel<T>{
         '}';
   }
 
-
   PageDataModel copyWith({
-    List<T> dataList,
+    List dataList,
     int totalPage,
     int currentPage,
   }) {
@@ -57,6 +54,13 @@ class PageDataModel<T>{
     );
   }
 
+  PageDataModel nextPage(PageDataModel pageModel) {
+    return PageDataModel(
+      dataList: this.dataList + pageModel.dataList,
+      currentPage: pageModel.currentPage+1,
+      totalPage: this.totalPage,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -68,11 +72,14 @@ class PageDataModel<T>{
 
   factory PageDataModel.fromMap(Map<String, dynamic> map) {
     return PageDataModel(
-      dataList: map['dataList'] as List<T>,
+      dataList: map['dataList'] as List,
       totalPage: map['totalPage'] as int,
       currentPage: map['currentPage'] as int,
     );
   }
+  Map<String, dynamic> toJson() => _$PageDataModelToJson(this);
 
+  factory PageDataModel.fromJson(Map<String, dynamic> map) =>
+      _$PageDataModelFromJson(map);
 //</editor-fold>
 }
