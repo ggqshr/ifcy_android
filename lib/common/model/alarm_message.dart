@@ -8,6 +8,8 @@ abstract class AlarmMessage {
   bool checked;
   String mainEngineCode;
   String id;
+  String floorAreaName;
+  String floorName;
 }
 
 ///火灾消息实体类
@@ -25,8 +27,19 @@ class FireAlarmMessage extends AlarmMessage {
   @JsonKey(name: "main_engine_code")
   String mainEngineCode;
   String id;
+  @JsonKey(name: "floor_area_name")
+  String floorAreaName;
+  @JsonKey(name: "floor_name")
+  String floorName;
+
+  Map<String, dynamic> toJson() => _$FireAlarmMessageToJson(this);
+
+  factory FireAlarmMessage.fromJson(Map<String, dynamic> map) =>
+      _$FireAlarmMessageFromJson(map);
+
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
+
 
   FireAlarmMessage({
     @required this.eventId,
@@ -35,19 +48,28 @@ class FireAlarmMessage extends AlarmMessage {
     @required this.deviceCode,
     @required this.checked,
     @required this.mainEngineCode,
+    @required this.id,
+    @required this.floorAreaName,
+    @required this.floorName,
   });
+
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is FireAlarmMessage &&
-          runtimeType == other.runtimeType &&
-          eventId == other.eventId &&
-          deviceName == other.deviceName &&
-          sendTime == other.sendTime &&
-          deviceCode == other.deviceCode &&
-          checked == other.checked &&
-          mainEngineCode == other.mainEngineCode);
+          (other is FireAlarmMessage &&
+              runtimeType == other.runtimeType &&
+              eventId == other.eventId &&
+              deviceName == other.deviceName &&
+              sendTime == other.sendTime &&
+              deviceCode == other.deviceCode &&
+              checked == other.checked &&
+              mainEngineCode == other.mainEngineCode &&
+              id == other.id &&
+              floorAreaName == other.floorAreaName &&
+              floorName == other.floorName
+          );
+
 
   @override
   int get hashCode =>
@@ -56,7 +78,11 @@ class FireAlarmMessage extends AlarmMessage {
       sendTime.hashCode ^
       deviceCode.hashCode ^
       checked.hashCode ^
-      mainEngineCode.hashCode;
+      mainEngineCode.hashCode ^
+      id.hashCode ^
+      floorAreaName.hashCode ^
+      floorName.hashCode;
+
 
   @override
   String toString() {
@@ -67,8 +93,12 @@ class FireAlarmMessage extends AlarmMessage {
         ' deviceCode: $deviceCode,' +
         ' checked: $checked,' +
         ' mainEngineCode: $mainEngineCode,' +
+        ' id: $id,' +
+        ' floorAreaName: $floorAreaName,' +
+        ' floorName: $floorName,' +
         '}';
   }
+
 
   FireAlarmMessage copyWith({
     String eventId,
@@ -77,6 +107,9 @@ class FireAlarmMessage extends AlarmMessage {
     String deviceCode,
     bool checked,
     String mainEngineCode,
+    String id,
+    String floorAreaName,
+    String floorName,
   }) {
     return FireAlarmMessage(
       eventId: eventId ?? this.eventId,
@@ -85,13 +118,41 @@ class FireAlarmMessage extends AlarmMessage {
       deviceCode: deviceCode ?? this.deviceCode,
       checked: checked ?? this.checked,
       mainEngineCode: mainEngineCode ?? this.mainEngineCode,
+      id: id ?? this.id,
+      floorAreaName: floorAreaName ?? this.floorAreaName,
+      floorName: floorName ?? this.floorName,
     );
   }
 
-  Map<String, dynamic> toJson() => _$FireAlarmMessageToJson(this);
 
-  factory FireAlarmMessage.fromJson(Map<String, dynamic> map) =>
-      _$FireAlarmMessageFromJson(map);
+  Map<String, dynamic> toMap() {
+    return {
+      'eventId': this.eventId,
+      'deviceName': this.deviceName,
+      'sendTime': this.sendTime,
+      'deviceCode': this.deviceCode,
+      'checked': this.checked,
+      'mainEngineCode': this.mainEngineCode,
+      'id': this.id,
+      'floorAreaName': this.floorAreaName,
+      'floorName': this.floorName,
+    };
+  }
+
+  factory FireAlarmMessage.fromMap(Map<String, dynamic> map) {
+    return FireAlarmMessage(
+      eventId: map['eventId'] as String,
+      deviceName: map['deviceName'] as String,
+      sendTime: map['sendTime'] as DateTime,
+      deviceCode: map['deviceCode'] as String,
+      checked: map['checked'] as bool,
+      mainEngineCode: map['mainEngineCode'] as String,
+      id: map['id'] as String,
+      floorAreaName: map['floorAreaName'] as String,
+      floorName: map['floorName'] as String,
+    );
+  }
+
 
 //</editor-fold>
 }
@@ -111,8 +172,18 @@ class DeviceFaultAlarmMessage extends AlarmMessage {
   @JsonKey(name: "main_engine_code")
   String mainEngineCode;
   String id;
+  @JsonKey(name: "floor_area_name")
+  String floorAreaName;
+  @JsonKey(name: "floor_name")
+  String floorName;
+
+  Map<String, dynamic> toJson() => _$DeviceFaultAlarmMessageToJson(this);
+
+  factory DeviceFaultAlarmMessage.fromJson(Map<String, dynamic> map) =>
+      _$DeviceFaultAlarmMessageFromJson(map);
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
+
 
   DeviceFaultAlarmMessage({
     @required this.eventId,
@@ -121,19 +192,28 @@ class DeviceFaultAlarmMessage extends AlarmMessage {
     @required this.deviceCode,
     @required this.checked,
     @required this.mainEngineCode,
+    @required this.id,
+    @required this.floorAreaName,
+    @required this.floorName,
   });
+
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is FireAlarmMessage &&
-          runtimeType == other.runtimeType &&
-          eventId == other.eventId &&
-          deviceName == other.deviceName &&
-          sendTime == other.sendTime &&
-          deviceCode == other.deviceCode &&
-          checked == other.checked &&
-          mainEngineCode == other.mainEngineCode);
+          (other is DeviceFaultAlarmMessage &&
+              runtimeType == other.runtimeType &&
+              eventId == other.eventId &&
+              deviceName == other.deviceName &&
+              sendTime == other.sendTime &&
+              deviceCode == other.deviceCode &&
+              checked == other.checked &&
+              mainEngineCode == other.mainEngineCode &&
+              id == other.id &&
+              floorAreaName == other.floorAreaName &&
+              floorName == other.floorName
+          );
+
 
   @override
   int get hashCode =>
@@ -142,7 +222,11 @@ class DeviceFaultAlarmMessage extends AlarmMessage {
       sendTime.hashCode ^
       deviceCode.hashCode ^
       checked.hashCode ^
-      mainEngineCode.hashCode;
+      mainEngineCode.hashCode ^
+      id.hashCode ^
+      floorAreaName.hashCode ^
+      floorName.hashCode;
+
 
   @override
   String toString() {
@@ -153,35 +237,71 @@ class DeviceFaultAlarmMessage extends AlarmMessage {
         ' deviceCode: $deviceCode,' +
         ' checked: $checked,' +
         ' mainEngineCode: $mainEngineCode,' +
+        ' id: $id,' +
+        ' floorAreaName: $floorAreaName,' +
+        ' floorName: $floorName,' +
         '}';
   }
 
-  FireAlarmMessage copyWith({
+
+  DeviceFaultAlarmMessage copyWith({
     String eventId,
     String deviceName,
     DateTime sendTime,
     String deviceCode,
     bool checked,
     String mainEngineCode,
+    String id,
+    String floorAreaName,
+    String floorName,
   }) {
-    return FireAlarmMessage(
+    return DeviceFaultAlarmMessage(
       eventId: eventId ?? this.eventId,
       deviceName: deviceName ?? this.deviceName,
       sendTime: sendTime ?? this.sendTime,
       deviceCode: deviceCode ?? this.deviceCode,
       checked: checked ?? this.checked,
       mainEngineCode: mainEngineCode ?? this.mainEngineCode,
+      id: id ?? this.id,
+      floorAreaName: floorAreaName ?? this.floorAreaName,
+      floorName: floorName ?? this.floorName,
     );
   }
 
-  Map<String, dynamic> toJson() => _$DeviceFaultAlarmMessageToJson(this);
 
-  factory DeviceFaultAlarmMessage.fromJson(Map<String, dynamic> map) =>
-      _$DeviceFaultAlarmMessageFromJson(map);
+  Map<String, dynamic> toMap() {
+    return {
+      'eventId': this.eventId,
+      'deviceName': this.deviceName,
+      'sendTime': this.sendTime,
+      'deviceCode': this.deviceCode,
+      'checked': this.checked,
+      'mainEngineCode': this.mainEngineCode,
+      'id': this.id,
+      'floorAreaName': this.floorAreaName,
+      'floorName': this.floorName,
+    };
+  }
+
+  factory DeviceFaultAlarmMessage.fromMap(Map<String, dynamic> map) {
+    return DeviceFaultAlarmMessage(
+      eventId: map['eventId'] as String,
+      deviceName: map['deviceName'] as String,
+      sendTime: map['sendTime'] as DateTime,
+      deviceCode: map['deviceCode'] as String,
+      checked: map['checked'] as bool,
+      mainEngineCode: map['mainEngineCode'] as String,
+      id: map['id'] as String,
+      floorAreaName: map['floorAreaName'] as String,
+      floorName: map['floorName'] as String,
+    );
+  }
+
 
 //</editor-fold>
 }
-abstract class CheckAlarmMessage{
+
+abstract class CheckAlarmMessage {
   @JsonKey(name: "event_id")
   String eventId;
   @JsonKey(name: "device_name")
@@ -198,11 +318,12 @@ abstract class CheckAlarmMessage{
   String checkUserId;
   @JsonKey(name: "warning_message_id")
   String warningMessageId;
-  @JsonKey(name:"check_time")
+  @JsonKey(name: "check_time")
   String checkTIme;
-  @JsonKey(name:"check_user_real_name")
+  @JsonKey(name: "check_user_real_name")
   String checkUserRealName;
 }
+
 @JsonSerializable()
 class FireCheckAlarmMessage extends CheckAlarmMessage {
   @JsonKey(name: "event_id")
@@ -223,9 +344,9 @@ class FireCheckAlarmMessage extends CheckAlarmMessage {
   String warningMessageId;
   @JsonKey(name: "fire_type")
   String fireType;
-  @JsonKey(name:"check_time")
+  @JsonKey(name: "check_time")
   String checkTIme;
-  @JsonKey(name:"check_user_real_name")
+  @JsonKey(name: "check_user_real_name")
   String checkUserRealName;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
@@ -351,8 +472,9 @@ class FireCheckAlarmMessage extends CheckAlarmMessage {
 
 //</editor-fold>
 }
+
 @JsonSerializable()
-class DeviceCheckedAlarmMessage extends CheckAlarmMessage{
+class DeviceCheckedAlarmMessage extends CheckAlarmMessage {
   @JsonKey(name: "event_id")
   String eventId;
   @JsonKey(name: "device_name")
@@ -371,13 +493,12 @@ class DeviceCheckedAlarmMessage extends CheckAlarmMessage{
   String warningMessageId;
   @JsonKey(name: "fault_type")
   String faultType;
-  @JsonKey(name:"check_time")
+  @JsonKey(name: "check_time")
   String checkTIme;
-  @JsonKey(name:"check_user_real_name")
+  @JsonKey(name: "check_user_real_name")
   String checkUserRealName;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
-
 
   DeviceCheckedAlarmMessage({
     @required this.eventId,
@@ -394,26 +515,23 @@ class DeviceCheckedAlarmMessage extends CheckAlarmMessage{
     @required this.checkUserRealName,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is DeviceCheckedAlarmMessage &&
-              runtimeType == other.runtimeType &&
-              eventId == other.eventId &&
-              deviceName == other.deviceName &&
-              recordTime == other.recordTime &&
-              deviceCode == other.deviceCode &&
-              checked == other.checked &&
-              engineCode == other.engineCode &&
-              id == other.id &&
-              checkUserId == other.checkUserId &&
-              warningMessageId == other.warningMessageId &&
-              faultType == other.faultType &&
-              checkTIme == other.checkTIme &&
-              checkUserRealName == other.checkUserRealName
-          );
-
+      (other is DeviceCheckedAlarmMessage &&
+          runtimeType == other.runtimeType &&
+          eventId == other.eventId &&
+          deviceName == other.deviceName &&
+          recordTime == other.recordTime &&
+          deviceCode == other.deviceCode &&
+          checked == other.checked &&
+          engineCode == other.engineCode &&
+          id == other.id &&
+          checkUserId == other.checkUserId &&
+          warningMessageId == other.warningMessageId &&
+          faultType == other.faultType &&
+          checkTIme == other.checkTIme &&
+          checkUserRealName == other.checkUserRealName);
 
   @override
   int get hashCode =>
@@ -429,7 +547,6 @@ class DeviceCheckedAlarmMessage extends CheckAlarmMessage{
       faultType.hashCode ^
       checkTIme.hashCode ^
       checkUserRealName.hashCode;
-
 
   @override
   String toString() {
@@ -448,7 +565,6 @@ class DeviceCheckedAlarmMessage extends CheckAlarmMessage{
         ' checkUserRealName: $checkUserRealName,' +
         '}';
   }
-
 
   DeviceCheckedAlarmMessage copyWith({
     String eventId,
@@ -479,7 +595,6 @@ class DeviceCheckedAlarmMessage extends CheckAlarmMessage{
       checkUserRealName: checkUserRealName ?? this.checkUserRealName,
     );
   }
-
 
   Map<String, dynamic> toMap() {
     return {

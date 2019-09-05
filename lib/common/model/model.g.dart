@@ -14,7 +14,10 @@ FireAlarmMessage _$FireAlarmMessageFromJson(Map<String, dynamic> json) {
     deviceCode: json['device_code'] as String,
     checked: json['checked'] as bool,
     mainEngineCode: json['main_engine_code'] as String,
-  )..id = json['id'] as String;
+    id: json['id'] as String,
+    floorAreaName: json['floor_area_name'] as String,
+    floorName: json['floor_name'] as String,
+  );
 }
 
 Map<String, dynamic> _$FireAlarmMessageToJson(FireAlarmMessage instance) =>
@@ -26,6 +29,8 @@ Map<String, dynamic> _$FireAlarmMessageToJson(FireAlarmMessage instance) =>
       'checked': instance.checked,
       'main_engine_code': instance.mainEngineCode,
       'id': instance.id,
+      'floor_area_name': instance.floorAreaName,
+      'floor_name': instance.floorName,
     };
 
 DeviceFaultAlarmMessage _$DeviceFaultAlarmMessageFromJson(
@@ -37,7 +42,10 @@ DeviceFaultAlarmMessage _$DeviceFaultAlarmMessageFromJson(
     deviceCode: json['device_code'] as String,
     checked: json['checked'] as bool,
     mainEngineCode: json['main_engine_code'] as String,
-  )..id = json['id'] as String;
+    id: json['id'] as String,
+    floorAreaName: json['floor_area_name'] as String,
+    floorName: json['floor_name'] as String,
+  );
 }
 
 Map<String, dynamic> _$DeviceFaultAlarmMessageToJson(
@@ -50,6 +58,8 @@ Map<String, dynamic> _$DeviceFaultAlarmMessageToJson(
       'checked': instance.checked,
       'main_engine_code': instance.mainEngineCode,
       'id': instance.id,
+      'floor_area_name': instance.floorAreaName,
+      'floor_name': instance.floorName,
     };
 
 FireCheckAlarmMessage _$FireCheckAlarmMessageFromJson(

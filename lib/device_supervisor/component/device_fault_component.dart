@@ -36,7 +36,7 @@ class DeviceFaultComponent extends StatelessWidget {
                         ..dispatch(FetchCheckedAlarmData(false)),
                   child: CheckedAlarmPage(
                     (thisTask) => CheckResultComponent(
-                        (thisTask as FireCheckAlarmMessage).fireType ==
+                        (thisTask as DeviceCheckedAlarmMessage).faultType ==
                                 "PROCESSED"
                             ? "已处理"
                             : "未处理"),
