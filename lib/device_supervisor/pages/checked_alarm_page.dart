@@ -5,8 +5,9 @@ part of "device_supvisor_pages.dart";
 
 class CheckedAlarmPage extends StatefulWidget {
   final Function resultComponents;
+  final bool isFire;
 
-  CheckedAlarmPage(this.resultComponents);
+  CheckedAlarmPage(this.resultComponents,this.isFire);
 
   @override
   _CheckedAlarmPageState createState() => _CheckedAlarmPageState();
@@ -72,10 +73,10 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                 enableControlFinishLoad: true,
                 controller: _controller,
                 onRefresh: () async {
-                  bloc.dispatch(RefreshCheckAlarmData(false));
+                  bloc.dispatch(RefreshCheckAlarmData(widget.isFire));
                 },
                 onLoad: () async {
-                  bloc.dispatch(FetchCheckedAlarmData(false));
+                  bloc.dispatch(FetchCheckedAlarmData(widget.isFire));
                 },
                 child: model.dataList.isEmpty
                     ? Center(

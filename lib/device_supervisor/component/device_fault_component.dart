@@ -32,14 +32,15 @@ class DeviceFaultComponent extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return BlocProvider<CheckAlarmListBloc>(
                   builder: (context) =>
-                  CheckAlarmListBloc(CheckAlarmRepositories())
-                    ..dispatch(FetchCheckedAlarmData(false)),
+                      CheckAlarmListBloc(CheckAlarmRepositories())
+                        ..dispatch(FetchCheckedAlarmData(false)),
                   child: CheckedAlarmPage(
-                        (thisTask) => CheckResultComponent(
+                    (thisTask) => CheckResultComponent(
                         (thisTask as FireCheckAlarmMessage).fireType ==
-                            "PROCESSED"
+                                "PROCESSED"
                             ? "已处理"
                             : "未处理"),
+                    false
                   ),
                 );
               }));
@@ -71,7 +72,8 @@ class DeviceFaultTile extends StatelessWidget {
             Icons.chevron_right,
           ),
           title: Text(meg.deviceName),
-          subtitle: Text("设备在${meg.sendTime.toString().substring(0,10)}发出故障警报"),
+          subtitle:
+              Text("设备在${meg.sendTime.toString().substring(0, 10)}发出故障警报"),
           onTap: () async {
             await Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) {
@@ -80,8 +82,8 @@ class DeviceFaultTile extends StatelessWidget {
                   meg,
                   ConfirmMessageRepositories(),
                 )..dispatch(
-                  StartToConfirm(),
-                ),
+                    StartToConfirm(),
+                  ),
                 child: ConfirmMessagePage(),
               );
             }));

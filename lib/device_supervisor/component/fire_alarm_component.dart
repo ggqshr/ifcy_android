@@ -39,6 +39,7 @@ class FireAlarmComponent extends StatelessWidget {
                                 "TRULY_ALARM"
                             ? "真火警"
                             : "误报"),
+                    true
                   ),
                 );
               }));
