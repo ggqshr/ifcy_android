@@ -40,19 +40,23 @@ class ErrorProcessDelegate extends BlocDelegate {
           );
           break;
         case DioErrorType.RESPONSE:
-          var res = error.response;
-          var code = res.data['code'];
-          var msg = res.data['msg'];
-          var statusCode = res.statusCode;
-          if (code == '110001') {
-            //用户未登录
-            Application.showWarnToast("用户名密码不正确 $code $msg $statusCode");
-          } else if (code == '999999') {
-            //服务器内部错误
-            Application.showWarnToast("服务器内部错误 $code $msg $statusCode");
-          } else if (code == '110002') {
-            //空的用户名密码
-            Application.showWarnToast("空的用户名或者密码 $code $msg $statusCode");
+          try{
+            var res = error.response;
+            var code = res.data['code'];
+            var msg = res.data['msg'];
+            var statusCode = res.statusCode;
+            if (code == '110001') {
+              //用户未登录
+              Application.showWarnToast("用户名密码不正确 $code $msg $statusCode");
+            } else if (code == '999999') {
+              //服务器内部错误
+              Application.showWarnToast("服务器内部错误 $code $msg $statusCode");
+            } else if (code == '110002') {
+              //空的用户名密码
+              Application.showWarnToast("空的用户名或者密码 $code $msg $statusCode");
+            }
+          }catch(e){
+            Application.showWarnToast("未知错误!!");
           }
           break;
         default:

@@ -48,6 +48,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+
+  @override
+  void onError(Object error, StackTrace stacktrace) {
+    print("Login error");
+    super.onError(error, stacktrace);
+  }
+
   Stream<LoginState> _mapEmailChangedToState(String userName) async* {
     yield currentState.update(isUserNameValid: userName.isNotEmpty);
   }
