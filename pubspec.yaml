@@ -56,7 +56,7 @@ dependencies:
   flutter_bloc: ^0.21.0
   equatable: ^0.3.0
   rxdart: ^0.22.1+1
-  jpush_flutter: 0.0.13
+  jpush_flutter: 0.1.0
   expandable: ^3.0.0+1
 
 
