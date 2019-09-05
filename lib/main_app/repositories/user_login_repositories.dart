@@ -23,7 +23,7 @@ class UserLoginDataProvider {
   }
 
   Future setUpJpush(UserEntity userEntity) async {
-    String tag = "FIRE_${userEntity.buildingCode}";
+    String fireTag= "FIRE_${userEntity.buildingCode}";
     String alias = "USER_${userEntity.userName}";
     String faultTag = "FAULT_${userEntity.buildingCode}";
     jPush.addEventHandler(
@@ -46,14 +46,12 @@ class UserLoginDataProvider {
       production: false,
       debug: false, // 设置是否打印 debug 日志
     );
-    Map tags = await jPush.getAllTags();
-    if (!tags.containsValue(tag)) {
-      await jPush.setTags([tag]);
-      //如果是维保主管和维保工作人员就设置故障tag，接收推送消息
-      if (userEntity.roleType == "MAINTAIN_WORKER" ||
-          userEntity.roleType == 'MAINTAIN_MANAGER') {
-        await jPush.setTags([faultTag]);
-      }
+    //如果是维保主管和维保工作人员就设置故障tag，接收推送消息
+    if (userEntity.roleType == "MAINTAIN_WORKER" ||
+        userEntity.roleType == 'MAINTAIN_MANAGER') {
+      await jPush.setTags([faultTag,fireTag]);
+    }else{
+      await jPush.setTags([fireTag]);
     }
     Map a = await jPush.setAlias(alias);
     print(a);
