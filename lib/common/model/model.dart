@@ -40,6 +40,8 @@ part 'inspection_system.dart';
 
 part 'build.dart';
 
+part "device.dart";
+
 ///检查结果的类型
 enum InspectionResultType {
   normal, //正常

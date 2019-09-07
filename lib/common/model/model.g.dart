@@ -315,3 +315,30 @@ Map<String, dynamic> _$FloorEntityToJson(FloorEntity instance) =>
       'name': instance.name,
       'id': instance.id,
     };
+
+DeviceMessage _$DeviceMessageFromJson(Map<String, dynamic> json) {
+  return DeviceMessage(
+    area: json['area'] as String,
+    category: json['category'] as String,
+    code: json['code'] as String,
+    floor: json['floor'] as String,
+    id: json['id'] as String,
+    name: json['name'] as String,
+    online: json['online'] as bool,
+    position: json['position'] as String,
+    status: json['status'] as String,
+  );
+}
+
+Map<String, dynamic> _$DeviceMessageToJson(DeviceMessage instance) =>
+    <String, dynamic>{
+      'area': instance.area,
+      'category': instance.category,
+      'code': instance.code,
+      'floor': instance.floor,
+      'id': instance.id,
+      'name': instance.name,
+      'online': instance.online,
+      'position': instance.position,
+      'status': instance.status,
+    };

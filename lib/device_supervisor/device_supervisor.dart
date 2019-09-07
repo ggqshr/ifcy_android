@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/device_supervisor/blocs/device_message_bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/repositories/monitor_repositories.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
@@ -26,14 +27,14 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
   int currentIndex = 0;
   List<Icon> iconList = [
     Icon(Icons.business),
-    Icon(Icons.warning),
+    Icon(Icons.devices),
     Icon(Icons.format_list_bulleted),
     Icon(Icons.person_outline),
   ];
   List<String> iconTextList = [
     "大厦",
-    "故障",
-    "工作",
+    "设备",
+    "巡检",
     "我的",
   ];
 
@@ -74,6 +75,12 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
                 return TaskListBloc(repositories);
               },
             ),
+            BlocProvider<DeviceMessageBloc>(
+              builder: (context) {
+                DeviceMessageRepositories repo = DeviceMessageRepositories();
+                return DeviceMessageBloc(repo)..dispatch(FetchAllDevices());
+              },
+            ),
             BlocProvider<BadgeBloc>(
               builder: (context) => BadgeBloc([1, 1, 2, 0],
                   monitorBloc: BlocProvider.of<MonitorBloc>(context)),
@@ -81,7 +88,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
           ],
           child: Scaffold(
             bottomNavigationBar:
-            BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
+                BlocBuilder<BadgeBloc, List<int>>(builder: (context, state) {
               return BottomNavigationBar(
                 elevation: 10,
                 type: BottomNavigationBarType.fixed,

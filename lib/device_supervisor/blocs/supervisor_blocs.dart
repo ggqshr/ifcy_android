@@ -7,3 +7,4 @@ export 'monitor_bloc/bloc.dart';
 export 'task_list_bloc/bloc.dart';
 export "confirm_message_bloc/bloc.dart";
 export "check_alarm_list_bloc/bloc.dart";
+export 'device_message_bloc/bloc.dart';
