@@ -8,3 +8,4 @@ export 'monitor_repositories.dart';
 export "confirm_message_repositories.dart";
 export "check_alarm_repositories.dart";
 export 'device_message_repositories.dart';
+export 'report_device_repositories.dart';

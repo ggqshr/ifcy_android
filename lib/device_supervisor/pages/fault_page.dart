@@ -84,6 +84,23 @@ class _FaultPageState extends State<FaultPage>
             appBar: AppBar(
               centerTitle: true,
               title: Text("设备列表"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("设备申报"),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return BlocProvider<ReportDeviceBloc>(
+                        builder: (context) {
+                          return ReportDeviceBloc(ReportDeviceRepositories())
+                            ..dispatch(FetchReportDevice());
+                        },
+                        child: ReportDevicePage(),
+                      );
+                    }));
+                  },
+                ),
+              ],
             ),
             body: CustomScrollView(
               scrollDirection: Axis.vertical,
