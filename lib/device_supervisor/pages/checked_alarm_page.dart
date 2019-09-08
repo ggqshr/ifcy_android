@@ -35,6 +35,7 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("历史消息"),
+        centerTitle: true,
       ),
       body: BlocListener<CheckAlarmListBloc, CheckAlarmListState>(
         listener: (context, state) {

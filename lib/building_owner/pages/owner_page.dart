@@ -2,68 +2,73 @@ part of "building_owner_pages.dart";
 
 class OwnerPage extends StatelessWidget {
   final Function drawerCall;
+  final Function fireSwitchCall;
 
-  OwnerPage(this.drawerCall);
+  OwnerPage(this.drawerCall, this.fireSwitchCall);
 
   @override
   Widget build(BuildContext context) {
+    OwnerMonitorBloc bloc = BlocProvider.of<OwnerMonitorBloc>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: BuildingOwnerAppBarComponent(),
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+                as Authenticated)
+            .currentBuild
+            .buildName),
         leading: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {
               drawerCall();
             }),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await Future.delayed(Duration(seconds: 2));
-        },
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                child: Card(
-                  elevation: 5,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: DataStatisticsComponent(),
-                  ),
-                ),
-              ),
-            ),
-            SliverPadding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-            ),
-
-            FireAlarmComponent(),
-            DeviceFaultComponent(),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: Text("今日值班人员",style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12
+      body: BlocBuilder<OwnerMonitorBloc, OwnerMonitorState>(
+        // ignore: missing_return
+        builder: (context, state) {
+          if (state is LoadErrorOwnerMonitorDataState) {
+            return LoadErrorPage(
+                () => bloc.dispatch(FetchOwnerMonitorDataEvent()));
+          }
+          if (state is LoadingOwnerMonitorDataState) {
+            return LoadingPage();
+          }
+          if (state is LoadedOwnerMonitorDataState) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                bloc.dispatch(FetchOwnerMonitorDataEvent());
+              },
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                      child: Card(
+                        elevation: 5,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: DataStatisticsComponent(
+                            faultNum: state.deviceFaultNum,
+                            fireNum: state.fireNum,
+                            taskProgress: state.taskCompleteRate,
+                          ),
+                        ),
+                      ),
                     ),
-                      textScaleFactor: 1.3,),
-                  );
-                },
-                childCount: 1,
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  ),
+                  FireAlarmComponent(state.fireAlarmMsg, fireSwitchCall),
+                  DeviceFaultComponent(state.deviceFaultMsg),
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+                  ),
+                ],
               ),
-            ),
-            StaffComponent(),
-            SliverPadding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
@@ -71,228 +76,206 @@ class OwnerPage extends StatelessWidget {
 
 ///数据统计模块
 class DataStatisticsComponent extends StatelessWidget {
+  final int faultNum;
+  final int taskProgress;
+  final int fireNum;
+
+  DataStatisticsComponent({this.faultNum, this.taskProgress, this.fireNum});
+
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, HomePageModel>(
-        distinct: true,
-        converter: (Store<AppState> store) {
-          BuildingOwnerModel model = store.state.buildingOwnerModel;
-          return HomePageModel(
-            faultNum: model.deviceFaultMessages.length,
-            fireNum: model.fireAlarmMessages.length,
-            taskProgress: model.taskProgress,
-          );
-        },
-        builder: (BuildContext context, HomePageModel vm) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Flexible(
-                flex: 2,
-                child: GestureDetector(
-                  //todo 跳转页面逻辑
-                  onTap: () => Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text("test"))),
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 120,
-                        child: chart.PieChart(
-                          [
-                            chart.Series<List, int>(
-                              id: 'hh',
-                              domainFn: (List l, _1) => l[0],
-                              measureFn: (List l, _1) => l[1],
-                              data: [
-                                [1, vm.faultNum],
-                                [2, 100 - vm.faultNum],
-                              ],
-                              areaColorFn: (List l, int i) {
-                                return chart
-                                    .MaterialPalette.yellow.shadeDefault;
-                              },
-                              colorFn: (List l, __) {
-                                if (l[0] == 1) {
-                                  return chart
-                                      .MaterialPalette.yellow.shadeDefault;
-                                } else {
-                                  return chart
-                                      .MaterialPalette.green.shadeDefault;
-                                }
-                              },
-                            ),
-                          ],
-                          animate: true,
-                          defaultRenderer:
-                              chart.ArcRendererConfig(arcWidth: 10),
-                        ),
-                      ),
-                      Text(
-                        "${vm.faultNum.toString()}",
-                        textScaleFactor: 1.5,
-                        style: TextStyle(color: Colors.orange),
-                      ),
-                      Positioned(
-                        child: Text(
-                          "设备故障数",
-                        ),
-                        bottom: 0,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Flexible(
+          flex: 2,
+          child: GestureDetector(
+            //todo 跳转页面逻辑
+            onTap: () => Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text("test"))),
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  child: chart.PieChart(
+                    [
+                      chart.Series<List, int>(
+                        id: 'hh',
+                        domainFn: (List l, _1) => l[0],
+                        measureFn: (List l, _1) => l[1],
+                        data: [
+                          [1, faultNum],
+                          [2, 100 - faultNum],
+                        ],
+                        areaColorFn: (List l, int i) {
+                          return chart.MaterialPalette.yellow.shadeDefault;
+                        },
+                        colorFn: (List l, __) {
+                          if (l[0] == 1) {
+                            return chart.MaterialPalette.yellow.shadeDefault;
+                          } else {
+                            return chart.MaterialPalette.green.shadeDefault;
+                          }
+                        },
                       ),
                     ],
-                    alignment: AlignmentDirectional.center,
+                    animate: true,
+                    defaultRenderer: chart.ArcRendererConfig(arcWidth: 10),
                   ),
                 ),
-              ),
-              Flexible(
-                flex: 2,
-                child: GestureDetector(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 120,
-                        child: chart.PieChart(
-                          [
-                            chart.Series<List, int>(
-                              id: 'hh',
-                              domainFn: (List l, _1) => l[0],
-                              measureFn: (List l, _1) => l[1],
-                              data: [
-                                [1, vm.fireNum],
-                                [2, 100 - vm.fireNum],
-                              ],
-                              areaColorFn: (List l, int i) {
-                                return chart.MaterialPalette.red.shadeDefault;
-                              },
-                              colorFn: (List l, __) {
-                                if (l[0] == 1) {
-                                  return chart.MaterialPalette.red.shadeDefault;
-                                } else {
-                                  return chart
-                                      .MaterialPalette.green.shadeDefault;
-                                }
-                              },
-                            ),
-                          ],
-                          animate: true,
-                          defaultRenderer:
-                              chart.ArcRendererConfig(arcWidth: 10),
-                        ),
-                      ),
-                      Text(
-                        "${vm.fireNum.toString()}",
-                        textScaleFactor: 1.5,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      Positioned(
-                        child: Text(
-                          "火警警报数",
-                        ),
-                        bottom: 0,
+                Text(
+                  "${faultNum.toString()}",
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Colors.orange),
+                ),
+                Positioned(
+                  child: Text(
+                    "设备故障数",
+                  ),
+                  bottom: 0,
+                ),
+              ],
+              alignment: AlignmentDirectional.center,
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 2,
+          child: GestureDetector(
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  child: chart.PieChart(
+                    [
+                      chart.Series<List, int>(
+                        id: 'hh',
+                        domainFn: (List l, _1) => l[0],
+                        measureFn: (List l, _1) => l[1],
+                        data: [
+                          [1, fireNum],
+                          [2, 100 - fireNum],
+                        ],
+                        areaColorFn: (List l, int i) {
+                          return chart.MaterialPalette.red.shadeDefault;
+                        },
+                        colorFn: (List l, __) {
+                          if (l[0] == 1) {
+                            return chart.MaterialPalette.red.shadeDefault;
+                          } else {
+                            return chart.MaterialPalette.green.shadeDefault;
+                          }
+                        },
                       ),
                     ],
-                    alignment: AlignmentDirectional.center,
+                    animate: true,
+                    defaultRenderer: chart.ArcRendererConfig(arcWidth: 10),
                   ),
-                  //todo 跳转到任务
-                  onTap: () => Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text("跳转任务"))),
                 ),
-              ),
-              Flexible(
-                flex: 2,
-                child: GestureDetector(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 120,
-                        child: chart.PieChart(
-                          [
-                            chart.Series<List, int>(
-                              id: 'hh',
-                              domainFn: (List l, _1) => l[0],
-                              measureFn: (List l, _1) => l[1],
-                              data: [
-                                [1, vm.taskProgress],
-                                [2, 100 - vm.taskProgress],
-                              ],
-                              areaColorFn: (List l, int i) {
-                                return chart.MaterialPalette.blue.shadeDefault;
-                              },
-                              colorFn: (List l, __) {
-                                if (l[0] == 1) {
-                                  return chart
-                                      .MaterialPalette.blue.shadeDefault;
-                                } else {
-                                  return chart
-                                      .MaterialPalette.green.shadeDefault;
-                                }
-                              },
-                            ),
-                          ],
-                          animate: true,
-                          defaultRenderer:
-                              chart.ArcRendererConfig(arcWidth: 10),
-                        ),
-                      ),
-                      Text(
-                        "${vm.taskProgress.toString()}%",
-                        textScaleFactor: 1.5,
-                      ),
-                      Positioned(
-                        child: Text(
-                          "巡查进度",
-                        ),
-                        bottom: 0,
+                Text(
+                  "${fireNum.toString()}",
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Colors.red),
+                ),
+                Positioned(
+                  child: Text(
+                    "火警警报数",
+                  ),
+                  bottom: 0,
+                ),
+              ],
+              alignment: AlignmentDirectional.center,
+            ),
+            //todo 跳转到任务
+            onTap: () => Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text("跳转任务"))),
+          ),
+        ),
+        Flexible(
+          flex: 2,
+          child: GestureDetector(
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  child: chart.PieChart(
+                    [
+                      chart.Series<List, int>(
+                        id: 'hh',
+                        domainFn: (List l, _1) => l[0],
+                        measureFn: (List l, _1) => l[1],
+                        data: [
+                          [1, taskProgress],
+                          [2, 100 - taskProgress],
+                        ],
+                        areaColorFn: (List l, int i) {
+                          return chart.MaterialPalette.blue.shadeDefault;
+                        },
+                        colorFn: (List l, __) {
+                          if (l[0] == 1) {
+                            return chart.MaterialPalette.blue.shadeDefault;
+                          } else {
+                            return chart.MaterialPalette.green.shadeDefault;
+                          }
+                        },
                       ),
                     ],
-                    alignment: AlignmentDirectional.center,
+                    animate: true,
+                    defaultRenderer: chart.ArcRendererConfig(arcWidth: 10),
                   ),
-                  //todo 跳转到任务
-                  onTap: () => Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text("跳转任务"))),
                 ),
-              ),
-            ],
-          );
-        });
+                Text(
+                  "${taskProgress.toString()}%",
+                  textScaleFactor: 1.5,
+                ),
+                Positioned(
+                  child: Text(
+                    "巡查进度",
+                  ),
+                  bottom: 0,
+                ),
+              ],
+              alignment: AlignmentDirectional.center,
+            ),
+            //todo 跳转到任务
+            onTap: () => Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text("跳转任务"))),
+          ),
+        ),
+      ],
+    );
   }
 }
 
-///火警消息模块
 class FireAlarmComponent extends StatelessWidget {
+  final List<FireAlarmMessage> msgs;
+  final Function fireSwitchCall;
+
+  FireAlarmComponent(this.msgs, this.fireSwitchCall);
+
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, HomePageModel>(
-            converter: (Store<AppState> store) {
-              return HomePageModel(
-                fireNum:
-                    store.state.buildingOwnerModel.fireAlarmMessages.length,
-                fireAlarmMessageList:
-                    store.state.buildingOwnerModel.fireAlarmMessages,
-              );
-            },
-            builder: (BuildContext context, HomePageModel vm) {
-              List<Widget> viewList = <Widget>[];
-              //若没有消息应该显示空白以及提示
-              if (vm.fireNum == 0) {
-                viewList.add(ListTile(
-                  title: Text("当前无火警消息"),
-                ));
-              } else {
-                viewList =
-                    vm.fireAlarmMessageList.map<Widget>((FireAlarmMessage meg) {
-                  return FireMessageTile(meg);
-                }).toList();
-              }
+          List<Widget> viewList = <Widget>[];
+          int messageNum = msgs.length;
+          //若没有消息应该显示空白以及提示
+          if (messageNum == 0) {
+            viewList.add(ListTile(
+              title: Text("当前无消息"),
+            ));
+          } else {
+            viewList = msgs.map<Widget>((FireAlarmMessage meg) {
+              return FireMessageTile(meg);
+            }).toList();
+          }
 
-              return ExpansionCard(
-                title: "今日紧急火警警报",
-                messageNum: vm.fireNum,
-                viewList: viewList,
-              );
-            },
+          return ExpansionCard(
+            title: "紧急火警消息",
+            messageNum: messageNum,
+            viewList: viewList,
+            onTalCall: (context) => fireSwitchCall(),
           );
         },
         childCount: 1,
@@ -319,11 +302,9 @@ class FireMessageTile extends StatelessWidget {
           trailing: Icon(
             Icons.chevron_right,
           ),
-          title: Text(meg.content),
-          subtitle: Text(meg.content),
-          onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("跳转${meg.id}"),
-          )),
+          title: Text(meg.deviceName),
+          subtitle: Text("设备在${meg.sendTime.toString().substring(0, 10)}发出警报\n"
+              "地点在${meg.floorName}的${meg.floorAreaName}"),
         ),
         elevation: 10,
       ),
@@ -333,40 +314,48 @@ class FireMessageTile extends StatelessWidget {
 
 ///设备故障模块
 class DeviceFaultComponent extends StatelessWidget {
+  final List<DeviceFaultAlarmMessage> msgs;
+
+  DeviceFaultComponent(this.msgs);
+
   @override
   Widget build(BuildContext context) {
+    int messageNum = msgs.length;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return StoreConnector<AppState, HomePageModel>(
-            converter: (Store<AppState> store) {
-              return HomePageModel(
-                faultNum:
-                    store.state.buildingOwnerModel.deviceFaultMessages.length,
-                deviceFaultMessageList:
-                    store.state.buildingOwnerModel.deviceFaultMessages,
-              );
-            },
-            builder: (BuildContext context, HomePageModel vm) {
-              List<Widget> viewList = <Widget>[];
+          List<Widget> viewList = <Widget>[];
 
-              //若没有消息应该显示空白以及提示
-              if (vm.faultNum == 0) {
-                viewList.add(ListTile(
-                  title: Text("当前无消息"),
-                ));
-              } else {
-                viewList = vm.deviceFaultMessageList
-                    .map<Widget>((DeviceFaultMessage meg) {
-                  return DeviceFaultTile(meg);
-                }).toList();
-              }
+          //若没有消息应该显示空白以及提示
+          if (messageNum == 0) {
+            viewList.add(ListTile(
+              title: Text("当前无消息"),
+            ));
+          } else {
+            viewList = msgs.map<Widget>((DeviceFaultAlarmMessage meg) {
+              return DeviceFaultTile(meg);
+            }).toList();
+          }
 
-              return ExpansionCard(
-                title: "今日设备故障警报",
-                messageNum: vm.faultNum,
-                viewList: viewList,
-              );
+          return ExpansionCard(
+            title: "今日设备故障",
+            messageNum: messageNum,
+            viewList: viewList,
+            onTalCall: (context) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return BlocProvider<CheckAlarmListBloc>(
+                  builder: (context) =>
+                      CheckAlarmListBloc(CheckAlarmRepositories())
+                        ..dispatch(FetchCheckedAlarmData(false)),
+                  child: CheckedAlarmPage(
+                      (thisTask) => CheckResultComponent(
+                          (thisTask as DeviceCheckedAlarmMessage).faultType ==
+                                  "PROCESSED"
+                              ? "已处理"
+                              : "未处理"),
+                      false),
+                );
+              }));
             },
           );
         },
@@ -377,7 +366,7 @@ class DeviceFaultComponent extends StatelessWidget {
 }
 
 class DeviceFaultTile extends StatelessWidget {
-  final DeviceFaultMessage meg;
+  final DeviceFaultAlarmMessage meg;
 
   DeviceFaultTile(this.meg);
 
@@ -394,48 +383,13 @@ class DeviceFaultTile extends StatelessWidget {
           trailing: Icon(
             Icons.chevron_right,
           ),
-          title: Text(meg.title),
-          subtitle: Text(meg.content),
-          onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("跳转${meg.id}"),
-          )),
+          title: Text(meg.deviceName),
+          subtitle:
+              Text("设备在${meg.sendTime.toString().substring(0, 10)}发出故障警报\n"
+                  "地点在${meg.floorName}的${meg.floorAreaName}"),
         ),
         elevation: 10,
       ),
     );
-  }
-}
-
-///巡检和值班人员模块
-class StaffComponent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, HomePageModel>(
-        converter: (Store<AppState> store) {
-      return HomePageModel(
-          watchkeeperList: store.state.buildingOwnerModel.projectStaffList);
-    }, builder: (BuildContext context, HomePageModel vm) {
-      return SliverPadding(
-        padding: const EdgeInsets.all(10.0),
-        sliver: SliverGrid(
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            mainAxisSpacing: 10.0,
-            childAspectRatio: 3.0,
-            crossAxisSpacing: 10.0,
-          ),
-          delegate: new SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return new Container(
-                alignment: Alignment.center,
-                color: Colors.cyan[100 * (index % 9)],
-                child: new Text(vm.watchkeeperList[index].name),
-              );
-            },
-            childCount: vm.watchkeeperList.length,
-          ),
-        ),
-      );
-    });
   }
 }

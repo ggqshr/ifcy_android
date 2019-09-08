@@ -11,7 +11,6 @@ import 'package:redux/redux.dart';
 import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'blocs/supervisor_blocs.dart';
 import 'model/device_supervisor_model.dart';
-import 'device_supervisor_redux.dart';
 import 'pages/device_supvisor_pages.dart';
 import 'package:ifcy/common/components/components.dart';
 

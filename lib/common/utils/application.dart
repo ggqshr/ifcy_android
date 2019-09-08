@@ -19,10 +19,10 @@ class Application {
   static SharedPreferences prefs;
   ///后台的权限和前台的页面映射逻辑
   static Map<String, Widget> auth2view = {
-    "MAINTAIN_MANAGER": BuildingOwner(), //维保主管
+    "MAINTAIN_MANAGER": DeviceSupervisor(), //维保主管
     // "MAINTAIN_MANAGER": DeviceSupervisor(), //维保主管
     "MAINTAIN_WORKER": DeviceStaff(), //维保工作人员
-   // "OWNER":BuildingOwner(),//业主
+    "OWNER":BuildingOwner(),//业主
   };
 
   ///封装的flutterToast的方法，使用方法一致

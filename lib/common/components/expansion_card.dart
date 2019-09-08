@@ -5,8 +5,9 @@ class ExpansionCard extends StatelessWidget {
   final int messageNum;
   final List<Widget> viewList;
   final Function onTalCall;
+  final bool isExpansion;
 
-  ExpansionCard({this.title, this.messageNum, this.viewList, this.onTalCall});
+  ExpansionCard({this.title, this.messageNum, this.viewList, this.onTalCall,this.isExpansion=false});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class ExpansionCard extends StatelessWidget {
               showBadge: messageNum != 0,
             ),
             Spacer(),
-            GestureDetector(
+            onTalCall != null ?GestureDetector(
               child: Chip(
                 label: Text(
                   "查看历史",
@@ -45,10 +46,10 @@ class ExpansionCard extends StatelessWidget {
                 ),
               ),
               onTap: onTalCall == null ? null : () => onTalCall(context),
-            ),
+            ):Container(),
           ],
         ),
-        initiallyExpanded: false,
+        initiallyExpanded: isExpansion,
         children: viewList,
       ),
     );

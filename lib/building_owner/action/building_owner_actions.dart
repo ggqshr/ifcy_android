@@ -5,7 +5,6 @@ class InitOwnerPageStateAction {
   int faultNum; //故障数
   int taskProgress; //巡检进度
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
-  List<DeviceFaultMessage> deviceFaultMessages; //设备故障消息
   List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的故障申报消息
   List<PersonnelMessage> projectStaffList; //项目人员列表
 
@@ -14,7 +13,6 @@ class InitOwnerPageStateAction {
     this.faultNum,
     this.taskProgress,
     this.fireAlarmMessages,
-    this.deviceFaultMessages,
     this.processedDeviceFaultList,
     this.projectStaffList,
   });
@@ -23,23 +21,10 @@ class InitOwnerPageStateAction {
       : fireNum = 12,
         faultNum = 15,
         taskProgress = 50,
-        fireAlarmMessages = List.generate(5, (index) {
-          return FireAlarmMessage.generate(index.toString());
-        }),
-        deviceFaultMessages = List.generate(5, (index) {
-          return DeviceFaultMessage.generate(index.toString());
-        }),
         processedDeviceFaultList = List.generate(10, (index) {
           return ProcessedDeviceFaultMessage.generate(index.toString());
-        }),
-        projectStaffList = List.generate(10, (index) {
-          return PersonnelMessage.generate(index.toString());
         });
 
-  @override
-  String toString() {
-    return 'InitOwnerPageStateAction{faultNum: $faultNum, taskProgress: $taskProgress, fireAlarmMessages: $fireAlarmMessages, deviceFaultMessages: $deviceFaultMessages}';
-  }
 }
 
 ///业主切换建筑的action

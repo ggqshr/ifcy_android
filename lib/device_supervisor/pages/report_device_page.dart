@@ -82,19 +82,7 @@ class ReportDevicePage extends StatelessWidget {
               );
             }
             if (state is LoadErrorDeviceMessageState) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    CircularProgressIndicator(),
-                    FlatButton.icon(
-                      icon: Icon(Icons.refresh),
-                      label: Text("重新加载"),
-                      onPressed: () => _bloc.dispatch(FetchReportDevice()),
-                    ),
-                  ],
-                ),
-              );
+              return LoadErrorPage(() => _bloc.dispatch(FetchReportDevice()));
             }
             if (state is LoadedReportDevicesState) {
               if (state.devicesToShow.isEmpty) {

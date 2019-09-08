@@ -9,7 +9,6 @@ class HomePageModel {
   int faultNum;
   int taskProgress;
   List<FireAlarmMessage> fireAlarmMessageList;
-  List<DeviceFaultMessage> deviceFaultMessageList;
   List<PersonnelMessage> watchkeeperList;
 
   HomePageModel(
@@ -17,6 +16,5 @@ class HomePageModel {
       this.faultNum,
       this.taskProgress,
       this.fireAlarmMessageList,
-      this.deviceFaultMessageList,
       this.watchkeeperList});
 }

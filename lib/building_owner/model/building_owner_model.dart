@@ -19,7 +19,6 @@ class BuildingOwnerModel {
   List<Build> buildingList = [Build(buildId: null, buildName: "所有大厦")]; //大厦列表
   Build currentBuilding; //当前选中的大厦
   List<FireAlarmMessage> fireAlarmMessages; //火警消息
-  List<DeviceFaultMessage> deviceFaultMessages; //设备故障消息
   List<ProcessedDeviceFaultMessage> processedDeviceFaultList; //已处理的设备故障申报消息
   List<PersonnelMessage> projectStaffList; //项目人员列表
 
@@ -30,7 +29,6 @@ class BuildingOwnerModel {
     this.buildingList,
     this.currentBuilding,
     this.fireAlarmMessages,
-    this.deviceFaultMessages,
     this.processedDeviceFaultList,
     this.projectStaffList,
   });

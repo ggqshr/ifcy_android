@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/building_owner/blocs/building_owner_blocs.dart';
+import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
+import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';
+import 'package:ifcy/device_supervisor/pages/device_supvisor_pages.dart'
+    hide FaultPage;
+import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/building_owner/pages/building_owner_pages.dart';
 import 'package:ifcy/common/components/components.dart';
 
+import 'repositories/building_owner_repositories.dart';
+
 class BuildingOwner extends StatefulWidget {
 //  String auth;
-  Function drawerCall;
 
   BuildingOwner();
 
@@ -32,42 +41,80 @@ class _BuildingOwnerState extends State<BuildingOwner> {
   void initState() {
     super.initState();
     viewList
-      ..add(OwnerPage(widget.drawerCall))
-      ..add(FaultPage(widget.drawerCall))
+      ..add(OwnerPage(
+          () => Scaffold.of(context).openDrawer(),
+          () => setState(() {
+                curIndex = 3;
+              })))
+      ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
       ..add(EmployeePage())
-      ..add(FireWarningPage())
-      ..add(PersonPage(widget.drawerCall));
+      ..add(CheckedAlarmPage(
+          (thisTask) => CheckResultComponent(
+              (thisTask as FireCheckAlarmMessage).fireType == "TRULY_ALARM"
+                  ? "真火警"
+                  : "误报"),
+          true))
+      ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 10,
-        type: BottomNavigationBarType.fixed,
-        items: iconList.map<BottomNavigationBarItem>((i) {
-          int curIndex = iconList.indexOf(i);
-          int curBadge = bottomBadgeNumList[curIndex];
-          return BottomNavigationBarItem(
-            icon: Badge(
-              child: i,
-              badgeContent: Text(
-                curBadge.toString(),
-                style: TextStyle(color: Colors.white),
-              ),
-              showBadge: curBadge != 0,
-            ),
-            title: Text(iconTextList[curIndex]),
-          );
-        }).toList(),
-        onTap:(v){
-          setState(() {
-            curIndex=v;
-          });
-        } ,
-        currentIndex: curIndex,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<OwnerMonitorRepositories>(
+          builder: (context) => OwnerMonitorRepositories(),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<OwnerMonitorBloc>(
+            builder: (context) {
+              OwnerMonitorRepositories repo =
+                  RepositoryProvider.of<OwnerMonitorRepositories>(context);
+              return OwnerMonitorBloc(repo)
+                ..dispatch(FetchOwnerMonitorDataEvent());
+            },
+          ),
+          BlocProvider<EmployeeListBloc>(
+            builder: (context) {
+              return EmployeeListBloc(EmployeeRepositories())
+                ..dispatch(FetchEmployeeListDataEvent());
+            },
+          ),
+          BlocProvider<CheckAlarmListBloc>(
+            builder: (context) => CheckAlarmListBloc(CheckAlarmRepositories())
+              ..dispatch(FetchCheckedAlarmData(true)),
+          )
+        ],
+        child: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            elevation: 10,
+            type: BottomNavigationBarType.fixed,
+            items: iconList.map<BottomNavigationBarItem>((i) {
+              int curIndex = iconList.indexOf(i);
+              int curBadge = bottomBadgeNumList[curIndex];
+              return BottomNavigationBarItem(
+                icon: Badge(
+                  child: i,
+                  badgeContent: Text(
+                    curBadge.toString(),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  showBadge: curBadge != 0,
+                ),
+                title: Text(iconTextList[curIndex]),
+              );
+            }).toList(),
+            onTap: (v) {
+              setState(() {
+                curIndex = v;
+              });
+            },
+            currentIndex: curIndex,
+          ),
+          body: viewList[curIndex],
+        ),
       ),
-      body: viewList[curIndex],
     );
   }
 }
