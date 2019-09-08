@@ -1,7 +1,7 @@
 part of 'components.dart';
 class PersonPage extends StatelessWidget {
-  final Function drawerCall;
 
+  final Function drawerCall;
   PersonPage(this.drawerCall);
 
 

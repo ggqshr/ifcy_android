@@ -110,8 +110,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                 return Card(
                   elevation: 5,
                   margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[

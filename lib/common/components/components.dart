@@ -15,7 +15,7 @@ import 'package:rxdart/subjects.dart';
 
 part 'search_input_componet.dart';
 part 'expansion_card.dart';
-
 part 'person_info_component.dart';
 //part 'package:ifcy/device_supervisor/component/person_list_component.dart';
 part "person_page.dart";
+
