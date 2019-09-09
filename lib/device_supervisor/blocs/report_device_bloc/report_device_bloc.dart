@@ -35,7 +35,7 @@ class ReportDeviceBloc extends Bloc<ReportDeviceEvent, ReportDeviceState> {
       );
     }
     if (event is ReportToServer) {
-      yield* _mapReportToState();
+      yield* _mapReportToState(event);
     }
   }
 
@@ -55,11 +55,11 @@ class ReportDeviceBloc extends Bloc<ReportDeviceEvent, ReportDeviceState> {
     }
   }
 
-  Stream<ReportDeviceState> _mapReportToState() async* {
+  Stream<ReportDeviceState> _mapReportToState(ReportToServer event ) async* {
     try {
       yield (currentState as LoadedReportDevicesState).submitting();
       await repositories.reportToServer(
-          (currentState as LoadedReportDevicesState).devicesToReport);
+          (currentState as LoadedReportDevicesState).devicesToReport,event.title,event.content);
       yield (currentState as LoadedReportDevicesState).success();
     } catch (e, s) {
       yield (currentState as LoadedReportDevicesState).fault();

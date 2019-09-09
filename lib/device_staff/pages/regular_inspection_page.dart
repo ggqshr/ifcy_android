@@ -15,7 +15,6 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   Animation<double> _animation;
   Animation<double> _transButton;
   ScrollController _scrollController;
-  TaskInfoDetailListBloc<RegularInspectionTaskDetail> _taskDetailsBloc;
   DeviceStaffDeviceCheckBloc _bloc;
   DeviceCheckRepositories _deviceCheckRepositories;
 
@@ -48,7 +47,6 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
 
     //执行进度条动画
     _animationController.forward();
-//    _taskDetailsBloc = TaskInfoDetailListBloc.localInit("1");
     _bloc = BlocProvider.of<DeviceStaffDeviceCheckBloc>(context);
     _deviceCheckRepositories = RepositoryProvider.of<DeviceCheckRepositories>(context);
   }

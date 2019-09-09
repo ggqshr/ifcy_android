@@ -20,4 +20,15 @@ class RemoveFromReportList extends ReportDeviceEvent {
   RemoveFromReportList(this.code) : super([code]);
 }
 
-class ReportToServer extends ReportDeviceEvent {}
+class ReportToServer extends ReportDeviceEvent {
+  final String title;
+  final String content;
+
+  ReportToServer(this.title, this.content) : super([title, content]);
+
+  @override
+  String toString() {
+    return 'ReportToServer{title: $title, content: $content}';
+  }
+
+}

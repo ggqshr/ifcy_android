@@ -131,7 +131,150 @@ class ReportDevicePage extends StatelessWidget {
               onPressed: (state is LoadedReportDevicesState &&
                       state.devicesToShow.isNotEmpty &&
                       state.devicesToReport.isNotEmpty)
-                  ? () => _bloc.dispatch(ReportToServer())
+                  ? () {
+                      TextEditingController titleController =
+                          TextEditingController();
+                      TextEditingController contentController =
+                          TextEditingController();
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return Scaffold(
+                          appBar: AppBar(
+                            title: Text("申报信息填写"),
+                            centerTitle: true,
+                          ),
+                          body: BlocProvider.value(
+                            value: _bloc,
+                            child: BlocListener<ReportDeviceBloc, ReportDeviceState>(
+                              listener: (context, state) async {
+                                if (state is LoadedReportDevicesState) {
+                                  if (state.isSuccess) {
+                                    Scaffold.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('申报成功'),
+                                              Icon(Icons.check),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    await Future.delayed(Duration(seconds: 1));
+                                    Navigator.of(context).pop();
+                                  }
+                                  if (state.isFault) {
+                                    Scaffold.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('提交失败，请稍后再试'),
+                                              Icon(Icons.error)
+                                            ],
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                  }
+                                  if (state.isSubmitting) {
+                                    Scaffold.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('提交中'),
+                                              CircularProgressIndicator(),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                  }
+                                }
+                              },
+                              child: Container(
+                                height: 500,
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(20, 100, 20, 0),
+                                  child: Form(
+                                    autovalidate: true,
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      children: <Widget>[
+                                        TextFormField(
+                                          controller: titleController,
+                                          decoration: InputDecoration(
+                                            labelText: "申报标题",
+                                            hintText: "标题",
+                                            prefixIcon: Icon(Icons.title),
+                                            errorStyle: TextStyle(
+                                                color: Colors.red, fontSize: 18),
+                                          ),
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return "请输入标题";
+                                            }
+                                            return null;
+                                          },
+                                          autovalidate: true,
+                                        ),
+                                        TextFormField(
+                                          controller: contentController,
+                                          decoration: InputDecoration(
+                                            labelText: "申报备注",
+                                            hintText: "备注",
+                                            prefixIcon:
+                                            Icon(Icons.format_color_text),
+                                            errorStyle: TextStyle(
+                                                color: Colors.red, fontSize: 18),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          bottomNavigationBar: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            child: FlatButton(
+                              onPressed: titleController.text.isNotEmpty
+                                  ? () {
+                                _bloc.dispatch(ReportToServer(
+                                    titleController.text,
+                                    contentController.text));
+                              }
+                                  : null,
+                              child: Text(
+                                "提交",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              color: Colors.blue,
+                              disabledColor: Colors.grey,
+                              disabledTextColor: Colors.black,
+                            ),
+                          ),
+                        );
+                      }));
+                    }
                   : null,
               child: Text(
                 "申报",
@@ -176,11 +319,12 @@ class ReportDevicePage extends StatelessWidget {
         title: Text("设备类别"),
         trailing: Text("${device.category}"),
       ),
-      ListTile(
-        dense: true,
-        title: Text("设备类型"),
-        trailing: Text("${device.online ? "线上设备" : "线下设备"}"),
-      ),
+      if (device.online != null)
+        ListTile(
+          dense: true,
+          title: Text("设备类型"),
+          trailing: Text("${device.online ? "线上设备" : "线下设备"}"),
+        ),
     ];
   }
 }

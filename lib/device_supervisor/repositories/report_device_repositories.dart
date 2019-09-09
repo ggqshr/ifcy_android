@@ -1,35 +1,36 @@
+import 'dart:convert';
+
+///@author ggq
+///@description:申报设备保修的repositories
+///@date :2019/9/7 14:12
 import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
 import 'package:ifcy/device_supervisor/repositories/device_message_repositories.dart';
 
-///@author ggq
-///@description:
-///@date :2019/9/7 14:12
 class ReportDeviceDataProvider {
   final Dio _dio;
 
   ReportDeviceDataProvider([dio])
       : _dio = dio ?? DioUtils.getInstance().getDio();
 
-  Future reportToServer(List<String> devices) async {
-    //todo 申报到服务器
+  Future reportToServer(
+      List<String> devices, String title, String content) async {
+    Map dataMap = {
+      "comment": content,
+      "title": title,
+      "declaration_devices": devices.map((item) => {"code": item}).toList(),
+    };
+    Response res = await _dio.post(
+      "/declare",
+      data: jsonEncode(dataMap),
+    );
   }
 
   Future<List<DeviceMessage>> getReportDeviceList() async {
-    return [
-      DeviceMessage(
-        area: "nihao",
-        category: "111",
-        code: "11",
-        floor: "11",
-        id: "11",
-        name: "111",
-        online: true,
-        position: "sss",
-        status: "FAULT",
-      )
-    ];
+    Response res = await _dio.get("/declare/devices");
+    return List.from(res.data['data']
+        .map<DeviceMessage>((item) => DeviceMessage.fromJson(item)));
   }
 }
 
@@ -39,8 +40,9 @@ class ReportDeviceRepositories {
   ReportDeviceRepositories([provider])
       : provider = provider ?? ReportDeviceDataProvider();
 
-  Future reportToServer(List<String> devices) async {
-    await provider.reportToServer(devices);
+  Future reportToServer(
+      List<String> devices, String title, String content) async {
+    await provider.reportToServer(devices, title, content);
   }
 
   Future<List<DeviceMessage>> getDeviceList() async {
