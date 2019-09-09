@@ -270,8 +270,6 @@ Build _$BuildFromJson(Map<String, dynamic> json) {
     ..city = json['city'] as String
     ..danger = json['danger'] as String
     ..description = json['description'] as String
-    ..latitude = json['latitude'] as String
-    ..longitude = json['longitude'] as String
     ..mainEngineCode = json['main_engine_code'] as String
     ..nature = json['nature'] as String
     ..province = json['province'] as String
@@ -291,8 +289,6 @@ Map<String, dynamic> _$BuildToJson(Build instance) => <String, dynamic>{
       'city': instance.city,
       'danger': instance.danger,
       'description': instance.description,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
       'main_engine_code': instance.mainEngineCode,
       'nature': instance.nature,
       'province': instance.province,

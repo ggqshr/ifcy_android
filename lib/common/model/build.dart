@@ -29,9 +29,9 @@ class Build {
   String danger;
   @JsonKey(name:"description")
   String description;
-  @JsonKey(name:"latitude")
+  @JsonKey(name:"latitude",ignore: true)
   String latitude;
-  @JsonKey(name:"longitude")
+  @JsonKey(name:"longitude",ignore: true)
   String longitude;
 
   @JsonKey(name:"main_engine_code")
