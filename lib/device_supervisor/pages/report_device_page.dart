@@ -23,57 +23,7 @@ class ReportDevicePage extends StatelessWidget {
         title: Text("设备申报"),
         centerTitle: true,
       ),
-      body: BlocListener<ReportDeviceBloc, ReportDeviceState>(
-        listener: (context, state) async {
-          if (state is LoadedReportDevicesState) {
-            if (state.isSuccess) {
-              Scaffold.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('申报成功'),
-                        Icon(Icons.check),
-                      ],
-                    ),
-                  ),
-                );
-              await Future.delayed(Duration(seconds: 1));
-              Navigator.of(context).pop();
-            }
-            if (state.isFault) {
-              Scaffold.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text('提交失败，请稍后再试'), Icon(Icons.error)],
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-            }
-            if (state.isSubmitting) {
-              Scaffold.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('提交中'),
-                        CircularProgressIndicator(),
-                      ],
-                    ),
-                  ),
-                );
-            }
-          }
-        },
-        child: BlocBuilder<ReportDeviceBloc, ReportDeviceState>(
+      body: BlocBuilder<ReportDeviceBloc, ReportDeviceState>(
           // ignore: missing_return
           builder: (context, state) {
             if (state is LoadingReportDevicesState) {
@@ -116,7 +66,6 @@ class ReportDevicePage extends StatelessWidget {
             }
           },
         ),
-      ),
       bottomNavigationBar: BlocBuilder<ReportDeviceBloc, ReportDeviceState>(
         builder: (context, state) {
           return Container(

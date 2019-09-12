@@ -9,3 +9,4 @@ export "confirm_message_bloc/bloc.dart";
 export "check_alarm_list_bloc/bloc.dart";
 export 'device_message_bloc/bloc.dart';
 export "report_device_bloc/bloc.dart";
+export 'declare_message_bloc/bloc.dart';

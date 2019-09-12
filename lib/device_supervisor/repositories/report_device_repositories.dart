@@ -32,6 +32,19 @@ class ReportDeviceDataProvider {
     return List.from(res.data['data']
         .map<DeviceMessage>((item) => DeviceMessage.fromJson(item)));
   }
+
+  Future<PageDataModel> getDedeclareList(
+      {int listRow = 1, int page = 1}) async {
+    Response res = await _dio
+        .get("/declare", queryParameters: {"page": page, "list_rows": listRow});
+    PageDataModel model = PageDataModel.fromJson(res.data['data']);
+    model.dataList = model.dataList
+        .map<DeclareMessage>((item) => DeclareMessage.fromJson(item))
+        .toList();
+    print(model);
+    print(model.dataList[0].checked);
+    return model;
+  }
 }
 
 class ReportDeviceRepositories {
@@ -47,5 +60,14 @@ class ReportDeviceRepositories {
 
   Future<List<DeviceMessage>> getDeviceList() async {
     return provider.getReportDeviceList();
+  }
+
+  Future<PageDataModel> getDeclareFirstPage() async {
+    return await provider.getDedeclareList()
+      ..currentPage = 1;
+  }
+
+  Future<PageDataModel> getDeclareNextPage(int page) async {
+    return await provider.getDedeclareList(page: page);
   }
 }

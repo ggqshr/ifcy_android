@@ -10,7 +10,10 @@ import 'package:http/http.dart'as http;
 import 'dart:convert';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
+import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/pages/device_supvisor_pages.dart';
+import 'package:ifcy/device_supervisor/repositories/repositories.dart';
+import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:rxdart/subjects.dart';
 
 part 'search_input_componet.dart';

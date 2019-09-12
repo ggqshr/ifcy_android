@@ -338,3 +338,26 @@ Map<String, dynamic> _$DeviceMessageToJson(DeviceMessage instance) =>
       'position': instance.position,
       'status': instance.status,
     };
+
+DeclareMessage _$DeclareMessageFromJson(Map<String, dynamic> json) {
+  return DeclareMessage(
+    id: json['id'],
+    title: json['title'],
+    comment: json['comment'],
+    deviceList: json['device_list'],
+    postUserId: json['post_user_id'],
+    checkedUserId: json['checked_user_id'],
+    checked: json['checked'],
+  );
+}
+
+Map<String, dynamic> _$DeclareMessageToJson(DeclareMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'comment': instance.comment,
+      'device_list': instance.deviceList,
+      'post_user_id': instance.postUserId,
+      'checked_user_id': instance.checkedUserId,
+      'checked': instance.checked,
+    };

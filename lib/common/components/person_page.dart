@@ -1,14 +1,11 @@
 part of 'components.dart';
-class PersonPage extends StatelessWidget {
 
+class PersonPage extends StatelessWidget {
   final Function drawerCall;
   PersonPage(this.drawerCall);
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -34,7 +31,12 @@ class PersonPage extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(15.0, 5, 0, 25),
               height: 48.0,
               alignment: Alignment.center,
-              child: PersonelInfoComponent(),
+              child: PersonelInfoComponent(
+                userName: (BlocProvider.of<AuthorizationBloc>(context)
+                        .currentState as Authenticated)
+                    .userEntity
+                    .userName,
+              ),
             ),
           ),
         ),
@@ -51,13 +53,39 @@ class PersonPage extends StatelessWidget {
                 ),
                 title: Text('申报'),
                 trailing: IconButton(
-                    icon: Icon(Icons.navigate_next),
-                  onPressed:(){
-                    Navigator.push(context, new MaterialPageRoute(builder: (context)=>new FaultDeclarePage(this.drawerCall)),);
+                  icon: Icon(Icons.navigate_next),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                        builder: (context) => BlocProvider<DeclareMessageBloc>(
+                          builder: (context) {
+                            ReportDeviceRepositories repo =
+                                ReportDeviceRepositories();
+                            return DeclareMessageBloc(repo)
+                              ..dispatch(FetchDeclareMessage());
+                          },
+                          child: FaultDeclarePage(),
+                        ),
+                      ),
+                    );
                   },
                 ),
-                onTap: (){
-                  Navigator.push(context, new MaterialPageRoute(builder: (context)=>new FaultDeclarePage(this.drawerCall)),);
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                      builder: (context) => BlocProvider<DeclareMessageBloc>(
+                        builder: (context) {
+                          ReportDeviceRepositories repo =
+                              ReportDeviceRepositories();
+                          return DeclareMessageBloc(repo)
+                            ..dispatch(FetchDeclareMessage());
+                        },
+                        child: FaultDeclarePage(),
+                      ),
+                    ),
+                  );
                 },
               ),
               padding: EdgeInsets.fromLTRB(5.0, 8.0, 1.0, 1.0),
@@ -73,7 +101,7 @@ class PersonPage extends StatelessWidget {
                 ),
                 title: Text('工作'),
                 trailing: IconButton(
-                    icon: Icon(Icons.navigate_next),
+                  icon: Icon(Icons.navigate_next),
                 ),
               ),
               padding: EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 1.0),
@@ -104,6 +132,10 @@ class PersonPage extends StatelessWidget {
 }
 
 class PersonelInfoComponent extends StatelessWidget {
+  final String userName;
+
+  const PersonelInfoComponent({Key key, this.userName}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,23 +149,21 @@ class PersonelInfoComponent extends StatelessWidget {
           ),
         ),
         title: Text(
-          '哈哈哈哈哈',
+          userName,
           style: TextStyle(fontSize: 16.0),
         ),
         trailing: IconButton(
           icon: Icon(Icons.navigate_next, color: Colors.grey),
           onPressed: () {
-            Application.router.navigateTo(
-                context, '/personalInfo/:id',//跳转路径
-                transition: TransitionType.inFromRight//过场效果
-            );
+            Application.router.navigateTo(context, '/personalInfo/:id', //跳转路径
+                transition: TransitionType.inFromRight //过场效果
+                );
           },
         ),
         onTap: () {
-          Application.router.navigateTo(
-              context, '/personalInfo/:id',//跳转路径
-              transition: TransitionType.inFromRight//过场效果
-          );
+          Application.router.navigateTo(context, '/personalInfo/:id', //跳转路径
+              transition: TransitionType.inFromRight //过场效果
+              );
         },
       ),
     );

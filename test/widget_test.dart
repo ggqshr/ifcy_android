@@ -116,6 +116,13 @@ void main() {
           await provider.getFireCheckMessage();
       print(res);
     });
+    test("testrepo", () async {
+      await DioUtils.getInstance().login("hyj", "123456");
+      ReportDeviceRepositories provider = ReportDeviceRepositories();
+      PageDataModel res =
+          await provider.getDeclareFirstPage();
+      print(res);
+    });
   });
 
   group(("mocking testsp"), () {
