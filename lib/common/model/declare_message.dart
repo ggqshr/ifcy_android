@@ -8,14 +8,20 @@ class DeclareMessage {
   @JsonKey(name: "device_list")
   List deviceList;
   @JsonKey(name: "post_user_id")
-  String postUserId;
+  int postUserId;
   @JsonKey(name: "checked_user_id")
-  String checkedUserId;
+  int checkedUserId;
   bool checked;
-  DeclareMessage({id,title,comment,deviceList,postUserId,checkedUserId,checked});
+  DeclareMessage(
+      {this.id,
+      this.title,
+      this.comment,
+      this.deviceList,
+      this.postUserId,
+      this.checkedUserId,
+      this.checked});
   factory DeclareMessage.fromJson(Map<String, dynamic> json) =>
       _$DeclareMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$DeclareMessageToJson(this);
-  
 }

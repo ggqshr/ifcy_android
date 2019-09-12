@@ -95,7 +95,7 @@ class UserLoginRepositories {
   Future<UserEntity> _login(String userName, String passWord) async {
     _userEntity = await userLoginDataProvider.login(userName, passWord);
     _currentBuild = await userLoginDataProvider.getCurrentBuild();
-    await userLoginDataProvider.setUpJpush(_userEntity);
+    userLoginDataProvider.setUpJpush(_userEntity);
     return _userEntity;
   }
 

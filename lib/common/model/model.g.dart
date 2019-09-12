@@ -341,13 +341,13 @@ Map<String, dynamic> _$DeviceMessageToJson(DeviceMessage instance) =>
 
 DeclareMessage _$DeclareMessageFromJson(Map<String, dynamic> json) {
   return DeclareMessage(
-    id: json['id'],
-    title: json['title'],
-    comment: json['comment'],
-    deviceList: json['device_list'],
-    postUserId: json['post_user_id'],
-    checkedUserId: json['checked_user_id'],
-    checked: json['checked'],
+    id: json['id'] as String,
+    title: json['title'] as String,
+    comment: json['comment'] as String,
+    deviceList: json['device_list'] as List,
+    postUserId: json['post_user_id'] as int,
+    checkedUserId: json['checked_user_id'] as int,
+    checked: json['checked'] as bool,
   );
 }
 

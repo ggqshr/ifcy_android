@@ -41,8 +41,6 @@ class ReportDeviceDataProvider {
     model.dataList = model.dataList
         .map<DeclareMessage>((item) => DeclareMessage.fromJson(item))
         .toList();
-    print(model);
-    print(model.dataList[0].checked);
     return model;
   }
 }
