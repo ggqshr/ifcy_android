@@ -18,10 +18,10 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
       body: BlocBuilder<DeclareMessageBloc, DeclareMessageState>(
         // ignore: missing_return
         builder: (context, state) {
-          if (state is LoadingReportDevicesState) {
+          if (state is LoadingDeclareMessageState) {
             return LoadingPage();
           }
-          if (state is LoadErrorDeviceMessageState) {
+          if (state is LoadErrorDeclareMessageState){
             return LoadErrorPage(() => _bloc.dispatch(FetchDeclareMessage()));
           }
           if (state is LoadedDeclareMessageState) {
