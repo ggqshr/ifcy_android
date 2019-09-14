@@ -72,35 +72,36 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                   itemBuilder: (context, index) {
                     DeclareMessage thisDevice = state.models.dataList[index];
                     return Card(
-                      child: ExpansionTile(
-                        title: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                                title: Text("标题"),
-                                trailing: Text(thisDevice.title ?? "无"),
-                                dense: true),
-                            ListTile(
-                                title: Text("备注"),
-                                trailing: Text(thisDevice.comment ?? "无"),
-                                dense: true),
-                            ListTile(
-                                title: Text("是否已确认"),
-                                trailing: Text(thisDevice.checked ? "是" : "否"),
-                                dense: true),
-                            ListTile(
-                                title: Text("发起申报者ID"),
-                                trailing: Text(
-                                    thisDevice.postUserId.toString() ?? "无"),
-                                dense: true),
-                            ListTile(
-                                title: Text("通过者ID"),
-                                trailing: Text(
-                                    thisDevice.checkedUserId.toString() ?? "无"),
-                                dense: true),
-                          ],
-                        ),
-                        children: getDeclareListTile(thisDevice),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                              title: Text("标题"),
+                              trailing: Text(thisDevice.title ?? "无"),
+                              dense: true),
+                          ListTile(
+                              title: Text("备注"),
+                              trailing: Text(thisDevice.comment ?? "无"),
+                              dense: true),
+                          ListTile(
+                              title: Text("是否已确认"),
+                              trailing: Text(thisDevice.checked ? "是" : "否"),
+                              dense: true),
+                          ListTile(
+                              title: Text("发起申报者ID"),
+                              trailing:
+                                  Text(thisDevice.postUserId.toString() ?? "无"),
+                              dense: true),
+                          ListTile(
+                              title: Text("通过者ID"),
+                              trailing: Text(
+                                  thisDevice.checkedUserId.toString() ?? "无"),
+                              dense: true),
+                          ExpansionTile(
+                            title: Text("申报设备Code列表"),
+                            children: getDeclareListTile(thisDevice),
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -115,16 +116,11 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
   }
 
   List<Widget> getDeclareListTile(DeclareMessage message) {
-    return [
-      ListTile(
-        title: Text("申报设备Code列表"),
-      ),
-      ...message.deviceList
-          .map((item) => ListTile(
-                title: Text("设备code"),
-                trailing: Text(item['code']),
-              ))
-          .toList(),
-    ];
+    return message.deviceList
+        .map((item) => ListTile(
+              title: Text("设备code"),
+              trailing: Text(item['code']),
+            ))
+        .toList();
   }
 }
