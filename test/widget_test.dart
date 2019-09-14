@@ -8,30 +8,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-import 'package:flutter/foundation.dart';
-import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ifcy/common/model/model.dart';
-import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/utils/utils.dart';
-import 'package:ifcy/device_staff/model/device_staff_model.dart';
-import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
-import 'package:ifcy/main_app/actions/main_app_actions.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
-import 'package:ifcy/common/utils/StoreCreater.dart';
-import 'package:moor_flutter/moor_flutter.dart';
-import 'package:redux/redux.dart';
-import 'package:ifcy/main.dart';
-import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ifcy/common/res/res.dart';
 

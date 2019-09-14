@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/common/model/model.dart';
-import 'package:ifcy/device_supervisor/actions/device_supervisor_actions.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/blocs/task_list_bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';

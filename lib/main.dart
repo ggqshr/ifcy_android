@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:fluro/fluro.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,6 @@ import 'main_app/model/AppState.dart';
 import 'main_app/model/select_project_model.dart';
 import 'common/utils/StoreCreater.dart';
 import 'package:ifcy/main_app_redux.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
 
 void main() {
   // 注册 fluro routes

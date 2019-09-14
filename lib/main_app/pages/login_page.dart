@@ -9,7 +9,6 @@ import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
-import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
 import 'package:ifcy/common/utils/loading.dart';
 import 'package:redux/redux.dart';
 

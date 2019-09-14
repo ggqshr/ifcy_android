@@ -1,24 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/common/utils/utils.dart';
-import 'package:ifcy/device_staff/device_staff.dart';
-import 'package:ifcy/device_supervisor/device_supervisor.dart';
-import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_event.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_state.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
-import 'package:ifcy/main_app/model/select_project_model.dart';
-import 'package:ifcy/main_app/thunk/main_app_thunk.dart';
-import 'package:ifcy/common/utils/loading.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:redux/redux.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SelectProjectPage extends StatelessWidget {
