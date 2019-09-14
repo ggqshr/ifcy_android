@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ifcy/device_staff/device_staff.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:ifcy/building_owner/building_owner.dart';
+import 'package:ifcy/property_manager/property_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 export 'package:fluttertoast/fluttertoast.dart';
@@ -23,6 +24,7 @@ class Application {
     // "MAINTAIN_MANAGER": DeviceSupervisor(), //维保主管
     "MAINTAIN_WORKER": DeviceStaff(), //维保工作人员
     "OWNER":BuildingOwner(),//业主
+    "PROPERTY_MANAGER":PropertyManager(),//物业主管
   };
 
   ///封装的flutterToast的方法，使用方法一致

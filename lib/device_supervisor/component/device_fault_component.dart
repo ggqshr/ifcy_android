@@ -35,13 +35,12 @@ class DeviceFaultComponent extends StatelessWidget {
                       CheckAlarmListBloc(CheckAlarmRepositories())
                         ..dispatch(FetchCheckedAlarmData(false)),
                   child: CheckedAlarmPage(
-                    (thisTask) => CheckResultComponent(
-                        (thisTask as DeviceCheckedAlarmMessage).faultType ==
-                                "PROCESSED"
-                            ? "已处理"
-                            : "未处理"),
-                    false
-                  ),
+                      (thisTask) => CheckResultComponent(
+                          (thisTask as DeviceCheckedAlarmMessage).faultType ==
+                                  "PROCESSED"
+                              ? "已处理"
+                              : "未处理"),
+                      false),
                 );
               }));
             },
