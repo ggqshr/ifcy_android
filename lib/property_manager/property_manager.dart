@@ -1,6 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ifcy/building_owner/blocs/building_owner_blocs.dart';
+import 'package:ifcy/building_owner/pages/building_owner_pages.dart';
+import 'package:ifcy/building_owner/repositories/building_owner_repositories.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
@@ -23,19 +26,21 @@ class _PropertyManagerState extends State<PropertyManager> {
   ];
   List<String> iconTextList = [
     "大厦",
-    "设备",
-    "巡检",
+    "申报",
+    "人员管理",
     "我的",
   ];
+
   @override
   void initState() {
     super.initState();
     viewList
       ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
       ..add(FaultDeclarePage())
-      ..add(Container())
+      ..add(EmployeePage())
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -65,7 +70,14 @@ class _PropertyManagerState extends State<PropertyManager> {
             ),
             BlocProvider<DeclareMessageBloc>(
               builder: (context) {
-                return DeclareMessageBloc(ReportDeviceRepositories())..dispatch(FetchDeclareMessage());
+                return DeclareMessageBloc(ReportDeviceRepositories())
+                  ..dispatch(FetchDeclareMessage());
+              },
+            ),
+            BlocProvider<EmployeeListBloc>(
+              builder: (context) {
+                return EmployeeListBloc(EmployeeRepositories())
+                  ..dispatch(FetchEmployeeListDataEvent());
               },
             ),
             BlocProvider<DeviceMessageBloc>(
