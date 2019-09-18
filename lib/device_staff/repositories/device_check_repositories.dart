@@ -14,11 +14,10 @@ import 'package:ifcy/device_staff/model/device_staff_model.dart';
 ///@date :2019/8/31 10:00
 class DeviceCheckDataProvider {
   final String taskId;
-  final DeviceDB _db;
+  final DeviceDB _db= DeviceDB();
 
-  DeviceCheckDataProvider(taskId, [db])
-      : _db = db ?? DeviceDB(),
-        taskId = taskId;
+  DeviceCheckDataProvider(taskId,)
+      :taskId = taskId;
 
   ///查看本地是否有缓存的数据
   Future<int> getLocalLen() async {

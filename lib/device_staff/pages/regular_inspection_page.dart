@@ -18,7 +18,6 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   DeviceStaffDeviceCheckBloc _bloc;
   DeviceCheckRepositories _deviceCheckRepositories;
 
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +47,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
     //执行进度条动画
     _animationController.forward();
     _bloc = BlocProvider.of<DeviceStaffDeviceCheckBloc>(context);
-    _deviceCheckRepositories = RepositoryProvider.of<DeviceCheckRepositories>(context);
+    _deviceCheckRepositories =
+        RepositoryProvider.of<DeviceCheckRepositories>(context);
   }
 
   @override
@@ -241,7 +241,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                       builder: (context) => DeviceUploadBloc(
                         _deviceCheckRepositories,
                       )..dispatch(GetUploadData(model)),
-                      child: UploadComponent((_bloc.currentState as DeviceListLoaded).floorList),
+                      child: UploadComponent(
+                          (_bloc.currentState as DeviceListLoaded).floorList),
                     );
                   },
                 ));
@@ -255,21 +256,21 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           FloatingActionButton(
             tooltip: "扫码",
             onPressed: () async {
-              String BRCodeScanRes = "B7_5-AF1-A1-2"; //二维码扫描结果
-//            try {
-//              BRCodeScanRes = await BarcodeScanner.scan();
-//            } on PlatformException catch (e) {
-//              if (e.code == BarcodeScanner.CameraAccessDenied) {
-//                print('The user did not grant the camera permission!');
-//              } else {
-//                print('Unknown error: $e');
+              String BRCodeScanRes = "B7_5-AF1-A1-1"; //二维码扫描结果
+//              try {
+//                BRCodeScanRes = await BarcodeScanner.scan();
+//              } on PlatformException catch (e) {
+//                if (e.code == BarcodeScanner.CameraAccessDenied) {
+//                  print('相机未授权');
+//                } else {
+//                  print('未知错误: $e');
+//                }
+//              } on FormatException {
+////              print(
+////                  'null (User returned using the "back"-button before scanning anything. Re');
+//              } catch (e) {
+//                print('未知错误: $e');
 //              }
-//            } on FormatException {
-//              print(
-//                  'null (User returned using the "back"-button before scanning anything. Re');
-//            } catch (e) {
-//              print('Unknown error: $e');
-//            }
               //扫描到结果
               if (BRCodeScanRes.isNotEmpty) {
                 DeviceStaffDeviceCheckBloc _deviceBloc =
@@ -284,13 +285,12 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                       .showSnackBar(SnackBar(content: Text("无效的二维码")));
                 } else {
                   InspectionDeviceModel thisModel = models[resIndex];
-                  if(thisModel.checkStatus==CheckStatus.checked){
+                  if (thisModel.checkStatus == CheckStatus.checked) {
                     Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text("已检查过的设备")));
-                  }
-                  else{
+                  } else {
                     InspectionDeviceModel bachRes =
-                    await Navigator.push(context, MaterialPageRoute(
+                        await Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return BlocProvider<DeviceDetailBloc>(
                           builder: (_) => DeviceDetailBloc(_deviceBloc)
@@ -366,9 +366,13 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                   color: Colors.black,
                 ),
                 ListTile(
+                  title: Text("设备Code"),
+                  subtitle: Text(state.model.code),
+                ),
+                ListTile(
                   title: Text("检查结果"),
                   subtitle: Row(
-                    children: ["正常", "故障","缺陷"].map((item) {
+                    children: ["正常", "故障", "缺陷"].map((item) {
                       return Row(
                         children: <Widget>[
                           Radio(
@@ -682,9 +686,13 @@ class ReadOnlyInspectionTaskDetailPanel extends StatelessWidget {
             color: Colors.black,
           ),
           ListTile(
+            title: Text("设备Code"),
+            subtitle: Text(model.code),
+          ),
+          ListTile(
             title: Text("检查结果"),
             subtitle: Row(
-              children: ["正常", "故障","缺陷"].map((item) {
+              children: ["正常", "故障", "缺陷"].map((item) {
                 return Row(
                   children: <Widget>[
                     Radio(
@@ -1049,7 +1057,7 @@ class TaskStateProcessHeader extends SliverPersistentHeaderDelegate {
             AnimatedBuilder(
                 animation: animation,
                 builder: (context, child) {
-                  return Text("当前进度: ${(animation.value*100).toInt()}%");
+                  return Text("当前进度: ${(animation.value * 100).toInt()}%");
                 })
           ],
         ),

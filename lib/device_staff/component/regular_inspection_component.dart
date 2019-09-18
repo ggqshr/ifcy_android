@@ -200,7 +200,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                   ListTile(
                     dense: true,
                     title: Text(
-                        "开始时间：${tasks[index].endTime.toString().substring(0, 10)}"),
+                        "结束时间：${tasks[index].endTime.toString().substring(0, 10)}"),
                   ),
                   ListTile(
                     dense: true,
@@ -268,7 +268,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
           Icons.check_circle_outline,
           color: Colors.green,
         ),
-        label: Text(taskStatusToString[tasks[index].taskStatus]),
+        label: Text(taskStatusToShow[tasks[index].taskStatus]),
       ),
     );
   }

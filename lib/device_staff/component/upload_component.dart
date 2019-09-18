@@ -5,7 +5,9 @@ part of 'device_staff_components.dart';
 
 class UploadComponent extends StatelessWidget {
   final List<FloorEntity> floorList;
+
   UploadComponent(this.floorList);
+
   @override
   Widget build(BuildContext context) {
     DeviceUploadBloc _bloc = BlocProvider.of<DeviceUploadBloc>(context);
@@ -15,7 +17,7 @@ class UploadComponent extends StatelessWidget {
         title: Text("待上传列表"),
       ),
       body: BlocListener<DeviceUploadBloc, DeviceUploadState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoadedUploadDevice) {
             if (state.isUploading) {
               Scaffold.of(context)
@@ -59,10 +61,12 @@ class UploadComponent extends StatelessWidget {
                     ),
                   ),
                 );
+              Future.delayed(
+                  Duration(seconds: 1), () => Navigator.of(context).pop());
             }
           }
         },
-        child: BlocBuilder<DeviceUploadBloc,DeviceUploadState>(
+        child: BlocBuilder<DeviceUploadBloc, DeviceUploadState>(
           // ignore: missing_return
           builder: (context, state) {
             if (state is InitialDeviceUploadState) {
@@ -99,10 +103,10 @@ class UploadComponent extends StatelessWidget {
             topRight: Radius.circular(10),
           ),
         ),
-        child: BlocBuilder<DeviceUploadBloc,DeviceUploadState>(
+        child: BlocBuilder<DeviceUploadBloc, DeviceUploadState>(
           // ignore: missing_return
           builder: (context, state) {
-            if(state is InitialDeviceUploadState){
+            if (state is InitialDeviceUploadState) {
               return CircularProgressIndicator();
             }
             if (state is LoadedUploadDevice) {

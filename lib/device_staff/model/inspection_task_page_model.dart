@@ -3,6 +3,14 @@
 ///@date :2019/8/29 10:15
 part of "device_staff_model.dart";
 
+Map taskStatusToShow = {
+  TaskStatus.completed: "完成",
+  TaskStatus.uncompleted: "未完成",
+  TaskStatus.out_time_completed: "超时完成",
+  TaskStatus.running: "进行中",
+  TaskStatus.unreached: "未开始",
+};
+
 Map taskStatusToString = {
   TaskStatus.completed: "COMPLETED",
   TaskStatus.uncompleted: "UNCOMPLETED",

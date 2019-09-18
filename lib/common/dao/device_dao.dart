@@ -16,7 +16,7 @@ class Device extends Table {
 
   TextColumn get checkStatus => text()();
 
-  TextColumn get checkResult => text().withDefault(Constant("RUNNING"))();
+  TextColumn get checkResult => text()();
 
   TextColumn get buildingFloorId => text()();
 
@@ -25,7 +25,7 @@ class Device extends Table {
 
 @UseMoor(tables: [Device])
 class DeviceDB extends _$DeviceDB {
-  DeviceDB() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'device.db'));
+  DeviceDB() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'device.sqlite'));
 
   @override
   int get schemaVersion => 1;
@@ -33,7 +33,7 @@ class DeviceDB extends _$DeviceDB {
   ///获取本地化的所有设备列表
   Stream<List<InspectionDeviceModel>> getDevices(String taskId) {
     return (select(device)..where((t) => t.taskId.equals(taskId))).watch().map(
-        (items) => items.map((item) => InspectionDeviceModel.fromData(item)).toList());
+        (items) => items.map((item) => InspectionDeviceModel.fromData(item)..checkResult=CheckResult.running).toList());
   }
 
   ///根据taskId以及设备Id更新本地的状态

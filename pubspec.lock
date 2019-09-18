@@ -458,21 +458,21 @@ packages:
       name: moor
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.6.0"
+    version: "1.7.2"
   moor_flutter:
     dependency: "direct main"
     description:
       name: moor_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.6.0"
+    version: "1.7.0"
   moor_generator:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: moor_generator
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.6.0+2"
+    version: "1.7.1"
   package_config:
     dependency: transitive
     description:
@@ -493,7 +493,7 @@ packages:
       name: path
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.6.4"
+    version: "1.6.2"
   path_provider:
     dependency: "direct main"
     description:
@@ -556,7 +556,7 @@ packages:
       name: quiver
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.3"
   recase:
     dependency: transitive
     description:
@@ -666,7 +666,7 @@ packages:
       name: sqlparser
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.2"
+    version: "0.2.0"
   stack_trace:
     dependency: transitive
     description:
@@ -694,7 +694,7 @@ packages:
       name: string_scanner
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.4"
   synchronized:
     dependency: transitive
     description:

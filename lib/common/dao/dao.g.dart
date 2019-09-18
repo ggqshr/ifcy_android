@@ -207,29 +207,31 @@ class RegularInspectionTaskDetailEntryData extends DataClass
 
   @override
   int get hashCode => $mrjf($mrjc(
+      deviceId.hashCode,
       $mrjc(
+          deviceName.hashCode,
           $mrjc(
+              deviceType.hashCode,
               $mrjc(
+                  inspectionRequire.hashCode,
                   $mrjc(
+                      inspectionResultType.hashCode,
                       $mrjc(
+                          processType.hashCode,
                           $mrjc(
+                              noteText.hashCode,
                               $mrjc(
+                                  images.hashCode,
                                   $mrjc(
+                                      taskStatus.hashCode,
                                       $mrjc(
+                                          taskArea.hashCode,
                                           $mrjc(
-                                              $mrjc($mrjc(0, deviceId.hashCode),
-                                                  deviceName.hashCode),
-                                              deviceType.hashCode),
-                                          inspectionRequire.hashCode),
-                                      inspectionResultType.hashCode),
-                                  processType.hashCode),
-                              noteText.hashCode),
-                          images.hashCode),
-                      taskStatus.hashCode),
-                  taskArea.hashCode),
-              taskFloor.hashCode),
-          taskId.hashCode),
-      isUpload.hashCode));
+                                              taskFloor.hashCode,
+                                              $mrjc(
+                                                  taskId.hashCode,
+                                                  isUpload
+                                                      .hashCode)))))))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -279,6 +281,36 @@ class RegularInspectionTaskDetailEntryCompanion
     this.taskId = const Value.absent(),
     this.isUpload = const Value.absent(),
   });
+  RegularInspectionTaskDetailEntryCompanion copyWith(
+      {Value<String> deviceId,
+      Value<String> deviceName,
+      Value<String> deviceType,
+      Value<String> inspectionRequire,
+      Value<String> inspectionResultType,
+      Value<String> processType,
+      Value<String> noteText,
+      Value<String> images,
+      Value<String> taskStatus,
+      Value<String> taskArea,
+      Value<String> taskFloor,
+      Value<String> taskId,
+      Value<bool> isUpload}) {
+    return RegularInspectionTaskDetailEntryCompanion(
+      deviceId: deviceId ?? this.deviceId,
+      deviceName: deviceName ?? this.deviceName,
+      deviceType: deviceType ?? this.deviceType,
+      inspectionRequire: inspectionRequire ?? this.inspectionRequire,
+      inspectionResultType: inspectionResultType ?? this.inspectionResultType,
+      processType: processType ?? this.processType,
+      noteText: noteText ?? this.noteText,
+      images: images ?? this.images,
+      taskStatus: taskStatus ?? this.taskStatus,
+      taskArea: taskArea ?? this.taskArea,
+      taskFloor: taskFloor ?? this.taskFloor,
+      taskId: taskId ?? this.taskId,
+      isUpload: isUpload ?? this.isUpload,
+    );
+  }
 }
 
 class $RegularInspectionTaskDetailEntryTable
@@ -775,19 +807,21 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
 
   @override
   int get hashCode => $mrjf($mrjc(
+      taskId.hashCode,
       $mrjc(
+          name.hashCode,
           $mrjc(
+              id.hashCode,
               $mrjc(
+                  code.hashCode,
                   $mrjc(
+                      comment.hashCode,
                       $mrjc(
-                          $mrjc($mrjc($mrjc(0, taskId.hashCode), name.hashCode),
-                              id.hashCode),
-                          code.hashCode),
-                      comment.hashCode),
-                  checkStatus.hashCode),
-              checkResult.hashCode),
-          buildingFloorId.hashCode),
-      images.hashCode));
+                          checkStatus.hashCode,
+                          $mrjc(
+                              checkResult.hashCode,
+                              $mrjc(buildingFloorId.hashCode,
+                                  images.hashCode)))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -824,6 +858,28 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
     this.buildingFloorId = const Value.absent(),
     this.images = const Value.absent(),
   });
+  DeviceCompanion copyWith(
+      {Value<String> taskId,
+      Value<String> name,
+      Value<String> id,
+      Value<String> code,
+      Value<String> comment,
+      Value<String> checkStatus,
+      Value<String> checkResult,
+      Value<String> buildingFloorId,
+      Value<String> images}) {
+    return DeviceCompanion(
+      taskId: taskId ?? this.taskId,
+      name: name ?? this.name,
+      id: id ?? this.id,
+      code: code ?? this.code,
+      comment: comment ?? this.comment,
+      checkStatus: checkStatus ?? this.checkStatus,
+      checkResult: checkResult ?? this.checkResult,
+      buildingFloorId: buildingFloorId ?? this.buildingFloorId,
+      images: images ?? this.images,
+    );
+  }
 }
 
 class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
@@ -911,8 +967,11 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
   GeneratedTextColumn get checkResult =>
       _checkResult ??= _constructCheckResult();
   GeneratedTextColumn _constructCheckResult() {
-    return GeneratedTextColumn('check_result', $tableName, false,
-        defaultValue: Constant("RUNNING"));
+    return GeneratedTextColumn(
+      'check_result',
+      $tableName,
+      false,
+    );
   }
 
   final VerificationMeta _buildingFloorIdMeta =

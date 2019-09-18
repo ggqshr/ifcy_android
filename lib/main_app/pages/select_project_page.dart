@@ -19,7 +19,7 @@ class SelectProjectPage extends StatelessWidget {
       builder: (context, state) {
         if(state is Authenticated){
           return Scaffold(
-            body: Application.auth2view["PROPERTY_MANAGER"],
+            body: Application.auth2view[state.userEntity.roleType],
             drawer: Drawer(
               child: ListView(
                 padding: EdgeInsets.all(0),
