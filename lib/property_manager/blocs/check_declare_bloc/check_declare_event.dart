@@ -11,9 +11,3 @@ class CheckPassDeclareMessageEvent extends CheckDeclareEvent {
 
   CheckPassDeclareMessageEvent(this.id) : super([id]);
 }
-
-class CheckUnPassDeclareMessageEvent extends CheckDeclareEvent {
-  final String id;
-
-  CheckUnPassDeclareMessageEvent(this.id) : super([id]);
-}

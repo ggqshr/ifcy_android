@@ -25,15 +25,5 @@ class CheckDeclareBloc extends Bloc<CheckDeclareEvent, CheckDeclareState> {
         rethrow;
       }
     }
-    if (event is CheckUnPassDeclareMessageEvent) {
-      try {
-        yield CheckStatusDeclareState.checking();
-        repo.checkUnPassDeclare(event.id);
-        yield CheckStatusDeclareState.success();
-      } catch (e) {
-        yield CheckStatusDeclareState.fault();
-        rethrow;
-      }
-    }
   }
 }

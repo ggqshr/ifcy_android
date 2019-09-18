@@ -9,6 +9,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
     with SingleTickerProviderStateMixin {
   EasyRefreshController _controller;
   DeclareMessageBloc _bloc;
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +44,6 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
             ),
             BlocListener<CheckDeclareBloc, CheckDeclareState>(
               listener: (context, state) {
-                print("@@@@@@@@$state");
                 if (state is CheckStatusDeclareState) {
                   if (state.isChecking) {
                     Scaffold.of(context)
@@ -168,18 +168,10 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                                 title: ButtonBar(
                                   children: <Widget>[
                                     RaisedButton(
-                                      child: Text("同意"),
+                                      child: Text("已读"),
                                       onPressed: () {
                                         _checkDeclareBloc.dispatch(
                                             CheckPassDeclareMessageEvent(
-                                                thisDevice.id));
-                                      },
-                                    ),
-                                    RaisedButton(
-                                      child: Text("不同意"),
-                                      onPressed: () {
-                                        _checkDeclareBloc.dispatch(
-                                            CheckUnPassDeclareMessageEvent(
                                                 thisDevice.id));
                                       },
                                     ),
