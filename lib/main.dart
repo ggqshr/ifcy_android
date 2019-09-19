@@ -3,8 +3,8 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_event.dart';
 import 'package:ifcy/main_app/blocs/error_process_delegate.dart';
@@ -27,8 +27,7 @@ void main() {
   Routes.configureRoutes(router);
   Application.router = router;
   runApp(MyApp());
-  SystemUiOverlayStyle systemUiOverlayStyle =
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 }
 
@@ -60,7 +59,7 @@ class MyApp extends StatelessWidget {
         child: BlocProvider(
           builder: (context) {
             var bloc = AuthorizationBloc(RepositoryProvider.of(context))
-              ;
+              ..dispatch(AppStart());
             BlocSupervisor.delegate = ErrorProcessDelegate(bloc);
             return bloc;
           },
@@ -69,11 +68,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primaryColor: Colors.green[300],
             ),
-            home: StackMap(
-              buildHeight: 161.2,
-              buildWidth: 108.8,
-              backgroundImgUrl: "images/build_floor.png",
-            ),
+            home: MainApp(),
             onGenerateRoute: Application.router.generator,
             navigatorKey: Application.navigatorKey,
           ),
