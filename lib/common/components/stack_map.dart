@@ -1,86 +1,68 @@
 part of "components.dart";
 
 class StackMap extends StatefulWidget {
-  final double buildHeight;
-  final double buildWidth;
-  final String backgroundImgUrl;
+  final double height;
+  final double width;
+  final ImageProvider buildingMap;
+  final List<Marker> markers;
 
-  StackMap({this.buildHeight, this.buildWidth, this.backgroundImgUrl});
+  const StackMap({
+    @required this.height,
+    @required this.width,
+    @required this.buildingMap,
+    @required this.markers,
+  });
 
   @override
   _StackMapState createState() => _StackMapState();
 }
 
 class _StackMapState extends State<StackMap> {
-  Future<List<ui.Image>> init() async {
-    List<ui.Image> images = [];
-    images.add(await loadImage("images/build_floor.png", 200, 100));
-    images.add(await loadImage("images/fire.png", 30, 30));
-    return images;
-  }
-
-  Future<ui.Image> loadImage(name, width, height) async {
-    final ByteData data = await rootBundle.load(name);
-    final ss = await instantiateImageCodec(Uint8List.view(data.buffer),
-        targetHeight: height, targetWidth: width);
-    final sss = await ss.getNextFrame();
-    return sss.image;
-  }
-
   @override
   Widget build(BuildContext context) {
-    Future<List<ui.Image>> ss = init();
     return Scaffold(
-      body: FutureBuilder(
-        future: ss,
-        // ignore: missing_return
-        builder: (context, AsyncSnapshot<List<ui.Image>> snapshot) {
-          if (snapshot.hasData) {
-            return CustomPaint(
-              size: Size(200, 200),
-              painter: MapPainter(
-                snapshot.data[0],
-                snapshot.data.getRange(1, snapshot.data.length).toList(),
+      body: FlutterMap(
+        options: MapOptions(
+          center: LatLng(0, 0),
+          plugins: [
+            MarkerClusterPlugin(),
+          ],
+        ),
+        layers: [
+          OverlayImageLayerOptions(
+            overlayImages: [
+              OverlayImage(
+                imageProvider: widget.buildingMap,
+                bounds: LatLngBounds(
+                  LatLng(0, 0),
+                  LatLng(-widget.height, widget.width),
+                ),
               ),
-            );
-          } else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text("Error");
-          } else {
-            return Text("loading");
-          }
-        },
+            ],
+          ),
+          MarkerClusterLayerOptions(
+            maxClusterRadius: 120,
+            size: Size(0, 0),
+            anchor: AnchorPos.align(AnchorAlign.center),
+            markers: widget.markers,
+            polygonOptions: PolygonOptions(
+                borderColor: Colors.red,
+                color: Colors.red,
+                borderStrokeWidth: 3),
+            builder: (context, markers) {
+              return Container();
+            },
+          ),
+        ],
       ),
     );
   }
 }
 
-class MapPainter extends CustomPainter {
-  ui.Image image;
-  List<ui.Image> icons;
-
-  MapPainter(this.image, this.icons);
-
-  @override
-  void paint(Canvas canvas, Size size) async {
-    canvas.drawImage(image, Offset(0, 0), Paint());
-    for (var i in icons) {
-      canvas.drawImage(i, Offset(20, 40), Paint());
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class MapAndIcon extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {}
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+Marker parseMarker({double x, double y, String imageName}) {
+  return Marker(
+    point: LatLng(-y, x),
+    anchorPos: AnchorPos.align(AnchorAlign.center),
+    builder: (ctx) => Image.asset(imageName),
+  );
 }

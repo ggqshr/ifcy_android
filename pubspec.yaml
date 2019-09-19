@@ -86,6 +86,7 @@ flutter:
     - images/fire.png
     - images/wind.png
     - images/voice2.png
+    - images/1.gif
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
