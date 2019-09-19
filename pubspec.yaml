@@ -57,6 +57,8 @@ dependencies:
   rxdart: ^0.22.1+1
   jpush_flutter: 0.1.0
   expandable: ^3.0.0+1
+  flutter_map_marker_cluster: ^0.2.3
+  flutter_map: ^0.7.2
 
 
 dev_dependencies:
@@ -79,10 +81,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
-
+  assets:
+    - images/build_floor.png
+    - images/fire.png
+    - images/wind.png
+    - images/voice2.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

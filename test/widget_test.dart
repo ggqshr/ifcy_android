@@ -10,12 +10,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ifcy/common/res/res.dart';
+import 'dart:ui' as ui;
 
 aa() async {
   await Future.delayed(Duration(seconds: 1));
@@ -94,16 +96,22 @@ void main() {
     test("testadd", () async {
       await DioUtils.getInstance().login("hyj", "123456");
       CheckedAlarmDataProvider provider = CheckedAlarmDataProvider();
-      PageDataModel res =
-          await provider.getFireCheckMessage();
+      PageDataModel res = await provider.getFireCheckMessage();
       print(res);
     });
     test("testrepo", () async {
       await DioUtils.getInstance().login("hyj", "123456");
       ReportDeviceRepositories provider = ReportDeviceRepositories();
-      PageDataModel res =
-          await provider.getDeclareFirstPage();
+      PageDataModel res = await provider.getDeclareFirstPage();
       print(res);
+    });
+    test("testImg", () async {
+      final ImageProvider images = AssetImage("images/build_floor.png");
+      ImageStreamListener listener = ImageStreamListener(
+        (ImageInfo image, bool synchronousCall) => print(image.image.height),
+      );
+      images.resolve(ImageConfiguration()).addListener(listener);
+      await Future.delayed(Duration(seconds: 5));
     });
   });
 
