@@ -2,10 +2,15 @@ part of 'components.dart';
 
 class PersonPage extends StatelessWidget {
   final Function drawerCall;
+
   PersonPage(this.drawerCall);
 
   @override
   Widget build(BuildContext context) {
+    final String currentRole = (BlocProvider.of<AuthorizationBloc>(context)
+            .currentState as Authenticated)
+        .userEntity
+        .roleType;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -45,16 +50,39 @@ class PersonPage extends StatelessWidget {
         color: Colors.white70,
         child: Column(
           children: <Widget>[
-            Padding(
-              child: ListTile(
-                leading: Icon(
-                  Icons.assignment_returned,
-                  color: Colors.lightGreen,
-                ),
-                title: Text('申报'),
-                trailing: IconButton(
-                  icon: Icon(Icons.navigate_next),
-                  onPressed: () {
+            if ({
+              "OWNER",
+              "MAINTAIN_MANAGER",
+              "PROPERTY_MANAGER",
+            }.contains(currentRole)) ...[
+              Padding(
+                child: ListTile(
+                  leading: Icon(
+                    Icons.assignment_returned,
+                    color: Colors.lightGreen,
+                  ),
+                  title: Text('申报'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.navigate_next),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (context) =>
+                              BlocProvider<DeclareMessageBloc>(
+                            builder: (context) {
+                              ReportDeviceRepositories repo =
+                                  ReportDeviceRepositories();
+                              return DeclareMessageBloc(repo)
+                                ..dispatch(FetchDeclareMessage());
+                            },
+                            child: FaultDeclarePage(),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  onTap: () {
                     Navigator.push(
                       context,
                       new MaterialPageRoute(
@@ -71,28 +99,12 @@ class PersonPage extends StatelessWidget {
                     );
                   },
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (context) => BlocProvider<DeclareMessageBloc>(
-                        builder: (context) {
-                          ReportDeviceRepositories repo =
-                              ReportDeviceRepositories();
-                          return DeclareMessageBloc(repo)
-                            ..dispatch(FetchDeclareMessage());
-                        },
-                        child: FaultDeclarePage(),
-                      ),
-                    ),
-                  );
-                },
+                padding: EdgeInsets.fromLTRB(5.0, 8.0, 1.0, 1.0),
               ),
-              padding: EdgeInsets.fromLTRB(5.0, 8.0, 1.0, 1.0),
-            ),
-            Divider(
-              color: Colors.black87,
-            ),
+              Divider(
+                color: Colors.black87,
+              ),
+            ],
             Padding(
               child: ListTile(
                 leading: Icon(

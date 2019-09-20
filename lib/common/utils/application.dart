@@ -4,6 +4,7 @@ import 'package:ifcy/device_staff/device_staff.dart';
 import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:ifcy/building_owner/building_owner.dart';
 import 'package:ifcy/property_manager/property_manager.dart';
+import 'package:ifcy/property_worker/property_worker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 export 'package:fluttertoast/fluttertoast.dart';
@@ -13,22 +14,35 @@ export 'package:fluttertoast/fluttertoast.dart';
 ///@date :2019/8/1 15:21
 class Application {
   ///用来处理没有context时进行路由跳转
-  static final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
+
   ///路由跳转
   static Router router;
+
   ///全局的SharedPreferences
   static SharedPreferences prefs;
+
   ///后台的权限和前台的页面映射逻辑
   static Map<String, Widget> auth2view = {
     "MAINTAIN_MANAGER": DeviceSupervisor(), //维保主管
-    // "MAINTAIN_MANAGER": DeviceSupervisor(), //维保主管
     "MAINTAIN_WORKER": DeviceStaff(), //维保工作人员
-    "OWNER":BuildingOwner(),//业主
-    "PROPERTY_MANAGER":PropertyManager(),//物业主管
+    "OWNER": BuildingOwner(), //业主
+    "PROPERTY_MANAGER": PropertyManager(), //物业主管
+    "PROPERTY_WORKER": PropertyWorker() //物业工作人员
+  };
+
+  static Map<String, String> auth2string = {
+    "MAINTAIN_MANAGER": "维保主管", //维保主管
+    "MAINTAIN_WORKER": "维保工作人员", //维保工作人员
+    "OWNER": "业主", //业主
+    "PROPERTY_MANAGER": "物业主管", //物业主管
+    "PROPERTY_WORKER": "物业工作人员" //物业工作人员
   };
 
   ///封装的flutterToast的方法，使用方法一致
-  static void showToast(String msg, {
+  static void showToast(
+    String msg, {
     Toast toastLength,
     int timeInSecForIos = 1,
     double fontSize = 16.0,
@@ -52,6 +66,7 @@ class Application {
       msg: msg,
       backgroundColor: Colors.redAccent,
       textColor: Colors.white,
-      toastLength: Toast.LENGTH_LONG,);
+      toastLength: Toast.LENGTH_LONG,
+    );
   }
 }

@@ -14,12 +14,12 @@ class EmployeePage extends StatelessWidget {
             .currentBuild
             .buildName),
       ),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.lightGreen,
-          child: Icon(
-            Icons.add,
-          ),
-          onPressed: () {}),
+//      floatingActionButton: FloatingActionButton(
+//          backgroundColor: Colors.lightGreen,
+//          child: Icon(
+//            Icons.add,
+//          ),
+//          onPressed: () {}),
       body: ProjectStaffListComponent(),
     );
   }
