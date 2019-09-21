@@ -22,16 +22,16 @@ class PersonnelMessage {
 
   PersonnelMessage({this.id, this.name,this.roleType,this.enable,this.mobile});
 
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PersonnelMessage &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name;
+          other is PersonnelMessage &&
+              runtimeType == other.runtimeType &&
+              id == other.id;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode;
+  int get hashCode => id.hashCode;
 
   factory PersonnelMessage.fromJson(Map<String, dynamic> json) =>
       _$PersonnelMessageFromJson(json);

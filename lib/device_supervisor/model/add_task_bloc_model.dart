@@ -25,7 +25,7 @@ String timeToJson(DateTime d) {
 }
 
 int executeTimeFromJson(String time) {
-  return time==null?null:int.parse(time) ~/ 86400000;
+  return time == null ? null : int.parse(time) ~/ 86400000;
 }
 
 String executeTimeToJson(int t) {
@@ -37,7 +37,7 @@ String firstStartTimeToJson(DateTime d) {
 }
 
 TaskCycleModel cycleFromJson(String cycle) {
-  return cycle==null?null:TaskCycleModel.fromString(cycle);
+  return cycle == null ? null : TaskCycleModel.fromString(cycle);
 }
 
 String cycleToJson(TaskCycleModel cycle) {
@@ -73,11 +73,11 @@ class TaskPlanEntity {
   ///任务独有
 
   ///开始时间
-  @JsonKey(name:"start_time",toJson: timeToJson, fromJson: timeFromJson)
+  @JsonKey(name: "start_time", toJson: timeToJson, fromJson: timeFromJson)
   DateTime startTime;
 
   ///结束时间
-  @JsonKey(name:"end_time",toJson: timeToJson, fromJson: timeFromJson)
+  @JsonKey(name: "end_time", toJson: timeToJson, fromJson: timeFromJson)
   DateTime endTime;
 
   ///计划独有
@@ -169,9 +169,10 @@ class AddTaskBlocModel with ChangeNotifier {
       {this.currentBuilding,
       this.allInspectionSystem,
       this.allPeople,
-      this.allTaskCycle})
+      this.allTaskCycle,
+      thisModel})
       : stepperIndex = 0 {
-    model = TaskPlanEntity.init(allTaskCycle[0]);
+    model = thisModel ?? TaskPlanEntity.init(allTaskCycle[0]);
     bool step1Validate() {
       if (model.name != null) {
         nameErrorMsg = null;
@@ -310,6 +311,22 @@ class AddTaskBlocModel with ChangeNotifier {
     model.selectedSystem = allInspectionSystem
         .map((item) => InspectionSystem.copyNullItemList(item))
         .toList();
+  }
+
+  InspectionSystem transAndFill(item) {
+    var emptyItem = InspectionSystem.copyNullItemList(item);
+    var findOne = model.selectedSystem
+        .singleWhere((ii) => ii.id == item.id, orElse: () => null);
+    if (findOne != null) {
+      var thisCheckItem = findOne.inspectionItem;
+      emptyItem.inspectionItem.addAll(thisCheckItem);
+    }
+    return emptyItem;
+  }
+
+  void fillSelectSystem() {
+    List emptyList = allInspectionSystem.map<InspectionSystem>(transAndFill).toList();
+    model.selectedSystem = emptyList;
   }
 
   ///更改选择系统的选择框回掉

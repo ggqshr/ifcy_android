@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
@@ -13,6 +15,12 @@ class PlanListDataProvider {
     Response res = await dio.get("/patrol/plans",
         queryParameters: {"page": page, "list_rows": listRow});
     return PlanTaskListPageModel.fromJson(res.data['data']);
+  }
+
+  Future changePlan(TaskPlanEntity model) async {
+    await DioUtils.getInstance()
+        .getDio()
+        .put("/patrol/plan/${model}", data: jsonEncode(model.toJson()));
   }
 }
 
@@ -30,5 +38,9 @@ class PlanListRepositories {
   Future<PlanTaskListPageModel> getNextPage(int pageNum) async {
     PlanTaskListPageModel model = await dataProvider.getPlanList(page: pageNum);
     return model;
+  }
+
+  Future changePlan(TaskPlanEntity model) async {
+    await dataProvider.changePlan(model);
   }
 }

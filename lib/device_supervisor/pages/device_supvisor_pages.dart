@@ -34,5 +34,5 @@ part 'task_list_page.dart';
 part "confirm_message_page.dart";
 part "checked_alarm_page.dart";
 part "report_device_page.dart";
-
+part "change_plan_page.dart";
 

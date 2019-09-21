@@ -90,11 +90,10 @@ class TaskCycleModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaskCycleModel &&
-          runtimeType == other.runtimeType &&
-          cycleId == other.cycleId &&
-          item == other.item;
+          other is TaskCycleModel &&
+              runtimeType == other.runtimeType &&
+              item == other.item;
 
   @override
-  int get hashCode => cycleId.hashCode ^ item.hashCode;
+  int get hashCode => item.hashCode;
 }

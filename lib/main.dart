@@ -27,7 +27,8 @@ void main() {
   Routes.configureRoutes(router);
   Application.router = router;
   runApp(MyApp());
-  SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  SystemUiOverlayStyle systemUiOverlayStyle =
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 }
 
@@ -68,7 +69,9 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primaryColor: Colors.green[300],
             ),
-            home: MainApp(),
+            home: SafeArea(
+              child: MainApp(),
+            ),
             onGenerateRoute: Application.router.generator,
             navigatorKey: Application.navigatorKey,
           ),

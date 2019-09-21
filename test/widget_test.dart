@@ -113,6 +113,11 @@ void main() {
       images.resolve(ImageConfiguration()).addListener(listener);
       await Future.delayed(Duration(seconds: 5));
     });
+    test("testset", () async {
+      Set aa = {};
+      Set bb = {1,2,3};
+      print(aa.union(bb));
+    });
   });
 
   group(("mocking testsp"), () {

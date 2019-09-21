@@ -105,17 +105,10 @@ class FloorEntity {
       identical(this, other) ||
           other is FloorEntity &&
               runtimeType == other.runtimeType &&
-              number == other.number &&
-              code == other.code &&
-              name == other.name &&
-              id == other.id;
+              code == other.code;
 
   @override
-  int get hashCode =>
-      number.hashCode ^
-      code.hashCode ^
-      name.hashCode ^
-      id.hashCode;
+  int get hashCode => code.hashCode;
 
   @override
   String toString() {

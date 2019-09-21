@@ -98,9 +98,7 @@ class _AddTaskPageState extends State<AddTaskPage>
           // ignore: missing_return
           builder: (context, state) {
             if (state is UnInitialAddTaskPlanState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return LoadingPage();
             }
             if (state is AfterFetchedState) {
               if (state.isFetchSuccess) {

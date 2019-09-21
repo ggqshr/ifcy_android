@@ -87,6 +87,51 @@ class _PlanListPageState extends State<PlanListPage>
                           flex: 2,
                           child: ListTile(
                             title: Text(thisPlan.name),
+                            trailing: FlatButton(
+                              child: Text("修改"),
+                              onPressed: () {
+                                UserLoginRepositories userRepo =
+                                    RepositoryProvider.of<
+                                        UserLoginRepositories>(context);
+                                PlanListRepositories planListRepo =
+                                    RepositoryProvider.of<PlanListRepositories>(
+                                        context);
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return MultiRepositoryProvider(
+                                    providers: [
+                                      RepositoryProvider<
+                                          UserLoginRepositories>.value(
+                                        value: userRepo,
+                                      ),
+                                      RepositoryProvider<
+                                              PlanListRepositories>.value(
+                                          value: planListRepo),
+                                      RepositoryProvider<
+                                          AddTaskPlanRepositories>(
+                                        builder: (context) =>
+                                            AddTaskPlanRepositories(),
+                                      ),
+                                    ],
+                                    child: BlocProvider<ChangePlanBloc>(
+                                      builder: (context) => ChangePlanBloc(
+                                        repositories: RepositoryProvider.of<
+                                            PlanListRepositories>(context),
+                                        userLoginRepositories:
+                                            RepositoryProvider.of<
+                                                UserLoginRepositories>(context),
+                                        addTaskPlanRepositories:
+                                            RepositoryProvider.of<
+                                                    AddTaskPlanRepositories>(
+                                                context),
+                                        model: thisPlan,
+                                      )..dispatch(InitPageEvent()),
+                                      child: ChangePlanPage(thisPlan),
+                                    ),
+                                  );
+                                }));
+                              },
+                            ),
                           ),
                         ),
                         Divider(

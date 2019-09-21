@@ -54,6 +54,9 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
           RepositoryProvider<MonitorRepositories>(
             builder: (context) => MonitorRepositories(),
           ),
+          RepositoryProvider<PlanListRepositories>(
+            builder: (context) => PlanListRepositories(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -64,7 +67,8 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
             ),
             BlocProvider<PlanListBloc>(
               builder: (context) {
-                PlanListRepositories repositories = PlanListRepositories();
+                PlanListRepositories repositories =
+                    RepositoryProvider.of<PlanListRepositories>(context);
                 return PlanListBloc(repositories);
               },
             ),
