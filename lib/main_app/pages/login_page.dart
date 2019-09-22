@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 SnackBar(
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('Login Failure'), Icon(Icons.error)],
+                    children: [Text('登录失败'), Icon(Icons.error)],
                   ),
                   backgroundColor: Colors.red,
                 ),
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Logging In...'),
+                      Text('登录中'),
                       CircularProgressIndicator(),
                     ],
                   ),

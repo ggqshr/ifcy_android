@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ifcy/common/dao/dao.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/cache_manager.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
@@ -14,10 +15,11 @@ import 'package:ifcy/device_staff/model/device_staff_model.dart';
 ///@date :2019/8/31 10:00
 class DeviceCheckDataProvider {
   final String taskId;
-  final DeviceDB _db= DeviceDB();
+  final DeviceDB _db = DeviceDB();
 
-  DeviceCheckDataProvider(taskId,)
-      :taskId = taskId;
+  DeviceCheckDataProvider(
+    taskId,
+  ) : taskId = taskId;
 
   ///查看本地是否有缓存的数据
   Future<int> getLocalLen() async {

@@ -159,6 +159,7 @@ enum CheckResult {
 
   ///故障
   fault,
+
   ///缺陷
   detect,
 }
@@ -183,7 +184,7 @@ enum CheckStatus {
 Map<int, String> checkResultTypeMap = {
   0: "正常",
   1: "故障",
-  2:"缺陷",
+  2: "缺陷",
 };
 
 Map<CheckResult, String> checkResultToString = {
@@ -247,17 +248,24 @@ class InspectionDeviceModel {
 
   ///图片列表
   List<String> get images => [pic1, pic2];
+  @JsonKey(name: "xposition",includeIfNull: false)
+  String xPosition;
+  @JsonKey(name: "yposition",includeIfNull: false)
+  String yPosition;
 
-  InspectionDeviceModel(
-      {this.name,
-      this.id,
-      this.code,
-      this.comment,
-      this.checkStatus,
-      this.checkResult,
-      this.buildingFloorId,
-      this.pic1,
-      this.pic2});
+  InspectionDeviceModel({
+    this.name,
+    this.id,
+    this.code,
+    this.comment,
+    this.checkStatus,
+    this.checkResult,
+    this.buildingFloorId,
+    this.pic1,
+    this.pic2,
+    this.xPosition,
+    this.yPosition,
+  });
 
   InspectionDeviceModel.fromData(DeviceData data)
       : name = data.name,
@@ -268,7 +276,9 @@ class InspectionDeviceModel {
         checkResult = parseEnumType(data.checkResult),
         buildingFloorId = data.buildingFloorId,
         pic1 = jsonDecode(data.images)[0],
-        pic2 = jsonDecode(data.images)[1];
+        pic2 = jsonDecode(data.images)[1],
+        xPosition = data.xPosition,
+        yPosition = data.yPosition;
 
   DeviceData toData(String taskId) {
     return DeviceData(
@@ -281,20 +291,25 @@ class InspectionDeviceModel {
       checkResult: parseEnumType(this.checkResult),
       buildingFloorId: this.buildingFloorId,
       images: jsonEncode([this.pic1, this.pic2]),
+      xPosition: this.xPosition,
+      yPosition: this.yPosition,
     );
   }
 
   InspectionDeviceModel copy({comment, checkResult, pic1, pic2, index}) {
     return InspectionDeviceModel(
-        name: this.name,
-        id: this.id,
-        code: this.code,
-        comment: comment ?? this.comment,
-        checkStatus: this.checkStatus,
-        checkResult: checkResult ?? this.checkResult,
-        buildingFloorId: this.buildingFloorId,
-        pic1: index == 0 ? pic1 : this.pic1,
-        pic2: index == 1 ? pic2 : this.pic2);
+      name: this.name,
+      id: this.id,
+      code: this.code,
+      comment: comment ?? this.comment,
+      checkStatus: this.checkStatus,
+      checkResult: checkResult ?? this.checkResult,
+      buildingFloorId: this.buildingFloorId,
+      pic1: index == 0 ? pic1 : this.pic1,
+      pic2: index == 1 ? pic2 : this.pic2,
+      xPosition: this.xPosition,
+      yPosition: this.yPosition,
+    );
   }
 
   factory InspectionDeviceModel.fromJson(Map<String, dynamic> json) =>
@@ -302,25 +317,28 @@ class InspectionDeviceModel {
 
   Map<String, dynamic> toJson() => _$InspectionDeviceModelToJson(this);
 
+
   @override
   String toString() {
-    return 'InspectionDeviceModel{name: $name, id: $id, code: $code, comment: $comment, checkStatus: $checkStatus, checkResult: $checkResult, buildingFloorId: $buildingFloorId, pic1: $pic1, pic2: $pic2}';
+    return 'InspectionDeviceModel{name: $name, id: $id, code: $code, comment: $comment, checkStatus: $checkStatus, checkResult: $checkResult, buildingFloorId: $buildingFloorId, pic1: $pic1, pic2: $pic2, xPosition: $xPosition, yPosition: $yPosition}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is InspectionDeviceModel &&
-              runtimeType == other.runtimeType &&
-              name == other.name &&
-              id == other.id &&
-              code == other.code &&
-              comment == other.comment &&
-              checkStatus == other.checkStatus &&
-              checkResult == other.checkResult &&
-              buildingFloorId == other.buildingFloorId &&
-              pic1 == other.pic1 &&
-              pic2 == other.pic2;
+      other is InspectionDeviceModel &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          id == other.id &&
+          code == other.code &&
+          comment == other.comment &&
+          checkStatus == other.checkStatus &&
+          checkResult == other.checkResult &&
+          buildingFloorId == other.buildingFloorId &&
+          pic1 == other.pic1 &&
+          pic2 == other.pic2 &&
+          xPosition == other.xPosition &&
+          yPosition == other.yPosition;
 
   @override
   int get hashCode =>
@@ -332,7 +350,7 @@ class InspectionDeviceModel {
       checkResult.hashCode ^
       buildingFloorId.hashCode ^
       pic1.hashCode ^
-      pic2.hashCode;
-
-
+      pic2.hashCode ^
+      xPosition.hashCode ^
+      yPosition.hashCode;
 }

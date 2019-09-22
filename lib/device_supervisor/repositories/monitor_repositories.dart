@@ -11,11 +11,18 @@ class MonitorDataProvider {
   MonitorDataProvider([dio]) : _dio = dio ?? DioUtils.getInstance().getDio();
 
   Future<int> getDeviceFaultNum() async {
-    return 1;
+    Response res = await _dio.get("/aggregation/fault-device-count");
+    Map data = res.data['data'];
+    return int.parse(data["fault_count"]);
   }
 
   Future<int> getTaskCompleteRate() async {
-    return 48;
+    Response res = await _dio.get("/aggregation/patrol-device-count");
+    Map data =res.data['data'];
+    int device_num = int.parse(data['device_num']);
+    int checked_num = int.parse(data['checked_device_num']);
+    if (device_num == 0) return 0;
+    return (checked_num / device_num).round();
   }
 
   Future<List<FireAlarmMessage>> getFireAlarmMsg() async {
@@ -28,7 +35,8 @@ class MonitorDataProvider {
   Future<List<DeviceFaultAlarmMessage>> getDeviceFaultMsg() async {
     Response res = await _dio.get("/warning-msg/messages/FAULT");
     return res.data['data']
-        .map<DeviceFaultAlarmMessage>((item) => DeviceFaultAlarmMessage.fromJson(item))
+        .map<DeviceFaultAlarmMessage>(
+            (item) => DeviceFaultAlarmMessage.fromJson(item))
         .toList();
   }
 

@@ -21,19 +21,41 @@ class Device extends Table {
   TextColumn get buildingFloorId => text()();
 
   TextColumn get images => text().nullable()();
+
+  TextColumn get xPosition => text().nullable()();
+
+  TextColumn get yPosition => text().nullable()();
 }
 
 @UseMoor(tables: [Device])
 class DeviceDB extends _$DeviceDB {
-  DeviceDB() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'device.sqlite'));
+  DeviceDB()
+      : super(FlutterQueryExecutor.inDatabaseFolder(path: 'device.sqlite'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+      onCreate: (Migrator m) {
+        return m.createAllTables();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 1) {
+          // we added the dueDate property in the change from version 1
+          await m.addColumn(device, device.xPosition);
+          await m.addColumn(device, device.yPosition);
+        }
+      }
+  );
 
   ///获取本地化的所有设备列表
   Stream<List<InspectionDeviceModel>> getDevices(String taskId) {
     return (select(device)..where((t) => t.taskId.equals(taskId))).watch().map(
-        (items) => items.map((item) => InspectionDeviceModel.fromData(item)..checkResult=CheckResult.running).toList());
+        (items) => items
+            .map((item) => InspectionDeviceModel.fromData(item)
+              ..checkResult = CheckResult.running)
+            .toList());
   }
 
   ///根据taskId以及设备Id更新本地的状态

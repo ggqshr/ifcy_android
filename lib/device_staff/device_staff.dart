@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
 import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/device_staff/repositories/repositories.dart';
@@ -28,7 +29,9 @@ class _DeviceStaffState extends State<DeviceStaff> {
   @override
   void initState() {
     super.initState();
-    viewList..add(DeviceStaffWorkPage(() => Scaffold.of(context).openDrawer()));
+    viewList
+      ..add(DeviceStaffWorkPage(() => Scaffold.of(context).openDrawer()))
+      ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
 
   @override
@@ -46,8 +49,8 @@ class _DeviceStaffState extends State<DeviceStaff> {
           ),
           BlocProvider<DeviceStaffTaskListBloc>(
             builder: (context) => DeviceStaffTaskListBloc(
-                RepositoryProvider.of<DeviceStaffTaskListRepositories>(
-                    context))..dispatch(FetchAll()),
+                RepositoryProvider.of<DeviceStaffTaskListRepositories>(context))
+              ..dispatch(FetchAll()),
           ),
         ],
         child: Scaffold(

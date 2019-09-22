@@ -105,37 +105,37 @@ class PersonPage extends StatelessWidget {
                 color: Colors.black87,
               ),
             ],
-            Padding(
-              child: ListTile(
-                leading: Icon(
-                  Icons.assignment,
-                  color: Colors.lightGreen,
-                ),
-                title: Text('工作'),
-                trailing: IconButton(
-                  icon: Icon(Icons.navigate_next),
-                ),
-              ),
-              padding: EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 1.0),
-            ),
-            Divider(
-              color: Colors.black87,
-            ),
-            Padding(
-              child: ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Colors.lightGreen,
-                ),
-                title: Text('设置'),
-                trailing: IconButton(
-                    icon: Icon(Icons.navigate_next), onPressed: null),
-              ),
-              padding: EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 1.0),
-            ),
-            Divider(
-              color: Colors.black87,
-            ),
+//            Padding(
+//              child: ListTile(
+//                leading: Icon(
+//                  Icons.assignment,
+//                  color: Colors.lightGreen,
+//                ),
+//                title: Text('工作'),
+//                trailing: IconButton(
+//                  icon: Icon(Icons.navigate_next),
+//                ),
+//              ),
+//              padding: EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 1.0),
+//            ),
+//            Divider(
+//              color: Colors.black87,
+//            ),
+//            Padding(
+//              child: ListTile(
+//                leading: Icon(
+//                  Icons.settings,
+//                  color: Colors.lightGreen,
+//                ),
+//                title: Text('设置'),
+//                trailing: IconButton(
+//                    icon: Icon(Icons.navigate_next), onPressed: null),
+//              ),
+//              padding: EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 1.0),
+//            ),
+//            Divider(
+//              color: Colors.black87,
+//            ),
           ],
         ),
       ),

@@ -681,6 +681,8 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
   final String checkResult;
   final String buildingFloorId;
   final String images;
+  final String xPosition;
+  final String yPosition;
   DeviceData(
       {@required this.taskId,
       @required this.name,
@@ -690,7 +692,9 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
       @required this.checkStatus,
       @required this.checkResult,
       @required this.buildingFloorId,
-      this.images});
+      this.images,
+      this.xPosition,
+      this.yPosition});
   factory DeviceData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -711,6 +715,10 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}building_floor_id']),
       images:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}images']),
+      xPosition: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}x_position']),
+      yPosition: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}y_position']),
     );
   }
   factory DeviceData.fromJson(Map<String, dynamic> json,
@@ -725,6 +733,8 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
       checkResult: serializer.fromJson<String>(json['checkResult']),
       buildingFloorId: serializer.fromJson<String>(json['buildingFloorId']),
       images: serializer.fromJson<String>(json['images']),
+      xPosition: serializer.fromJson<String>(json['xPosition']),
+      yPosition: serializer.fromJson<String>(json['yPosition']),
     );
   }
   @override
@@ -740,6 +750,8 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
       'checkResult': serializer.toJson<String>(checkResult),
       'buildingFloorId': serializer.toJson<String>(buildingFloorId),
       'images': serializer.toJson<String>(images),
+      'xPosition': serializer.toJson<String>(xPosition),
+      'yPosition': serializer.toJson<String>(yPosition),
     };
   }
 
@@ -765,6 +777,12 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
           : Value(buildingFloorId),
       images:
           images == null && nullToAbsent ? const Value.absent() : Value(images),
+      xPosition: xPosition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(xPosition),
+      yPosition: yPosition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(yPosition),
     ) as T;
   }
 
@@ -777,7 +795,9 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
           String checkStatus,
           String checkResult,
           String buildingFloorId,
-          String images}) =>
+          String images,
+          String xPosition,
+          String yPosition}) =>
       DeviceData(
         taskId: taskId ?? this.taskId,
         name: name ?? this.name,
@@ -788,6 +808,8 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
         checkResult: checkResult ?? this.checkResult,
         buildingFloorId: buildingFloorId ?? this.buildingFloorId,
         images: images ?? this.images,
+        xPosition: xPosition ?? this.xPosition,
+        yPosition: yPosition ?? this.yPosition,
       );
   @override
   String toString() {
@@ -800,7 +822,9 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
           ..write('checkStatus: $checkStatus, ')
           ..write('checkResult: $checkResult, ')
           ..write('buildingFloorId: $buildingFloorId, ')
-          ..write('images: $images')
+          ..write('images: $images, ')
+          ..write('xPosition: $xPosition, ')
+          ..write('yPosition: $yPosition')
           ..write(')'))
         .toString();
   }
@@ -820,8 +844,12 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
                           checkStatus.hashCode,
                           $mrjc(
                               checkResult.hashCode,
-                              $mrjc(buildingFloorId.hashCode,
-                                  images.hashCode)))))))));
+                              $mrjc(
+                                  buildingFloorId.hashCode,
+                                  $mrjc(
+                                      images.hashCode,
+                                      $mrjc(xPosition.hashCode,
+                                          yPosition.hashCode)))))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -834,7 +862,9 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
           other.checkStatus == checkStatus &&
           other.checkResult == checkResult &&
           other.buildingFloorId == buildingFloorId &&
-          other.images == images);
+          other.images == images &&
+          other.xPosition == xPosition &&
+          other.yPosition == yPosition);
 }
 
 class DeviceCompanion extends UpdateCompanion<DeviceData> {
@@ -847,6 +877,8 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
   final Value<String> checkResult;
   final Value<String> buildingFloorId;
   final Value<String> images;
+  final Value<String> xPosition;
+  final Value<String> yPosition;
   const DeviceCompanion({
     this.taskId = const Value.absent(),
     this.name = const Value.absent(),
@@ -857,6 +889,8 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
     this.checkResult = const Value.absent(),
     this.buildingFloorId = const Value.absent(),
     this.images = const Value.absent(),
+    this.xPosition = const Value.absent(),
+    this.yPosition = const Value.absent(),
   });
   DeviceCompanion copyWith(
       {Value<String> taskId,
@@ -867,7 +901,9 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
       Value<String> checkStatus,
       Value<String> checkResult,
       Value<String> buildingFloorId,
-      Value<String> images}) {
+      Value<String> images,
+      Value<String> xPosition,
+      Value<String> yPosition}) {
     return DeviceCompanion(
       taskId: taskId ?? this.taskId,
       name: name ?? this.name,
@@ -878,6 +914,8 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
       checkResult: checkResult ?? this.checkResult,
       buildingFloorId: buildingFloorId ?? this.buildingFloorId,
       images: images ?? this.images,
+      xPosition: xPosition ?? this.xPosition,
+      yPosition: yPosition ?? this.yPosition,
     );
   }
 }
@@ -1000,6 +1038,30 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
     );
   }
 
+  final VerificationMeta _xPositionMeta = const VerificationMeta('xPosition');
+  GeneratedTextColumn _xPosition;
+  @override
+  GeneratedTextColumn get xPosition => _xPosition ??= _constructXPosition();
+  GeneratedTextColumn _constructXPosition() {
+    return GeneratedTextColumn(
+      'x_position',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _yPositionMeta = const VerificationMeta('yPosition');
+  GeneratedTextColumn _yPosition;
+  @override
+  GeneratedTextColumn get yPosition => _yPosition ??= _constructYPosition();
+  GeneratedTextColumn _constructYPosition() {
+    return GeneratedTextColumn(
+      'y_position',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         taskId,
@@ -1010,7 +1072,9 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
         checkStatus,
         checkResult,
         buildingFloorId,
-        images
+        images,
+        xPosition,
+        yPosition
       ];
   @override
   $DeviceTable get asDslTable => this;
@@ -1077,6 +1141,18 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
     } else if (images.isRequired && isInserting) {
       context.missing(_imagesMeta);
     }
+    if (d.xPosition.present) {
+      context.handle(_xPositionMeta,
+          xPosition.isAcceptableValue(d.xPosition.value, _xPositionMeta));
+    } else if (xPosition.isRequired && isInserting) {
+      context.missing(_xPositionMeta);
+    }
+    if (d.yPosition.present) {
+      context.handle(_yPositionMeta,
+          yPosition.isAcceptableValue(d.yPosition.value, _yPositionMeta));
+    } else if (yPosition.isRequired && isInserting) {
+      context.missing(_yPositionMeta);
+    }
     return context;
   }
 
@@ -1118,6 +1194,12 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
     }
     if (d.images.present) {
       map['images'] = Variable<String, StringType>(d.images.value);
+    }
+    if (d.xPosition.present) {
+      map['x_position'] = Variable<String, StringType>(d.xPosition.value);
+    }
+    if (d.yPosition.present) {
+      map['y_position'] = Variable<String, StringType>(d.yPosition.value);
     }
     return map;
   }

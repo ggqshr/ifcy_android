@@ -145,8 +145,9 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     DeviceStaffTaskListEvent fetchType,
   }) {
     if (tasks.isEmpty) {
-      return Center(
-        child: Text("列表为空"),
+      return BlankPage(
+        showText: "列表为空",
+        onRefreshCall: () => _bloc.dispatch(refreshType),
       );
     } else {
       return EasyRefresh(
@@ -252,11 +253,20 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     return ListTile(
       title: Text(tasks[index].name),
       trailing: FlatButton.icon(
-        onPressed: () => Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text("跳转到${tasks[index].id}"),
-          ),
-        ),
+        onPressed: () =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return RepositoryProvider<DeviceCheckRepositories>(
+                builder: (context) =>
+                    DeviceCheckRepositories(tasks[index].id),
+                child: BlocProvider<DeviceStaffDeviceCheckBloc>(
+                  builder: (context) => DeviceStaffDeviceCheckBloc(
+                    RepositoryProvider.of<DeviceCheckRepositories>(context),
+                    RepositoryProvider.of<UserLoginRepositories>(context),
+                  )..dispatch(LoadDevice(tasks[index].devices)),
+                  child: RegularInspectionPage(),
+                ),
+              );
+            })),
         icon: Icon(
           Icons.check_circle_outline,
           color: Colors.green,

@@ -4,6 +4,7 @@ import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart' show timeFromJson,timeToJson;
+import 'package:meta/meta.dart';
 
 part 'regular_inspection_model.dart';
 

@@ -2,52 +2,51 @@
 ///@description: 和建筑相关的实体类
 ///@date :2019/8/16 14:18
 part of "model.dart";
+
 ///建筑的实体类
 @JsonSerializable()
 class Build {
   @JsonKey(ignore: true)
   String buildId;
-  @JsonKey(name:"name")
+  @JsonKey(name: "name")
   String buildName; //建筑名称
   ///建筑对应的楼层
-  @JsonKey(name:"floors")
+  @JsonKey(name: "floors")
   List<FloorEntity> floors;
   @JsonKey(name: "above_floor_num")
   String aboveFloorNum;
-  @JsonKey(name:"acreage")
+  @JsonKey(name: "acreage")
   String acreage;
-  @JsonKey(name:"address_detail")
+  @JsonKey(name: "address_detail")
   String addressDetail;
 
-  @JsonKey(name:"area")
+  @JsonKey(name: "area")
   String area;
-  @JsonKey(name:"build_date")
+  @JsonKey(name: "build_date")
   String buildDate;
-  @JsonKey(name:"city")
+  @JsonKey(name: "city")
   String city;
-  @JsonKey(name:"danger")
+  @JsonKey(name: "danger")
   String danger;
-  @JsonKey(name:"description")
+  @JsonKey(name: "description")
   String description;
-  @JsonKey(name:"latitude",ignore: true)
+  @JsonKey(name: "latitude", ignore: true)
   String latitude;
-  @JsonKey(name:"longitude",ignore: true)
+  @JsonKey(name: "longitude", ignore: true)
   String longitude;
 
-  @JsonKey(name:"main_engine_code")
+  @JsonKey(name: "main_engine_code")
   String mainEngineCode;
-  @JsonKey(name:"nature")
+  @JsonKey(name: "nature")
   String nature;
-  @JsonKey(name:"province")
+  @JsonKey(name: "province")
   String province;
-  @JsonKey(name:"refractory")
+  @JsonKey(name: "refractory")
   String refractory;
-  @JsonKey(name:"type")
+  @JsonKey(name: "type")
   String type;
-  @JsonKey(name:"under_floor_num")
+  @JsonKey(name: "under_floor_num")
   String underFloorNum;
-
-
 
   Build({this.buildId, this.buildName, this.floors});
 
@@ -55,28 +54,23 @@ class Build {
       : buildId = map['id'],
         buildName = map['name'];
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Build &&
-              runtimeType == other.runtimeType &&
-              buildId == other.buildId &&
-              buildName == other.buildName;
+      other is Build &&
+          runtimeType == other.runtimeType &&
+          buildId == other.buildId &&
+          buildName == other.buildName;
 
   @override
-  int get hashCode =>
-      buildId.hashCode ^
-      buildName.hashCode;
-
+  int get hashCode => buildId.hashCode ^ buildName.hashCode;
 
   @override
   String toString() {
     return 'Build{buildId: $buildId, buildName: $buildName, floors: $floors, aboveFloorNum: $aboveFloorNum, acreage: $acreage, addressDetail: $addressDetail, area: $area, buildDate: $buildDate, city: $city, danger: $danger, description: $description, latitude: $latitude, longitude: $longitude, mainEngineCode: $mainEngineCode, nature: $nature, province: $province, refractory: $refractory, type: $type, underFloorNum: $underFloorNum}';
   }
 
-  factory Build.fromJson(Map<String, dynamic> json) =>
-      _$BuildFromJson(json);
+  factory Build.fromJson(Map<String, dynamic> json) => _$BuildFromJson(json);
 
   Map<String, dynamic> toJson() => _$BuildToJson(this);
 }
@@ -96,23 +90,37 @@ class FloorEntity {
 
   ///楼层id
   String id;
+  @JsonKey(includeIfNull: false)
+  String length;
 
-  FloorEntity({this.number, this.code, this.name, this.id});
+  @JsonKey(includeIfNull: false)
+  String width;
 
+  @JsonKey(includeIfNull: false)
+  String picture;
+
+  FloorEntity(
+      {this.number,
+      this.code,
+      this.name,
+      this.id,
+      this.length,
+      this.width,
+      this.picture});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is FloorEntity &&
-              runtimeType == other.runtimeType &&
-              code == other.code;
+      other is FloorEntity &&
+          runtimeType == other.runtimeType &&
+          code == other.code;
 
   @override
   int get hashCode => code.hashCode;
 
   @override
   String toString() {
-    return 'FloorEntity{number: $number, code: $code, name: $name, id: $id}';
+    return 'FloorEntity{number: $number, code: $code, name: $name, id: $id, length: $length, width: $width, picture: $picture}';
   }
 
   factory FloorEntity.fromJson(Map<String, dynamic> json) =>

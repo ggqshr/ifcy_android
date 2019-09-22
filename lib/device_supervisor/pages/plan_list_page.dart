@@ -52,105 +52,114 @@ class _PlanListPageState extends State<PlanListPage>
             );
           } else if (state is FetchedPlanListState) {
             PlanTaskListPageModel model = state.model;
-            return EasyRefresh(
-              footer: getFooter(),
-              header: getHeader(),
-              bottomBouncing: false,
-              enableControlFinishLoad: true,
-              controller: _controller,
-              onRefresh: () async {
-                bloc.dispatch(RefreshPlan());
-              },
-              onLoad: () async {
-                bloc.dispatch(FetchPlan());
-              },
-              child: ListView.builder(
-                itemCount: model.planLists.length,
-                itemBuilder: (context, index) {
-                  var thisPlan = model.planLists[index];
-                  return Card(
-                    elevation: 5,
-                    margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Flexible(
-                          flex: 2,
-                          child: ListTile(
-                            title: Text(thisPlan.name),
-                            trailing: FlatButton(
-                              color: Colors.green[300],
-                              child: Text("修改"),
-                              onPressed: () {
-                                UserLoginRepositories userRepo =
-                                    RepositoryProvider.of<
-                                        UserLoginRepositories>(context);
-                                PlanListRepositories planListRepo =
-                                    RepositoryProvider.of<PlanListRepositories>(
-                                        context);
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return MultiRepositoryProvider(
-                                    providers: [
-                                      RepositoryProvider<
-                                          UserLoginRepositories>.value(
-                                        value: userRepo,
-                                      ),
-                                      RepositoryProvider<
-                                              PlanListRepositories>.value(
-                                          value: planListRepo),
-                                      RepositoryProvider<
-                                          AddTaskPlanRepositories>(
-                                        builder: (context) =>
-                                            AddTaskPlanRepositories(),
-                                      ),
-                                    ],
-                                    child: BlocProvider<ChangePlanBloc>(
-                                      builder: (context) => ChangePlanBloc(
-                                        repositories: RepositoryProvider.of<
-                                            PlanListRepositories>(context),
-                                        userLoginRepositories:
-                                            RepositoryProvider.of<
-                                                UserLoginRepositories>(context),
-                                        addTaskPlanRepositories:
-                                            RepositoryProvider.of<
-                                                    AddTaskPlanRepositories>(
-                                                context),
-                                        model: thisPlan,
-                                      )..dispatch(InitPageEvent()),
-                                      child: ChangePlanPage(thisPlan),
-                                    ),
-                                  );
-                                }));
-                              },
-                            ),
+            return model.planLists.isEmpty
+                ? BlankPage(
+                    showText: "无已发布的计划",
+                    onRefreshCall: () => bloc.dispatch(RefreshPlan()),
+                  )
+                : EasyRefresh(
+                    footer: getFooter(),
+                    header: getHeader(),
+                    bottomBouncing: false,
+                    enableControlFinishLoad: true,
+                    controller: _controller,
+                    onRefresh: () async {
+                      bloc.dispatch(RefreshPlan());
+                    },
+                    onLoad: () async {
+                      bloc.dispatch(FetchPlan());
+                    },
+                    child: ListView.builder(
+                      itemCount: model.planLists.length,
+                      itemBuilder: (context, index) {
+                        var thisPlan = model.planLists[index];
+                        return Card(
+                          elevation: 5,
+                          margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Flexible(
+                                flex: 2,
+                                child: ListTile(
+                                  title: Text(thisPlan.name),
+                                  trailing: FlatButton(
+                                    color: Colors.green[300],
+                                    child: Text("修改"),
+                                    onPressed: () {
+                                      UserLoginRepositories userRepo =
+                                          RepositoryProvider.of<
+                                              UserLoginRepositories>(context);
+                                      PlanListRepositories planListRepo =
+                                          RepositoryProvider.of<
+                                              PlanListRepositories>(context);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) {
+                                        return MultiRepositoryProvider(
+                                          providers: [
+                                            RepositoryProvider<
+                                                UserLoginRepositories>.value(
+                                              value: userRepo,
+                                            ),
+                                            RepositoryProvider<
+                                                    PlanListRepositories>.value(
+                                                value: planListRepo),
+                                            RepositoryProvider<
+                                                AddTaskPlanRepositories>(
+                                              builder: (context) =>
+                                                  AddTaskPlanRepositories(),
+                                            ),
+                                          ],
+                                          child: BlocProvider<ChangePlanBloc>(
+                                            builder: (context) =>
+                                                ChangePlanBloc(
+                                              repositories: RepositoryProvider
+                                                  .of<PlanListRepositories>(
+                                                      context),
+                                              userLoginRepositories:
+                                                  RepositoryProvider.of<
+                                                          UserLoginRepositories>(
+                                                      context),
+                                              addTaskPlanRepositories:
+                                                  RepositoryProvider.of<
+                                                          AddTaskPlanRepositories>(
+                                                      context),
+                                              model: thisPlan,
+                                            )..dispatch(InitPageEvent()),
+                                            child: ChangePlanPage(thisPlan),
+                                          ),
+                                        );
+                                      }));
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.black,
+                              ),
+                              ListTile(
+                                dense: true,
+                                title: Text(
+                                    "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
+                              ),
+                              ListTile(
+                                dense: true,
+                                title: Text(
+                                    "第一次开始时间：${thisPlan.firstStartTime.toString().substring(0, 10)}"),
+                              ),
+                              ListTile(
+                                dense: true,
+                                title:
+                                    Text("持续时间：${thisPlan.taskExecuteTime}天"),
+                              ),
+                            ],
                           ),
-                        ),
-                        Divider(
-                          color: Colors.black,
-                        ),
-                        ListTile(
-                          dense: true,
-                          title: Text(
-                              "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
-                        ),
-                        ListTile(
-                          dense: true,
-                          title: Text(
-                              "第一次开始时间：${thisPlan.firstStartTime.toString().substring(0, 10)}"),
-                        ),
-                        ListTile(
-                          dense: true,
-                          title: Text("持续时间：${thisPlan.taskExecuteTime}天"),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   );
-                },
-              ),
-            );
           }
           return Container();
         },

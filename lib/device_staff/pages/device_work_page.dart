@@ -17,18 +17,13 @@ class _DeviceStaffWorkPageState extends State<DeviceStaffWorkPage>
     Tab(
       child: Text("定期巡检"),
     ),
-    Tab(
-      child: Text("故障确认"),
-    ),
   ];
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: tabs.length, vsync: this);
-    tabViews
-      ..add(RegularInspectionComponent())
-      ..add(FaultInspectionComponent());
+    tabViews..add(RegularInspectionComponent());
   }
 
   @override

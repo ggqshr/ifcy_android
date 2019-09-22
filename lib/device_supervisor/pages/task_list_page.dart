@@ -52,59 +52,69 @@ class _TaskListPageState extends State<TaskListPage>
             );
           } else if (state is FetchedTaskListState) {
             PlanTaskListPageModel model = state.model;
-            return EasyRefresh(
-              footer: getFooter(),
-              header: getHeader(),
-              bottomBouncing: false,
-              enableControlFinishLoad: true,
-              controller: _controller,
-              onRefresh: () async {
-                bloc.dispatch(RefreshTask());
-              },
-              onLoad: () async {
-                bloc.dispatch(FetchTask());
-              },
-              child: ListView.builder(
-                itemCount: model.planLists.length,
-                itemBuilder: (context, index) {
-                  var thisTask = model.planLists[index];
-                  return Card(
-                    elevation: 5,
-                    margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Flexible(
-                          flex: 2,
-                          child: ListTile(
-                            title: Text(thisTask.name),
+            return model.planLists.isEmpty
+                ? BlankPage(
+                    showText: "无已发布的任务",
+                    onRefreshCall: () => bloc.dispatch(RefreshTask()),
+                  )
+                : EasyRefresh(
+                    footer: getFooter(),
+                    header: getHeader(),
+                    bottomBouncing: false,
+                    enableControlFinishLoad: true,
+                    controller: _controller,
+                    onRefresh: () async {
+                      bloc.dispatch(RefreshTask());
+                    },
+                    onLoad: () async {
+                      bloc.dispatch(FetchTask());
+                    },
+                    child: ListView.builder(
+                      itemCount: model.planLists.length,
+                      itemBuilder: (context, index) {
+                        var thisTask = model.planLists[index];
+                        return Card(
+                          elevation: 5,
+                          margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Flexible(
+                                flex: 2,
+                                child: ListTile(
+                                  title: Text(thisTask.name),
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.black,
+                              ),
+                              ListTile(
+                                dense: true,
+                                title: Text(
+                                    "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
+                              ),
+                              ListTile(
+                                dense: true,
+                                title: Text(
+                                    "开始时间：${thisTask.startTime.toString().substring(0, 10)}"),
+                              ),
+                              ListTile(
+                                dense: true,
+                                title: Text(
+                                    "结束时间：${thisTask.endTime.toString().substring(0, 10)}"),
+                              ),
+                              ListTile(
+                                dense: true,
+                                title: Text("备注信息：${thisTask.noteText ?? "空"}"),
+                              ),
+                            ],
                           ),
-                        ),
-                        Divider(
-                          color: Colors.black,
-                        ),
-                        ListTile(
-                          dense: true,
-                          title: Text(
-                              "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
-                        ),
-                        ListTile(
-                          dense: true,
-                          title: Text(
-                              "开始时间：${thisTask.startTime.toString().substring(0, 10)}"),
-                        ),
-                        ListTile(
-                          dense: true,
-                          title: Text("结束时间：${thisTask.endTime}天"),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   );
-                },
-              ),
-            );
           }
           return Container();
         },

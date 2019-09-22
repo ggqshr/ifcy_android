@@ -114,9 +114,8 @@ void main() {
       await Future.delayed(Duration(seconds: 5));
     });
     test("testset", () async {
-      Set aa = {};
-      Set bb = {1,2,3};
-      print(aa.union(bb));
+      FloorEntity floor = FloorEntity(name: "sss");
+      print(floor.toJson());
     });
   });
 

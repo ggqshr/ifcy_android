@@ -82,6 +82,7 @@ class _FaultPageState extends State<FaultPage>
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               centerTitle: true,
               title: Text("设备列表"),
               actions: <Widget>[

@@ -89,6 +89,26 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             return Scaffold(
               appBar: AppBar(
                 actions: <Widget>[
+                  IconButton(
+                    onPressed: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return BlocProvider<FloorMapBloc>(
+                        builder: (context) {
+                          return FloorMapBloc(
+                            FloorMapDataRepositories(),
+                            RepositoryProvider.of<UserLoginRepositories>(
+                                context),
+                            state.models,
+                          )..dispatch(LoadFloorDetailEvent());
+                        },
+                        child: FloorMapPages(),
+                      );
+                    })),
+                    icon: Tooltip(
+                      message: "楼层图",
+                      child: Icon(Icons.map),
+                    ),
+                  ),
                   Builder(
                     builder: (context) {
                       return IconButton(
@@ -168,25 +188,6 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                     )
                 ],
               ),
-              bottomNavigationBar: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                child: FlatButton(
-                  onPressed: () {},
-                  child: Text(
-                    "本地保存",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  color: Colors.blue,
-                ),
-              ),
               endDrawer: FilterEndDrawer(
                   (_bloc.currentState as DeviceListLoaded).floorList),
             );
@@ -256,21 +257,21 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           FloatingActionButton(
             tooltip: "扫码",
             onPressed: () async {
-              String BRCodeScanRes = "B7_5-AF1-A1-1"; //二维码扫描结果
-//              try {
-//                BRCodeScanRes = await BarcodeScanner.scan();
-//              } on PlatformException catch (e) {
-//                if (e.code == BarcodeScanner.CameraAccessDenied) {
-//                  print('相机未授权');
-//                } else {
-//                  print('未知错误: $e');
-//                }
-//              } on FormatException {
-////              print(
-////                  'null (User returned using the "back"-button before scanning anything. Re');
-//              } catch (e) {
-//                print('未知错误: $e');
-//              }
+              String BRCodeScanRes; //二维码扫描结果
+              try {
+                BRCodeScanRes = await BarcodeScanner.scan();
+              } on PlatformException catch (e) {
+                if (e.code == BarcodeScanner.CameraAccessDenied) {
+                  print('相机未授权');
+                } else {
+                  print('未知错误: $e');
+                }
+              } on FormatException {
+//              print(
+//                  'null (User returned using the "back"-button before scanning anything. Re');
+              } catch (e) {
+                print('未知错误: $e');
+              }
               //扫描到结果
               if (BRCodeScanRes.isNotEmpty) {
                 DeviceStaffDeviceCheckBloc _deviceBloc =
@@ -1073,7 +1074,7 @@ class TaskStateProcessHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }
 
@@ -1129,7 +1130,7 @@ class TaskStateHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }
 

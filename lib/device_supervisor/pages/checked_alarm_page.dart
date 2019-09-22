@@ -7,7 +7,7 @@ class CheckedAlarmPage extends StatefulWidget {
   final Function resultComponents;
   final bool isFire;
 
-  CheckedAlarmPage(this.resultComponents,this.isFire);
+  CheckedAlarmPage(this.resultComponents, this.isFire);
 
   @override
   _CheckedAlarmPageState createState() => _CheckedAlarmPageState();
@@ -60,23 +60,25 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
               );
             } else if (state is LoadedCheckAlarmState) {
               PageDataModel model = state.model;
-              return EasyRefresh(
-                footer: getFooter(),
-                header: getHeader(),
-                bottomBouncing: false,
-                enableControlFinishLoad: true,
-                controller: _controller,
-                onRefresh: () async {
-                  bloc.dispatch(RefreshCheckAlarmData(widget.isFire));
-                },
-                onLoad: () async {
-                  bloc.dispatch(FetchCheckedAlarmData(widget.isFire));
-                },
-                child: model.dataList.isEmpty
-                    ? Center(
-                        child: Text("无历史消息"),
-                      )
-                    : ListView.builder(
+              return model.dataList.isEmpty
+                  ? BlankPage(
+                      showText: "无历史消息",
+                      onRefreshCall: () =>
+                          bloc.dispatch(RefreshCheckAlarmData(widget.isFire)),
+                    )
+                  : EasyRefresh(
+                      footer: getFooter(),
+                      header: getHeader(),
+                      bottomBouncing: false,
+                      enableControlFinishLoad: true,
+                      controller: _controller,
+                      onRefresh: () async {
+                        bloc.dispatch(RefreshCheckAlarmData(widget.isFire));
+                      },
+                      onLoad: () async {
+                        bloc.dispatch(FetchCheckedAlarmData(widget.isFire));
+                      },
+                      child: ListView.builder(
                         itemCount: model.dataList.length,
                         itemBuilder: (context, index) {
                           var thisTask = model.dataList[index];
@@ -86,7 +88,7 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                           );
                         },
                       ),
-              );
+                    );
             }
             return Container();
           },

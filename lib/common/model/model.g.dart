@@ -302,15 +302,30 @@ FloorEntity _$FloorEntityFromJson(Map<String, dynamic> json) {
     code: json['code'] as String,
     name: json['name'] as String,
     id: json['id'] as String,
+    length: json['length'] as String,
+    width: json['width'] as String,
+    picture: json['picture'] as String,
   );
 }
 
-Map<String, dynamic> _$FloorEntityToJson(FloorEntity instance) =>
-    <String, dynamic>{
-      'code': instance.code,
-      'name': instance.name,
-      'id': instance.id,
-    };
+Map<String, dynamic> _$FloorEntityToJson(FloorEntity instance) {
+  final val = <String, dynamic>{
+    'code': instance.code,
+    'name': instance.name,
+    'id': instance.id,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('length', instance.length);
+  writeNotNull('width', instance.width);
+  writeNotNull('picture', instance.picture);
+  return val;
+}
 
 DeviceMessage _$DeviceMessageFromJson(Map<String, dynamic> json) {
   return DeviceMessage(

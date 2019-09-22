@@ -39,22 +39,20 @@ class MonitorPage extends StatelessWidget {
             onPressed: () {
               drawerCall();
             }),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Auth.getInstance().reset();
-                DioUtils.getInstance().resetDio();
-              })
-        ],
+//        actions: <Widget>[
+//          IconButton(
+//              icon: Icon(Icons.add),
+//              onPressed: () {
+//                Auth.getInstance().reset();
+//                DioUtils.getInstance().resetDio();
+//              })
+//        ],
       ),
       body: BlocBuilder<MonitorBloc, MonitorState>(
           // ignore: missing_return
           builder: (context, state) {
         if (state is LoadedErrorMonitorState) {
-          return Center(
-            child: Text("网络出现错误"),
-          );
+          return LoadErrorPage(() => bloc.dispatch(FetchMonitorDataEvent()));
         }
         if (state is UnInitializationMonitorState) {
           return Center(
@@ -116,7 +114,7 @@ class MonitorPage extends StatelessWidget {
                 ),
                 FireAlarmComponent(state.fireAlarmMsg),
                 DeviceFaultComponent(state.deviceFaultMsg),
-                TaskInfoComponent(state.taskInfoMsg),
+//                TaskInfoComponent(state.taskInfoMsg),
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
                 ),

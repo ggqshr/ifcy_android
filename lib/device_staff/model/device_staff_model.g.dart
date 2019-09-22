@@ -83,19 +83,32 @@ InspectionDeviceModel _$InspectionDeviceModelFromJson(
     buildingFloorId: json['building_floor_id'] as String,
     pic1: json['pic1'] as String,
     pic2: json['pic2'] as String,
+    xPosition: json['xposition'] as String,
+    yPosition: json['yposition'] as String,
   );
 }
 
 Map<String, dynamic> _$InspectionDeviceModelToJson(
-        InspectionDeviceModel instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'id': instance.id,
-      'code': instance.code,
-      'comment': instance.comment,
-      'checked': checkStatusToJson(instance.checkStatus),
-      'check_device_status': checkResultToJson(instance.checkResult),
-      'building_floor_id': instance.buildingFloorId,
-      'pic1': instance.pic1,
-      'pic2': instance.pic2,
-    };
+    InspectionDeviceModel instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+    'id': instance.id,
+    'code': instance.code,
+    'comment': instance.comment,
+    'checked': checkStatusToJson(instance.checkStatus),
+    'check_device_status': checkResultToJson(instance.checkResult),
+    'building_floor_id': instance.buildingFloorId,
+    'pic1': instance.pic1,
+    'pic2': instance.pic2,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('xposition', instance.xPosition);
+  writeNotNull('yposition', instance.yPosition);
+  return val;
+}
