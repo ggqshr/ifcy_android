@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';

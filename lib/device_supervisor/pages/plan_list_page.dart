@@ -53,15 +53,8 @@ class _PlanListPageState extends State<PlanListPage>
           } else if (state is FetchedPlanListState) {
             PlanTaskListPageModel model = state.model;
             return EasyRefresh(
-              footer: ClassicalFooter(
-                loadText: "释放加载更多",
-                loadReadyText: "释放加载更多",
-                loadingText: "正在加载",
-                loadedText: "加载成功",
-                loadFailedText: "加载失败",
-                noMoreText: "没有更多数据",
-                infoText: "更新于 %T",
-              ),
+              footer: getFooter(),
+              header: getHeader(),
               bottomBouncing: false,
               enableControlFinishLoad: true,
               controller: _controller,
@@ -88,6 +81,7 @@ class _PlanListPageState extends State<PlanListPage>
                           child: ListTile(
                             title: Text(thisPlan.name),
                             trailing: FlatButton(
+                              color: Colors.green[300],
                               child: Text("修改"),
                               onPressed: () {
                                 UserLoginRepositories userRepo =

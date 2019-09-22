@@ -27,4 +27,4 @@ part "person_page.dart";
 part "LoadErrorPage.dart";
 part "LoadingPage.dart";
 part "stack_map.dart";
-
+part "footer_header_components.dart";

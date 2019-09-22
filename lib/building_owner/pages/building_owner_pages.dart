@@ -27,4 +27,3 @@ import 'package:ifcy/building_owner/model/building_owner_model.dart';
 
 part 'owner_page.dart';
 part 'employee_page.dart';
-part 'declare_page.dart';
