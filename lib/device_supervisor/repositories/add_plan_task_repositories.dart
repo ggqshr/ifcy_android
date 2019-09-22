@@ -41,6 +41,7 @@ class AddTaskPlanDataProvider {
     Map map = entity.toJson();
     map.remove("start_time");
     map.remove("end_time");
+    map.remove("id");
     return await _dio.post("/patrol/plan", data: jsonEncode(map));
   }
 
@@ -49,6 +50,7 @@ class AddTaskPlanDataProvider {
     map.remove("start_deploy_time");
     map.remove("task_execute_time");
     map.remove("cycle");
+    map.remove("id");
     return await _dio.post("/patrol/task", data: jsonEncode(map));
   }
 }

@@ -8,6 +8,7 @@ part of 'device_supervisor_model.dart';
 
 TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
   return TaskPlanEntity()
+    ..id = json['id'] as String
     ..name = json['name'] as String
     ..noteText = json['comment'] as String
     ..currentFloor = (json['check_building_floor_list'] as List)
@@ -33,6 +34,7 @@ TaskPlanEntity _$TaskPlanEntityFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$TaskPlanEntityToJson(TaskPlanEntity instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'comment': instance.noteText,
       'check_building_floor_list': instance.currentFloor,

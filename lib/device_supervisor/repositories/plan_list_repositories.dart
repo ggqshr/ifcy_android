@@ -18,9 +18,13 @@ class PlanListDataProvider {
   }
 
   Future changePlan(TaskPlanEntity model) async {
+    Map map = model.toJson();
+    map.remove("id");
+    map.remove("start_time");
+    map.remove("end_time");
     await DioUtils.getInstance()
         .getDio()
-        .put("/patrol/plan/${model}", data: jsonEncode(model.toJson()));
+        .put("/patrol/plan/${model.id}", data: jsonEncode(map));
   }
 }
 

@@ -47,6 +47,8 @@ String cycleToJson(TaskCycleModel cycle) {
 ///计划或者任务的实体类
 @JsonSerializable()
 class TaskPlanEntity {
+  String id;
+
   ///任务名称
   String name;
 
