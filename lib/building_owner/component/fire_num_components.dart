@@ -1,9 +1,9 @@
-part of 'device_supervisor_component.dart';
+part of "building_owner_component.dart";
 
-class FaultNumComponent extends StatelessWidget {
+class FireNumComponent extends StatelessWidget {
   final String deviceFaultNum;
 
-  FaultNumComponent(this.deviceFaultNum);
+  FireNumComponent(this.deviceFaultNum);
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +14,14 @@ class FaultNumComponent extends StatelessWidget {
           Text(
             deviceFaultNum,
             style: TextStyle(
-              color: Colors.yellow[600],
+              color: Colors.red,
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
             ),
             textScaleFactor: 3.5,
           ),
           Positioned(
-            child: Text("设备故障数"),
+            child: Text("火警报警数"),
             bottom: 0,
           )
         ],

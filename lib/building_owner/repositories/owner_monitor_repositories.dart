@@ -20,7 +20,8 @@ class OwnerMonitorDataProvider {
   }
 
   Future<int> getFireNum() async {
-    return 1;
+    Response res = await dio.get("/aggregation/current-fire-count");
+    return int.parse(res.data['data']['fire_count']);
   }
 }
 

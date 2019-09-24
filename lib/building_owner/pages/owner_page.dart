@@ -89,103 +89,12 @@ class DataStatisticsComponent extends StatelessWidget {
       children: <Widget>[
         Flexible(
           flex: 2,
-          child: GestureDetector(
-            //todo 跳转页面逻辑
-            onTap: () => Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text("test"))),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: 120,
-                  child: chart.PieChart(
-                    [
-                      chart.Series<List, int>(
-                        id: 'hh',
-                        domainFn: (List l, _1) => l[0],
-                        measureFn: (List l, _1) => l[1],
-                        data: [
-                          [1, faultNum],
-                          [2, 100 - faultNum],
-                        ],
-                        areaColorFn: (List l, int i) {
-                          return chart.MaterialPalette.yellow.shadeDefault;
-                        },
-                        colorFn: (List l, __) {
-                          if (l[0] == 1) {
-                            return chart.MaterialPalette.yellow.shadeDefault;
-                          } else {
-                            return chart.MaterialPalette.green.shadeDefault;
-                          }
-                        },
-                      ),
-                    ],
-                    animate: true,
-                    defaultRenderer: chart.ArcRendererConfig(arcWidth: 10),
-                  ),
-                ),
-                Text(
-                  "${faultNum.toString()}",
-                  textScaleFactor: 1.5,
-                  style: TextStyle(color: Colors.orange),
-                ),
-                Positioned(
-                  child: Text(
-                    "设备故障数",
-                  ),
-                  bottom: 0,
-                ),
-              ],
-              alignment: AlignmentDirectional.center,
-            ),
-          ),
+          child: FaultNumComponent(faultNum.toString()),
         ),
         Flexible(
           flex: 2,
           child: GestureDetector(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: 120,
-                  child: chart.PieChart(
-                    [
-                      chart.Series<List, int>(
-                        id: 'hh',
-                        domainFn: (List l, _1) => l[0],
-                        measureFn: (List l, _1) => l[1],
-                        data: [
-                          [1, fireNum],
-                          [2, 100 - fireNum],
-                        ],
-                        areaColorFn: (List l, int i) {
-                          return chart.MaterialPalette.red.shadeDefault;
-                        },
-                        colorFn: (List l, __) {
-                          if (l[0] == 1) {
-                            return chart.MaterialPalette.red.shadeDefault;
-                          } else {
-                            return chart.MaterialPalette.green.shadeDefault;
-                          }
-                        },
-                      ),
-                    ],
-                    animate: true,
-                    defaultRenderer: chart.ArcRendererConfig(arcWidth: 10),
-                  ),
-                ),
-                Text(
-                  "${fireNum.toString()}",
-                  textScaleFactor: 1.5,
-                  style: TextStyle(color: Colors.red),
-                ),
-                Positioned(
-                  child: Text(
-                    "火警警报数",
-                  ),
-                  bottom: 0,
-                ),
-              ],
-              alignment: AlignmentDirectional.center,
-            ),
+            child: FireNumComponent(fireNum.toString()),
             //todo 跳转到任务
             onTap: () => Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text("跳转任务"))),
