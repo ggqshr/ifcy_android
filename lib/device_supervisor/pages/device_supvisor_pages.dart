@@ -1,9 +1,14 @@
+library device_supvisor_pages;
+import 'dart:io';
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart' ;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/device_staff/pages/device_staff_pages.dart' hide SearchBarButton;
+import 'package:ifcy/device_staff/repositories/repositories.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/blocs/task_list_bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';
@@ -35,4 +40,5 @@ part "confirm_message_page.dart";
 part "checked_alarm_page.dart";
 part "report_device_page.dart";
 part "change_plan_page.dart";
+part "floor_deivice_page.dart";
 

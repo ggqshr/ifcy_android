@@ -17,7 +17,7 @@ FireAlarmMessage _$FireAlarmMessageFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     floorAreaName: json['floor_area_name'] as String,
     floorName: json['floor_name'] as String,
-  );
+  )..floorId = json['floor_id'] as String;
 }
 
 Map<String, dynamic> _$FireAlarmMessageToJson(FireAlarmMessage instance) =>
@@ -31,6 +31,7 @@ Map<String, dynamic> _$FireAlarmMessageToJson(FireAlarmMessage instance) =>
       'id': instance.id,
       'floor_area_name': instance.floorAreaName,
       'floor_name': instance.floorName,
+      'floor_id': instance.floorId,
     };
 
 DeviceFaultAlarmMessage _$DeviceFaultAlarmMessageFromJson(
@@ -45,7 +46,7 @@ DeviceFaultAlarmMessage _$DeviceFaultAlarmMessageFromJson(
     id: json['id'] as String,
     floorAreaName: json['floor_area_name'] as String,
     floorName: json['floor_name'] as String,
-  );
+  )..floorId = json['floor_id'] as String;
 }
 
 Map<String, dynamic> _$DeviceFaultAlarmMessageToJson(
@@ -60,6 +61,7 @@ Map<String, dynamic> _$DeviceFaultAlarmMessageToJson(
       'id': instance.id,
       'floor_area_name': instance.floorAreaName,
       'floor_name': instance.floorName,
+      'floor_id': instance.floorId,
     };
 
 FireCheckAlarmMessage _$FireCheckAlarmMessageFromJson(
@@ -375,4 +377,29 @@ Map<String, dynamic> _$DeclareMessageToJson(DeclareMessage instance) =>
       'post_user_id': instance.postUserId,
       'checked_user_id': instance.checkedUserId,
       'checked': instance.checked,
+    };
+
+FloorDeviceModel _$FloorDeviceModelFromJson(Map<String, dynamic> json) {
+  return FloorDeviceModel(
+    id: json['id'] as String,
+    name: json['name'] as String,
+    code: json['code'] as String,
+    categoryName: json['category_name'] as String,
+    categoryCode: json['category_code'] as String,
+    xposition: json['xposition'] as String,
+    yposition: json['yposition'] as String,
+    position: json['position'] as String,
+  );
+}
+
+Map<String, dynamic> _$FloorDeviceModelToJson(FloorDeviceModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'code': instance.code,
+      'category_name': instance.categoryName,
+      'category_code': instance.categoryCode,
+      'xposition': instance.xposition,
+      'yposition': instance.yposition,
+      'position': instance.position,
     };

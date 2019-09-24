@@ -11,10 +11,14 @@ class FloorMapDataProvider {
   FloorMapDataProvider([dio]) : dio = dio ?? DioUtils.getInstance().getDio();
 
   Future<FloorEntity> getFloorDetail(String floorId) async {
-    Dio dio = DioUtils.getInstance().getDio();
     Response res = await dio.get("/building/floor/$floorId");
     FloorEntity floor = FloorEntity.fromJson(res.data['data']);
     return floor;
+  }
+
+  Future<FloorDeviceModel> getFloorDeviceByDeviceCode(String deviceCode) async {
+    Response res = await dio.get("/device/$deviceCode");
+    return FloorDeviceModel.fromJson(res.data['data']);
   }
 }
 
@@ -26,5 +30,9 @@ class FloorMapDataRepositories {
 
   Future<FloorEntity> getFloorDetail(String floorId) async {
     return await provider.getFloorDetail(floorId);
+  }
+
+  Future<FloorDeviceModel> getFloorDevice(String deviceCode)async{
+    return await provider.getFloorDeviceByDeviceCode(deviceCode);
   }
 }

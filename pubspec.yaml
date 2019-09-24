@@ -89,6 +89,19 @@ flutter:
     - images/1.gif
     - images/complete.png
     - images/uncomplete.png
+    - images/POINT_TYPE_SMOKE_SENSOR_FAULT.png
+    - images/POINT_TYPE_SMOKE_SENSOR_FIRE.png
+    - images/POINT_TYPE_SMOKE_SENSOR_NORMAL.png
+    - images/POINT_TYPE_TEMPERATURE_SENSOR_FAULT.png
+    - images/POINT_TYPE_TEMPERATURE_SENSOR_FIRE.png
+    - images/POINT_TYPE_TEMPERATURE_SENSOR_NORMAL.png
+    - images/SOUNDER_FAULT.png
+    - images/SOUNDER_FIRE.png
+    - images/SOUNDER_NORMAL.png
+    - images/NULL_COMPLETE.png
+    - images/NULL_FAULT.png
+    - images/NULL_FIRE.png
+    - images/NULL_NORMAL.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

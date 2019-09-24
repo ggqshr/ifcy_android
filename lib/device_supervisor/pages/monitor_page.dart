@@ -67,7 +67,6 @@ class MonitorPage extends StatelessWidget {
         }
         if (state is LoadedMonitorState) {
           return RefreshIndicator(
-            //todo 刷新回调
             onRefresh: () async {
               bloc.dispatch(FetchMonitorDataEvent());
             },
@@ -86,9 +85,6 @@ class MonitorPage extends StatelessWidget {
                             Flexible(
                               flex: 3,
                               child: GestureDetector(
-                                //todo 跳转页面逻辑
-                                onTap: () => Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text("test"))),
                                 child: FaultNumComponent(
                                     state.deviceFaultNum.toString()),
                               ),
@@ -98,9 +94,6 @@ class MonitorPage extends StatelessWidget {
                               child: GestureDetector(
                                 child:
                                     TaskRateComponent(state.taskCompleteRate),
-                                //todo 跳转到任务
-                                onTap: () => Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text("跳转任务"))),
                               ),
                             ),
                           ],

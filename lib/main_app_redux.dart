@@ -56,7 +56,7 @@ AppState mainAppReducer(AppState state, action) {
   );
 }
 
-//用于输出网络错误的reducer todo 写一个中间件
+//用于输出网络错误的reducer
 Reducer<void> reactToInternetErrorReducer = combineReducers([
   TypedReducer<void, InternalErrorAction>(
     (_, action) => Application.showToast(

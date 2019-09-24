@@ -15,22 +15,26 @@ class ConfirmMessageDataProvider {
 
   Future confirmFireMessage(
       String eventId, String checkResult, String commentText) async {
-    //todo 发送备注信息到服务器
     await _dio.patch(
       "/warning-msg/$eventId/fire/determine",
       data: jsonEncode(
-        {"check_fire_type": checkResult},
+        {
+          "check_fire_type": checkResult,
+          "comment": commentText,
+        },
       ),
     );
   }
 
   Future confirmDeviceFaultMessage(
       String eventId, String checkResult, String commentText) async {
-    //todo 发送备注信息到服务器
     await _dio.patch(
       "/warning-msg/$eventId/fault/determine",
       data: jsonEncode(
-        {"check_fault_type": checkResult},
+        {
+          "check_fault_type": checkResult,
+          "comment": commentText,
+        },
       ),
     );
   }

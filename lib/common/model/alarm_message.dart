@@ -10,6 +10,7 @@ abstract class AlarmMessage {
   String id;
   String floorAreaName;
   String floorName;
+  String floorId;
 }
 
 ///火灾消息实体类
@@ -31,6 +32,8 @@ class FireAlarmMessage extends AlarmMessage {
   String floorAreaName;
   @JsonKey(name: "floor_name")
   String floorName;
+  @JsonKey(name:"floor_id")
+  String floorId;
 
   Map<String, dynamic> toJson() => _$FireAlarmMessageToJson(this);
 
@@ -176,6 +179,8 @@ class DeviceFaultAlarmMessage extends AlarmMessage {
   String floorAreaName;
   @JsonKey(name: "floor_name")
   String floorName;
+  @JsonKey(name:"floor_id")
+  String floorId;
 
   Map<String, dynamic> toJson() => _$DeviceFaultAlarmMessageToJson(this);
 

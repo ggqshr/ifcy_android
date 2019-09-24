@@ -44,7 +44,7 @@ class BodyContext extends StatelessWidget {
                 SnackBar(
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('提交成功'), Icon(Icons.error)],
+                    children: [Text('提交失败'), Icon(Icons.error)],
                   ),
                   backgroundColor: Colors.red,
                 ),
@@ -58,7 +58,7 @@ class BodyContext extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('提交失败'),
+                      Text('提交成功'),
                       Icon(Icons.check),
                     ],
                   ),
@@ -102,6 +102,26 @@ class BodyContext extends StatelessWidget {
         ListTile(
           title: Text("主机标识"),
           trailing: Text(state.message.mainEngineCode),
+        ),
+        ListTile(
+          title: Text("查看设备位置"),
+          trailing: RaisedButton(
+            child: Text("查看"),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return BlocProvider(
+                  builder: (context) {
+                    return FloorDeviceBloc(
+                      repositories: FloorMapDataRepositories(),
+                      floorId: state.message.floorId,
+                      deviceCode: state.message.deviceCode,
+                    )..dispatch(LoadFloorDeviceDetailEvent());
+                  },
+                  child: FloorDevicePage(state.message is FireAlarmMessage),
+                );
+              }));
+            },
+          ),
         ),
         ListTile(
           title: Text("警报发生时间"),

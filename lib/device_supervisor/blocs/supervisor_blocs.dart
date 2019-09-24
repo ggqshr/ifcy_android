@@ -11,3 +11,4 @@ export 'device_message_bloc/bloc.dart';
 export "report_device_bloc/bloc.dart";
 export 'declare_message_bloc/bloc.dart';
 export 'change_plan_bloc/bloc.dart';
+export "floor_device_bloc/bloc.dart";
