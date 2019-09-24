@@ -12,13 +12,12 @@ class StartToConfirm extends ConfirmMessageEvent {}
 ///确认消息
 class ConfirmMessage extends ConfirmMessageEvent {
   final bool isFireOrProcessed;
+  final String commentText;
 
-  ConfirmMessage(this.isFireOrProcessed);
+  ConfirmMessage(this.isFireOrProcessed, this.commentText);
 
   @override
   String toString() {
-    return 'ConfirmMessage{isFireOrProcessed: $isFireOrProcessed}';
+    return 'ConfirmMessage{isFireOrProcessed: $isFireOrProcessed $commentText}';
   }
-
-
 }

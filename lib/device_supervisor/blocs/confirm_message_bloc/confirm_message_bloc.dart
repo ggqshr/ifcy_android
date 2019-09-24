@@ -35,19 +35,19 @@ class ConfirmMessageBloc
       try {
         if (message is FireAlarmMessage) {
           if (!event.isFireOrProcessed) {
-            await _repositories
-                .confirmFireFault((message as FireAlarmMessage).id);
+            await _repositories.confirmFireFault(
+                (message as FireAlarmMessage).id, event.commentText);
           } else {
-            await _repositories
-                .confirmFireFire((message as FireAlarmMessage).id);
+            await _repositories.confirmFireFire(
+                (message as FireAlarmMessage).id, event.commentText);
           }
         } else if (message is DeviceFaultAlarmMessage) {
           if (!event.isFireOrProcessed) {
             await _repositories.confirmDeviceUnProcessed(
-                (message as DeviceFaultAlarmMessage).id);
+                (message as DeviceFaultAlarmMessage).id, event.commentText);
           } else {
             await _repositories.confirmDeviceProcessed(
-                (message as DeviceFaultAlarmMessage).id);
+                (message as DeviceFaultAlarmMessage).id, event.commentText);
           }
         }
         yield (currentState as ConfirmedState).success(event.isFireOrProcessed);

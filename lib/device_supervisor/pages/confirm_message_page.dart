@@ -19,9 +19,9 @@ class BodyContext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConfirmMessageBloc bloc = BlocProvider.of<ConfirmMessageBloc>(context);
-    return BlocListener<ConfirmMessageBloc,ConfirmMessageState>(
-      listener: (context,state){
-        if(state is ConfirmedState){
+    return BlocListener<ConfirmMessageBloc, ConfirmMessageState>(
+      listener: (context, state) {
+        if (state is ConfirmedState) {
           if (state.isConfirming) {
             Scaffold.of(context)
               ..hideCurrentSnackBar()
@@ -44,7 +44,7 @@ class BodyContext extends StatelessWidget {
                 SnackBar(
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('修改失败'), Icon(Icons.error)],
+                    children: [Text('提交成功'), Icon(Icons.error)],
                   ),
                   backgroundColor: Colors.red,
                 ),
@@ -58,7 +58,7 @@ class BodyContext extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('修改成功'),
+                      Text('提交失败'),
                       Icon(Icons.check),
                     ],
                   ),
@@ -71,15 +71,13 @@ class BodyContext extends StatelessWidget {
         // ignore: missing_return
         builder: (context, state) {
           if (state is LoadingConfirmDataState) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return LoadingPage();
           }
           if (state is LoadedConfirmDataState) {
-            return getContent(bloc, state);
+            return getContent(bloc, state, context);
           }
           if (state is ConfirmedState) {
-            return getContent(bloc, state);
+            return getContent(bloc, state, context);
           }
         },
       ),
@@ -89,6 +87,7 @@ class BodyContext extends StatelessWidget {
   Widget getContent(
     ConfirmMessageBloc bloc,
     state,
+    context,
   ) {
     return ListView(
       children: <Widget>[
@@ -117,18 +116,20 @@ class BodyContext extends StatelessWidget {
                   RaisedButton(
                     child:
                         Text(state.message is FireAlarmMessage ? "真火警" : "已处理"),
-                    onPressed: () => bloc.dispatch(ConfirmMessage(true)),
+                    onPressed: () => showDialogToCheck(context,
+                        (text) => bloc.dispatch(ConfirmMessage(true, text))),
                   ),
                   RaisedButton(
-                    child:
-                        Text(state.message is FireAlarmMessage ? "设备故障" : "未处理"),
-                    onPressed: () => bloc.dispatch(ConfirmMessage(false)),
+                    child: Text(
+                        state.message is FireAlarmMessage ? "设备故障" : "未处理"),
+                    onPressed: () => showDialogToCheck(context,
+                        (text) => bloc.dispatch(ConfirmMessage(true, text))),
                   ),
                 ],
               ),
             ),
           ),
-        if (state is ConfirmedState&&state.isSuccess)
+        if (state is ConfirmedState && state.isSuccess)
           ListTile(
             title: Center(
               child: Text(
@@ -137,5 +138,54 @@ class BodyContext extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  Future showDialogToCheck(
+    BuildContext context,
+    Function onPressCall,
+  ) async {
+    String commentText;
+    bool isCheck = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("填写备注信息"),
+            content: Form(
+              autovalidate: true,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "提供确认信息",
+                ),
+                onChanged: (value) {
+                  commentText = value;
+                },
+                autovalidate: true,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "请输入确认信息";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("取消"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              FlatButton(
+                child: Text("确认"),
+                onPressed: () {
+                  if (commentText != null) Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        });
+    if (isCheck) {
+      onPressCall(commentText);
+    }
   }
 }

@@ -13,7 +13,9 @@ class ConfirmMessageDataProvider {
   ConfirmMessageDataProvider([dio])
       : _dio = dio ?? DioUtils.getInstance().getDio();
 
-  Future confirmFireMessage(String eventId, String checkResult) async {
+  Future confirmFireMessage(
+      String eventId, String checkResult, String commentText) async {
+    //todo 发送备注信息到服务器
     await _dio.patch(
       "/warning-msg/$eventId/fire/determine",
       data: jsonEncode(
@@ -22,7 +24,9 @@ class ConfirmMessageDataProvider {
     );
   }
 
-  Future confirmDeviceFaultMessage(String eventId, String checkResult) async {
+  Future confirmDeviceFaultMessage(
+      String eventId, String checkResult, String commentText) async {
+    //todo 发送备注信息到服务器
     await _dio.patch(
       "/warning-msg/$eventId/fault/determine",
       data: jsonEncode(
@@ -38,19 +42,21 @@ class ConfirmMessageRepositories {
   ConfirmMessageRepositories([provider])
       : _provider = provider ?? ConfirmMessageDataProvider();
 
-  Future confirmFireFire(String eventId) async {
-    await _provider.confirmFireMessage(eventId, "TRULY_ALARM");
+  Future confirmFireFire(String eventId, String commentText) async {
+    await _provider.confirmFireMessage(eventId, "TRULY_ALARM", commentText);
   }
 
-  Future confirmFireFault(String eventId) async {
-    await _provider.confirmFireMessage(eventId, "FALSE_ALARM");
+  Future confirmFireFault(String eventId, String commentText) async {
+    await _provider.confirmFireMessage(eventId, "FALSE_ALARM", commentText);
   }
 
-  Future confirmDeviceProcessed(String eventId) async {
-    await _provider.confirmDeviceFaultMessage(eventId, "PROCESSED");
+  Future confirmDeviceProcessed(String eventId, String commentText) async {
+    await _provider.confirmDeviceFaultMessage(
+        eventId, "PROCESSED", commentText);
   }
 
-  Future confirmDeviceUnProcessed(String eventId) async {
-    await _provider.confirmDeviceFaultMessage(eventId, "UNPROCESSED");
+  Future confirmDeviceUnProcessed(String eventId, String commentText) async {
+    await _provider.confirmDeviceFaultMessage(
+        eventId, "UNPROCESSED", commentText);
   }
 }
