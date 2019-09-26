@@ -42,14 +42,10 @@ class _TaskListPageState extends State<TaskListPage>
       child: BlocBuilder<TaskListBloc, TaskListState>(
         builder: (context, state) {
           if (state is FetchErrorTaskListState) {
-            return Center(
-              child: Text("网络出现错误"),
-            );
+            return LoadErrorPage(() => bloc.dispatch(RefreshTask()));
           } else if (state is InitialTaskListState) {
             bloc.dispatch(FetchTask());
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return LoadingPage();
           } else if (state is FetchedTaskListState) {
             PlanTaskListPageModel model = state.model;
             return model.planLists.isEmpty
