@@ -12,7 +12,7 @@ class CheckedAlarmDataProvider {
       : _dio = dio ?? DioUtils.getInstance().getDio();
 
   Future<PageDataModel> getFireCheckMessage(
-      {int listRows = 1, int page = 1}) async {
+      {int listRows = 10, int page = 1}) async {
     Response res = await _dio.get("/warning-msg/fire-records",
         queryParameters: {"page": page, "list_rows": listRows});
     PageDataModel model = PageDataModel.fromJson(res.data['data']);
@@ -24,7 +24,7 @@ class CheckedAlarmDataProvider {
   }
 
   Future<PageDataModel> getDeviceCheckMessage(
-      {int listRows = 1, int page = 1}) async {
+      {int listRows = 10, int page = 1}) async {
     Response res = await _dio.get("/warning-msg/fault-records",
         queryParameters: {"page": page, "list_rows": listRows});
     PageDataModel model = PageDataModel.fromJson(res.data['data']);

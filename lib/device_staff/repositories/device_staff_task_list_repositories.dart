@@ -15,7 +15,7 @@ class DeviceStaffTaskListDataProvider {
       : _dio = dio ?? DioUtils.getInstance().getDio();
 
   Future<InspectionTaskPageModel> getTaskList(
-      {int listRow = 1, int page, String taskStatus}) async {
+      {int listRow = 10, int page, String taskStatus}) async {
     Response res = await _dio.get("/patrol/user/tasks/search",
         queryParameters: {
           "page": page,
@@ -26,7 +26,7 @@ class DeviceStaffTaskListDataProvider {
   }
 
   Future<InspectionTaskPageModel> getCompleteTask(
-      {int listRow, int page = 1}) async {
+      {int listRow=10, int page = 1}) async {
     InspectionTaskPageModel completeModel = await getTaskList(
         taskStatus:
             "${taskStatusToString[TaskStatus.completed]},${taskStatusToString[TaskStatus.out_time_completed]}",
@@ -35,7 +35,7 @@ class DeviceStaffTaskListDataProvider {
   }
 
   Future<InspectionTaskPageModel> getUnCompleteTask(
-      {int listRow, int page = 1}) async {
+      {int listRow=10, int page = 1}) async {
     InspectionTaskPageModel unCompleteModel = await getTaskList(
         page: page,
         taskStatus:

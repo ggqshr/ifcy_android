@@ -7,7 +7,7 @@ import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 ///@date :2019/8/27 10:49
 
 class TaskListDataProvider {
-  Future<PlanTaskListPageModel> getTask({int listRow = 1, int page = 1}) async {
+  Future<PlanTaskListPageModel> getTask({int listRow = 10, int page = 1}) async {
     Dio dio = DioUtils.getInstance().getDio();
     Response res = await dio.get("/patrol/tasks",
         queryParameters: {"page": page, "list_rows": listRow});

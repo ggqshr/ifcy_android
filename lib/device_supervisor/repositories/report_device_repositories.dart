@@ -34,7 +34,7 @@ class ReportDeviceDataProvider {
   }
 
   Future<PageDataModel> getDedeclareList(
-      {int listRow = 1, int page = 1}) async {
+      {int listRow = 10, int page = 1}) async {
     Response res = await _dio
         .get("/declare", queryParameters: {"page": page, "list_rows": listRow});
     PageDataModel model = PageDataModel.fromJson(res.data['data']);

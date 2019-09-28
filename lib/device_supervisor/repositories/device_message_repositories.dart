@@ -11,7 +11,7 @@ class DeviceMessageDataProvider {
   DeviceMessageDataProvider([dio])
       : _dio = dio ?? DioUtils.getInstance().getDio();
 
-  Future<PageDataModel> getFaultDevice({int listRows = 1, int page = 1}) async {
+  Future<PageDataModel> getFaultDevice({int listRows = 10, int page = 1}) async {
     Response res = await _dio.get("/device", queryParameters: {
       "page": page,
       "list_rows": listRows,
@@ -25,7 +25,7 @@ class DeviceMessageDataProvider {
   }
 
   Future<PageDataModel> getRunningDevices(
-      {int listRows = 1, int page = 1}) async {
+      {int listRows = 10, int page = 1}) async {
     Response res = await _dio.get("/device", queryParameters: {
       "page": page,
       "list_rows": listRows,
