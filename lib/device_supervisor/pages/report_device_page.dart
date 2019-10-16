@@ -112,6 +112,7 @@ class ReportDevicePage extends StatelessWidget {
                                           ),
                                         ),
                                       );
+                                    _bloc.dispatch(FetchReportDevice());
                                     await Future.delayed(Duration(seconds: 1));
                                     Navigator.of(context).pop();
                                   }
