@@ -23,6 +23,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
       appBar: AppBar(
         title: Text("申报情况列表"),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: BlocProvider<CheckDeclareBloc>(
         builder: (context) {

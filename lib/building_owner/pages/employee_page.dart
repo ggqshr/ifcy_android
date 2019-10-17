@@ -55,7 +55,7 @@ class ProjectStaffListComponent extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.fromLTRB(10, 15, 15, 10),
                         child: Text(
-                          "项目人员组成",
+                          "人员组成",
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 16.0),
                         ),
