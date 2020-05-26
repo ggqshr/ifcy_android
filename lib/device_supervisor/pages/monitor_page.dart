@@ -7,10 +7,10 @@ class MonitorPage extends StatelessWidget {
 
   scan(call) async {
     try {
-      String dd = await BarcodeScanner.scan();
+      ScanResult dd = await BarcodeScanner.scan();
       call(dd);
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         call('The user did not grant the camera permission!');
       } else {
         call('Unknown error: $e');

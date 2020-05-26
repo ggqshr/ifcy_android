@@ -257,11 +257,11 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
           FloatingActionButton(
             tooltip: "扫码",
             onPressed: () async {
-              String BRCodeScanRes; //二维码扫描结果
+              ScanResult BRCodeScanRes; //二维码扫描结果
               try {
                 BRCodeScanRes = await BarcodeScanner.scan();
               } on PlatformException catch (e) {
-                if (e.code == BarcodeScanner.CameraAccessDenied) {
+                if (e.code == BarcodeScanner.cameraAccessDenied) {
                   print('相机未授权');
                 } else {
                   print('未知错误: $e');
@@ -273,7 +273,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 print('未知错误: $e');
               }
               //扫描到结果
-              if (BRCodeScanRes.isNotEmpty) {
+              if (BRCodeScanRes.rawContent.isNotEmpty) {
                 DeviceStaffDeviceCheckBloc _deviceBloc =
                     BlocProvider.of<DeviceStaffDeviceCheckBloc>(context);
                 List<InspectionDeviceModel> models =
