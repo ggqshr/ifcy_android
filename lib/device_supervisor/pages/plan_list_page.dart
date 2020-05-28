@@ -46,7 +46,7 @@ class _PlanListPageState extends State<PlanListPage>
               child: Text("网络出现错误"),
             );
           } else if (state is InitialPlanListState) {
-            bloc.dispatch(FetchPlan());
+            bloc.add(FetchPlan());
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -55,7 +55,7 @@ class _PlanListPageState extends State<PlanListPage>
             return model.planLists.isEmpty
                 ? BlankPage(
                     showText: "无已发布的计划",
-                    onRefreshCall: () => bloc.dispatch(RefreshPlan()),
+                    onRefreshCall: () => bloc.add(RefreshPlan()),
                   )
                 : EasyRefresh(
                     footer: getFooter(),
@@ -64,10 +64,10 @@ class _PlanListPageState extends State<PlanListPage>
                     enableControlFinishLoad: true,
                     controller: _controller,
                     onRefresh: () async {
-                      bloc.dispatch(RefreshPlan());
+                      bloc.add(RefreshPlan());
                     },
                     onLoad: () async {
-                      bloc.dispatch(FetchPlan());
+                      bloc.add(FetchPlan());
                     },
                     child: ListView.builder(
                       itemCount: model.planLists.length,
@@ -108,12 +108,12 @@ class _PlanListPageState extends State<PlanListPage>
                                                 value: planListRepo),
                                             RepositoryProvider<
                                                 AddTaskPlanRepositories>(
-                                              builder: (context) =>
+                                              create: (context) =>
                                                   AddTaskPlanRepositories(),
                                             ),
                                           ],
                                           child: BlocProvider<ChangePlanBloc>(
-                                            builder: (context) =>
+                                            create: (context) =>
                                                 ChangePlanBloc(
                                               repositories: RepositoryProvider
                                                   .of<PlanListRepositories>(
@@ -127,7 +127,7 @@ class _PlanListPageState extends State<PlanListPage>
                                                           AddTaskPlanRepositories>(
                                                       context),
                                               model: thisPlan,
-                                            )..dispatch(InitPageEvent()),
+                                            )..add(InitPageEvent()),
                                             child: ChangePlanPage(thisPlan),
                                           ),
                                         );
@@ -142,7 +142,7 @@ class _PlanListPageState extends State<PlanListPage>
                               ListTile(
                                 dense: true,
                                 title: Text(
-                                    "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
+                                    "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).state as Authenticated).currentBuild.buildName}"),
                               ),
                               ListTile(
                                 dense: true,

@@ -93,7 +93,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                               Text("网络出现错误,请稍候重试"),
                               RaisedButton(
                                 child: Text("重新加载"),
-                                onPressed: () => _bloc.dispatch(FetchAll()),
+                                onPressed: () => _bloc.add(FetchAll()),
                               ),
                             ],
                           ),
@@ -105,7 +105,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                               Text("网络出现错误,请稍候重试"),
                               RaisedButton(
                                 child: Text("重新加载"),
-                                onPressed: () => _bloc.dispatch(FetchAll()),
+                                onPressed: () => _bloc.add(FetchAll()),
                               ),
                             ],
                           ),
@@ -147,7 +147,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
     if (tasks.isEmpty) {
       return BlankPage(
         showText: "列表为空",
-        onRefreshCall: () => _bloc.dispatch(refreshType),
+        onRefreshCall: () => _bloc.add(refreshType),
       );
     } else {
       return EasyRefresh(
@@ -157,10 +157,10 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
         enableControlFinishLoad: true,
         controller: controller,
         onRefresh: () async {
-          _bloc.dispatch(refreshType);
+          _bloc.add(refreshType);
         },
         onLoad: () async {
-          _bloc.dispatch(fetchType);
+          _bloc.add(fetchType);
         },
         child: ListView.builder(
           itemCount: tasks.length,
@@ -231,13 +231,13 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
             ? () =>
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return RepositoryProvider<DeviceCheckRepositories>(
-                    builder: (context) =>
+                    create: (context) =>
                         DeviceCheckRepositories(tasks[index].id),
                     child: BlocProvider<DeviceStaffDeviceCheckBloc>(
-                      builder: (context) => DeviceStaffDeviceCheckBloc(
+                      create: (context) => DeviceStaffDeviceCheckBloc(
                         RepositoryProvider.of<DeviceCheckRepositories>(context),
                         RepositoryProvider.of<UserLoginRepositories>(context),
-                      )..dispatch(LoadDevice(tasks[index].devices)),
+                      )..add(LoadDevice(tasks[index].devices)),
                       child: RegularInspectionPage(),
                     ),
                   );
@@ -256,13 +256,13 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
         onPressed: () =>
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return RepositoryProvider<DeviceCheckRepositories>(
-                builder: (context) =>
+                create: (context) =>
                     DeviceCheckRepositories(tasks[index].id),
                 child: BlocProvider<DeviceStaffDeviceCheckBloc>(
-                  builder: (context) => DeviceStaffDeviceCheckBloc(
+                  create: (context) => DeviceStaffDeviceCheckBloc(
                     RepositoryProvider.of<DeviceCheckRepositories>(context),
                     RepositoryProvider.of<UserLoginRepositories>(context),
-                  )..dispatch(LoadDevice(tasks[index].devices)),
+                  )..add(LoadDevice(tasks[index].devices)),
                   child: RegularInspectionPage(),
                 ),
               );

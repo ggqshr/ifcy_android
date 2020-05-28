@@ -41,7 +41,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
               return LoadingPage();
             }
             if (state is LoadErrorDeclareMessageState) {
-              return LoadErrorPage(() => _bloc.dispatch(FetchDeclareMessage()));
+              return LoadErrorPage(() => _bloc.add(FetchDeclareMessage()));
             }
             if (state is LoadedDeclareMessageState) {
               if (state.models.dataList.isEmpty) {
@@ -56,10 +56,10 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                 enableControlFinishLoad: true,
                 controller: _controller,
                 onRefresh: () async {
-                  _bloc.dispatch(RefreshDeclareMessage());
+                  _bloc.add(RefreshDeclareMessage());
                 },
                 onLoad: () async {
-                  _bloc.dispatch(FetchDeclareMessage());
+                  _bloc.add(FetchDeclareMessage());
                 },
                 child: ListView.builder(
                   itemBuilder: (context, index) {

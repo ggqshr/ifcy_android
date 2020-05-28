@@ -13,7 +13,7 @@ class OwnerPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
                 as Authenticated)
             .currentBuild
             .buildName),
@@ -28,7 +28,7 @@ class OwnerPage extends StatelessWidget {
         builder: (context, state) {
           if (state is LoadErrorOwnerMonitorDataState) {
             return LoadErrorPage(
-                () => bloc.dispatch(FetchOwnerMonitorDataEvent()));
+                () => bloc.add(FetchOwnerMonitorDataEvent()));
           }
           if (state is LoadingOwnerMonitorDataState) {
             return LoadingPage();
@@ -36,7 +36,7 @@ class OwnerPage extends StatelessWidget {
           if (state is LoadedOwnerMonitorDataState) {
             return RefreshIndicator(
               onRefresh: () async {
-                bloc.dispatch(FetchOwnerMonitorDataEvent());
+                bloc.add(FetchOwnerMonitorDataEvent());
               },
               child: CustomScrollView(
                 slivers: <Widget>[
@@ -253,9 +253,9 @@ class DeviceFaultComponent extends StatelessWidget {
             onTalCall: (context) {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return BlocProvider<CheckAlarmListBloc>(
-                  builder: (context) =>
+                  create: (context) =>
                       CheckAlarmListBloc(CheckAlarmRepositories())
-                        ..dispatch(FetchCheckedAlarmData(false)),
+                        ..add(FetchCheckedAlarmData(false)),
                   child: CheckedAlarmPage(
                       (thisTask) => CheckResultComponent(
                           (thisTask as DeviceCheckedAlarmMessage).faultType ==

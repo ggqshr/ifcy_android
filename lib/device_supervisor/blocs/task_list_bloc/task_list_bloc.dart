@@ -18,22 +18,22 @@ class TaskListBloc extends Bloc<TaskListEvent, TaskListState> {
   Stream<TaskListState> mapEventToState(
     TaskListEvent event,
   ) async* {
-    if (event is FetchTask && !_hasReachMax(currentState)) {
+    if (event is FetchTask && !_hasReachMax(state)) {
       try {
-        if (currentState is InitialTaskListState) {
+        if (state is InitialTaskListState) {
           final PlanTaskListPageModel model = await repositories.getFirstPage();
           yield FetchedTaskListState(model: model);
           return;
         }
-        if (currentState is FetchedTaskListState) {
+        if (state is FetchedTaskListState) {
           final PlanTaskListPageModel model = await repositories.getNextPage(
-              (currentState as FetchedTaskListState).model.currentPageNum + 1);
+              (state as FetchedTaskListState).model.currentPageNum + 1);
           yield model.planLists.isEmpty
-              ? (currentState as FetchedTaskListState)
+              ? (state as FetchedTaskListState)
               .copyWith(isReachMax: true)
               : FetchedTaskListState(
             isReachMax: false,
-            model: (currentState as FetchedTaskListState)
+            model: (state as FetchedTaskListState)
                 .model
                 .nextPage(model),
           );

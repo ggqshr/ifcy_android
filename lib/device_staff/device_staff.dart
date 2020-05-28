@@ -39,18 +39,18 @@ class _DeviceStaffState extends State<DeviceStaff> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<DeviceStaffTaskListRepositories>(
-          builder: (context) => DeviceStaffTaskListRepositories(),
+          create: (context) => DeviceStaffTaskListRepositories(),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<BadgeBloc>(
-            builder: (context) => BadgeBloc([1, 1]),
+            create: (context) => BadgeBloc([1, 1]),
           ),
           BlocProvider<DeviceStaffTaskListBloc>(
-            builder: (context) => DeviceStaffTaskListBloc(
+            create: (context) => DeviceStaffTaskListBloc(
                 RepositoryProvider.of<DeviceStaffTaskListRepositories>(context))
-              ..dispatch(FetchAll()),
+              ..add(FetchAll()),
           ),
         ],
         child: Scaffold(

@@ -39,7 +39,7 @@ class SelectProjectPage extends StatelessWidget {
                     title: Text("注销"),
                     onTap: () {
                       BlocProvider.of<AuthorizationBloc>(context)
-                          .dispatch(LoginOut());
+                          .add(LoginOut());
                     },
                   ),
                   ListTile(

@@ -57,11 +57,11 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: _store,
       child: RepositoryProvider(
-        builder: (context) => UserLoginRepositories(),
+        create: (context) => UserLoginRepositories(),
         child: BlocProvider(
-          builder: (context) {
+          create: (context) {
             var bloc = AuthorizationBloc(RepositoryProvider.of(context))
-              ..dispatch(AppStart());
+              ..add(AppStart());
             BlocSupervisor.delegate = ErrorProcessDelegate(bloc);
             return bloc;
           },

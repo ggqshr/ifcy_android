@@ -46,48 +46,48 @@ class _PropertyManagerState extends State<PropertyManager> {
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<MonitorRepositories>(
-            builder: (context) => MonitorRepositories(),
+            create: (context) => MonitorRepositories(),
           ),
         ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider<MonitorBloc>(
-              builder: (context) => MonitorBloc(
+              create: (context) => MonitorBloc(
                   RepositoryProvider.of<MonitorRepositories>(context))
-                ..dispatch(FetchMonitorDataEvent()),
+                ..add(FetchMonitorDataEvent()),
             ),
             BlocProvider<PlanListBloc>(
-              builder: (context) {
+              create: (context) {
                 PlanListRepositories repositories = PlanListRepositories();
                 return PlanListBloc(repositories);
               },
             ),
             BlocProvider<TaskListBloc>(
-              builder: (context) {
+              create: (context) {
                 TaskListRepositories repositories = TaskListRepositories();
                 return TaskListBloc(repositories);
               },
             ),
             BlocProvider<DeclareMessageBloc>(
-              builder: (context) {
+              create: (context) {
                 return DeclareMessageBloc(ReportDeviceRepositories())
-                  ..dispatch(FetchDeclareMessage());
+                  ..add(FetchDeclareMessage());
               },
             ),
             BlocProvider<EmployeeListBloc>(
-              builder: (context) {
+              create: (context) {
                 return EmployeeListBloc(EmployeeRepositories())
-                  ..dispatch(FetchEmployeeListDataEvent());
+                  ..add(FetchEmployeeListDataEvent());
               },
             ),
             BlocProvider<DeviceMessageBloc>(
-              builder: (context) {
+              create: (context) {
                 DeviceMessageRepositories repo = DeviceMessageRepositories();
-                return DeviceMessageBloc(repo)..dispatch(FetchAllDevices());
+                return DeviceMessageBloc(repo)..add(FetchAllDevices());
               },
             ),
             BlocProvider<BadgeBloc>(
-              builder: (context) => BadgeBloc([1, 1, 2, 0],
+              create: (context) => BadgeBloc([1, 1, 2, 0],
                   monitorBloc: BlocProvider.of<MonitorBloc>(context)),
             ),
           ],

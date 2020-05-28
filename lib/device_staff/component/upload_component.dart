@@ -114,7 +114,7 @@ class UploadComponent extends StatelessWidget {
                 onPressed: state.models.isEmpty
                     ? null
                     : () async {
-                        _bloc.dispatch(UploadToServer());
+                        _bloc.add(UploadToServer());
                       },
                 child: Text(
                   "上传",

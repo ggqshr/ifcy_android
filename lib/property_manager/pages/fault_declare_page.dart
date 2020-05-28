@@ -26,7 +26,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
         automaticallyImplyLeading: false,
       ),
       body: BlocProvider<CheckDeclareBloc>(
-        builder: (context) {
+        create: (context) {
           return CheckDeclareBloc(CheckDeclareRepositories());
         },
         child: MultiBlocListener(
@@ -88,7 +88,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                           ),
                         ),
                       );
-                    _bloc.dispatch(RefreshDeclareMessage());
+                    _bloc.add(RefreshDeclareMessage());
                   }
                 }
               },
@@ -104,7 +104,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
               }
               if (state is LoadErrorDeclareMessageState) {
                 return LoadErrorPage(
-                    () => _bloc.dispatch(FetchDeclareMessage()));
+                    () => _bloc.add(FetchDeclareMessage()));
               }
               if (state is LoadedDeclareMessageState) {
                 if (state.models.dataList.isEmpty) {
@@ -119,10 +119,10 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                   enableControlFinishLoad: true,
                   controller: _controller,
                   onRefresh: () async {
-                    _bloc.dispatch(RefreshDeclareMessage());
+                    _bloc.add(RefreshDeclareMessage());
                   },
                   onLoad: () async {
-                    _bloc.dispatch(FetchDeclareMessage());
+                    _bloc.add(FetchDeclareMessage());
                   },
                   child: ListView.builder(
                     itemBuilder: (context, index) {
@@ -164,7 +164,7 @@ class _FaultDeclarePageState extends State<FaultDeclarePage>
                                     RaisedButton(
                                       child: Text("已读"),
                                       onPressed: () {
-                                        _checkDeclareBloc.dispatch(
+                                        _checkDeclareBloc.add(
                                             CheckPassDeclareMessageEvent(
                                                 thisDevice.id));
                                       },

@@ -30,7 +30,7 @@ class MonitorPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
                 as Authenticated)
             .currentBuild
             .buildName),
@@ -52,7 +52,7 @@ class MonitorPage extends StatelessWidget {
           // ignore: missing_return
           builder: (context, state) {
         if (state is LoadedErrorMonitorState) {
-          return LoadErrorPage(() => bloc.dispatch(FetchMonitorDataEvent()));
+          return LoadErrorPage(() => bloc.add(FetchMonitorDataEvent()));
         }
         if (state is UnInitializationMonitorState) {
           return Center(
@@ -68,7 +68,7 @@ class MonitorPage extends StatelessWidget {
         if (state is LoadedMonitorState) {
           return RefreshIndicator(
             onRefresh: () async {
-              bloc.dispatch(FetchMonitorDataEvent());
+              bloc.add(FetchMonitorDataEvent());
             },
             child: CustomScrollView(
               slivers: <Widget>[

@@ -17,11 +17,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginState get initialState => LoginState.empty();
 
   @override
-  Stream<LoginState> transformEvents(
+  Stream<Transition<LoginEvent, LoginState>> transformEvents(
     Stream<LoginEvent> events,
-    Stream<LoginState> Function(LoginEvent event) next,
+    Stream<Transition<LoginEvent, LoginState>> Function(LoginEvent event) next,
   ) {
-    final observableStream = events as Observable<LoginEvent>;
+    final observableStream = events;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! UserNameChanged && event is! PasswordChanged);
     });
@@ -48,7 +48,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-
   @override
   void onError(Object error, StackTrace stacktrace) {
     print("Login error");
@@ -56,11 +55,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapEmailChangedToState(String userName) async* {
-    yield currentState.update(isUserNameValid: userName.isNotEmpty);
+    yield state.update(isUserNameValid: userName.isNotEmpty);
   }
 
   Stream<LoginState> _mapPasswordChangedToState(String password) async* {
-    yield currentState.update(isPasswordValid: password.isNotEmpty);
+    yield state.update(isPasswordValid: password.isNotEmpty);
   }
 
   Stream<LoginState> _mapLoginWithCredentialsPressedToState(
@@ -69,7 +68,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       await userLoginRepositories.login(username, password);
       yield LoginState.success();
-      authorizationBloc.dispatch(LoginIn());
+      authorizationBloc.add(LoginIn());
     } catch (_) {
       yield LoginState.failure();
       rethrow;

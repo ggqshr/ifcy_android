@@ -50,7 +50,7 @@ class FloorMapPages extends StatelessWidget {
               return LoadingPage();
             }
             if (state is LoadErrorFloorMapState) {
-              return LoadErrorPage(() => bloc.dispatch(LoadFloorDetailEvent()));
+              return LoadErrorPage(() => bloc.add(LoadFloorDetailEvent()));
             }
             if (state is LoadedFloorMapState) {
               return Column(
@@ -67,7 +67,7 @@ class FloorMapPages extends StatelessWidget {
                           ))
                           .toList(),
                       value: state.currentFloor?.id,
-                      onChanged: (value) => bloc.dispatch(
+                      onChanged: (value) => bloc.add(
                         ChangeFloorEvent(value),
                       ),
                     ),

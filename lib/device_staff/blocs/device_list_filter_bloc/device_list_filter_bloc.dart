@@ -13,18 +13,18 @@ class DeviceListFilterBloc
   StreamSubscription todoSubscription;
 
   DeviceListFilterBloc(this.bloc) {
-    todoSubscription = bloc.state.listen((st) {
+    todoSubscription = bloc.listen((st) {
       if (st is DeviceListLoaded) {
-        dispatch(UpdateDeviceList(st.models));
+        add(UpdateDeviceList(st.models));
       }
     });
   }
 
   @override
   DeviceListFilterState get initialState =>
-      bloc.currentState is DeviceListLoaded
+      bloc.state is DeviceListLoaded
           ? FilterDeviceListLoaded(
-              models: (bloc.currentState as DeviceListLoaded).models,
+              models: (bloc.state as DeviceListLoaded).models,
               floorFilter: null,
               statusFilter: CheckStatusFilter.all)
           : FilterDeviceListLoading();
@@ -49,11 +49,11 @@ class DeviceListFilterBloc
 
   Stream<DeviceListFilterState> _mapUpdateDeviceListToState(
       UpdateDeviceList event) async* {
-    final statusFilter = currentState is FilterDeviceListLoaded
-        ? (currentState as FilterDeviceListLoaded).statusFilter
+    final statusFilter = state is FilterDeviceListLoaded
+        ? (state as FilterDeviceListLoaded).statusFilter
         : CheckStatusFilter.all;
-    final floorFilter = currentState is FilterDeviceListLoaded
-        ? (currentState as FilterDeviceListLoaded).floorFilter
+    final floorFilter = state is FilterDeviceListLoaded
+        ? (state as FilterDeviceListLoaded).floorFilter
         : null;
     yield FilterDeviceListLoaded(
       models: _mapFilterToList(event.models, statusFilter, floorFilter),
@@ -64,29 +64,29 @@ class DeviceListFilterBloc
 
   Stream<DeviceListFilterState> _mapUpdateFloorToState(
       UpdateFloorFilter event) async* {
-    if (currentState is FilterDeviceListLoaded) {
-      yield (currentState as FilterDeviceListLoaded)
+    if (state is FilterDeviceListLoaded) {
+      yield (state as FilterDeviceListLoaded)
           .copy(floorFilter: event.floorFiler);
     }
   }
 
   Stream<DeviceListFilterState> _mapUpdateStatusToState(
       UpdateStatusFilter event) async* {
-    if (currentState is FilterDeviceListLoaded) {
-      yield (currentState as FilterDeviceListLoaded)
+    if (state is FilterDeviceListLoaded) {
+      yield (state as FilterDeviceListLoaded)
           .copy(statusFilter: event.statusFilter);
     }
   }
 
   Stream<DeviceListFilterState> _mapUpdateFilterToState(
       UpdateFilterDeviceList event) async* {
-    if (bloc.currentState is DeviceListLoaded &&
-        currentState is FilterDeviceListLoaded) {
-      yield (currentState as FilterDeviceListLoaded).copy(
+    if (bloc.state is DeviceListLoaded &&
+        state is FilterDeviceListLoaded) {
+      yield (state as FilterDeviceListLoaded).copy(
         models: _mapFilterToList(
-          (bloc.currentState as DeviceListLoaded).models,
-          (currentState as FilterDeviceListLoaded).statusFilter,
-          (currentState as FilterDeviceListLoaded).floorFilter,
+          (bloc.state as DeviceListLoaded).models,
+          (state as FilterDeviceListLoaded).statusFilter,
+          (state as FilterDeviceListLoaded).floorFilter,
         ),
       );
     }
@@ -117,6 +117,6 @@ class DeviceListFilterBloc
   @override
   void dispose() {
     todoSubscription?.cancel();
-    super.dispose();
+    super.close();
   }
 }

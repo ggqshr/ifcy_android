@@ -35,30 +35,30 @@ dependencies:
   flutter_spinkit: "^3.1.0"
   fluro: "^1.5.1"
   badges: ^1.1.0
-  charts_flutter: ^0.6.0
+  charts_flutter: ^0.9.0
   font_awesome_flutter: 8.5.0
   flutter_downloader: ^1.1.9
   permission_handler: ^3.2.1+1
-  path_provider: 1.2.0
+  path_provider: 1.6.9
   install_plugin: ^2.0.1
   barcode_scan: ^3.0.1
   image_picker: ^0.6.1
-  provider: ^3.0.0+1
+  provider: ^4.0.5
   moor_flutter: ^1.7.0
-  cached_network_image: ^1.1.1
-  flutter_cache_manager: ^1.1.1
+  cached_network_image: ^2.2.0+1
+  flutter_cache_manager: ^1.2.2
   flutter_secure_storage: ^3.2.1+1
   fluttertoast: ^3.1.0
   flutter_easyrefresh: ^2.0.3
   meta: ^1.1.6
-  bloc: ^0.15.0
-  flutter_bloc: ^0.21.0
+  bloc: ^4.0.0
+  flutter_bloc: ^4.0.0
   equatable: ^0.3.0
-  rxdart: ^0.22.1+1
+  rxdart: ^0.24.1
   jpush_flutter: 0.1.0
   expandable: ^3.0.0+1
-  flutter_map_marker_cluster: ^0.2.3
-  flutter_map: ^0.7.2
+  flutter_map_marker_cluster: ^0.2.8
+  flutter_map: ^0.9.0
 
 
 dev_dependencies:

@@ -39,12 +39,12 @@ class _WorkPageState extends State<WorkPage>
             context,
             new MaterialPageRoute(
               builder: (context) => RepositoryProvider(
-                builder: (context) => AddTaskPlanRepositories(),
+                create: (context) => AddTaskPlanRepositories(),
                 child: BlocProvider<AddTaskPlanBloc>(
-                  builder: (context) => AddTaskPlanBloc(
+                  create: (context) => AddTaskPlanBloc(
                     RepositoryProvider.of<AddTaskPlanRepositories>(context),
                     RepositoryProvider.of<UserLoginRepositories>(context),
-                  )..dispatch(FetchData()),
+                  )..add(FetchData()),
                   child: AddTaskPage(),
                 ),
               ),

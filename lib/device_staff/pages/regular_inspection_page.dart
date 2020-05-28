@@ -66,7 +66,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
       _animationController.forward();
     }
     return BlocProvider<DeviceListFilterBloc>(
-      builder: (context) => DeviceListFilterBloc(_bloc),
+      create: (context) => DeviceListFilterBloc(_bloc),
       child: BlocBuilder<DeviceListFilterBloc, DeviceListFilterState>(
         // ignore: missing_return
         builder: (context, state) {
@@ -93,13 +93,13 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                     onPressed: () => Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return BlocProvider<FloorMapBloc>(
-                        builder: (context) {
+                        create: (context) {
                           return FloorMapBloc(
                             FloorMapDataRepositories(),
                             RepositoryProvider.of<UserLoginRepositories>(
                                 context),
                             state.models,
-                          )..dispatch(LoadFloorDetailEvent());
+                          )..add(LoadFloorDetailEvent());
                         },
                         child: FloorMapPages(),
                       );
@@ -170,7 +170,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                         (context, index) {
                           return ReadOnlyInspectionTaskDetailPanel(
                             model: models[index],
-                            floorList: (_bloc.currentState as DeviceListLoaded)
+                            floorList: (_bloc.state as DeviceListLoaded)
                                 .floorList,
                           );
                         },
@@ -189,7 +189,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 ],
               ),
               endDrawer: FilterEndDrawer(
-                  (_bloc.currentState as DeviceListLoaded).floorList),
+                  (_bloc.state as DeviceListLoaded).floorList),
             );
           }
         },
@@ -239,11 +239,11 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) {
                     return BlocProvider(
-                      builder: (context) => DeviceUploadBloc(
+                      create: (context) => DeviceUploadBloc(
                         _deviceCheckRepositories,
-                      )..dispatch(GetUploadData(model)),
+                      )..add(GetUploadData(model)),
                       child: UploadComponent(
-                          (_bloc.currentState as DeviceListLoaded).floorList),
+                          (_bloc.state as DeviceListLoaded).floorList),
                     );
                   },
                 ));
@@ -277,7 +277,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 DeviceStaffDeviceCheckBloc _deviceBloc =
                     BlocProvider.of<DeviceStaffDeviceCheckBloc>(context);
                 List<InspectionDeviceModel> models =
-                    (_deviceBloc.currentState as DeviceListLoaded).models;
+                    (_deviceBloc.state as DeviceListLoaded).models;
                 var resIndex =
                     models.indexWhere((item) => item.code == BRCodeScanRes);
                 if (resIndex == -1) {
@@ -294,15 +294,15 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                         await Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return BlocProvider<DeviceDetailBloc>(
-                          builder: (_) => DeviceDetailBloc(_deviceBloc)
-                            ..dispatch(LoadData(thisModel)),
+                          create: (_) => DeviceDetailBloc(_deviceBloc)
+                            ..add(LoadData(thisModel)),
                           child: ScanCodeToInspectionComponent(),
                         );
                       },
                     ));
                     if (bachRes != null) {
                       bachRes.checkStatus = CheckStatus.localCheck;
-                      _deviceBloc.dispatch(UpdateDevice(bachRes));
+                      _deviceBloc.add(UpdateDevice(bachRes));
                     }
                   }
                 }
@@ -380,7 +380,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                             value: item,
                             groupValue: parseEnumType(model.checkResult),
                             onChanged: isEdit
-                                ? (value) => _bloc.dispatch(
+                                ? (value) => _bloc.add(
                                     UpdateCheckResult(parseEnumType(value)))
                                 : null,
                           ),
@@ -411,7 +411,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                       ),
                     ),
                     onChanged: (value) {
-                      _bloc.dispatch(UpdateComment(value));
+                      _bloc.add(UpdateComment(value));
                     },
                   ),
                 ),
@@ -421,7 +421,7 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
                 getPIckImg(
                   model,
                   context,
-                  (imagesName, index) => _bloc.dispatch(
+                  (imagesName, index) => _bloc.add(
                     UpdateImages(
                       imagesName,
                       index,
@@ -885,7 +885,7 @@ class SearchBarButton extends SearchDelegate<String> {
               title: Text("按照名字查询命中的结果"),
               children: res['name'].map((item) {
                 return BlocProvider<DeviceDetailBloc>(
-                  builder: (_) => DeviceDetailBloc()..dispatch(LoadData(item)),
+                  create: (_) => DeviceDetailBloc()..add(LoadData(item)),
                   child: InspectionTaskDetailPanel(),
                 );
               }).toList(),
@@ -1014,9 +1014,9 @@ class TaskStatusChip extends StatelessWidget {
             selected: state.statusFilter == taskStatus,
             onSelected: (checked) {
               if (checked) {
-                bloc.dispatch(UpdateStatusFilter(taskStatus));
+                bloc.add(UpdateStatusFilter(taskStatus));
               } else {
-                bloc.dispatch(UpdateStatusFilter(CheckStatusFilter.all));
+                bloc.add(UpdateStatusFilter(CheckStatusFilter.all));
               }
             },
           );
@@ -1215,7 +1215,7 @@ class FilterEndDrawer extends StatelessWidget {
                             ).toList()
                           ],
                           onChanged: (value) =>
-                              bloc.dispatch(UpdateFloorFilter(value)),
+                              bloc.add(UpdateFloorFilter(value)),
                           value: state.floorFilter,
                         ),
                       );
@@ -1239,7 +1239,7 @@ class FilterEndDrawer extends StatelessWidget {
                     Expanded(
                       child: RaisedButton(
                         onPressed: () {
-                          bloc.dispatch(UpdateFilterDeviceList());
+                          bloc.add(UpdateFilterDeviceList());
                           Navigator.of(context).pop();
                         },
                         child: Text(
@@ -1252,8 +1252,8 @@ class FilterEndDrawer extends StatelessWidget {
                     Expanded(
                       child: RaisedButton(
                         onPressed: () {
-                          bloc.dispatch(UpdateFloorFilter(null));
-                          bloc.dispatch(
+                          bloc.add(UpdateFloorFilter(null));
+                          bloc.add(
                               UpdateStatusFilter(CheckStatusFilter.all));
                         },
                         child: Text("重置"),

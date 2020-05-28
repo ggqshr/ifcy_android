@@ -56,12 +56,12 @@ class ChangePlanBloc extends Bloc<ChangePlanEvent, ChangePlanState> {
   }
 
   Stream<ChangePlanState> _mapSubmitToState(SubmitChangeEvent event) async* {
-    yield (currentState as LoadedChangePlanState).submit();
+    yield (state as LoadedChangePlanState).submit();
     try {
       await repositories.changePlan(event.model);
-      yield (currentState as LoadedChangePlanState).success();
+      yield (state as LoadedChangePlanState).success();
     } catch (e) {
-      yield (currentState as LoadedChangePlanState).fault();
+      yield (state as LoadedChangePlanState).fault();
       rethrow;
     }
   }

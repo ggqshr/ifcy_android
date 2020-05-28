@@ -8,7 +8,7 @@ class PersonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String currentRole = (BlocProvider.of<AuthorizationBloc>(context)
-            .currentState as Authenticated)
+            .state as Authenticated)
         .userEntity
         .roleType;
     return Scaffold(
@@ -38,7 +38,7 @@ class PersonPage extends StatelessWidget {
               alignment: Alignment.center,
               child: PersonelInfoComponent(
                 userName: (BlocProvider.of<AuthorizationBloc>(context)
-                        .currentState as Authenticated)
+                        .state as Authenticated)
                     .userEntity
                     .userName,
               ),
@@ -70,11 +70,11 @@ class PersonPage extends StatelessWidget {
                         new MaterialPageRoute(
                           builder: (context) =>
                               BlocProvider<DeclareMessageBloc>(
-                            builder: (context) {
+                            create: (context) {
                               ReportDeviceRepositories repo =
                                   ReportDeviceRepositories();
                               return DeclareMessageBloc(repo)
-                                ..dispatch(FetchDeclareMessage());
+                                ..add(FetchDeclareMessage());
                             },
                             child: FaultDeclarePage(),
                           ),
@@ -87,11 +87,11 @@ class PersonPage extends StatelessWidget {
                       context,
                       new MaterialPageRoute(
                         builder: (context) => BlocProvider<DeclareMessageBloc>(
-                          builder: (context) {
+                          create: (context) {
                             ReportDeviceRepositories repo =
                                 ReportDeviceRepositories();
                             return DeclareMessageBloc(repo)
-                              ..dispatch(FetchDeclareMessage());
+                              ..add(FetchDeclareMessage());
                           },
                           child: FaultDeclarePage(),
                         ),

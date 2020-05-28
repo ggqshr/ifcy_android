@@ -13,7 +13,7 @@ class MonitorPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
                 as Authenticated)
             .currentBuild
             .buildName),
@@ -54,7 +54,7 @@ class MonitorPage extends StatelessWidget {
           return RefreshIndicator(
             //todo 刷新回调
             onRefresh: () async {
-              bloc.dispatch(FetchMonitorDataEvent());
+              bloc.add(FetchMonitorDataEvent());
             },
             child: CustomScrollView(
               slivers: <Widget>[

@@ -36,17 +36,17 @@ class AddTaskPlanBloc extends Bloc<AddTaskPlanEvent, AddTaskPlanState> {
       }
     }
     if (event is SubmitData) {
-      yield (currentState as AfterFetchedState).submitting();
+      yield (state as AfterFetchedState).submitting();
       try {
         bool isSuccess =
             await addTaskPlanRepositories.submitting(event.taskPlanEntity);
         if (isSuccess) {
-          yield (currentState as AfterFetchedState).submittingSuccess();
+          yield (state as AfterFetchedState).submittingSuccess();
         } else {
-          yield (currentState as AfterFetchedState).submittingFault();
+          yield (state as AfterFetchedState).submittingFault();
         }
       } catch (e) {
-        yield (currentState as AfterFetchedState).submittingFault();
+        yield (state as AfterFetchedState).submittingFault();
         rethrow;
       }
     }

@@ -22,8 +22,8 @@ class OwnerMonitorBloc extends Bloc<OwnerMonitorEvent, OwnerMonitorState> {
 
   Stream<OwnerMonitorState> _mapFetchToState() async* {
     try {
-      if (currentState is LoadingOwnerMonitorDataState ||
-          currentState is LoadErrorOwnerMonitorDataState) {
+      if (state is LoadingOwnerMonitorDataState ||
+          state is LoadErrorOwnerMonitorDataState) {
         yield LoadedOwnerMonitorDataState(
           fireNum: await repositories.getFireNum(),
           deviceFaultNum: await repositories.getDeviceFaultNum(),
@@ -33,7 +33,7 @@ class OwnerMonitorBloc extends Bloc<OwnerMonitorEvent, OwnerMonitorState> {
           taskInfoMsg: await repositories.getTaskInfoMsg(),
           userList: await repositories.getUserList(),
         );
-      } else if (currentState is LoadedOwnerMonitorDataState) {
+      } else if (state is LoadedOwnerMonitorDataState) {
         yield LoadedOwnerMonitorDataState(
           fireNum: await repositories.getFireNum(),
           deviceFaultNum: await repositories.getDeviceFaultNum(),

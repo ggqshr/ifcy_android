@@ -31,12 +31,12 @@ class DeviceUploadBloc extends Bloc<DeviceUploadEvent, DeviceUploadState> {
   }
 
   Stream<DeviceUploadState> _mapUploadToState(UploadToServer event) async* {
-    yield (currentState as LoadedUploadDevice).uploading();
+    yield (state as LoadedUploadDevice).uploading();
     try {
-      await repositories.uploadDevice((currentState as LoadedUploadDevice).models);
-      yield (currentState as LoadedUploadDevice).success();
+      await repositories.uploadDevice((state as LoadedUploadDevice).models);
+      yield (state as LoadedUploadDevice).success();
     } catch (e) {
-      yield (currentState as LoadedUploadDevice).fault();
+      yield (state as LoadedUploadDevice).fault();
       rethrow;
     }
   }

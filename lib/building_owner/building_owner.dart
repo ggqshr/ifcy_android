@@ -59,34 +59,34 @@ class _BuildingOwnerState extends State<BuildingOwner> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<OwnerMonitorRepositories>(
-          builder: (context) => OwnerMonitorRepositories(),
+          create: (context) => OwnerMonitorRepositories(),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<OwnerMonitorBloc>(
-            builder: (context) {
+            create: (context) {
               OwnerMonitorRepositories repo =
                   RepositoryProvider.of<OwnerMonitorRepositories>(context);
               return OwnerMonitorBloc(repo)
-                ..dispatch(FetchOwnerMonitorDataEvent());
+                ..add(FetchOwnerMonitorDataEvent());
             },
           ),
           BlocProvider<DeviceMessageBloc>(
-            builder: (context) {
+            create: (context) {
               DeviceMessageRepositories repo = DeviceMessageRepositories();
-              return DeviceMessageBloc(repo)..dispatch(FetchAllDevices());
+              return DeviceMessageBloc(repo)..add(FetchAllDevices());
             },
           ),
           BlocProvider<EmployeeListBloc>(
-            builder: (context) {
+            create: (context) {
               return EmployeeListBloc(EmployeeRepositories())
-                ..dispatch(FetchEmployeeListDataEvent());
+                ..add(FetchEmployeeListDataEvent());
             },
           ),
           BlocProvider<CheckAlarmListBloc>(
-            builder: (context) => CheckAlarmListBloc(CheckAlarmRepositories())
-              ..dispatch(FetchCheckedAlarmData(true)),
+            create: (context) => CheckAlarmListBloc(CheckAlarmRepositories())
+              ..add(FetchCheckedAlarmData(true)),
           )
         ],
         child: Scaffold(

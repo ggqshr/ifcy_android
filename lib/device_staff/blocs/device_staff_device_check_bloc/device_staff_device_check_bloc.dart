@@ -37,9 +37,9 @@ class DeviceStaffDeviceCheckBloc
       LoadDevice event) async* {
     _subscription?.cancel();
     _subscription = _repositories.deviceList.listen((device) {
-      dispatch(DeviceUpdate(device));
+      add(DeviceUpdate(device));
     });
-    if (currentState is DeviceListLoading) {
+    if (state is DeviceListLoading) {
       try {
         _repositories.updateLocal(event.models);
       } catch (e) {
@@ -74,6 +74,6 @@ class DeviceStaffDeviceCheckBloc
   @override
   void dispose() {
     _subscription.cancel();
-    super.dispose();
+    super.close();
   }
 }

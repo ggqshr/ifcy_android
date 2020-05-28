@@ -5,7 +5,7 @@ class SupervisorListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
                 as Authenticated)
             .currentBuild
             .buildName),

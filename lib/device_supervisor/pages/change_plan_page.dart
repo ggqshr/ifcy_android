@@ -119,7 +119,7 @@ class _ChangePlanPageState extends State<ChangePlanPage>
               return LoadingPage();
             }
             if (state is LoadErrorChangePlanState) {
-              return LoadErrorPage(() => bloc.dispatch(InitPageEvent()));
+              return LoadErrorPage(() => bloc.add(InitPageEvent()));
             }
             if (state is LoadedChangePlanState) {
               model ??= AddTaskBlocModel(
@@ -395,7 +395,7 @@ class _ChangePlanPageState extends State<ChangePlanPage>
                                     onPressed: () {
                                       if (vm
                                           .index2validate[vm.stepperIndex]()) {
-                                        vm.submitData((model) => bloc.dispatch(
+                                        vm.submitData((model) => bloc.add(
                                             SubmitChangeEvent(model)));
                                       }
                                     },

@@ -22,7 +22,7 @@ class ErrorProcessDelegate extends BlocDelegate {
 //        Application.navigatorKey.currentState.pushAndRemoveUntil(
 //            MaterialPageRoute(builder: (context) => LoginPage()),
 //            ModalRoute.withName("/ll"));
-        this.bloc.dispatch(ShouldReLogin());
+        this.bloc.add(ShouldReLogin());
         return;
       }
       switch (error.type) {

@@ -42,16 +42,16 @@ class _TaskListPageState extends State<TaskListPage>
       child: BlocBuilder<TaskListBloc, TaskListState>(
         builder: (context, state) {
           if (state is FetchErrorTaskListState) {
-            return LoadErrorPage(() => bloc.dispatch(RefreshTask()));
+            return LoadErrorPage(() => bloc.add(RefreshTask()));
           } else if (state is InitialTaskListState) {
-            bloc.dispatch(FetchTask());
+            bloc.add(FetchTask());
             return LoadingPage();
           } else if (state is FetchedTaskListState) {
             PlanTaskListPageModel model = state.model;
             return model.planLists.isEmpty
                 ? BlankPage(
                     showText: "无已发布的任务",
-                    onRefreshCall: () => bloc.dispatch(RefreshTask()),
+                    onRefreshCall: () => bloc.add(RefreshTask()),
                   )
                 : EasyRefresh(
                     footer: getFooter(),
@@ -60,10 +60,10 @@ class _TaskListPageState extends State<TaskListPage>
                     enableControlFinishLoad: true,
                     controller: _controller,
                     onRefresh: () async {
-                      bloc.dispatch(RefreshTask());
+                      bloc.add(RefreshTask());
                     },
                     onLoad: () async {
-                      bloc.dispatch(FetchTask());
+                      bloc.add(FetchTask());
                     },
                     child: ListView.builder(
                       itemCount: model.planLists.length,
@@ -89,7 +89,7 @@ class _TaskListPageState extends State<TaskListPage>
                               ListTile(
                                 dense: true,
                                 title: Text(
-                                    "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).currentState as Authenticated).currentBuild.buildName}"),
+                                    "检查大厦:${(BlocProvider.of<AuthorizationBloc>(context).state as Authenticated).currentBuild.buildName}"),
                               ),
                               ListTile(
                                 dense: true,

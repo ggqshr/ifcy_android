@@ -38,9 +38,9 @@ class FloorMapBloc extends Bloc<FloorMapEvent, FloorMapState> {
 
   Stream<FloorMapState> _mapChangeToState(ChangeFloorEvent event) async* {
     try {
-      yield (currentState as LoadedFloorMapState).copyWith(isLoading: true);
+      yield (state as LoadedFloorMapState).copyWith(isLoading: true);
       final floor = await repositories.getFloorDetail(event.floorId);
-      yield (currentState as LoadedFloorMapState)
+      yield (state as LoadedFloorMapState)
           .copyWith(isLoading: false, currentFloor: floor);
     } catch (e) {
       yield LoadErrorFloorMapState();

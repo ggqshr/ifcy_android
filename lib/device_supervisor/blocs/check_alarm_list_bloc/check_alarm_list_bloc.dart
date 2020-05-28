@@ -29,23 +29,23 @@ class CheckAlarmListBloc
       FetchCheckedAlarmData event) async* {
     PageDataModel model;
     try {
-      if (currentState is LoadingCheckAlarmState) {
+      if (state is LoadingCheckAlarmState) {
         if (event.isFire) {
           model = await _repositories.getFireFirstPage();
         } else {
           model = await _repositories.getDeviceFirstPage();
         }
         yield LoadedCheckAlarmState(model: model, isReachMax: false);
-      } else if (currentState is LoadedCheckAlarmState) {
+      } else if (state is LoadedCheckAlarmState) {
         if (event.isFire) {
-          var current = (currentState as LoadedCheckAlarmState).model;
+          var current = (state as LoadedCheckAlarmState).model;
           model = await _repositories.getFireNextPage(current.currentPage + 1);
           yield model.dataList.isEmpty
               ? LoadedCheckAlarmState(model: current, isReachMax: true)
               : LoadedCheckAlarmState(
                   model: current.nextPage(model), isReachMax: false);
         } else {
-          var current = (currentState as LoadedCheckAlarmState).model;
+          var current = (state as LoadedCheckAlarmState).model;
           model =
               await _repositories.getDeviceNextPage(current.currentPage + 1);
           yield model.dataList.isEmpty

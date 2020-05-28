@@ -477,7 +477,7 @@ class _AddTaskPageState extends State<AddTaskPage>
                                         if (vm.index2validate[
                                             vm.stepperIndex]()) {
                                           vm.submitData((model) =>
-                                              bloc.dispatch(SubmitData(model)));
+                                              bloc.add(SubmitData(model)));
                                         }
                                       },
                                       child: Text(

@@ -21,16 +21,16 @@ class ReportDeviceBloc extends Bloc<ReportDeviceEvent, ReportDeviceState> {
     }
     if (event is AddToReportList) {
       final List<String> currentList =
-          List.from((currentState as LoadedReportDevicesState).devicesToReport);
-      yield (currentState as LoadedReportDevicesState).copyWith(
+          List.from((state as LoadedReportDevicesState).devicesToReport);
+      yield (state as LoadedReportDevicesState).copyWith(
         devicesToReport: currentList..add(event.code),
       );
     }
     if (event is RemoveFromReportList) {
       final List<String> currentList =
-          List.from((currentState as LoadedReportDevicesState).devicesToReport);
+          List.from((state as LoadedReportDevicesState).devicesToReport);
       currentList.remove(event.code);
-      yield (currentState as LoadedReportDevicesState).copyWith(
+      yield (state as LoadedReportDevicesState).copyWith(
         devicesToReport: currentList,
       );
     }
@@ -57,12 +57,12 @@ class ReportDeviceBloc extends Bloc<ReportDeviceEvent, ReportDeviceState> {
 
   Stream<ReportDeviceState> _mapReportToState(ReportToServer event ) async* {
     try {
-      yield (currentState as LoadedReportDevicesState).submitting();
+      yield (state as LoadedReportDevicesState).submitting();
       await repositories.reportToServer(
-          (currentState as LoadedReportDevicesState).devicesToReport,event.title,event.content);
-      yield (currentState as LoadedReportDevicesState).success();
+          (state as LoadedReportDevicesState).devicesToReport,event.title,event.content);
+      yield (state as LoadedReportDevicesState).success();
     } catch (e, s) {
-      yield (currentState as LoadedReportDevicesState).fault();
+      yield (state as LoadedReportDevicesState).fault();
       rethrow;
     }
   }

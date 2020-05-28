@@ -41,11 +41,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _changePW() {
-    loginBloc.dispatch(PasswordChanged(password: passWordController.text));
+    loginBloc.add(PasswordChanged(password: passWordController.text));
   }
 
   void _changeUN() {
-    loginBloc.dispatch(UserNameChanged(userName: userNameController.text));
+    loginBloc.add(UserNameChanged(userName: userNameController.text));
   }
 
   @override
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                             ? () {
                           userNameFocusNode.unfocus();
                           passWordFocusNode.unfocus();
-                          loginBloc.dispatch(LoginWithCredentialsPressed(
+                          loginBloc.add(LoginWithCredentialsPressed(
                               username: userNameController.text,
                               password: passWordController.text));
                         }

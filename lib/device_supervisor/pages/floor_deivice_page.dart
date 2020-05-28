@@ -55,7 +55,7 @@ class FloorDevicePage extends StatelessWidget {
             }
             if (state is LoadErrorFloorDeviceState) {
               return LoadErrorPage(
-                  () => bloc.dispatch(LoadFloorDeviceDetailEvent()));
+                  () => bloc.add(LoadFloorDeviceDetailEvent()));
             }
             if (state is LoadedFloorDeviceState) {
               if (state.isLoading) {

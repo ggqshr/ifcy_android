@@ -30,9 +30,9 @@ class FireAlarmComponent extends StatelessWidget {
             onTalCall: (context) {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return BlocProvider<CheckAlarmListBloc>(
-                  builder: (context) =>
+                  create: (context) =>
                       CheckAlarmListBloc(CheckAlarmRepositories())
-                        ..dispatch(FetchCheckedAlarmData(true)),
+                        ..add(FetchCheckedAlarmData(true)),
                   child: CheckedAlarmPage(
                     (thisTask) => CheckResultComponent(
                         (thisTask as FireCheckAlarmMessage).fireType ==
@@ -77,17 +77,17 @@ class FireMessageTile extends StatelessWidget {
             await Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) {
               return BlocProvider<ConfirmMessageBloc>(
-                builder: (context) => ConfirmMessageBloc(
+                create: (context) => ConfirmMessageBloc(
                   meg,
                   ConfirmMessageRepositories(),
-                )..dispatch(
+                )..add(
                     StartToConfirm(),
                   ),
                 child: ConfirmMessagePage(),
               );
             }));
             BlocProvider.of<MonitorBloc>(context)
-                .dispatch(FetchMonitorDataEvent());
+                .add(FetchMonitorDataEvent());
           },
         ),
         elevation: 10,

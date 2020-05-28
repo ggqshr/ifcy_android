@@ -64,7 +64,7 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                   ? BlankPage(
                       showText: "无历史消息",
                       onRefreshCall: () =>
-                          bloc.dispatch(RefreshCheckAlarmData(widget.isFire)),
+                          bloc.add(RefreshCheckAlarmData(widget.isFire)),
                     )
                   : EasyRefresh(
                       footer: getFooter(),
@@ -73,10 +73,10 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                       enableControlFinishLoad: true,
                       controller: _controller,
                       onRefresh: () async {
-                        bloc.dispatch(RefreshCheckAlarmData(widget.isFire));
+                        bloc.add(RefreshCheckAlarmData(widget.isFire));
                       },
                       onLoad: () async {
-                        bloc.dispatch(FetchCheckedAlarmData(widget.isFire));
+                        bloc.add(FetchCheckedAlarmData(widget.isFire));
                       },
                       child: ListView.builder(
                         itemCount: model.dataList.length,

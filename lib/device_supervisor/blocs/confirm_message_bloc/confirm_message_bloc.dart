@@ -20,7 +20,7 @@ class ConfirmMessageBloc
   Stream<ConfirmMessageState> mapEventToState(
     ConfirmMessageEvent event,
   ) async* {
-    if (event is StartToConfirm && currentState is LoadingConfirmDataState) {
+    if (event is StartToConfirm && state is LoadingConfirmDataState) {
       yield LoadedConfirmDataState(message);
     }
     if (event is ConfirmMessage) {
@@ -29,7 +29,7 @@ class ConfirmMessageBloc
   }
 
   Stream<ConfirmMessageState> _mapConfirmToState(ConfirmMessage event) async* {
-    if (currentState is LoadedConfirmDataState) {
+    if (state is LoadedConfirmDataState) {
       ///开始加载
       yield ConfirmedState.confirming(message);
       try {
@@ -50,9 +50,9 @@ class ConfirmMessageBloc
                 (message as DeviceFaultAlarmMessage).id, event.commentText);
           }
         }
-        yield (currentState as ConfirmedState).success(event.isFireOrProcessed);
+        yield (state as ConfirmedState).success(event.isFireOrProcessed);
       } catch (e) {
-        yield (currentState as ConfirmedState).fault();
+        yield (state as ConfirmedState).fault();
         rethrow;
       }
     }

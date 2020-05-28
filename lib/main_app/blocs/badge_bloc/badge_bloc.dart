@@ -11,10 +11,10 @@ class BadgeBloc extends Bloc<BadgeEvent, List<int>> {
 
   BadgeBloc(this.blocInitState,{this.monitorBloc}){
     if(monitorBloc!=null){
-      monitorSubscription = monitorBloc.state.listen((sta){
+      monitorSubscription = monitorBloc.listen((sta){
         if(sta is LoadedMonitorState){
           int totalCount = sta.fireAlarmMsg.length+sta.deviceFaultMsg.length+sta.taskInfoMsg.length;
-          dispatch(SetBadgeNum(badgeNum: totalCount,badgeIndex: 0));
+          add(SetBadgeNum(badgeNum: totalCount,badgeIndex: 0));
         }
       });
     }
@@ -28,17 +28,17 @@ class BadgeBloc extends Bloc<BadgeEvent, List<int>> {
     BadgeEvent event,
   ) async* {
     if(event is AddBadgeNum){
-      var newList = List.from(currentState);
+      var newList = List.from(state);
       newList[event.badgeIndex]+=event.badgeNum;
       yield newList;
     }
     if(event is DecreaseBadgeNum){
-      var newList = List.from(currentState);
+      var newList = List.from(state);
       newList[event.badgeIndex]-=event.badgeNum;
       yield newList;
     }
     if(event is SetBadgeNum){
-      List<int> newList = List.from(currentState);
+      List<int> newList = List.from(state);
       newList[event.badgeIndex]=event.badgeNum;
       yield newList;
     }
@@ -47,7 +47,7 @@ class BadgeBloc extends Bloc<BadgeEvent, List<int>> {
   @override
   void dispose() {
     monitorSubscription.cancel();
-    super.dispose();
+    super.close();
   }
 
 }

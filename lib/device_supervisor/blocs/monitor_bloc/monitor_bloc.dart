@@ -22,8 +22,8 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
 
   Stream<MonitorState> _mapFetchToState() async* {
     try {
-      if (currentState is UnInitializationMonitorState ||
-          currentState is LoadedErrorMonitorState) {
+      if (state is UnInitializationMonitorState ||
+          state is LoadedErrorMonitorState) {
         yield LoadedMonitorState(
           deviceFaultNum: await repositories.getDeviceFaultNum(),
           deviceFaultMsg: await repositories.getDeviceFaultMsg(),
@@ -31,8 +31,8 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
           taskCompleteRate: await repositories.getTaskCompleteRate(),
           taskInfoMsg: await repositories.getTaskInfoMsg(),
         );
-      } else if (currentState is LoadedMonitorState) {
-        yield (currentState as LoadedMonitorState).copy(
+      } else if (state is LoadedMonitorState) {
+        yield (state as LoadedMonitorState).copy(
           deviceFaultNum: await repositories.getDeviceFaultNum(),
           deviceFaultMsg: await repositories.getDeviceFaultMsg(),
           fireAlarmMsg: await repositories.getFireAlarmMsg(),

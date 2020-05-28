@@ -9,7 +9,7 @@ class EmployeePage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).currentState
+        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
                 as Authenticated)
             .currentBuild
             .buildName),
@@ -34,7 +34,7 @@ class ProjectStaffListComponent extends StatelessWidget {
       builder: (context, state) {
         if (state is LoadErrorEmployeeListState) {
           return LoadErrorPage(
-              () => bloc.dispatch(FetchEmployeeListDataEvent()));
+              () => bloc.add(FetchEmployeeListDataEvent()));
         }
         if (state is LoadingEmployeeListState) {
           return LoadingPage();
@@ -43,7 +43,7 @@ class ProjectStaffListComponent extends StatelessWidget {
           var staffList = state.employeeList;
           return RefreshIndicator(
             onRefresh: () async {
-              bloc.dispatch(FetchEmployeeListDataEvent());
+              bloc.add(FetchEmployeeListDataEvent());
             },
             child: CustomScrollView(
               slivers: <Widget>[

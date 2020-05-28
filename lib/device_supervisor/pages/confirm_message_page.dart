@@ -110,12 +110,12 @@ class BodyContext extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return BlocProvider(
-                  builder: (context) {
+                  create: (context) {
                     return FloorDeviceBloc(
                       repositories: FloorMapDataRepositories(),
                       floorId: state.message.floorId,
                       deviceCode: state.message.deviceCode,
-                    )..dispatch(LoadFloorDeviceDetailEvent());
+                    )..add(LoadFloorDeviceDetailEvent());
                   },
                   child: FloorDevicePage(state.message is FireAlarmMessage),
                 );
@@ -137,13 +137,13 @@ class BodyContext extends StatelessWidget {
                     child:
                         Text(state.message is FireAlarmMessage ? "真火警" : "已处理"),
                     onPressed: () => showDialogToCheck(context,
-                        (text) => bloc.dispatch(ConfirmMessage(true, text))),
+                        (text) => bloc.add(ConfirmMessage(true, text))),
                   ),
                   RaisedButton(
                     child: Text(
                         state.message is FireAlarmMessage ? "设备故障" : "未处理"),
                     onPressed: () => showDialogToCheck(context,
-                        (text) => bloc.dispatch(ConfirmMessage(true, text))),
+                        (text) => bloc.add(ConfirmMessage(true, text))),
                   ),
                 ],
               ),

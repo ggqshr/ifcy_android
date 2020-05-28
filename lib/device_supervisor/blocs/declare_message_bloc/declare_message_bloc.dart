@@ -37,18 +37,18 @@ class DeclareMessageBloc
 
   Stream<DeclareMessageState> _mapFetchToState() async* {
     try {
-      if (currentState is LoadingDeclareMessageState ||
-          currentState is LoadErrorDeclareMessageState) {
+      if (state is LoadingDeclareMessageState ||
+          state is LoadErrorDeclareMessageState) {
         final PageDataModel models = await repositories.getDeclareFirstPage();
         yield LoadedDeclareMessageState(isReachMax: false, models: models);
       } else {
         final PageDataModel thisModel =
-            (currentState as LoadedDeclareMessageState).models;
+            (state as LoadedDeclareMessageState).models;
         final PageDataModel newModel =
             await repositories.getDeclareNextPage(thisModel.currentPage + 1);
         yield newModel.dataList.isEmpty
-            ? (currentState as LoadedDeclareMessageState).copy(isReachMax: true)
-            : (currentState as LoadedDeclareMessageState)
+            ? (state as LoadedDeclareMessageState).copy(isReachMax: true)
+            : (state as LoadedDeclareMessageState)
                 .copy(isReachMax: false, models: thisModel.nextPage(newModel));
       }
     } catch (e, s) {

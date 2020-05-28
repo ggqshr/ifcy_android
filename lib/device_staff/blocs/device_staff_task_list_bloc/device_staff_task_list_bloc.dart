@@ -20,7 +20,7 @@ class DeviceStaffTaskListBloc
     DeviceStaffTaskListEvent event,
   ) async* {
     if (event is FetchAll &&
-        (currentState is UnInitialDeviceStaffTaskListState||currentState is LoadErrorDeviceStaffTaskList)) {
+        (state is UnInitialDeviceStaffTaskListState||state is LoadErrorDeviceStaffTaskList)) {
       yield* _mapFetchAllToState();
     }
     if (event is FetchComplete) {
@@ -32,12 +32,12 @@ class DeviceStaffTaskListBloc
     try {
       if (event is RefreshComplete) {
         final model = await repositories.getFirstPageComplete();
-        yield (currentState as LoadedDeviceStaffTaskListState)
+        yield (state as LoadedDeviceStaffTaskListState)
             .copy(completeIsReachMax: false, completeTask: model);
       }
       if (event is RefreshUnComplete) {
         final model = await repositories.getFirstPageUnComplete();
-        yield (currentState as LoadedDeviceStaffTaskListState)
+        yield (state as LoadedDeviceStaffTaskListState)
             .copy(unCompleteIsReachMax: false, unCompleteTask: model);
       }
     } catch (e) {
@@ -49,15 +49,15 @@ class DeviceStaffTaskListBloc
   Stream<DeviceStaffTaskListState> _mapFetchCompleteToState() async* {
     try{
       InspectionTaskPageModel model = await repositories.getNextPageComplete(
-          (currentState as LoadedDeviceStaffTaskListState)
+          (state as LoadedDeviceStaffTaskListState)
               .completeTask
               .currentPageNum +
               1);
       yield model.taskInfoList.isEmpty
-          ? (currentState as LoadedDeviceStaffTaskListState)
+          ? (state as LoadedDeviceStaffTaskListState)
           .copy(completeIsReachMax: true)
-          : (currentState as LoadedDeviceStaffTaskListState).copy(
-        completeTask: (currentState as LoadedDeviceStaffTaskListState)
+          : (state as LoadedDeviceStaffTaskListState).copy(
+        completeTask: (state as LoadedDeviceStaffTaskListState)
             .completeTask
             .nextPage(model),
       );
@@ -70,16 +70,16 @@ class DeviceStaffTaskListBloc
   Stream<DeviceStaffTaskListState> _mapFetchUnCompleteToState() async* {
     try{
       InspectionTaskPageModel model = await repositories.getNextPageUnComplete(
-          (currentState as LoadedDeviceStaffTaskListState)
+          (state as LoadedDeviceStaffTaskListState)
               .unCompleteTask
               .currentPageNum +
               1);
 
       yield model.taskInfoList.isEmpty
-          ? (currentState as LoadedDeviceStaffTaskListState)
+          ? (state as LoadedDeviceStaffTaskListState)
           .copy(unCompleteIsReachMax: true)
-          : (currentState as LoadedDeviceStaffTaskListState).copy(
-        unCompleteTask: (currentState as LoadedDeviceStaffTaskListState)
+          : (state as LoadedDeviceStaffTaskListState).copy(
+        unCompleteTask: (state as LoadedDeviceStaffTaskListState)
             .unCompleteTask
             .nextPage(model),
       );

@@ -17,8 +17,8 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
     DeviceMessageEvent event,
   ) async* {
     if (event is FetchAllDevices &&
-        (currentState is LoadingDeviceMessageState ||
-            currentState is LoadErrorDeviceMessageState)) {
+        (state is LoadingDeviceMessageState ||
+            state is LoadErrorDeviceMessageState)) {
       yield* _mapFetchAllToState();
     }
     if (event is FetchFaultDevices) {
@@ -30,12 +30,12 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
     try {
       if (event is RefreshFaultDevices) {
         final model = await repositories.getFaultDeviceFirstPage();
-        yield (currentState as LoadedDeviceMessageState)
+        yield (state as LoadedDeviceMessageState)
             .copy(faultListReachMax: false, faultDeviceList: model);
       }
       if (event is RefreshRunningDevices) {
         final model = await repositories.getRunningDeviceFirstPage();
-        yield (currentState as LoadedDeviceMessageState)
+        yield (state as LoadedDeviceMessageState)
             .copy(runningListReachMax: false, runningDeviceList: model);
       }
     } catch (e) {
@@ -63,14 +63,14 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
   Stream<DeviceMessageState> _mapFetchFaultToState() async* {
     try {
       PageDataModel model = await repositories.getFaultDeviceNextPage(
-        (currentState as LoadedDeviceMessageState).faultDeviceList.currentPage +
+        (state as LoadedDeviceMessageState).faultDeviceList.currentPage +
             1,
       );
       yield model.dataList.isEmpty
-          ? (currentState as LoadedDeviceMessageState)
+          ? (state as LoadedDeviceMessageState)
               .copy(faultListReachMax: true)
-          : (currentState as LoadedDeviceMessageState).copy(
-              faultDeviceList: (currentState as LoadedDeviceMessageState)
+          : (state as LoadedDeviceMessageState).copy(
+              faultDeviceList: (state as LoadedDeviceMessageState)
                   .faultDeviceList
                   .nextPage(model));
     } catch (e) {
@@ -82,16 +82,16 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
   Stream<DeviceMessageState> _mapFetchRunningToState() async* {
     try {
       PageDataModel model = await repositories.getRunningDeviceNextPage(
-        (currentState as LoadedDeviceMessageState)
+        (state as LoadedDeviceMessageState)
                 .runningDeviceList
                 .currentPage +
             1,
       );
       yield model.dataList.isEmpty
-          ? (currentState as LoadedDeviceMessageState)
+          ? (state as LoadedDeviceMessageState)
               .copy(runningListReachMax: true)
-          : (currentState as LoadedDeviceMessageState).copy(
-              runningDeviceList: (currentState as LoadedDeviceMessageState)
+          : (state as LoadedDeviceMessageState).copy(
+              runningDeviceList: (state as LoadedDeviceMessageState)
                   .runningDeviceList
                   .nextPage(model));
     } catch (e) {

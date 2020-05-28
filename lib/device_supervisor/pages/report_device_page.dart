@@ -32,7 +32,7 @@ class ReportDevicePage extends StatelessWidget {
               );
             }
             if (state is LoadErrorDeviceMessageState) {
-              return LoadErrorPage(() => _bloc.dispatch(FetchReportDevice()));
+              return LoadErrorPage(() => _bloc.add(FetchReportDevice()));
             }
             if (state is LoadedReportDevicesState) {
               if (state.devicesToShow.isEmpty) {
@@ -49,9 +49,9 @@ class ReportDevicePage extends StatelessWidget {
                         value: state.devicesToReport.contains(thisDevice.code),
                         onChanged: (value) {
                           if (value) {
-                            _bloc.dispatch(AddToReportList(thisDevice.code));
+                            _bloc.add(AddToReportList(thisDevice.code));
                           } else {
-                            _bloc.dispatch(
+                            _bloc.add(
                                 RemoveFromReportList(thisDevice.code));
                           }
                         },
@@ -112,7 +112,7 @@ class ReportDevicePage extends StatelessWidget {
                                           ),
                                         ),
                                       );
-                                    _bloc.dispatch(FetchReportDevice());
+                                    _bloc.add(FetchReportDevice());
                                     await Future.delayed(Duration(seconds: 1));
                                     Navigator.of(context).pop();
                                   }
@@ -206,7 +206,7 @@ class ReportDevicePage extends StatelessWidget {
                             child: FlatButton(
                               onPressed: titleController.text.isNotEmpty
                                   ? () {
-                                _bloc.dispatch(ReportToServer(
+                                _bloc.add(ReportToServer(
                                     titleController.text,
                                     contentController.text));
                               }

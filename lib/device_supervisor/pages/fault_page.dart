@@ -86,7 +86,7 @@ class _FaultPageState extends State<FaultPage>
               centerTitle: true,
               title: Text("设备列表"),
               actions: <Widget>[
-                if ((BlocProvider.of<AuthorizationBloc>(context).currentState
+                if ((BlocProvider.of<AuthorizationBloc>(context).state
                             as Authenticated)
                         .userEntity
                         .roleType ==
@@ -97,9 +97,9 @@ class _FaultPageState extends State<FaultPage>
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return BlocProvider<ReportDeviceBloc>(
-                          builder: (context) {
+                          create: (context) {
                             return ReportDeviceBloc(ReportDeviceRepositories())
-                              ..dispatch(FetchReportDevice());
+                              ..add(FetchReportDevice());
                           },
                           child: ReportDevicePage(),
                         );
@@ -135,7 +135,7 @@ class _FaultPageState extends State<FaultPage>
                                 RaisedButton(
                                   child: Text("重新加载"),
                                   onPressed: () =>
-                                      _bloc.dispatch(FetchAllDevices()),
+                                      _bloc.add(FetchAllDevices()),
                                 ),
                               ],
                             ),
@@ -148,7 +148,7 @@ class _FaultPageState extends State<FaultPage>
                                 RaisedButton(
                                   child: Text("重新加载"),
                                   onPressed: () =>
-                                      _bloc.dispatch(FetchAllDevices()),
+                                      _bloc.add(FetchAllDevices()),
                                 ),
                               ],
                             ),
@@ -197,10 +197,10 @@ class _FaultPageState extends State<FaultPage>
         enableControlFinishLoad: true,
         controller: controller,
         onRefresh: () async {
-          _bloc.dispatch(refreshType);
+          _bloc.add(refreshType);
         },
         onLoad: () async {
-          _bloc.dispatch(fetchType);
+          _bloc.add(fetchType);
         },
         child: ListView.builder(
           itemCount: devices.length,
