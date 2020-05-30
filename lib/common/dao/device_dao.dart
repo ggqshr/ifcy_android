@@ -62,7 +62,7 @@ class DeviceDB extends _$DeviceDB {
   Future<int> updateLocal(DeviceData data) async {
     return await (update(device)
           ..where(
-              (t) => and(t.taskId.equals(data.taskId), t.id.equals(data.id))))
+              (t) => t.taskId.equals(data.taskId) & t.id.equals(data.id) ))
         .write(DeviceCompanion(
       comment: Value(data.comment),
       checkStatus: Value(data.checkStatus),
@@ -73,7 +73,9 @@ class DeviceDB extends _$DeviceDB {
 
   ///插入所有的设备记录，用于第一次请求列表时
   Future<void> insertDevices(List<DeviceData> datas) async {
-    await into(device).insertAll(datas);
+    await batch((batch){
+      batch.insertAll(device, datas);
+    });
   }
 
   ///获取本地存储的设备列表的长度，用于判断是否做持久化
@@ -85,7 +87,7 @@ class DeviceDB extends _$DeviceDB {
 
   ///删除本地所有的记录，将新纪录插入
   Future deleteAndUpdate(String taskId, List<DeviceData> datas) async {
-    return transaction((_) async {
+    return transaction(() async {
       await (delete(device)..where((i) => i.taskId.equals(taskId))).go();
       await insertDevices(datas);
     });

@@ -4,8 +4,6 @@
 
 part of "dao.dart";
 
-
-
 class RegularInspectionTaskDetailEntry extends Table {
   TextColumn get deviceId => text()();
 
@@ -58,7 +56,7 @@ class RITaskDetailDatabase extends _$RITaskDetailDatabase {
 
   /// 将任务列表插入到数据库中，根据[taskId]来标识是属于哪一个任务的
   Future<void> addTaskDetails(
-      String taskId, List<RegularInspectionTaskDetail> list) {
+      String taskId, List<RegularInspectionTaskDetail> list) async {
     var addList = list.map((item) {
       return RegularInspectionTaskDetailEntryData(
         taskId: taskId,
@@ -76,15 +74,17 @@ class RITaskDetailDatabase extends _$RITaskDetailDatabase {
         isUpload: item.isUpload,
       );
     }).toList();
-    return into(regularInspectionTaskDetailEntry).insertAll(addList);
+    await batch((batch) {
+      batch.insertAll(regularInspectionTaskDetailEntry, addList);
+    });
   }
 
   ///根据任务id，以及设备id更新某个设备的执行状态，图像名称，备注文字，处理的方式以及检查的结果
   Future<int> updateDeviceStatus<T extends TaskInfoDetail>(
       String taskId, T task) {
     return (update(regularInspectionTaskDetailEntry)
-          ..where((item) => and(
-              item.taskId.equals(taskId), item.deviceId.equals(task.deviceId))))
+          ..where((item) =>
+              item.taskId.equals(taskId) & item.deviceId.equals(task.deviceId)))
         .write(RegularInspectionTaskDetailEntryCompanion(
       deviceName: Value.absent(),
       deviceId: Value.absent(),

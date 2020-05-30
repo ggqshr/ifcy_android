@@ -6,7 +6,7 @@ part of 'dao.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class RegularInspectionTaskDetailEntryData extends DataClass
     implements Insertable<RegularInspectionTaskDetailEntryData> {
   final String deviceId;
@@ -71,50 +71,52 @@ class RegularInspectionTaskDetailEntryData extends DataClass
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_upload']),
     );
   }
-  factory RegularInspectionTaskDetailEntryData.fromJson(
-      Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return RegularInspectionTaskDetailEntryData(
-      deviceId: serializer.fromJson<String>(json['deviceId']),
-      deviceName: serializer.fromJson<String>(json['deviceName']),
-      deviceType: serializer.fromJson<String>(json['deviceType']),
-      inspectionRequire: serializer.fromJson<String>(json['inspectionRequire']),
-      inspectionResultType:
-          serializer.fromJson<String>(json['inspectionResultType']),
-      processType: serializer.fromJson<String>(json['processType']),
-      noteText: serializer.fromJson<String>(json['noteText']),
-      images: serializer.fromJson<String>(json['images']),
-      taskStatus: serializer.fromJson<String>(json['taskStatus']),
-      taskArea: serializer.fromJson<String>(json['taskArea']),
-      taskFloor: serializer.fromJson<String>(json['taskFloor']),
-      taskId: serializer.fromJson<String>(json['taskId']),
-      isUpload: serializer.fromJson<bool>(json['isUpload']),
-    );
-  }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
-      'deviceId': serializer.toJson<String>(deviceId),
-      'deviceName': serializer.toJson<String>(deviceName),
-      'deviceType': serializer.toJson<String>(deviceType),
-      'inspectionRequire': serializer.toJson<String>(inspectionRequire),
-      'inspectionResultType': serializer.toJson<String>(inspectionResultType),
-      'processType': serializer.toJson<String>(processType),
-      'noteText': serializer.toJson<String>(noteText),
-      'images': serializer.toJson<String>(images),
-      'taskStatus': serializer.toJson<String>(taskStatus),
-      'taskArea': serializer.toJson<String>(taskArea),
-      'taskFloor': serializer.toJson<String>(taskFloor),
-      'taskId': serializer.toJson<String>(taskId),
-      'isUpload': serializer.toJson<bool>(isUpload),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || deviceId != null) {
+      map['device_id'] = Variable<String>(deviceId);
+    }
+    if (!nullToAbsent || deviceName != null) {
+      map['device_name'] = Variable<String>(deviceName);
+    }
+    if (!nullToAbsent || deviceType != null) {
+      map['device_type'] = Variable<String>(deviceType);
+    }
+    if (!nullToAbsent || inspectionRequire != null) {
+      map['inspection_require'] = Variable<String>(inspectionRequire);
+    }
+    if (!nullToAbsent || inspectionResultType != null) {
+      map['inspection_result_type'] = Variable<String>(inspectionResultType);
+    }
+    if (!nullToAbsent || processType != null) {
+      map['process_type'] = Variable<String>(processType);
+    }
+    if (!nullToAbsent || noteText != null) {
+      map['note_text'] = Variable<String>(noteText);
+    }
+    if (!nullToAbsent || images != null) {
+      map['images'] = Variable<String>(images);
+    }
+    if (!nullToAbsent || taskStatus != null) {
+      map['task_status'] = Variable<String>(taskStatus);
+    }
+    if (!nullToAbsent || taskArea != null) {
+      map['task_area'] = Variable<String>(taskArea);
+    }
+    if (!nullToAbsent || taskFloor != null) {
+      map['task_floor'] = Variable<String>(taskFloor);
+    }
+    if (!nullToAbsent || taskId != null) {
+      map['task_id'] = Variable<String>(taskId);
+    }
+    if (!nullToAbsent || isUpload != null) {
+      map['is_upload'] = Variable<bool>(isUpload);
+    }
+    return map;
   }
 
-  @override
-  T createCompanion<
-          T extends UpdateCompanion<RegularInspectionTaskDetailEntryData>>(
-      bool nullToAbsent) {
+  RegularInspectionTaskDetailEntryCompanion toCompanion(bool nullToAbsent) {
     return RegularInspectionTaskDetailEntryCompanion(
       deviceId: deviceId == null && nullToAbsent
           ? const Value.absent()
@@ -153,7 +155,48 @@ class RegularInspectionTaskDetailEntryData extends DataClass
       isUpload: isUpload == null && nullToAbsent
           ? const Value.absent()
           : Value(isUpload),
-    ) as T;
+    );
+  }
+
+  factory RegularInspectionTaskDetailEntryData.fromJson(
+      Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return RegularInspectionTaskDetailEntryData(
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      deviceName: serializer.fromJson<String>(json['deviceName']),
+      deviceType: serializer.fromJson<String>(json['deviceType']),
+      inspectionRequire: serializer.fromJson<String>(json['inspectionRequire']),
+      inspectionResultType:
+          serializer.fromJson<String>(json['inspectionResultType']),
+      processType: serializer.fromJson<String>(json['processType']),
+      noteText: serializer.fromJson<String>(json['noteText']),
+      images: serializer.fromJson<String>(json['images']),
+      taskStatus: serializer.fromJson<String>(json['taskStatus']),
+      taskArea: serializer.fromJson<String>(json['taskArea']),
+      taskFloor: serializer.fromJson<String>(json['taskFloor']),
+      taskId: serializer.fromJson<String>(json['taskId']),
+      isUpload: serializer.fromJson<bool>(json['isUpload']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'deviceId': serializer.toJson<String>(deviceId),
+      'deviceName': serializer.toJson<String>(deviceName),
+      'deviceType': serializer.toJson<String>(deviceType),
+      'inspectionRequire': serializer.toJson<String>(inspectionRequire),
+      'inspectionResultType': serializer.toJson<String>(inspectionResultType),
+      'processType': serializer.toJson<String>(processType),
+      'noteText': serializer.toJson<String>(noteText),
+      'images': serializer.toJson<String>(images),
+      'taskStatus': serializer.toJson<String>(taskStatus),
+      'taskArea': serializer.toJson<String>(taskArea),
+      'taskFloor': serializer.toJson<String>(taskFloor),
+      'taskId': serializer.toJson<String>(taskId),
+      'isUpload': serializer.toJson<bool>(isUpload),
+    };
   }
 
   RegularInspectionTaskDetailEntryData copyWith(
@@ -233,22 +276,22 @@ class RegularInspectionTaskDetailEntryData extends DataClass
                                                   isUpload
                                                       .hashCode)))))))))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is RegularInspectionTaskDetailEntryData &&
-          other.deviceId == deviceId &&
-          other.deviceName == deviceName &&
-          other.deviceType == deviceType &&
-          other.inspectionRequire == inspectionRequire &&
-          other.inspectionResultType == inspectionResultType &&
-          other.processType == processType &&
-          other.noteText == noteText &&
-          other.images == images &&
-          other.taskStatus == taskStatus &&
-          other.taskArea == taskArea &&
-          other.taskFloor == taskFloor &&
-          other.taskId == taskId &&
-          other.isUpload == isUpload);
+          other.deviceId == this.deviceId &&
+          other.deviceName == this.deviceName &&
+          other.deviceType == this.deviceType &&
+          other.inspectionRequire == this.inspectionRequire &&
+          other.inspectionResultType == this.inspectionResultType &&
+          other.processType == this.processType &&
+          other.noteText == this.noteText &&
+          other.images == this.images &&
+          other.taskStatus == this.taskStatus &&
+          other.taskArea == this.taskArea &&
+          other.taskFloor == this.taskFloor &&
+          other.taskId == this.taskId &&
+          other.isUpload == this.isUpload);
 }
 
 class RegularInspectionTaskDetailEntryCompanion
@@ -281,6 +324,65 @@ class RegularInspectionTaskDetailEntryCompanion
     this.taskId = const Value.absent(),
     this.isUpload = const Value.absent(),
   });
+  RegularInspectionTaskDetailEntryCompanion.insert({
+    @required String deviceId,
+    @required String deviceName,
+    @required String deviceType,
+    @required String inspectionRequire,
+    @required String inspectionResultType,
+    @required String processType,
+    @required String noteText,
+    this.images = const Value.absent(),
+    @required String taskStatus,
+    @required String taskArea,
+    @required String taskFloor,
+    @required String taskId,
+    @required bool isUpload,
+  })  : deviceId = Value(deviceId),
+        deviceName = Value(deviceName),
+        deviceType = Value(deviceType),
+        inspectionRequire = Value(inspectionRequire),
+        inspectionResultType = Value(inspectionResultType),
+        processType = Value(processType),
+        noteText = Value(noteText),
+        taskStatus = Value(taskStatus),
+        taskArea = Value(taskArea),
+        taskFloor = Value(taskFloor),
+        taskId = Value(taskId),
+        isUpload = Value(isUpload);
+  static Insertable<RegularInspectionTaskDetailEntryData> custom({
+    Expression<String> deviceId,
+    Expression<String> deviceName,
+    Expression<String> deviceType,
+    Expression<String> inspectionRequire,
+    Expression<String> inspectionResultType,
+    Expression<String> processType,
+    Expression<String> noteText,
+    Expression<String> images,
+    Expression<String> taskStatus,
+    Expression<String> taskArea,
+    Expression<String> taskFloor,
+    Expression<String> taskId,
+    Expression<bool> isUpload,
+  }) {
+    return RawValuesInsertable({
+      if (deviceId != null) 'device_id': deviceId,
+      if (deviceName != null) 'device_name': deviceName,
+      if (deviceType != null) 'device_type': deviceType,
+      if (inspectionRequire != null) 'inspection_require': inspectionRequire,
+      if (inspectionResultType != null)
+        'inspection_result_type': inspectionResultType,
+      if (processType != null) 'process_type': processType,
+      if (noteText != null) 'note_text': noteText,
+      if (images != null) 'images': images,
+      if (taskStatus != null) 'task_status': taskStatus,
+      if (taskArea != null) 'task_area': taskArea,
+      if (taskFloor != null) 'task_floor': taskFloor,
+      if (taskId != null) 'task_id': taskId,
+      if (isUpload != null) 'is_upload': isUpload,
+    });
+  }
+
   RegularInspectionTaskDetailEntryCompanion copyWith(
       {Value<String> deviceId,
       Value<String> deviceName,
@@ -310,6 +412,52 @@ class RegularInspectionTaskDetailEntryCompanion
       taskId: taskId ?? this.taskId,
       isUpload: isUpload ?? this.isUpload,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (deviceName.present) {
+      map['device_name'] = Variable<String>(deviceName.value);
+    }
+    if (deviceType.present) {
+      map['device_type'] = Variable<String>(deviceType.value);
+    }
+    if (inspectionRequire.present) {
+      map['inspection_require'] = Variable<String>(inspectionRequire.value);
+    }
+    if (inspectionResultType.present) {
+      map['inspection_result_type'] =
+          Variable<String>(inspectionResultType.value);
+    }
+    if (processType.present) {
+      map['process_type'] = Variable<String>(processType.value);
+    }
+    if (noteText.present) {
+      map['note_text'] = Variable<String>(noteText.value);
+    }
+    if (images.present) {
+      map['images'] = Variable<String>(images.value);
+    }
+    if (taskStatus.present) {
+      map['task_status'] = Variable<String>(taskStatus.value);
+    }
+    if (taskArea.present) {
+      map['task_area'] = Variable<String>(taskArea.value);
+    }
+    if (taskFloor.present) {
+      map['task_floor'] = Variable<String>(taskFloor.value);
+    }
+    if (taskId.present) {
+      map['task_id'] = Variable<String>(taskId.value);
+    }
+    if (isUpload.present) {
+      map['is_upload'] = Variable<bool>(isUpload.value);
+    }
+    return map;
   }
 }
 
@@ -507,89 +655,96 @@ class $RegularInspectionTaskDetailEntryTable
   final String actualTableName = 'regular_inspection_task_detail_entry';
   @override
   VerificationContext validateIntegrity(
-      RegularInspectionTaskDetailEntryCompanion d,
+      Insertable<RegularInspectionTaskDetailEntryData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.deviceId.present) {
+    final data = instance.toColumns(true);
+    if (data.containsKey('device_id')) {
       context.handle(_deviceIdMeta,
-          deviceId.isAcceptableValue(d.deviceId.value, _deviceIdMeta));
-    } else if (deviceId.isRequired && isInserting) {
+          deviceId.isAcceptableOrUnknown(data['device_id'], _deviceIdMeta));
+    } else if (isInserting) {
       context.missing(_deviceIdMeta);
     }
-    if (d.deviceName.present) {
-      context.handle(_deviceNameMeta,
-          deviceName.isAcceptableValue(d.deviceName.value, _deviceNameMeta));
-    } else if (deviceName.isRequired && isInserting) {
+    if (data.containsKey('device_name')) {
+      context.handle(
+          _deviceNameMeta,
+          deviceName.isAcceptableOrUnknown(
+              data['device_name'], _deviceNameMeta));
+    } else if (isInserting) {
       context.missing(_deviceNameMeta);
     }
-    if (d.deviceType.present) {
-      context.handle(_deviceTypeMeta,
-          deviceType.isAcceptableValue(d.deviceType.value, _deviceTypeMeta));
-    } else if (deviceType.isRequired && isInserting) {
+    if (data.containsKey('device_type')) {
+      context.handle(
+          _deviceTypeMeta,
+          deviceType.isAcceptableOrUnknown(
+              data['device_type'], _deviceTypeMeta));
+    } else if (isInserting) {
       context.missing(_deviceTypeMeta);
     }
-    if (d.inspectionRequire.present) {
+    if (data.containsKey('inspection_require')) {
       context.handle(
           _inspectionRequireMeta,
-          inspectionRequire.isAcceptableValue(
-              d.inspectionRequire.value, _inspectionRequireMeta));
-    } else if (inspectionRequire.isRequired && isInserting) {
+          inspectionRequire.isAcceptableOrUnknown(
+              data['inspection_require'], _inspectionRequireMeta));
+    } else if (isInserting) {
       context.missing(_inspectionRequireMeta);
     }
-    if (d.inspectionResultType.present) {
+    if (data.containsKey('inspection_result_type')) {
       context.handle(
           _inspectionResultTypeMeta,
-          inspectionResultType.isAcceptableValue(
-              d.inspectionResultType.value, _inspectionResultTypeMeta));
-    } else if (inspectionResultType.isRequired && isInserting) {
+          inspectionResultType.isAcceptableOrUnknown(
+              data['inspection_result_type'], _inspectionResultTypeMeta));
+    } else if (isInserting) {
       context.missing(_inspectionResultTypeMeta);
     }
-    if (d.processType.present) {
-      context.handle(_processTypeMeta,
-          processType.isAcceptableValue(d.processType.value, _processTypeMeta));
-    } else if (processType.isRequired && isInserting) {
+    if (data.containsKey('process_type')) {
+      context.handle(
+          _processTypeMeta,
+          processType.isAcceptableOrUnknown(
+              data['process_type'], _processTypeMeta));
+    } else if (isInserting) {
       context.missing(_processTypeMeta);
     }
-    if (d.noteText.present) {
+    if (data.containsKey('note_text')) {
       context.handle(_noteTextMeta,
-          noteText.isAcceptableValue(d.noteText.value, _noteTextMeta));
-    } else if (noteText.isRequired && isInserting) {
+          noteText.isAcceptableOrUnknown(data['note_text'], _noteTextMeta));
+    } else if (isInserting) {
       context.missing(_noteTextMeta);
     }
-    if (d.images.present) {
-      context.handle(
-          _imagesMeta, images.isAcceptableValue(d.images.value, _imagesMeta));
-    } else if (images.isRequired && isInserting) {
-      context.missing(_imagesMeta);
+    if (data.containsKey('images')) {
+      context.handle(_imagesMeta,
+          images.isAcceptableOrUnknown(data['images'], _imagesMeta));
     }
-    if (d.taskStatus.present) {
-      context.handle(_taskStatusMeta,
-          taskStatus.isAcceptableValue(d.taskStatus.value, _taskStatusMeta));
-    } else if (taskStatus.isRequired && isInserting) {
+    if (data.containsKey('task_status')) {
+      context.handle(
+          _taskStatusMeta,
+          taskStatus.isAcceptableOrUnknown(
+              data['task_status'], _taskStatusMeta));
+    } else if (isInserting) {
       context.missing(_taskStatusMeta);
     }
-    if (d.taskArea.present) {
+    if (data.containsKey('task_area')) {
       context.handle(_taskAreaMeta,
-          taskArea.isAcceptableValue(d.taskArea.value, _taskAreaMeta));
-    } else if (taskArea.isRequired && isInserting) {
+          taskArea.isAcceptableOrUnknown(data['task_area'], _taskAreaMeta));
+    } else if (isInserting) {
       context.missing(_taskAreaMeta);
     }
-    if (d.taskFloor.present) {
+    if (data.containsKey('task_floor')) {
       context.handle(_taskFloorMeta,
-          taskFloor.isAcceptableValue(d.taskFloor.value, _taskFloorMeta));
-    } else if (taskFloor.isRequired && isInserting) {
+          taskFloor.isAcceptableOrUnknown(data['task_floor'], _taskFloorMeta));
+    } else if (isInserting) {
       context.missing(_taskFloorMeta);
     }
-    if (d.taskId.present) {
-      context.handle(
-          _taskIdMeta, taskId.isAcceptableValue(d.taskId.value, _taskIdMeta));
-    } else if (taskId.isRequired && isInserting) {
+    if (data.containsKey('task_id')) {
+      context.handle(_taskIdMeta,
+          taskId.isAcceptableOrUnknown(data['task_id'], _taskIdMeta));
+    } else if (isInserting) {
       context.missing(_taskIdMeta);
     }
-    if (d.isUpload.present) {
+    if (data.containsKey('is_upload')) {
       context.handle(_isUploadMeta,
-          isUpload.isAcceptableValue(d.isUpload.value, _isUploadMeta));
-    } else if (isUpload.isRequired && isInserting) {
+          isUpload.isAcceptableOrUnknown(data['is_upload'], _isUploadMeta));
+    } else if (isInserting) {
       context.missing(_isUploadMeta);
     }
     return context;
@@ -606,54 +761,6 @@ class $RegularInspectionTaskDetailEntryTable
   }
 
   @override
-  Map<String, Variable> entityToSql(
-      RegularInspectionTaskDetailEntryCompanion d) {
-    final map = <String, Variable>{};
-    if (d.deviceId.present) {
-      map['device_id'] = Variable<String, StringType>(d.deviceId.value);
-    }
-    if (d.deviceName.present) {
-      map['device_name'] = Variable<String, StringType>(d.deviceName.value);
-    }
-    if (d.deviceType.present) {
-      map['device_type'] = Variable<String, StringType>(d.deviceType.value);
-    }
-    if (d.inspectionRequire.present) {
-      map['inspection_require'] =
-          Variable<String, StringType>(d.inspectionRequire.value);
-    }
-    if (d.inspectionResultType.present) {
-      map['inspection_result_type'] =
-          Variable<String, StringType>(d.inspectionResultType.value);
-    }
-    if (d.processType.present) {
-      map['process_type'] = Variable<String, StringType>(d.processType.value);
-    }
-    if (d.noteText.present) {
-      map['note_text'] = Variable<String, StringType>(d.noteText.value);
-    }
-    if (d.images.present) {
-      map['images'] = Variable<String, StringType>(d.images.value);
-    }
-    if (d.taskStatus.present) {
-      map['task_status'] = Variable<String, StringType>(d.taskStatus.value);
-    }
-    if (d.taskArea.present) {
-      map['task_area'] = Variable<String, StringType>(d.taskArea.value);
-    }
-    if (d.taskFloor.present) {
-      map['task_floor'] = Variable<String, StringType>(d.taskFloor.value);
-    }
-    if (d.taskId.present) {
-      map['task_id'] = Variable<String, StringType>(d.taskId.value);
-    }
-    if (d.isUpload.present) {
-      map['is_upload'] = Variable<bool, BoolType>(d.isUpload.value);
-    }
-    return map;
-  }
-
-  @override
   $RegularInspectionTaskDetailEntryTable createAlias(String alias) {
     return $RegularInspectionTaskDetailEntryTable(_db, alias);
   }
@@ -661,16 +768,18 @@ class $RegularInspectionTaskDetailEntryTable
 
 abstract class _$RITaskDetailDatabase extends GeneratedDatabase {
   _$RITaskDetailDatabase(QueryExecutor e)
-      : super(const SqlTypeSystem.withDefaults(), e);
+      : super(SqlTypeSystem.defaultInstance, e);
   $RegularInspectionTaskDetailEntryTable _regularInspectionTaskDetailEntry;
   $RegularInspectionTaskDetailEntryTable get regularInspectionTaskDetailEntry =>
       _regularInspectionTaskDetailEntry ??=
           $RegularInspectionTaskDetailEntryTable(this);
   @override
-  List<TableInfo> get allTables => [regularInspectionTaskDetailEntry];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [regularInspectionTaskDetailEntry];
 }
 
-// ignore_for_file: unnecessary_brace_in_string_interps
 class DeviceData extends DataClass implements Insertable<DeviceData> {
   final String taskId;
   final String name;
@@ -721,42 +830,46 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}y_position']),
     );
   }
-  factory DeviceData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return DeviceData(
-      taskId: serializer.fromJson<String>(json['taskId']),
-      name: serializer.fromJson<String>(json['name']),
-      id: serializer.fromJson<String>(json['id']),
-      code: serializer.fromJson<String>(json['code']),
-      comment: serializer.fromJson<String>(json['comment']),
-      checkStatus: serializer.fromJson<String>(json['checkStatus']),
-      checkResult: serializer.fromJson<String>(json['checkResult']),
-      buildingFloorId: serializer.fromJson<String>(json['buildingFloorId']),
-      images: serializer.fromJson<String>(json['images']),
-      xPosition: serializer.fromJson<String>(json['xPosition']),
-      yPosition: serializer.fromJson<String>(json['yPosition']),
-    );
-  }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
-      'taskId': serializer.toJson<String>(taskId),
-      'name': serializer.toJson<String>(name),
-      'id': serializer.toJson<String>(id),
-      'code': serializer.toJson<String>(code),
-      'comment': serializer.toJson<String>(comment),
-      'checkStatus': serializer.toJson<String>(checkStatus),
-      'checkResult': serializer.toJson<String>(checkResult),
-      'buildingFloorId': serializer.toJson<String>(buildingFloorId),
-      'images': serializer.toJson<String>(images),
-      'xPosition': serializer.toJson<String>(xPosition),
-      'yPosition': serializer.toJson<String>(yPosition),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || taskId != null) {
+      map['task_id'] = Variable<String>(taskId);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<String>(id);
+    }
+    if (!nullToAbsent || code != null) {
+      map['code'] = Variable<String>(code);
+    }
+    if (!nullToAbsent || comment != null) {
+      map['comment'] = Variable<String>(comment);
+    }
+    if (!nullToAbsent || checkStatus != null) {
+      map['check_status'] = Variable<String>(checkStatus);
+    }
+    if (!nullToAbsent || checkResult != null) {
+      map['check_result'] = Variable<String>(checkResult);
+    }
+    if (!nullToAbsent || buildingFloorId != null) {
+      map['building_floor_id'] = Variable<String>(buildingFloorId);
+    }
+    if (!nullToAbsent || images != null) {
+      map['images'] = Variable<String>(images);
+    }
+    if (!nullToAbsent || xPosition != null) {
+      map['x_position'] = Variable<String>(xPosition);
+    }
+    if (!nullToAbsent || yPosition != null) {
+      map['y_position'] = Variable<String>(yPosition);
+    }
+    return map;
   }
 
-  @override
-  T createCompanion<T extends UpdateCompanion<DeviceData>>(bool nullToAbsent) {
+  DeviceCompanion toCompanion(bool nullToAbsent) {
     return DeviceCompanion(
       taskId:
           taskId == null && nullToAbsent ? const Value.absent() : Value(taskId),
@@ -783,7 +896,42 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
       yPosition: yPosition == null && nullToAbsent
           ? const Value.absent()
           : Value(yPosition),
-    ) as T;
+    );
+  }
+
+  factory DeviceData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DeviceData(
+      taskId: serializer.fromJson<String>(json['taskId']),
+      name: serializer.fromJson<String>(json['name']),
+      id: serializer.fromJson<String>(json['id']),
+      code: serializer.fromJson<String>(json['code']),
+      comment: serializer.fromJson<String>(json['comment']),
+      checkStatus: serializer.fromJson<String>(json['checkStatus']),
+      checkResult: serializer.fromJson<String>(json['checkResult']),
+      buildingFloorId: serializer.fromJson<String>(json['buildingFloorId']),
+      images: serializer.fromJson<String>(json['images']),
+      xPosition: serializer.fromJson<String>(json['xPosition']),
+      yPosition: serializer.fromJson<String>(json['yPosition']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'taskId': serializer.toJson<String>(taskId),
+      'name': serializer.toJson<String>(name),
+      'id': serializer.toJson<String>(id),
+      'code': serializer.toJson<String>(code),
+      'comment': serializer.toJson<String>(comment),
+      'checkStatus': serializer.toJson<String>(checkStatus),
+      'checkResult': serializer.toJson<String>(checkResult),
+      'buildingFloorId': serializer.toJson<String>(buildingFloorId),
+      'images': serializer.toJson<String>(images),
+      'xPosition': serializer.toJson<String>(xPosition),
+      'yPosition': serializer.toJson<String>(yPosition),
+    };
   }
 
   DeviceData copyWith(
@@ -851,20 +999,20 @@ class DeviceData extends DataClass implements Insertable<DeviceData> {
                                       $mrjc(xPosition.hashCode,
                                           yPosition.hashCode)))))))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is DeviceData &&
-          other.taskId == taskId &&
-          other.name == name &&
-          other.id == id &&
-          other.code == code &&
-          other.comment == comment &&
-          other.checkStatus == checkStatus &&
-          other.checkResult == checkResult &&
-          other.buildingFloorId == buildingFloorId &&
-          other.images == images &&
-          other.xPosition == xPosition &&
-          other.yPosition == yPosition);
+          other.taskId == this.taskId &&
+          other.name == this.name &&
+          other.id == this.id &&
+          other.code == this.code &&
+          other.comment == this.comment &&
+          other.checkStatus == this.checkStatus &&
+          other.checkResult == this.checkResult &&
+          other.buildingFloorId == this.buildingFloorId &&
+          other.images == this.images &&
+          other.xPosition == this.xPosition &&
+          other.yPosition == this.yPosition);
 }
 
 class DeviceCompanion extends UpdateCompanion<DeviceData> {
@@ -892,6 +1040,53 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
     this.xPosition = const Value.absent(),
     this.yPosition = const Value.absent(),
   });
+  DeviceCompanion.insert({
+    @required String taskId,
+    @required String name,
+    @required String id,
+    @required String code,
+    this.comment = const Value.absent(),
+    @required String checkStatus,
+    @required String checkResult,
+    @required String buildingFloorId,
+    this.images = const Value.absent(),
+    this.xPosition = const Value.absent(),
+    this.yPosition = const Value.absent(),
+  })  : taskId = Value(taskId),
+        name = Value(name),
+        id = Value(id),
+        code = Value(code),
+        checkStatus = Value(checkStatus),
+        checkResult = Value(checkResult),
+        buildingFloorId = Value(buildingFloorId);
+  static Insertable<DeviceData> custom({
+    Expression<String> taskId,
+    Expression<String> name,
+    Expression<String> id,
+    Expression<String> code,
+    Expression<String> comment,
+    Expression<String> checkStatus,
+    Expression<String> checkResult,
+    Expression<String> buildingFloorId,
+    Expression<String> images,
+    Expression<String> xPosition,
+    Expression<String> yPosition,
+  }) {
+    return RawValuesInsertable({
+      if (taskId != null) 'task_id': taskId,
+      if (name != null) 'name': name,
+      if (id != null) 'id': id,
+      if (code != null) 'code': code,
+      if (comment != null) 'comment': comment,
+      if (checkStatus != null) 'check_status': checkStatus,
+      if (checkResult != null) 'check_result': checkResult,
+      if (buildingFloorId != null) 'building_floor_id': buildingFloorId,
+      if (images != null) 'images': images,
+      if (xPosition != null) 'x_position': xPosition,
+      if (yPosition != null) 'y_position': yPosition,
+    });
+  }
+
   DeviceCompanion copyWith(
       {Value<String> taskId,
       Value<String> name,
@@ -917,6 +1112,45 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
       xPosition: xPosition ?? this.xPosition,
       yPosition: yPosition ?? this.yPosition,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (taskId.present) {
+      map['task_id'] = Variable<String>(taskId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (comment.present) {
+      map['comment'] = Variable<String>(comment.value);
+    }
+    if (checkStatus.present) {
+      map['check_status'] = Variable<String>(checkStatus.value);
+    }
+    if (checkResult.present) {
+      map['check_result'] = Variable<String>(checkResult.value);
+    }
+    if (buildingFloorId.present) {
+      map['building_floor_id'] = Variable<String>(buildingFloorId.value);
+    }
+    if (images.present) {
+      map['images'] = Variable<String>(images.value);
+    }
+    if (xPosition.present) {
+      map['x_position'] = Variable<String>(xPosition.value);
+    }
+    if (yPosition.present) {
+      map['y_position'] = Variable<String>(yPosition.value);
+    }
+    return map;
   }
 }
 
@@ -1083,75 +1317,72 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
   @override
   final String actualTableName = 'device';
   @override
-  VerificationContext validateIntegrity(DeviceCompanion d,
+  VerificationContext validateIntegrity(Insertable<DeviceData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.taskId.present) {
-      context.handle(
-          _taskIdMeta, taskId.isAcceptableValue(d.taskId.value, _taskIdMeta));
-    } else if (taskId.isRequired && isInserting) {
+    final data = instance.toColumns(true);
+    if (data.containsKey('task_id')) {
+      context.handle(_taskIdMeta,
+          taskId.isAcceptableOrUnknown(data['task_id'], _taskIdMeta));
+    } else if (isInserting) {
       context.missing(_taskIdMeta);
     }
-    if (d.name.present) {
+    if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
-    } else if (name.isRequired && isInserting) {
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+    } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (d.code.present) {
+    if (data.containsKey('code')) {
       context.handle(
-          _codeMeta, code.isAcceptableValue(d.code.value, _codeMeta));
-    } else if (code.isRequired && isInserting) {
+          _codeMeta, code.isAcceptableOrUnknown(data['code'], _codeMeta));
+    } else if (isInserting) {
       context.missing(_codeMeta);
     }
-    if (d.comment.present) {
+    if (data.containsKey('comment')) {
       context.handle(_commentMeta,
-          comment.isAcceptableValue(d.comment.value, _commentMeta));
-    } else if (comment.isRequired && isInserting) {
-      context.missing(_commentMeta);
+          comment.isAcceptableOrUnknown(data['comment'], _commentMeta));
     }
-    if (d.checkStatus.present) {
-      context.handle(_checkStatusMeta,
-          checkStatus.isAcceptableValue(d.checkStatus.value, _checkStatusMeta));
-    } else if (checkStatus.isRequired && isInserting) {
+    if (data.containsKey('check_status')) {
+      context.handle(
+          _checkStatusMeta,
+          checkStatus.isAcceptableOrUnknown(
+              data['check_status'], _checkStatusMeta));
+    } else if (isInserting) {
       context.missing(_checkStatusMeta);
     }
-    if (d.checkResult.present) {
-      context.handle(_checkResultMeta,
-          checkResult.isAcceptableValue(d.checkResult.value, _checkResultMeta));
-    } else if (checkResult.isRequired && isInserting) {
+    if (data.containsKey('check_result')) {
+      context.handle(
+          _checkResultMeta,
+          checkResult.isAcceptableOrUnknown(
+              data['check_result'], _checkResultMeta));
+    } else if (isInserting) {
       context.missing(_checkResultMeta);
     }
-    if (d.buildingFloorId.present) {
+    if (data.containsKey('building_floor_id')) {
       context.handle(
           _buildingFloorIdMeta,
-          buildingFloorId.isAcceptableValue(
-              d.buildingFloorId.value, _buildingFloorIdMeta));
-    } else if (buildingFloorId.isRequired && isInserting) {
+          buildingFloorId.isAcceptableOrUnknown(
+              data['building_floor_id'], _buildingFloorIdMeta));
+    } else if (isInserting) {
       context.missing(_buildingFloorIdMeta);
     }
-    if (d.images.present) {
-      context.handle(
-          _imagesMeta, images.isAcceptableValue(d.images.value, _imagesMeta));
-    } else if (images.isRequired && isInserting) {
-      context.missing(_imagesMeta);
+    if (data.containsKey('images')) {
+      context.handle(_imagesMeta,
+          images.isAcceptableOrUnknown(data['images'], _imagesMeta));
     }
-    if (d.xPosition.present) {
+    if (data.containsKey('x_position')) {
       context.handle(_xPositionMeta,
-          xPosition.isAcceptableValue(d.xPosition.value, _xPositionMeta));
-    } else if (xPosition.isRequired && isInserting) {
-      context.missing(_xPositionMeta);
+          xPosition.isAcceptableOrUnknown(data['x_position'], _xPositionMeta));
     }
-    if (d.yPosition.present) {
+    if (data.containsKey('y_position')) {
       context.handle(_yPositionMeta,
-          yPosition.isAcceptableValue(d.yPosition.value, _yPositionMeta));
-    } else if (yPosition.isRequired && isInserting) {
-      context.missing(_yPositionMeta);
+          yPosition.isAcceptableOrUnknown(data['y_position'], _yPositionMeta));
     }
     return context;
   }
@@ -1165,55 +1396,17 @@ class $DeviceTable extends Device with TableInfo<$DeviceTable, DeviceData> {
   }
 
   @override
-  Map<String, Variable> entityToSql(DeviceCompanion d) {
-    final map = <String, Variable>{};
-    if (d.taskId.present) {
-      map['task_id'] = Variable<String, StringType>(d.taskId.value);
-    }
-    if (d.name.present) {
-      map['name'] = Variable<String, StringType>(d.name.value);
-    }
-    if (d.id.present) {
-      map['id'] = Variable<String, StringType>(d.id.value);
-    }
-    if (d.code.present) {
-      map['code'] = Variable<String, StringType>(d.code.value);
-    }
-    if (d.comment.present) {
-      map['comment'] = Variable<String, StringType>(d.comment.value);
-    }
-    if (d.checkStatus.present) {
-      map['check_status'] = Variable<String, StringType>(d.checkStatus.value);
-    }
-    if (d.checkResult.present) {
-      map['check_result'] = Variable<String, StringType>(d.checkResult.value);
-    }
-    if (d.buildingFloorId.present) {
-      map['building_floor_id'] =
-          Variable<String, StringType>(d.buildingFloorId.value);
-    }
-    if (d.images.present) {
-      map['images'] = Variable<String, StringType>(d.images.value);
-    }
-    if (d.xPosition.present) {
-      map['x_position'] = Variable<String, StringType>(d.xPosition.value);
-    }
-    if (d.yPosition.present) {
-      map['y_position'] = Variable<String, StringType>(d.yPosition.value);
-    }
-    return map;
-  }
-
-  @override
   $DeviceTable createAlias(String alias) {
     return $DeviceTable(_db, alias);
   }
 }
 
 abstract class _$DeviceDB extends GeneratedDatabase {
-  _$DeviceDB(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
+  _$DeviceDB(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DeviceTable _device;
   $DeviceTable get device => _device ??= $DeviceTable(this);
   @override
-  List<TableInfo> get allTables => [device];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [device];
 }
