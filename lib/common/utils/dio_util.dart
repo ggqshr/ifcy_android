@@ -21,7 +21,7 @@ import 'package:ifcy/main_app/pages/login_page.dart';
 class DioUtils {
   static Dio _dio;
   static final String baseUrl =
-      "http://116.56.140.193/business/app/api"; //基础url
+      "http://47.100.229.248:8764/api/business/app"; //基础url
   final int connectTimeOut = 5000; //连接超时时间
   final int receiveTimeOut = 100000; //接收超时时间
   String _authTokenHeader; //验证需要的token
@@ -150,11 +150,11 @@ class DioUtils {
   IfcyErrorAction parseError2action(Error err) {
     if (err is DioError) {
       //如果是Dio的错误
-      if (err.error is ShouldReLoginAction) {
+      if (err is ShouldReLoginAction) {
         //如果是重新登陆的错误
-        return err.error;
+        return (err as DioError).error;
       }
-      switch (err.type) {
+      switch ((err as DioError).type) {
         case DioErrorType.CONNECT_TIMEOUT:
           return ConnectTimeOutErrorAction();
           break;
@@ -165,7 +165,7 @@ class DioUtils {
           return ReceiveTimeOutErrorAction();
           break;
         case DioErrorType.RESPONSE:
-          return parseResponse2action(err.response);
+          return parseResponse2action((err as DioError).response);
         default:
           print("Unknown Error $err");
           break;
