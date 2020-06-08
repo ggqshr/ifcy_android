@@ -21,7 +21,7 @@ import 'package:ifcy/main_app/pages/login_page.dart';
 class DioUtils {
   static Dio _dio;
   static final String baseUrl =
-      "http://116.56.140.193/business/app/api"; //基础url
+      "http://47.100.229.248:8764/api/business/app/api"; //基础url
   final int connectTimeOut = 5000; //连接超时时间
   final int receiveTimeOut = 100000; //接收超时时间
   String _authTokenHeader; //验证需要的token
