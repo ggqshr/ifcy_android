@@ -25,7 +25,7 @@ class MonitorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MonitorBloc bloc = context.bloc<MonitorBloc>();
+    MonitorBloc bloc = BlocProvider.of<MonitorBloc>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

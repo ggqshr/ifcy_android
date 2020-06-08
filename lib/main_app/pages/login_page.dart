@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     loginBloc = LoginBloc(
         userLoginRepositories:
-            context.repository<UserLoginRepositories>(),
+            RepositoryProvider.of<UserLoginRepositories>(context),
         authorizationBloc: BlocProvider.of<AuthorizationBloc>(context));
     passWordController = TextEditingController()..addListener(_changePW);
     userNameController = TextEditingController()..addListener(_changeUN);
