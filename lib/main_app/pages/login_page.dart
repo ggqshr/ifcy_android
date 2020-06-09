@@ -60,112 +60,131 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<LoginBloc, LoginState>(
-        bloc: loginBloc,
-        listener: (context, state) {
-          if (state.isFailure) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('登录失败'), Icon(Icons.error)],
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              );
-          }
-          if (state.isSubmitting) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('登录中'),
-                      CircularProgressIndicator(),
-                    ],
-                  ),
-                ),
-              );
-          }
-        },
-        child: BlocBuilder<LoginBloc, LoginState>(
+      body: SingleChildScrollView(
+        child: BlocListener<LoginBloc, LoginState>(
           bloc: loginBloc,
-          builder: (context, state) {
-            return GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                userNameFocusNode.unfocus();
-                passWordFocusNode.unfocus();
-              },
-              child: Container(
-                child: Form(
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        "images/app_icon.png",
-                        width: 150,
-                        height: 150,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30),
-                      ),
-                      TextFormField(
-                        autofocus: true,
-                        controller: userNameController,
-                        focusNode: userNameFocusNode,
-                        decoration: InputDecoration(
-                          labelText: "请输入用户名",
-                          hintText: "用户名",
-                          prefixIcon: Icon(Icons.verified_user),
-                          errorStyle:
-                              TextStyle(color: Colors.red, fontSize: 18),
+          listener: (context, state) {
+            if (state.isFailure) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text('登录失败'), Icon(Icons.error)],
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+            }
+            if (state.isSubmitting) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('登录中'),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  ),
+                );
+            }
+          },
+          child: BlocBuilder<LoginBloc, LoginState>(
+            bloc: loginBloc,
+            builder: (context, state) {
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  userNameFocusNode.unfocus();
+                  passWordFocusNode.unfocus();
+                },
+                child: Container(
+                  child: Form(
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 40),
                         ),
-                        validator: (_) =>
-                            state.isUserNameValid ? null : "请输入用户名",
-                        keyboardType: TextInputType.text,
-                        autovalidate: true,
-                      ),
-                      TextFormField(
-                        autovalidate: true,
-                        focusNode: passWordFocusNode,
-                        controller: passWordController,
-                        decoration: InputDecoration(
-                          labelText: "请输入密码",
-                          hintText: "密码",
-                          prefixIcon: Icon(Icons.vpn_key),
-                          errorStyle:
-                              TextStyle(color: Colors.red, fontSize: 18),
+                        Image.asset(
+                          "images/app_icon.png",
+                          width: 100,
+                          height: 100,
                         ),
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        validator: (_) =>
-                            state.isPasswordValid ? null : "请输入密码",
-                      ),
-                      RaisedButton(
-                        child: Text("登陆"),
-                        onPressed: isLoginButtonEnable(state)
-                            ? () {
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                        ),
+                        TextFormField(
+                          autofocus: true,
+                          controller: userNameController,
+                          focusNode: userNameFocusNode,
+                          decoration: InputDecoration(
+                            labelText: "请输入用户名",
+                            hintText: "用户名",
+                            prefixIcon: Icon(Icons.verified_user),
+                            errorStyle:
+                            TextStyle(color: Colors.red, fontSize: 18),
+                          ),
+                          validator: (_) =>
+                          state.isUserNameValid ? null : "请输入用户名",
+                          keyboardType: TextInputType.text,
+                          autovalidate: true,
+                        ),
+                        TextFormField(
+                          autovalidate: true,
+                          focusNode: passWordFocusNode,
+                          controller: passWordController,
+                          decoration: InputDecoration(
+                            labelText: "请输入密码",
+                            hintText: "密码",
+                            prefixIcon: Icon(Icons.vpn_key),
+                            errorStyle:
+                            TextStyle(color: Colors.red, fontSize: 18),
+                          ),
+                          keyboardType: TextInputType.text,
+                          obscureText: true,
+                          validator: (_) =>
+                          state.isPasswordValid ? null : "请输入密码",
+                        ),
+                        new Container(
+                          height: 45.0,
+                          margin: EdgeInsets.only(top: 40.0),
+                          child: new SizedBox.expand(
+                            child: new RaisedButton(
+                              onPressed: isLoginButtonEnable(state)
+                                  ? () {
                                 userNameFocusNode.unfocus();
                                 passWordFocusNode.unfocus();
                                 loginBloc.add(LoginWithCredentialsPressed(
                                     username: userNameController.text,
                                     password: passWordController.text));
                               }
-                            : null,
-                      ),
-                    ],
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                                  : null,
+                              color: Color.fromARGB(255, 61, 203, 128),
+                              child: new Text(
+                                '登录',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color.fromARGB(255, 255, 255, 255)),
+                              ),
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(45.0)),
+                            ),
+                          ),
+                        ),
+                      ],
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ),
                   ),
+//                height: double.maxFinite,
                 ),
-                height: double.maxFinite,
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
