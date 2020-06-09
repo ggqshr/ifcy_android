@@ -105,6 +105,14 @@ class _LoginPageState extends State<LoginPage> {
                 child: Form(
                   child: Column(
                     children: <Widget>[
+                      Image.asset(
+                        "images/app_icon.png",
+                        width: 150,
+                        height: 150,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 30),
+                      ),
                       TextFormField(
                         autofocus: true,
                         controller: userNameController,
@@ -113,9 +121,11 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: "请输入用户名",
                           hintText: "用户名",
                           prefixIcon: Icon(Icons.verified_user),
-                          errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                          errorStyle:
+                              TextStyle(color: Colors.red, fontSize: 18),
                         ),
-                        validator: (_) => state.isUserNameValid ? null : "请输入用户名",
+                        validator: (_) =>
+                            state.isUserNameValid ? null : "请输入用户名",
                         keyboardType: TextInputType.text,
                         autovalidate: true,
                       ),
@@ -127,22 +137,24 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: "请输入密码",
                           hintText: "密码",
                           prefixIcon: Icon(Icons.vpn_key),
-                          errorStyle: TextStyle(color: Colors.red, fontSize: 18),
+                          errorStyle:
+                              TextStyle(color: Colors.red, fontSize: 18),
                         ),
                         keyboardType: TextInputType.text,
                         obscureText: true,
-                        validator: (_) => state.isPasswordValid ? null : "请输入密码",
+                        validator: (_) =>
+                            state.isPasswordValid ? null : "请输入密码",
                       ),
                       RaisedButton(
                         child: Text("登陆"),
                         onPressed: isLoginButtonEnable(state)
                             ? () {
-                          userNameFocusNode.unfocus();
-                          passWordFocusNode.unfocus();
-                          loginBloc.add(LoginWithCredentialsPressed(
-                              username: userNameController.text,
-                              password: passWordController.text));
-                        }
+                                userNameFocusNode.unfocus();
+                                passWordFocusNode.unfocus();
+                                loginBloc.add(LoginWithCredentialsPressed(
+                                    username: userNameController.text,
+                                    password: passWordController.text));
+                              }
                             : null,
                       ),
                     ],
