@@ -103,6 +103,7 @@ flutter:
     - images/NULL_FAULT.png
     - images/NULL_FIRE.png
     - images/NULL_NORMAL.png
+    - images/app_icon.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
