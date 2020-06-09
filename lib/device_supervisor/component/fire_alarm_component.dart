@@ -59,6 +59,7 @@ class FireMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MonitorBloc bloc = context.bloc<MonitorBloc>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Card(
@@ -88,6 +89,47 @@ class FireMessageTile extends StatelessWidget {
             }));
             BlocProvider.of<MonitorBloc>(context)
                 .add(FetchMonitorDataEvent());
+          },
+          onLongPress: ()async{
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("确认要屏蔽该设备的通知？"),
+                content: Text("请选择屏蔽时间"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("三天"),
+                    onPressed: () async {
+                      bloc.add(UpdateMonitorDataEvent(
+                          meg.deviceCode, BlockTimeType.threeday));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("一天"),
+                    onPressed: () async {
+                      bloc.add(UpdateMonitorDataEvent(
+                          meg.deviceCode, BlockTimeType.oneday));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("半天"),
+                    onPressed: () async {
+                      bloc.add(UpdateMonitorDataEvent(
+                          meg.deviceCode, BlockTimeType.half));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("取消"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
           },
         ),
         elevation: 10,

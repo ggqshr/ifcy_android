@@ -8,15 +8,15 @@ class OwnerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OwnerMonitorBloc bloc = BlocProvider.of<OwnerMonitorBloc>(context);
+    OwnerMonitorBloc bloc = context.bloc<OwnerMonitorBloc>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
-                as Authenticated)
-            .currentBuild
-            .buildName),
+        title: Text(
+            (BlocProvider.of<AuthorizationBloc>(context).state as Authenticated)
+                .currentBuild
+                .buildName),
         leading: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {
@@ -27,8 +27,7 @@ class OwnerPage extends StatelessWidget {
         // ignore: missing_return
         builder: (context, state) {
           if (state is LoadErrorOwnerMonitorDataState) {
-            return LoadErrorPage(
-                () => bloc.add(FetchOwnerMonitorDataEvent()));
+            return LoadErrorPage(() => bloc.add(FetchOwnerMonitorDataEvent()));
           }
           if (state is LoadingOwnerMonitorDataState) {
             return LoadingPage();
@@ -200,6 +199,7 @@ class FireMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OwnerMonitorBloc bloc = context.bloc<OwnerMonitorBloc>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Card(
@@ -214,6 +214,47 @@ class FireMessageTile extends StatelessWidget {
           title: Text(meg.deviceName),
           subtitle: Text("设备在${meg.sendTime.toString().substring(0, 10)}发出警报\n"
               "地点在${meg.floorName}的${meg.floorAreaName}"),
+          onLongPress: () async {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("确认要屏蔽该设备的通知？"),
+                content: Text("请选择屏蔽时间"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("三天"),
+                    onPressed: () async {
+                      bloc.add(UpdateOwnerMonitorDataEvent(
+                          meg.deviceCode, BlockTimeType.threeday));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("一天"),
+                    onPressed: () async {
+                      bloc.add(UpdateOwnerMonitorDataEvent(
+                          meg.deviceCode, BlockTimeType.oneday));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("半天"),
+                    onPressed: () async {
+                      bloc.add(UpdateOwnerMonitorDataEvent(
+                          meg.deviceCode, BlockTimeType.half));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("取消"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
         ),
         elevation: 10,
       ),

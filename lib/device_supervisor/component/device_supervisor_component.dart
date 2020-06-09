@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ifcy/building_owner/blocs/owner_moitor_bloc/bloc.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';

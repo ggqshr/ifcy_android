@@ -7,6 +7,7 @@ import 'package:ifcy/device_supervisor/repositories/monitor_repositories.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
+import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import 'package:redux/redux.dart';
 import 'package:ifcy/common/utils/StoreCreater.dart';
 import 'blocs/supervisor_blocs.dart';
@@ -62,6 +63,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
           providers: [
             BlocProvider<MonitorBloc>(
               create: (context) => MonitorBloc(
+                  context.repository<UserLoginRepositories>(),
                   RepositoryProvider.of<MonitorRepositories>(context))
                 ..add(FetchMonitorDataEvent()),
             ),

@@ -8,6 +8,7 @@ import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
+import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import 'package:ifcy/property_manager/pages/property_manager_pages.dart';
 
 class PropertyManager extends StatefulWidget {
@@ -53,6 +54,7 @@ class _PropertyManagerState extends State<PropertyManager> {
           providers: [
             BlocProvider<MonitorBloc>(
               create: (context) => MonitorBloc(
+                  context.repository<UserLoginRepositories>(),
                   RepositoryProvider.of<MonitorRepositories>(context))
                 ..add(FetchMonitorDataEvent()),
             ),

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:ifcy/building_owner/repositories/building_owner_repositories.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
 
@@ -18,7 +21,7 @@ class MonitorDataProvider {
 
   Future<int> getTaskCompleteRate() async {
     Response res = await _dio.get("/aggregation/patrol-device-count");
-    Map data =res.data['data'];
+    Map data = res.data['data'];
     int device_num = int.parse(data['device_num']);
     int checked_num = int.parse(data['checked_device_num']);
     if (device_num == 0) return 0;
@@ -54,9 +57,12 @@ class MonitorDataProvider {
 }
 
 class MonitorRepositories {
+  final OwnerMonitorDataProvider ownerMonitorDataProvider;
   final MonitorDataProvider provider;
 
-  MonitorRepositories([data]) : provider = data ?? MonitorDataProvider();
+  MonitorRepositories([data])
+      : provider = data ?? MonitorDataProvider(),
+        ownerMonitorDataProvider = OwnerMonitorDataProvider();
 
   Future<int> getDeviceFaultNum() async {
     return await provider.getDeviceFaultNum();
@@ -66,8 +72,29 @@ class MonitorRepositories {
     return await provider.getTaskCompleteRate();
   }
 
-  Future<List<FireAlarmMessage>> getFireAlarmMsg() async {
-    return await provider.getFireAlarmMsg();
+  Future<List<FireAlarmMessage>> getFireAlarmMsg(String userName) async {
+    List<FireAlarmMessage> msgs = await provider.getFireAlarmMsg();
+    if (!await ownerMonitorDataProvider.isExists(userName)) {
+      //如果sp中没有该用户的对应信息，直接跳过
+      return msgs;
+    }
+    Map thisMap =
+    json.decode(await ownerMonitorDataProvider.getSPValue(userName));
+    int nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    List<FireAlarmMessage> filtedMsgs = msgs.where((item) {
+      if (thisMap.containsKey(item.deviceCode)) {
+        if (nowTimeStamp >= thisMap[item.deviceCode]) {
+          thisMap.remove(item.deviceCode);
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    }).toList();
+    ownerMonitorDataProvider.setSPValue(userName, json.encode(thisMap));
+    return filtedMsgs;
   }
 
   Future<List<DeviceFaultAlarmMessage>> getDeviceFaultMsg() async {
@@ -76,5 +103,18 @@ class MonitorRepositories {
 
   Future<List<TaskInfoMessage>> getTaskInfoMsg() async {
     return await provider.getTaskInfoMsg();
+  }
+
+  Future<void> setBlockDevice(
+      String userName, String deviceCode, int expireTimeStamp) async {
+    Map thisMap;
+    if (await ownerMonitorDataProvider.isExists(userName)) {
+      thisMap =
+          json.decode(await ownerMonitorDataProvider.getSPValue(userName));
+    } else {
+      thisMap = Map<String, int>();
+    }
+    thisMap[deviceCode] = expireTimeStamp;
+    ownerMonitorDataProvider.setSPValue(userName, json.encode(thisMap));
   }
 }
