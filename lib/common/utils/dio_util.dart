@@ -21,11 +21,11 @@ import 'package:ifcy/main_app/pages/login_page.dart';
 class DioUtils {
   static Dio _dio;
   static final String baseUrl =
-      "http://47.100.229.248:8764/api/business/app"; //基础url
+      "http://47.107.231.51/business/app/api/"; //基础url
   final int connectTimeOut = 5000; //连接超时时间
   final int receiveTimeOut = 100000; //接收超时时间
   String _authTokenHeader; //验证需要的token
-  final String getImageUrl = "http://116.56.140.193/business/sys/stand/img/"; //拿去图片的地址
+  final String getImageUrl = "http://47.107.231.51/business/sys/stand/img/"; //拿去图片的地址
 
   static DioUtils _dioUtils;
 
