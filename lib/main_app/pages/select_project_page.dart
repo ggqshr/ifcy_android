@@ -57,7 +57,7 @@ class SelectProjectPage extends StatelessWidget {
                           await getExternalStorageDirectory(); //获取app数据存储地址
                       final taskId = await FlutterDownloader.enqueue(
                         //下载app
-                        url: 'http://116.56.140.194/2.apk',
+                        url: 'http://47.107.231.51/ifcy.apk',
                         savedDir: appDocDir.path,
                         showNotification: true,
                         // show download progress in status bar (for Android)
@@ -69,7 +69,7 @@ class SelectProjectPage extends StatelessWidget {
                         if (status == DownloadTaskStatus.complete) {
                           InstallPlugin.installApk(
                                   //下载完成后，启动更新
-                                  appDocDir.path + "/2.apk",
+                                  appDocDir.path + "/ifcy.apk",
                                   "com.example.ifcy")
                               .then((e) {
                             print("install $e");
