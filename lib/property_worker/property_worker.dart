@@ -26,13 +26,22 @@ class _PropertyWorkerState extends State<PropertyWorker> {
     "大厦",
     "我的",
   ];
+  ScrollController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = ScrollController();
     viewList
-      ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
+      ..add(MonitorPage(() => Scaffold.of(context).openDrawer(), controller))
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override

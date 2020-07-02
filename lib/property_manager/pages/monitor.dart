@@ -2,9 +2,9 @@ part of "property_manager_pages.dart";
 
 class MonitorPage extends StatelessWidget {
   final Function drawerCall;
+  final ScrollController controller;
 
-  MonitorPage(this.drawerCall);
-
+  MonitorPage(this.drawerCall, this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +13,14 @@ class MonitorPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
-                as Authenticated)
-            .currentBuild
-            .buildName),
+        title: GestureDetector(
+          child: Text((BlocProvider.of<AuthorizationBloc>(context).state
+                  as Authenticated)
+              .currentBuild
+              .buildName),
+          onTap: () => controller.animateTo(0.0,
+              duration: Duration(milliseconds: 500), curve: Curves.decelerate),
+        ),
         leading: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {
@@ -57,6 +61,7 @@ class MonitorPage extends StatelessWidget {
               bloc.add(FetchMonitorDataEvent());
             },
             child: CustomScrollView(
+              controller: controller,
               slivers: <Widget>[
                 SliverToBoxAdapter(
                   child: Container(

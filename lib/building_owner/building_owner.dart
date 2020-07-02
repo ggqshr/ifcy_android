@@ -34,16 +34,19 @@ class _BuildingOwnerState extends State<BuildingOwner> {
   ];
   List<String> iconTextList = ["大厦", "故障", "人员", "火警", "我"];
   List<int> bottomBadgeNumList = [1, 0, 0, 0, 0];
+  ScrollController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = ScrollController();
     viewList
       ..add(OwnerPage(
           () => Scaffold.of(context).openDrawer(),
           () => setState(() {
                 curIndex = 3;
-              })))
+              }),
+          controller))
       ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
       ..add(EmployeePage())
       ..add(CheckedAlarmPage(
@@ -53,6 +56,13 @@ class _BuildingOwnerState extends State<BuildingOwner> {
                   : "误报"),
           true))
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override

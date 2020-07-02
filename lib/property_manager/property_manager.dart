@@ -31,15 +31,24 @@ class _PropertyManagerState extends State<PropertyManager> {
     "人员管理",
     "我的",
   ];
+  ScrollController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = ScrollController();
     viewList
-      ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
+      ..add(MonitorPage(() => Scaffold.of(context).openDrawer(), controller))
       ..add(FaultDeclarePage())
       ..add(EmployeePage())
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override

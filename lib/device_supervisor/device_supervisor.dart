@@ -37,15 +37,24 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
     "巡检",
     "我的",
   ];
+  ScrollController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = ScrollController();
     viewList
-      ..add(MonitorPage(() => Scaffold.of(context).openDrawer()))
+      ..add(MonitorPage(() => Scaffold.of(context).openDrawer(), controller))
       ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
       ..add(WorkPage())
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override

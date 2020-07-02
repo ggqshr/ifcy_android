@@ -3,8 +3,9 @@ part of "building_owner_pages.dart";
 class OwnerPage extends StatelessWidget {
   final Function drawerCall;
   final Function fireSwitchCall;
+  final ScrollController controller;
 
-  OwnerPage(this.drawerCall, this.fireSwitchCall);
+  OwnerPage(this.drawerCall, this.fireSwitchCall, this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,15 @@ class OwnerPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text(
+        title: GestureDetector(
+          child: Text(
             (BlocProvider.of<AuthorizationBloc>(context).state as Authenticated)
                 .currentBuild
-                .buildName),
+                .buildName,
+          ),
+          onTap: () => controller.animateTo(0.0,
+              duration: Duration(milliseconds: 500), curve: Curves.decelerate),
+        ),
         leading: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {
@@ -38,6 +44,7 @@ class OwnerPage extends StatelessWidget {
                 bloc.add(FetchOwnerMonitorDataEvent());
               },
               child: CustomScrollView(
+                controller: controller,
                 slivers: <Widget>[
                   SliverToBoxAdapter(
                     child: Container(
