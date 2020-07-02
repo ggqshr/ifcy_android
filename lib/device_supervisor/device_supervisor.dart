@@ -101,14 +101,7 @@ class _DeviceSupervisorState extends State<DeviceSupervisor> {
                   int currentIndex = iconList.indexOf(i);
                   int currentBadge = state[currentIndex];
                   return BottomNavigationBarItem(
-                    icon: Badge(
-                      child: i,
-                      badgeContent: Text(
-                        currentBadge.toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      showBadge: currentBadge != 0,
-                    ),
+                    icon: i,
                     title: Text(
                       iconTextList[currentIndex],
                     ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
@@ -18,7 +19,12 @@ import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/pages/device_supvisor_pages.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
+import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:latlong/latlong.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:install_plugin/install_plugin.dart';
+import 'package:path_provider/path_provider.dart';
 part 'search_input_componet.dart';
 part 'expansion_card.dart';
 part 'person_info_component.dart';

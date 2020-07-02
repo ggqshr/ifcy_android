@@ -21,7 +21,7 @@ class FaultNumComponent extends StatelessWidget {
             textScaleFactor: 3.5,
           ),
           Positioned(
-            child: Text("设备故障数"),
+            child: Text("有故障的设备数"),
             bottom: 0,
           )
         ],

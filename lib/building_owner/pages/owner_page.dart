@@ -180,7 +180,7 @@ class FireAlarmComponent extends StatelessWidget {
           }
 
           return ExpansionCard(
-            title: "紧急火警消息",
+            title: "待处理火警预警",
             messageNum: messageNum,
             viewList: viewList,
             onTalCall: (context) => fireSwitchCall(),
@@ -288,7 +288,7 @@ class DeviceFaultComponent extends StatelessWidget {
           }
 
           return ExpansionCard(
-            title: "今日设备故障",
+            title: "待处理设备故障",
             messageNum: messageNum,
             viewList: viewList,
             onTalCall: (context) {

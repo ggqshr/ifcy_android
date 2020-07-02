@@ -25,7 +25,7 @@ class DeviceFaultComponent extends StatelessWidget {
           }
 
           return ExpansionCard(
-            title: "今日设备故障",
+            title: "待处理设备故障",
             messageNum: messageNum,
             viewList: viewList,
             onTalCall: (context) {

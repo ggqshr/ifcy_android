@@ -100,14 +100,7 @@ class _BuildingOwnerState extends State<BuildingOwner> {
               int curIndex = iconList.indexOf(i);
               int curBadge = bottomBadgeNumList[curIndex];
               return BottomNavigationBarItem(
-                icon: Badge(
-                  child: i,
-                  badgeContent: Text(
-                    curBadge.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  showBadge: curBadge != 0,
-                ),
+                icon: i,
                 title: Text(iconTextList[curIndex]),
               );
             }).toList(),
