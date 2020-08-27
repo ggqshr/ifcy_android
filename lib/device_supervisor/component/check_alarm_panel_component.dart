@@ -24,11 +24,11 @@ class CheckAlarmPanelComponent extends StatelessWidget {
             ),
             ListTile(
               title: Text("设备报警时间"),
-              trailing: Text(message.recordTime.toString().substring(0, 10)),
+              trailing: Text(message.recordTime.toString().substring(0, 19)),
             ),
             ListTile(
               title: Text("确认时间"),
-              trailing: Text(message.checkTIme.toString().substring(0,10)),
+              trailing: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(message.checkTIme)).toString().substring(0,19)),
             ),
             resultComponents,
           ],

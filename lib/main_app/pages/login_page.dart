@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController userNameController;
   TextEditingController passWordController;
   LoginBloc loginBloc;
+  bool passwordVisible;
 
   bool isLoginButtonEnable(LoginState state) =>
       state.isPasswordValid && state.isUserNameValid;
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     userNameController = TextEditingController()..addListener(_changeUN);
     userNameFocusNode = new FocusNode();
     passWordFocusNode = new FocusNode();
+    passwordVisible = false;
   }
 
   void _changePW() {
@@ -126,10 +128,10 @@ class _LoginPageState extends State<LoginPage> {
                             hintText: "用户名",
                             prefixIcon: Icon(Icons.verified_user),
                             errorStyle:
-                            TextStyle(color: Colors.red, fontSize: 18),
+                                TextStyle(color: Colors.red, fontSize: 18),
                           ),
                           validator: (_) =>
-                          state.isUserNameValid ? null : "请输入用户名",
+                              state.isUserNameValid ? null : "请输入用户名",
                           keyboardType: TextInputType.text,
                           autovalidate: true,
                         ),
@@ -137,17 +139,31 @@ class _LoginPageState extends State<LoginPage> {
                           autovalidate: true,
                           focusNode: passWordFocusNode,
                           controller: passWordController,
+                          obscureText: passwordVisible,
                           decoration: InputDecoration(
                             labelText: "请输入密码",
                             hintText: "密码",
                             prefixIcon: Icon(Icons.vpn_key),
                             errorStyle:
-                            TextStyle(color: Colors.red, fontSize: 18),
+                                TextStyle(color: Colors.red, fontSize: 18),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                //更新状态控制密码显示或隐藏
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
                           ),
                           keyboardType: TextInputType.text,
-                          obscureText: true,
                           validator: (_) =>
-                          state.isPasswordValid ? null : "请输入密码",
+                              state.isPasswordValid ? null : "请输入密码",
                         ),
                         new Container(
                           height: 45.0,
@@ -156,12 +172,12 @@ class _LoginPageState extends State<LoginPage> {
                             child: new RaisedButton(
                               onPressed: isLoginButtonEnable(state)
                                   ? () {
-                                userNameFocusNode.unfocus();
-                                passWordFocusNode.unfocus();
-                                loginBloc.add(LoginWithCredentialsPressed(
-                                    username: userNameController.text,
-                                    password: passWordController.text));
-                              }
+                                      userNameFocusNode.unfocus();
+                                      passWordFocusNode.unfocus();
+                                      loginBloc.add(LoginWithCredentialsPressed(
+                                          username: userNameController.text,
+                                          password: passWordController.text));
+                                    }
                                   : null,
                               color: Color.fromARGB(255, 61, 203, 128),
                               child: new Text(
@@ -171,7 +187,8 @@ class _LoginPageState extends State<LoginPage> {
                                     color: Color.fromARGB(255, 255, 255, 255)),
                               ),
                               shape: new RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(45.0)),
+                                  borderRadius:
+                                      new BorderRadius.circular(45.0)),
                             ),
                           ),
                         ),
