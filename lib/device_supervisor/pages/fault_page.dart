@@ -111,8 +111,11 @@ class _FaultPageState extends State<FaultPage>
             body: CustomScrollView(
               scrollDirection: Axis.vertical,
               slivers: <Widget>[
-                SliverPersistentHeader(
-                  delegate: ChangeDeviceStateHeader(_controller, scroToTopCall),
+                if (!(state is LoadedDeviceMessageState)) SliverPersistentHeader(
+                  delegate: ChangeDeviceStateHeader(_controller, scroToTopCall,"(加载中)"),
+                ),
+                if (state is LoadedDeviceMessageState)SliverPersistentHeader(
+                  delegate: ChangeDeviceStateHeader(_controller, scroToTopCall,"(共${state.faultDeviceList.dataList.length}个)"),
                 ),
                 SliverFillRemaining(
                   child: Container(
@@ -275,8 +278,9 @@ class _FaultPageState extends State<FaultPage>
 class ChangeDeviceStateHeader extends SliverPersistentHeaderDelegate {
   TabController _controller;
   Function scroCall;
+  String faultDeviceNumber;
 
-  ChangeDeviceStateHeader(this._controller, this.scroCall);
+  ChangeDeviceStateHeader(this._controller, this.scroCall,this.faultDeviceNumber);
 
   @override
   Widget build(
@@ -284,7 +288,7 @@ class ChangeDeviceStateHeader extends SliverPersistentHeaderDelegate {
     return TabBar(
       tabs: [
         Tab(
-          child: Text("故障"),
+          child: Text("故障$faultDeviceNumber"),
         ),
         Tab(
           child: Text("正常"),
@@ -307,6 +311,10 @@ class ChangeDeviceStateHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    if((oldDelegate as ChangeDeviceStateHeader).faultDeviceNumber!=this.faultDeviceNumber){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
