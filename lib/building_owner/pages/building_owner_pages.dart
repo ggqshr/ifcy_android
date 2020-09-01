@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ifcy/building_owner/blocs/building_owner_blocs.dart';
+import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
 import 'package:ifcy/device_supervisor/component/device_supervisor_component.dart';
 import 'package:ifcy/device_supervisor/pages/device_supvisor_pages.dart';
@@ -24,6 +25,7 @@ import 'package:ifcy/common/model/model.dart';
 
 import 'package:ifcy/building_owner/component/building_owner_component.dart';
 import 'package:ifcy/building_owner/model/building_owner_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'owner_page.dart';
 part 'employee_page.dart';

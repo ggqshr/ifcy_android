@@ -9,10 +9,10 @@ class EmployeePage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text((BlocProvider.of<AuthorizationBloc>(context).state
-                as Authenticated)
-            .currentBuild
-            .buildName),
+        title: Text(
+            (BlocProvider.of<AuthorizationBloc>(context).state as Authenticated)
+                .currentBuild
+                .buildName),
       ),
 //      floatingActionButton: FloatingActionButton(
 //          backgroundColor: Colors.lightGreen,
@@ -26,15 +26,23 @@ class EmployeePage extends StatelessWidget {
 }
 
 class ProjectStaffListComponent extends StatelessWidget {
+  void phoneCall(String phoneNumber) async {
+    String url = "tel:" + phoneNumber;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Application.showToast("电话号码格式有误");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     EmployeeListBloc bloc = BlocProvider.of<EmployeeListBloc>(context);
-    return BlocBuilder<EmployeeListBloc,EmployeeListState>(
+    return BlocBuilder<EmployeeListBloc, EmployeeListState>(
       // ignore: missing_return
       builder: (context, state) {
         if (state is LoadErrorEmployeeListState) {
-          return LoadErrorPage(
-              () => bloc.add(FetchEmployeeListDataEvent()));
+          return LoadErrorPage(() => bloc.add(FetchEmployeeListDataEvent()));
         }
         if (state is LoadingEmployeeListState) {
           return LoadingPage();
@@ -84,7 +92,12 @@ class ProjectStaffListComponent extends StatelessWidget {
                             color: Colors.lightGreen,
                           ),
                           title: Text(owner.first.name),
-                          subtitle: Text("联系电话：${owner.first.mobile}"),
+                          subtitle: SelectableText(
+                            "联系电话：${owner.first.mobile}",
+                            onTap: () async {
+                              await phoneCall(owner.first.mobile);
+                            },
+                          ),
                         ));
                       }
                       return ExpansionCard(
@@ -121,8 +134,12 @@ class ProjectStaffListComponent extends StatelessWidget {
                               color: Colors.lightGreen,
                             ),
                             title: Text(maintainManager.first.name),
-                            subtitle:
-                                Text("联系电话：${maintainManager.first.mobile}"),
+                            subtitle: SelectableText(
+                              "联系电话：${maintainManager.first.mobile}",
+                              onTap: () async {
+                                await phoneCall(maintainManager.first.mobile);
+                              },
+                            ),
                             trailing: IconButton(
                                 icon: Icon(
                                   Icons.edit,
@@ -162,7 +179,12 @@ class ProjectStaffListComponent extends StatelessWidget {
                                 color: Colors.lightGreen,
                               ),
                               title: Text(staff.name),
-                              subtitle: Text("联系电话:${staff.mobile}"),
+                              subtitle: SelectableText(
+                                "联系电话:${staff.mobile}",
+                                onTap: () async {
+                                  await phoneCall(staff.mobile);
+                                },
+                              ),
                               trailing: IconButton(
                                   icon: Icon(
                                     Icons.edit,
@@ -202,8 +224,12 @@ class ProjectStaffListComponent extends StatelessWidget {
                               color: Colors.lightGreen,
                             ),
                             title: Text(propertyManager.first.name),
-                            subtitle:
-                                Text("联系电话：${propertyManager.first.mobile}"),
+                            subtitle: SelectableText(
+                              "联系电话：${propertyManager.first.mobile}",
+                              onTap: () async {
+                                await phoneCall(propertyManager.first.mobile);
+                              },
+                            ),
                             trailing: IconButton(
                                 icon: Icon(
                                   Icons.edit,
@@ -243,7 +269,12 @@ class ProjectStaffListComponent extends StatelessWidget {
                                 color: Colors.lightGreen,
                               ),
                               title: Text(staff.name),
-                              subtitle: Text("联系电话:${staff.mobile}"),
+                              subtitle: SelectableText(
+                                "联系电话:${staff.mobile}",
+                                onTap: () async {
+                                  await phoneCall(staff.mobile);
+                                },
+                              ),
                               trailing: IconButton(
                                   icon: Icon(
                                     Icons.edit,
