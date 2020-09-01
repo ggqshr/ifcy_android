@@ -33,6 +33,5 @@ class RememberBloc extends Bloc<RememberEvent, RememberState> {
   }
 
   @override
-  // TODO: implement initialState
   RememberState get initialState => RememberInitial();
 }

@@ -27,7 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
     final debounceStream = observableStream.where((event) {
       return (event is UserNameChanged || event is PasswordChanged);
-    }).debounceTime(Duration(milliseconds: 300));
+    }).debounceTime(Duration(milliseconds: 500));
     return super
         .transformEvents(nonDebounceStream.mergeWith([debounceStream]), next);
   }
@@ -49,6 +49,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield state.update(
           isUserNameValid: event.info.username.isNotEmpty,
           isPasswordValid: event.info.password.isNotEmpty);
+    } else if (event is ChangePasswordShow){
+      yield state.showPassword();
     }
   }
 

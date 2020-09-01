@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController userNameController;
   TextEditingController passWordController;
   LoginBloc loginBloc;
-  bool passwordVisible;
   RememberBloc rememberBloc;
 
   bool isLoginButtonEnable(LoginState state) =>
@@ -44,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
     userNameController = TextEditingController()..addListener(_changeUN);
     userNameFocusNode = new FocusNode();
     passWordFocusNode = new FocusNode();
-    passwordVisible = false;
   }
 
   void _changePW() {
@@ -181,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                           autovalidate: true,
                           focusNode: passWordFocusNode,
                           controller: passWordController,
-                          obscureText: passwordVisible,
+                          obscureText: state.passwordVisible,
                           decoration: InputDecoration(
                             labelText: "请输入密码",
                             hintText: "密码",
@@ -190,16 +188,14 @@ class _LoginPageState extends State<LoginPage> {
                                 TextStyle(color: Colors.red, fontSize: 18),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                passwordVisible
+                                state.passwordVisible
                                     ? Icons.visibility
                                     : Icons.visibility_off,
                                 color: Theme.of(context).primaryColorDark,
                               ),
                               onPressed: () {
                                 //更新状态控制密码显示或隐藏
-                                setState(() {
-                                  passwordVisible = !passwordVisible;
-                                });
+                                loginBloc.add(ChangePasswordShow());
                               },
                             ),
                           ),

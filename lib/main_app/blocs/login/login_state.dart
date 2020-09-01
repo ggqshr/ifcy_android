@@ -18,7 +18,7 @@ class LoginState {
     @required this.isSubmitting,
     @required this.isSuccess,
     @required this.isFailure,
-    this.passwordVisible = false,
+    this.passwordVisible = true,
   });
 
   factory LoginState.empty() {
@@ -28,7 +28,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: false,
-      passwordVisible: false,
+      passwordVisible: true,
     );
   }
 
@@ -39,7 +39,7 @@ class LoginState {
       isSubmitting: true,
       isSuccess: false,
       isFailure: false,
-      passwordVisible: false,
+      passwordVisible: true,
     );
   }
 
@@ -50,7 +50,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: true,
-      passwordVisible: false,
+      passwordVisible: true,
     );
   }
 
@@ -61,7 +61,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: true,
       isFailure: false,
-      passwordVisible: false,
+      passwordVisible: true,
     );
   }
 
@@ -75,7 +75,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: false,
-      passwordVisible: false,
+      passwordVisible: true,
     );
   }
 
@@ -104,6 +104,27 @@ class LoginState {
 
   @override
   String toString() {
-    return 'LoginState{isEmailValid: $isUserNameValid, isPasswordValid: $isPasswordValid, isSubmitting: $isSubmitting, isSuccess: $isSuccess, isFailure: $isFailure}';
+    return 'LoginState{isUserNameValid: $isUserNameValid, isPasswordValid: $isPasswordValid, isSubmitting: $isSubmitting, isSuccess: $isSuccess, isFailure: $isFailure, passwordVisible: $passwordVisible}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LoginState &&
+          runtimeType == other.runtimeType &&
+          isUserNameValid == other.isUserNameValid &&
+          isPasswordValid == other.isPasswordValid &&
+          isSubmitting == other.isSubmitting &&
+          isSuccess == other.isSuccess &&
+          isFailure == other.isFailure &&
+          passwordVisible == other.passwordVisible;
+
+  @override
+  int get hashCode =>
+      isUserNameValid.hashCode ^
+      isPasswordValid.hashCode ^
+      isSubmitting.hashCode ^
+      isSuccess.hashCode ^
+      isFailure.hashCode ^
+      passwordVisible.hashCode;
 }

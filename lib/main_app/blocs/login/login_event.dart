@@ -58,3 +58,4 @@ class SelectExistsInfo extends LoginEvent {
   SelectExistsInfo(this.info);
 }
 //todo 将密码的显示放到bloc中，新建一个事件来处理
+class ChangePasswordShow extends LoginEvent{}
