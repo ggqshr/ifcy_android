@@ -45,6 +45,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         username: event.username,
         password: event.password,
       );
+    } else if (event is SelectExistsInfo) {
+      yield state.update(
+          isUserNameValid: event.info.username.isNotEmpty,
+          isPasswordValid: event.info.password.isNotEmpty);
     }
   }
 

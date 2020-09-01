@@ -46,6 +46,8 @@ part "declare_message.dart";
 
 part "floor_device.dart";
 
+part "login_user_pw_info.dart";
+
 ///检查结果的类型
 enum InspectionResultType {
   normal, //正常

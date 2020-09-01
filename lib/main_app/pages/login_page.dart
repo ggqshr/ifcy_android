@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/main_app/blocs/login/bloc.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
+import 'package:ifcy/main_app/blocs/remember_bloc/remember_bloc.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
@@ -24,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passWordController;
   LoginBloc loginBloc;
   bool passwordVisible;
+  RememberBloc rememberBloc;
 
   bool isLoginButtonEnable(LoginState state) =>
       state.isPasswordValid && state.isUserNameValid;
@@ -35,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
         userLoginRepositories:
             RepositoryProvider.of<UserLoginRepositories>(context),
         authorizationBloc: BlocProvider.of<AuthorizationBloc>(context));
+    rememberBloc =
+        RememberBloc(RepositoryProvider.of<UserLoginRepositories>(context));
     passWordController = TextEditingController()..addListener(_changePW);
     userNameController = TextEditingController()..addListener(_changeUN);
     userNameFocusNode = new FocusNode();
@@ -129,6 +134,43 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIcon: Icon(Icons.verified_user),
                             errorStyle:
                                 TextStyle(color: Colors.red, fontSize: 18),
+                            suffixIcon:
+                                BlocBuilder<RememberBloc, RememberState>(
+                              bloc: rememberBloc
+                                ..add(FetchUserLoginInfosEvent()),
+                              // ignore: missing_return
+                              builder: (context, state) {
+                                if (state is RememberInitial) {
+                                  return DropdownButton(
+                                    items: [],
+                                    onChanged: null,
+                                  );
+                                }
+                                if (state is RememberLoadedState) {
+                                  return DropdownButton(
+                                    underline: Container(),
+                                    items: state.infos
+                                        .map<DropdownMenuItem>(
+                                            (item) => DropdownMenuItem(
+                                                  value: item.username,
+                                                  child: Text(item.username),
+                                                ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      int thisIndex = state.infos.indexWhere(
+                                          (item) => item.username == value);
+                                      LoginUserInfo thisInfo =
+                                          state.infos[thisIndex];
+                                      userNameController.text =
+                                          thisInfo.username;
+                                      passWordController.text =
+                                          thisInfo.password;
+                                      loginBloc.add(SelectExistsInfo(thisInfo));
+                                    },
+                                  );
+                                }
+                              },
+                            ),
                           ),
                           validator: (_) =>
                               state.isUserNameValid ? null : "请输入用户名",

@@ -8,6 +8,7 @@ class LoginState {
   final bool isSubmitting;
   final bool isSuccess;
   final bool isFailure;
+  final bool passwordVisible;
 
   bool get isFormValid => isUserNameValid && isPasswordValid;
 
@@ -17,6 +18,7 @@ class LoginState {
     @required this.isSubmitting,
     @required this.isSuccess,
     @required this.isFailure,
+    this.passwordVisible = false,
   });
 
   factory LoginState.empty() {
@@ -26,6 +28,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: false,
+      passwordVisible: false,
     );
   }
 
@@ -36,6 +39,7 @@ class LoginState {
       isSubmitting: true,
       isSuccess: false,
       isFailure: false,
+      passwordVisible: false,
     );
   }
 
@@ -46,6 +50,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: true,
+      passwordVisible: false,
     );
   }
 
@@ -56,6 +61,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: true,
       isFailure: false,
+      passwordVisible: false,
     );
   }
 
@@ -69,7 +75,12 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: false,
+      passwordVisible: false,
     );
+  }
+
+  LoginState showPassword() {
+    return copyWith(passwordVisible: !this.passwordVisible);
   }
 
   LoginState copyWith({
@@ -79,6 +90,7 @@ class LoginState {
     bool isSubmitting,
     bool isSuccess,
     bool isFailure,
+    bool passwordVisible,
   }) {
     return LoginState(
       isUserNameValid: isEmailValid ?? this.isUserNameValid,
@@ -86,6 +98,7 @@ class LoginState {
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
       isFailure: isFailure ?? this.isFailure,
+      passwordVisible: passwordVisible ?? this.passwordVisible,
     );
   }
 

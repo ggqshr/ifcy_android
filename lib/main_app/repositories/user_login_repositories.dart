@@ -23,7 +23,7 @@ class UserLoginDataProvider {
   }
 
   Future setUpJpush(UserEntity userEntity) async {
-    String fireTag= "FIRE_${userEntity.buildingCode}";
+    String fireTag = "FIRE_${userEntity.buildingCode}";
     String alias = "USER_${userEntity.userName}";
     String faultTag = "FAULT_${userEntity.buildingCode}";
     jPush.addEventHandler(
@@ -49,8 +49,8 @@ class UserLoginDataProvider {
     //如果是维保主管和维保工作人员就设置故障tag，接收推送消息
     if (userEntity.roleType == "MAINTAIN_WORKER" ||
         userEntity.roleType == 'MAINTAIN_MANAGER') {
-      await jPush.setTags([faultTag,fireTag]);
-    }else{
+      await jPush.setTags([faultTag, fireTag]);
+    } else {
       await jPush.setTags([fireTag]);
     }
     Map a = await jPush.setAlias(alias);
@@ -61,6 +61,14 @@ class UserLoginDataProvider {
     Dio dio = DioUtils.getInstance().getDio();
     Response res = await dio.get("/building");
     return Build.fromJson(res.data['data']);
+  }
+
+  Future<List<LoginUserInfo>> getSavedUserInfos() {
+    return Auth.getInstance().getUserInfos();
+  }
+
+  Future writeSavedUserInfos(List<LoginUserInfo> infos) {
+    Auth.getInstance().saveUserInfos(infos);
   }
 }
 
@@ -78,6 +86,10 @@ class UserLoginRepositories {
     this.alwaysLogin = false,
   }) : userLoginDataProvider = UserLoginDataProvider();
 
+  Future<List<LoginUserInfo>> getLoginUserInfos() {
+    return userLoginDataProvider.getSavedUserInfos();
+  }
+
   Future<UserEntity> login(String userName, String passWord) async {
     return await _login(userName, passWord);
   }
@@ -94,9 +106,30 @@ class UserLoginRepositories {
 
   Future<UserEntity> _login(String userName, String passWord) async {
     _userEntity = await userLoginDataProvider.login(userName, passWord);
+    List<LoginUserInfo> infos = await userLoginDataProvider.getSavedUserInfos();
+    if (infos == null) {
+      infos = List();
+    }
+    if (infos.map((item) => item.username).toSet().contains(userName)) {
+      int index = infos.indexWhere((item) => item.username == userName);
+      infos[index].password = passWord;
+    } else {
+      LoginUserInfo thisInfo =
+          LoginUserInfo(username: userName, password: passWord);
+      infos.add(thisInfo);
+    }
+    userLoginDataProvider.writeSavedUserInfos(infos);
     _currentBuild = await userLoginDataProvider.getCurrentBuild();
     userLoginDataProvider.setUpJpush(_userEntity);
     return _userEntity;
+  }
+
+  Future<List<LoginUserInfo>> deleteLoginUserInfo(String userName) async {
+    List<LoginUserInfo> infos = await userLoginDataProvider.getSavedUserInfos();
+    if (infos.isEmpty || infos == null) return infos;
+    infos.removeWhere((item) => item.username == userName);
+    userLoginDataProvider.writeSavedUserInfos(infos);
+    return infos;
   }
 
   Future<bool> isLoginIn() async {

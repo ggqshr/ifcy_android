@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/res/res.dart';
 
 ///@author ggq
@@ -31,7 +34,19 @@ class Auth {
     await _flutterSecureStorage.delete(key: PASS_WORD);
   }
 
-  Future getString(String key)async{
+  Future getString(String key) async {
     return await _flutterSecureStorage.read(key: key);
+  }
+
+  Future saveUserInfos(List<LoginUserInfo> infos) async {
+    String thisString = json.encode(infos);
+    await _flutterSecureStorage.write(key: LOGIN_INFOS, value: thisString);
+  }
+
+  Future<List<LoginUserInfo>> getUserInfos() async {
+    String thisString = await _flutterSecureStorage.read(key: LOGIN_INFOS);
+    if (thisString == null) return [];
+    List lists = json.decode(thisString);
+    return lists.map((item) => LoginUserInfo.fromJson(item)).toList();
   }
 }

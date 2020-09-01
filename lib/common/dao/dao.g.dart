@@ -459,6 +459,26 @@ class RegularInspectionTaskDetailEntryCompanion
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return (StringBuffer('RegularInspectionTaskDetailEntryCompanion(')
+          ..write('deviceId: $deviceId, ')
+          ..write('deviceName: $deviceName, ')
+          ..write('deviceType: $deviceType, ')
+          ..write('inspectionRequire: $inspectionRequire, ')
+          ..write('inspectionResultType: $inspectionResultType, ')
+          ..write('processType: $processType, ')
+          ..write('noteText: $noteText, ')
+          ..write('images: $images, ')
+          ..write('taskStatus: $taskStatus, ')
+          ..write('taskArea: $taskArea, ')
+          ..write('taskFloor: $taskFloor, ')
+          ..write('taskId: $taskId, ')
+          ..write('isUpload: $isUpload')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class $RegularInspectionTaskDetailEntryTable
@@ -1151,6 +1171,24 @@ class DeviceCompanion extends UpdateCompanion<DeviceData> {
       map['y_position'] = Variable<String>(yPosition.value);
     }
     return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DeviceCompanion(')
+          ..write('taskId: $taskId, ')
+          ..write('name: $name, ')
+          ..write('id: $id, ')
+          ..write('code: $code, ')
+          ..write('comment: $comment, ')
+          ..write('checkStatus: $checkStatus, ')
+          ..write('checkResult: $checkResult, ')
+          ..write('buildingFloorId: $buildingFloorId, ')
+          ..write('images: $images, ')
+          ..write('xPosition: $xPosition, ')
+          ..write('yPosition: $yPosition')
+          ..write(')'))
+        .toString();
   }
 }
 

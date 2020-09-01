@@ -3,3 +3,4 @@
 ///@date :2019/8/14 19:30
 const String USER_NAME = "loginusername";
 const String PASS_WORD = "loginpassword";
+const String LOGIN_INFOS = "logininfos";

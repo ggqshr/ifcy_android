@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ifcy/common/model/model.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -37,12 +38,12 @@ class Submitted extends LoginEvent {
   }
 }
 
-
 class LoginWithCredentialsPressed extends LoginEvent {
   final String username;
   final String password;
 
-  LoginWithCredentialsPressed({@required this.username, @required this.password})
+  LoginWithCredentialsPressed(
+      {@required this.username, @required this.password})
       : super([username, password]);
 
   @override
@@ -50,3 +51,10 @@ class LoginWithCredentialsPressed extends LoginEvent {
     return 'LoginWithCredentialsPressed { email: $username, password: $password }';
   }
 }
+
+class SelectExistsInfo extends LoginEvent {
+  final LoginUserInfo info;
+
+  SelectExistsInfo(this.info);
+}
+//todo 将密码的显示放到bloc中，新建一个事件来处理

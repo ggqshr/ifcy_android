@@ -403,3 +403,16 @@ Map<String, dynamic> _$FloorDeviceModelToJson(FloorDeviceModel instance) =>
       'yposition': instance.yposition,
       'position': instance.position,
     };
+
+LoginUserInfo _$LoginUserInfoFromJson(Map<String, dynamic> json) {
+  return LoginUserInfo(
+    username: json['username'] as String,
+    password: json['password'] as String,
+  );
+}
+
+Map<String, dynamic> _$LoginUserInfoToJson(LoginUserInfo instance) =>
+    <String, dynamic>{
+      'username': instance.username,
+      'password': instance.password,
+    };
