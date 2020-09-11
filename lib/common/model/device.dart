@@ -14,10 +14,12 @@ class DeviceMessage {
   bool online;
   String position;
   String status;
+  @JsonKey(ignore: true)
+  bool showDetail = false;
 
 
-//<editor-fold desc="Data Methods" defaultstate="collapsed">
 
+  //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
   DeviceMessage({
     @required this.area,
@@ -29,54 +31,8 @@ class DeviceMessage {
     @required this.online,
     @required this.position,
     @required this.status,
+    this.showDetail = false,
   });
-
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          (other is DeviceMessage &&
-              runtimeType == other.runtimeType &&
-              area == other.area &&
-              category == other.category &&
-              code == other.code &&
-              floor == other.floor &&
-              id == other.id &&
-              name == other.name &&
-              online == other.online &&
-              position == other.position &&
-              status == other.status
-          );
-
-
-  @override
-  int get hashCode =>
-      area.hashCode ^
-      category.hashCode ^
-      code.hashCode ^
-      floor.hashCode ^
-      id.hashCode ^
-      name.hashCode ^
-      online.hashCode ^
-      position.hashCode ^
-      status.hashCode;
-
-
-  @override
-  String toString() {
-    return 'DeviceMessage{' +
-        ' area: $area,' +
-        ' category: $category,' +
-        ' code: $code,' +
-        ' floor: $floor,' +
-        ' id: $id,' +
-        ' name: $name,' +
-        ' online: $online,' +
-        ' position: $position,' +
-        ' status: $status,' +
-        '}';
-  }
-
 
   DeviceMessage copyWith({
     String area,
@@ -88,8 +44,9 @@ class DeviceMessage {
     bool online,
     String position,
     String status,
+    bool showDetail,
   }) {
-    return DeviceMessage(
+    return new DeviceMessage(
       area: area ?? this.area,
       category: category ?? this.category,
       code: code ?? this.code,
@@ -99,11 +56,61 @@ class DeviceMessage {
       online: online ?? this.online,
       position: position ?? this.position,
       status: status ?? this.status,
+      showDetail: showDetail ?? this.showDetail,
     );
   }
 
+  @override
+  String toString() {
+    return 'DeviceMessage{area: $area, category: $category, code: $code, floor: $floor, id: $id, name: $name, online: $online, position: $position, status: $status, showDetail: $showDetail}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DeviceMessage &&
+          runtimeType == other.runtimeType &&
+          area == other.area &&
+          category == other.category &&
+          code == other.code &&
+          floor == other.floor &&
+          id == other.id &&
+          name == other.name &&
+          online == other.online &&
+          position == other.position &&
+          status == other.status &&
+          showDetail == other.showDetail);
+
+  @override
+  int get hashCode =>
+      area.hashCode ^
+      category.hashCode ^
+      code.hashCode ^
+      floor.hashCode ^
+      id.hashCode ^
+      name.hashCode ^
+      online.hashCode ^
+      position.hashCode ^
+      status.hashCode ^
+      showDetail.hashCode;
+
+  factory DeviceMessage.fromMap(Map<String, dynamic> map) {
+    return new DeviceMessage(
+      area: map['area'] as String,
+      category: map['category'] as String,
+      code: map['code'] as String,
+      floor: map['floor'] as String,
+      id: map['id'] as String,
+      name: map['name'] as String,
+      online: map['online'] as bool,
+      position: map['position'] as String,
+      status: map['status'] as String,
+      showDetail: map['showDetail'] as bool,
+    );
+  }
 
   Map<String, dynamic> toMap() {
+    // ignore: unnecessary_cast
     return {
       'area': this.area,
       'category': this.category,
@@ -114,26 +121,14 @@ class DeviceMessage {
       'online': this.online,
       'position': this.position,
       'status': this.status,
-    };
-  }
-
-  factory DeviceMessage.fromMap(Map<String, dynamic> map) {
-    return DeviceMessage(
-      area: map['area'] as String,
-      category: map['category'] as String,
-      code: map['code'] as String,
-      floor: map['floor'] as String,
-      id: map['id'] as String,
-      name: map['name'] as String,
-      online: map['online'] as bool,
-      position: map['position'] as String,
-      status: map['status'] as String,
-    );
+      'showDetail': this.showDetail,
+    } as Map<String, dynamic>;
   }
   Map<String, dynamic> toJson() => _$DeviceMessageToJson(this);
-
   factory DeviceMessage.fromJson(Map<String, dynamic> map) =>
       _$DeviceMessageFromJson(map);
+  //</editor-fold>
 
-//</editor-fold>
+
+
 }

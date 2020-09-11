@@ -16,9 +16,7 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
   Stream<DeviceMessageState> mapEventToState(
     DeviceMessageEvent event,
   ) async* {
-    if (event is FetchAllDevices &&
-        (state is LoadingDeviceMessageState ||
-            state is LoadErrorDeviceMessageState)) {
+    if (event is FetchAllDevices) {
       yield* _mapFetchAllToState();
     }
     if (event is FetchFaultDevices) {
@@ -26,6 +24,9 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
     }
     if (event is FetchRunningDevices) {
       yield* _mapFetchRunningToState();
+    }
+    if (event is ChangeShowStatusDevice) {
+      yield* _mapChangeShowStatusToState(event);
     }
     try {
       if (event is RefreshFaultDevices) {
@@ -44,8 +45,40 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
     }
   }
 
+  Stream<DeviceMessageState> _mapChangeShowStatusToState(
+      ChangeShowStatusDevice event) async* {
+    String id = event.messageId;
+    String messageType = event.deviceType;
+
+    if (messageType == "RUNNING") {
+      var runningDevices =
+          (state as LoadedDeviceMessageState).runningDeviceList;
+      List<DeviceMessage> dataList = name(runningDevices, id);
+      var newState = (state as LoadedDeviceMessageState)
+          .copy(runningDeviceList: runningDevices.copyWith(dataList: dataList));
+      yield newState;
+    } else {
+      var faultDevices = (state as LoadedDeviceMessageState).faultDeviceList;
+      List<DeviceMessage> dataList = name(faultDevices, id);
+      var newState = (state as LoadedDeviceMessageState)
+          .copy(faultDeviceList: faultDevices.copyWith(dataList: dataList));
+      yield newState;
+    }
+  }
+
+  List<DeviceMessage> name(PageDataModel deviceList, String id) {
+    var dataListOld = deviceList.dataList;
+    List<DeviceMessage> dataList = List.generate(
+        dataListOld.length, (index) => dataListOld[index]);
+    int this_index = dataList.indexWhere((item) => item.id == id);
+    dataList[this_index] = dataList[this_index]
+        .copyWith(showDetail: !dataList[this_index].showDetail);
+    return dataList;
+  }
+
   Stream<DeviceMessageState> _mapFetchAllToState() async* {
     try {
+      yield LoadingDeviceMessageState();
       var faultDevices = await repositories.getFaultDeviceFirstPage();
       var runningDevices = await repositories.getRunningDeviceFirstPage();
       yield LoadedDeviceMessageState(
@@ -63,12 +96,10 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
   Stream<DeviceMessageState> _mapFetchFaultToState() async* {
     try {
       PageDataModel model = await repositories.getFaultDeviceNextPage(
-        (state as LoadedDeviceMessageState).faultDeviceList.currentPage +
-            1,
+        (state as LoadedDeviceMessageState).faultDeviceList.currentPage + 1,
       );
       yield model.dataList.isEmpty
-          ? (state as LoadedDeviceMessageState)
-              .copy(faultListReachMax: true)
+          ? (state as LoadedDeviceMessageState).copy(faultListReachMax: true)
           : (state as LoadedDeviceMessageState).copy(
               faultDeviceList: (state as LoadedDeviceMessageState)
                   .faultDeviceList
@@ -82,14 +113,10 @@ class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {
   Stream<DeviceMessageState> _mapFetchRunningToState() async* {
     try {
       PageDataModel model = await repositories.getRunningDeviceNextPage(
-        (state as LoadedDeviceMessageState)
-                .runningDeviceList
-                .currentPage +
-            1,
+        (state as LoadedDeviceMessageState).runningDeviceList.currentPage + 1,
       );
       yield model.dataList.isEmpty
-          ? (state as LoadedDeviceMessageState)
-              .copy(runningListReachMax: true)
+          ? (state as LoadedDeviceMessageState).copy(runningListReachMax: true)
           : (state as LoadedDeviceMessageState).copy(
               runningDeviceList: (state as LoadedDeviceMessageState)
                   .runningDeviceList

@@ -111,12 +111,18 @@ class _FaultPageState extends State<FaultPage>
             body: CustomScrollView(
               scrollDirection: Axis.vertical,
               slivers: <Widget>[
-                if (!(state is LoadedDeviceMessageState)) SliverPersistentHeader(
-                  delegate: ChangeDeviceStateHeader(_controller, scroToTopCall,"(加载中)"),
-                ),
-                if (state is LoadedDeviceMessageState)SliverPersistentHeader(
-                  delegate: ChangeDeviceStateHeader(_controller, scroToTopCall,"(共${state.faultDeviceList.dataList.length}个)"),
-                ),
+                if (!(state is LoadedDeviceMessageState))
+                  SliverPersistentHeader(
+                    delegate: ChangeDeviceStateHeader(
+                        _controller, scroToTopCall, "(加载中)"),
+                  ),
+                if (state is LoadedDeviceMessageState)
+                  SliverPersistentHeader(
+                    delegate: ChangeDeviceStateHeader(
+                        _controller,
+                        scroToTopCall,
+                        "(共${state.faultDeviceList.dataList.length}个)"),
+                  ),
                 SliverFillRemaining(
                   child: Container(
                     child: TabBarView(
@@ -137,8 +143,7 @@ class _FaultPageState extends State<FaultPage>
                                 Text("网络出现错误,请稍候重试"),
                                 RaisedButton(
                                   child: Text("重新加载"),
-                                  onPressed: () =>
-                                      _bloc.add(FetchAllDevices()),
+                                  onPressed: () => _bloc.add(FetchAllDevices()),
                                 ),
                               ],
                             ),
@@ -150,8 +155,7 @@ class _FaultPageState extends State<FaultPage>
                                 Text("网络出现错误,请稍候重试"),
                                 RaisedButton(
                                   child: Text("重新加载"),
-                                  onPressed: () =>
-                                      _bloc.add(FetchAllDevices()),
+                                  onPressed: () => _bloc.add(FetchAllDevices()),
                                 ),
                               ],
                             ),
@@ -190,7 +194,16 @@ class _FaultPageState extends State<FaultPage>
   }) {
     if (devices.isEmpty) {
       return Center(
-        child: Text("列表为空"),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text("列表为空"),
+            RaisedButton(
+              child: Text("刷新"),
+              onPressed: () => _bloc.add(FetchAllDevices()),
+            ),
+          ],
+        ),
       );
     } else {
       return EasyRefresh(
@@ -223,45 +236,54 @@ class _FaultPageState extends State<FaultPage>
                       title: Text(devices[index].name),
                       trailing: FlatButton(
                         child: Text("查看详情"),
-                        onPressed: () {},
+                        onPressed: () {
+                          _bloc.add(ChangeShowStatusDevice(
+                            devices[index].id,
+                            fetchType is FetchRunningDevices
+                                ? "RUNNING"
+                                : "FAULT",
+                          ));
+                        },
                       ),
                     ),
                   ),
-                  Divider(
-                    color: Colors.black,
-                  ),
-                  ListTile(
-                    dense: true,
-                    title: Text("位置"),
-                    trailing:
-                        Text("${devices[index].floor}${devices[index].area}"),
-                  ),
-                  ListTile(
-                    dense: true,
-                    title: Text("位置备注"),
-                    trailing: Text("${devices[index].position}"),
-                  ),
-                  ListTile(
-                    dense: true,
-                    title: Text("设备状态"),
-                    trailing: Text(
-                      "${mapStateToString[devices[index].status]}",
-                      style: TextStyle(
-                        color: mapStateToColor[devices[index].status],
+                  if (devices[index].showDetail) ...[
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("位置"),
+                      trailing:
+                          Text("${devices[index].floor}${devices[index].area}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("位置备注"),
+                      trailing: Text("${devices[index].position}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("设备状态"),
+                      trailing: Text(
+                        "${mapStateToString[devices[index].status]}",
+                        style: TextStyle(
+                          color: mapStateToColor[devices[index].status],
+                        ),
                       ),
                     ),
-                  ),
-                  ListTile(
-                    dense: true,
-                    title: Text("设备类别"),
-                    trailing: Text("${devices[index].category}"),
-                  ),
-                  ListTile(
-                    dense: true,
-                    title: Text("设备类型"),
-                    trailing:
-                        Text("${devices[index].online ? "线上设备" : "线下设备"}"),
-                  ),
+                    ListTile(
+                      dense: true,
+                      title: Text("设备类别"),
+                      trailing: Text("${devices[index].category}"),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text("设备类型"),
+                      trailing:
+                          Text("${devices[index].online ? "线上设备" : "线下设备"}"),
+                    ),
+                  ]
                 ],
               ),
             );
@@ -280,7 +302,8 @@ class ChangeDeviceStateHeader extends SliverPersistentHeaderDelegate {
   Function scroCall;
   String faultDeviceNumber;
 
-  ChangeDeviceStateHeader(this._controller, this.scroCall,this.faultDeviceNumber);
+  ChangeDeviceStateHeader(
+      this._controller, this.scroCall, this.faultDeviceNumber);
 
   @override
   Widget build(
@@ -311,9 +334,10 @@ class ChangeDeviceStateHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    if((oldDelegate as ChangeDeviceStateHeader).faultDeviceNumber!=this.faultDeviceNumber){
+    if ((oldDelegate as ChangeDeviceStateHeader).faultDeviceNumber !=
+        this.faultDeviceNumber) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
