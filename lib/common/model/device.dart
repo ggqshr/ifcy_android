@@ -11,6 +11,7 @@ class DeviceMessage {
   String floor;
   String id;
   String name;
+  @JsonKey(name: "is_online")
   bool online;
   String position;
   String status;

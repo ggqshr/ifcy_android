@@ -337,7 +337,7 @@ DeviceMessage _$DeviceMessageFromJson(Map<String, dynamic> json) {
     floor: json['floor'] as String,
     id: json['id'] as String,
     name: json['name'] as String,
-    online: json['online'] as bool,
+    online: json['is_online'] as bool,
     position: json['position'] as String,
     status: json['status'] as String,
   );
@@ -351,7 +351,7 @@ Map<String, dynamic> _$DeviceMessageToJson(DeviceMessage instance) =>
       'floor': instance.floor,
       'id': instance.id,
       'name': instance.name,
-      'online': instance.online,
+      'is_online': instance.online,
       'position': instance.position,
       'status': instance.status,
     };

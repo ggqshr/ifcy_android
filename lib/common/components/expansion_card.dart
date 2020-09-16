@@ -28,8 +28,9 @@ class ExpansionCard extends StatelessWidget {
                 width: 20,
                 child: Text(
                   messageNum.toString(),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white,fontSize: 10),
                   textAlign: TextAlign.center,
+                  maxLines: 1,
                 ),
               ),
               animationType: BadgeAnimationType.scale,
