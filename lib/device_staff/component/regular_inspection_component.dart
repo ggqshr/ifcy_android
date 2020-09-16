@@ -203,7 +203,7 @@ class _RegularInspectionComponentState extends State<RegularInspectionComponent>
                   ),
                   ListTile(
                     dense: true,
-                    title: Text("进度"),
+                    title: Text("进度 ${((double.parse(tasks[index].checkedDeviceNum) / double.parse(tasks[index].deviceNum))*100).toStringAsFixed(2)}%"),
                     subtitle: SizedBox(
                       height: 10,
                       child: LinearProgressIndicator(
