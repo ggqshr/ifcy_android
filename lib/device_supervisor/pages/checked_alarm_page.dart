@@ -67,6 +67,13 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
               _controller.finishLoad(success: true);
             }
           }
+          if (state is FilteringCheckAlarmState) {
+            if (state.isReachMax) {
+              _controller.finishLoad(success: true, noMore: true);
+            } else {
+              _controller.finishLoad(success: true);
+            }
+          }
         },
         child: BlocBuilder<CheckAlarmListBloc, CheckAlarmListState>(
           builder: (context, state) {
@@ -82,40 +89,9 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
               PageDataModel model = state.model;
               return model.dataList.isEmpty
                   ? BlankPage(
-                      showText: "无历史消息",
-                      onRefreshCall: () =>
-                          bloc.add(widget.refreshCall(widget.isFire)),
-                    )
-                  : EasyRefresh(
-                      footer: getFooter(),
-                      header: getHeader(),
-                      bottomBouncing: false,
-                      enableControlFinishLoad: true,
-                      controller: _controller,
-                      onRefresh: () async {
-                        bloc.add(widget.refreshCall(widget.isFire));
-                      },
-                      onLoad: () async {
-                        bloc.add(widget.loadCall(widget.isFire));
-                      },
-                      child: ListView.builder(
-                        itemCount: model.dataList.length,
-                        itemBuilder: (context, index) {
-                          var thisTask = model.dataList[index];
-                          return CheckAlarmPanelComponent(
-                            thisTask,
-                            widget.resultComponents(thisTask),
-                          );
-                        },
-                      ),
-                    );
-            }else if(state is FilteringCheckAlarmState){
-              PageDataModel model = state.model;
-              return model.dataList.isEmpty
-                  ? BlankPage(
                 showText: "无历史消息",
                 onRefreshCall: () =>
-                    bloc.add(RefreshCheckAlarmData(widget.isFire)),
+                    bloc.add(widget.refreshCall(widget.isFire)),
               )
                   : EasyRefresh(
                 footer: getFooter(),
@@ -124,10 +100,41 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                 enableControlFinishLoad: true,
                 controller: _controller,
                 onRefresh: () async {
-                  bloc.add(RefreshCheckAlarmData(widget.isFire));
+                  bloc.add(widget.refreshCall(widget.isFire));
                 },
                 onLoad: () async {
-                  bloc.add(FetchCheckedAlarmData(widget.isFire));
+                  bloc.add(widget.loadCall(widget.isFire));
+                },
+                child: ListView.builder(
+                  itemCount: model.dataList.length,
+                  itemBuilder: (context, index) {
+                    var thisTask = model.dataList[index];
+                    return CheckAlarmPanelComponent(
+                      thisTask,
+                      widget.resultComponents(thisTask),
+                    );
+                  },
+                ),
+              );
+            }else if(state is FilteringCheckAlarmState){
+              PageDataModel model = state.model;
+              return model.dataList.isEmpty
+                  ? BlankPage(
+                showText: "无历史消息",
+                onRefreshCall: () =>
+                    bloc.add(RefreshFilterCheckAlarmData(date)),
+              )
+                  : EasyRefresh(
+                footer: getFooter(),
+                header: getHeader(),
+                bottomBouncing: false,
+                enableControlFinishLoad: true,
+                controller: _controller,
+                onRefresh: () async {
+                  bloc.add(RefreshFilterCheckAlarmData(date));
+                },
+                onLoad: () async {
+                  bloc.add(ContinueFilterCheckAlarmData(date));
                 },
                 child: ListView.builder(
                   itemCount: model.dataList.length,
@@ -149,7 +156,6 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
     );
   }
 }
-
 
 class FilterEndDrawer extends StatelessWidget {
 
@@ -199,6 +205,27 @@ class FilterEndDrawer extends StatelessWidget {
                             ).catchError((err) {
                               print(err);
                             });
+                            bloc1.add(UpdateFindingDateFilter(date));
+                          },
+                        ),
+                      );
+                    }
+                    if (state is FilteringCheckAlarmState) {
+                      return ListTile(
+                        title: Text("发现日期:"),
+                          subtitle:Text(state.date.toString().substring(0,10)),
+                        trailing: RaisedButton(
+                          child: new Text('选择'),
+                          onPressed: () async {
+                            // 调用函数打开
+                            date = await showDatePicker (
+                              context: context,
+                              initialDate: new DateTime.now(),
+                              firstDate: new DateTime(2000),
+                              lastDate: new DateTime(2100),
+                            ).catchError((err) {
+                              print(err);
+                            });
                           },
                         ),
                       );
@@ -217,7 +244,7 @@ class FilterEndDrawer extends StatelessWidget {
                       child: RaisedButton(
                         onPressed: () {
                           print(date);
-                          bloc1.add(UpdateAlarmByDate(date));
+                          bloc1.add(FilterCheckAlarmData(date));
                           Navigator.of(context).pop();
                         },
                         child: Text(
@@ -225,6 +252,15 @@ class FilterEndDrawer extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                         ),
                         color: Colors.blue,
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: () {
+                          bloc1.add(ResetCheckAlarmListState());
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("重置"),
                       ),
                     ),
                   ],

@@ -46,6 +46,19 @@ class CheckedAlarmDataProvider {
         .toList();
     return model;
   }
+
+  Future<PageDataModel> filterFireCheckMessage(
+      DateTime findingDate,{int listRows = 10, int page = 1}) async {
+    String filter = findingDate.toString().substring(0,10);
+    Response res = await _dio.get("/warning-msg/fault-records",
+        queryParameters: {"filter": filter,"page": page, "list_rows": listRows});
+    PageDataModel model = PageDataModel.fromJson(res.data['data']);
+    model.dataList = model.dataList
+        .map<DeviceCheckedAlarmMessage>(
+            (item) => DeviceCheckedAlarmMessage.fromJson(item))
+        .toList();
+    return model;
+  }
 }
 
 class CheckAlarmRepositories {
@@ -70,6 +83,14 @@ class CheckAlarmRepositories {
 
   Future<PageDataModel> getDeviceNextPage(int page) async {
     return await _provider.getDeviceCheckMessage(page: page);
+  }
+
+  Future<PageDataModel> filterFireFirstPage(DateTime findingDate) async {
+    return await _provider.filterFireCheckMessage(findingDate)..currentPage = 1;
+  }
+
+  Future<PageDataModel> filterFireNextPage(DateTime findingDate,int page) async {
+    return await _provider.filterFireCheckMessage(findingDate,page:page);
   }
 
   Future<PageDataModel> getTrueAlarmMassageFirstPage() async {

@@ -79,11 +79,15 @@ class LoadedCheckAlarmState extends CheckAlarmListState {
 class FilteringCheckAlarmState extends CheckAlarmListState {
   final PageDataModel model;
   final bool isReachMax;
+  final DateTime date;
 
   FilteringCheckAlarmState({
     @required this.model,
     @required this.isReachMax,
+    this.date,
   });
+
+
 
   @override
   bool operator ==(Object other) =>
@@ -101,7 +105,7 @@ class FilteringCheckAlarmState extends CheckAlarmListState {
 
   @override
   String toString() {
-    return 'LoadedCheckAlarmState{' +
+    return 'FilteringCheckAlarmState{' +
         ' model: $model,' +
         ' isReachMax: $isReachMax,' +
         '}';
@@ -133,3 +137,4 @@ class FilteringCheckAlarmState extends CheckAlarmListState {
 }
 
 class LoadErrorCheckAlarmState extends CheckAlarmListState {}
+

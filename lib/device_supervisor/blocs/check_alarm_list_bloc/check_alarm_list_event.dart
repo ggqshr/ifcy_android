@@ -32,15 +32,39 @@ class RefreshTrueAlarmData extends CheckAlarmListEvent {}
 
 class FetchTrueAlarmData extends CheckAlarmListEvent {}
 
-///根据日期筛选火警信息
-class UpdateAlarmByDate extends CheckAlarmListEvent {
+///首次根据日期筛选火警信息
+class FilterCheckAlarmData extends CheckAlarmListEvent {
   final DateTime findingDate;
 
-  UpdateAlarmByDate(this.findingDate) : super([findingDate]);
+  FilterCheckAlarmData(this.findingDate) : super([findingDate]);
 
   @override
   String toString() {
-    return 'UpdateFindingDateFilter{findingDate: $findingDate}';
+    return 'FilterCheckAlarmData{findingDate: $findingDate}';
+  }
+}
+
+/// 将列表下拉到底，继续筛选火警信息
+class ContinueFilterCheckAlarmData extends CheckAlarmListEvent {
+  final DateTime findingDate;
+
+  ContinueFilterCheckAlarmData(this.findingDate) : super([findingDate]);
+
+  @override
+  String toString() {
+    return 'ContinueFilterCheckAlarmData{findingDate: $findingDate}';
+  }
+}
+
+/// 在筛选情况下刷新界面
+class RefreshFilterCheckAlarmData extends CheckAlarmListEvent {
+  final DateTime findingDate;
+
+  RefreshFilterCheckAlarmData(this.findingDate) : super([findingDate]);
+
+  @override
+  String toString() {
+    return 'RefreshFilterCheckAlarmData{findingDate: $findingDate}';
   }
 }
 
@@ -53,6 +77,17 @@ class UpdateFindingDateFilter extends CheckAlarmListEvent {
   @override
   String toString() {
     return 'UpdateFindingDateFilter{findingDate: $findingDate}';
+  }
+}
+
+///重置筛选条件，同时重设页面state
+class ResetCheckAlarmListState extends CheckAlarmListEvent {
+
+  ResetCheckAlarmListState() : super([]);
+
+  @override
+  String toString() {
+    return 'UpdateFindingDateFilter{}';
   }
 }
 
