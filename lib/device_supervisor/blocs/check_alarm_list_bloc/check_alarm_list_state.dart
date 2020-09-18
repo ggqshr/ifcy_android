@@ -76,4 +76,60 @@ class LoadedCheckAlarmState extends CheckAlarmListState {
 //</editor-fold>
 }
 
+class FilteringCheckAlarmState extends CheckAlarmListState {
+  final PageDataModel model;
+  final bool isReachMax;
+
+  FilteringCheckAlarmState({
+    @required this.model,
+    @required this.isReachMax,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          (other is FilteringCheckAlarmState &&
+              runtimeType == other.runtimeType &&
+              model == other.model &&
+              isReachMax == other.isReachMax
+          );
+
+  @override
+  int get hashCode =>
+      model.hashCode ^
+      isReachMax.hashCode;
+
+  @override
+  String toString() {
+    return 'LoadedCheckAlarmState{' +
+        ' model: $model,' +
+        ' isReachMax: $isReachMax,' +
+        '}';
+  }
+
+  FilteringCheckAlarmState copyWith({
+    PageDataModel model,
+    bool isReachMax,
+  }) {
+    return FilteringCheckAlarmState(
+      model: model ?? this.model,
+      isReachMax: isReachMax ?? this.isReachMax,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'model': this.model,
+      'isReachMax': this.isReachMax,
+    };
+  }
+
+  factory FilteringCheckAlarmState.fromMap(Map<String, dynamic> map) {
+    return FilteringCheckAlarmState(
+      model: map['model'] as PageDataModel,
+      isReachMax: map['isReachMax'] as bool,
+    );
+  }
+}
+
 class LoadErrorCheckAlarmState extends CheckAlarmListState {}

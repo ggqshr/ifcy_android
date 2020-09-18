@@ -25,6 +25,9 @@ class CheckAlarmListBloc
     if (event is RefreshCheckAlarmData) {
       yield* _mapRefreshToState(event);
     }
+    if (event is UpdateAlarmByDate) {
+      yield* _mapFilterToState(event);
+    }
     if (event is RefreshTrueAlarmData) {
       yield* _mapRefreshTrueToState();
     }
@@ -97,18 +100,52 @@ class CheckAlarmListBloc
     }
   }
 
-  Stream<CheckAlarmListState> _mapRefreshToState(
-      RefreshCheckAlarmData event) async* {
+  Stream<CheckAlarmListState> _mapFilterToState(
+      UpdateAlarmByDate event) async*{
     PageDataModel model;
+    PageDataModel tempModel;
     try {
-      if (event.isFire) {
-        model = await _repositories.getFireFirstPage();
-      } else {
-        model = await _repositories.getDeviceFirstPage();
+      model = await _repositories.getFireFirstPage();
+      tempModel = await _repositories.getFireFirstPage();
+      String before,after;
+      int offset = 0;
+      for(int i=0;i<tempModel.dataList.length;i++){
+        before = tempModel.dataList[i].recordTime.toString();
+        after = event.findingDate.toString().substring(0,10);
+        if(!before.contains(after)){
+          model.dataList.removeAt(i-offset);
+          offset++;
+        }
       }
       yield LoadedCheckAlarmState(model: model, isReachMax: false);
     } catch (e) {
       yield LoadErrorCheckAlarmState();
     }
+  }
+
+  Stream<CheckAlarmListState> _mapRefreshToState(
+      RefreshCheckAlarmData event) async* {
+    if(state is FilteringCheckAlarmState){
+      PageDataModel model;
+      try{
+
+        yield LoadedCheckAlarmState(model: model, isReachMax: false);
+      }catch (e) {
+        yield LoadErrorCheckAlarmState();
+      }
+    }else{
+      PageDataModel model;
+      try {
+        if (event.isFire) {
+          model = await _repositories.getFireFirstPage();
+        } else {
+          model = await _repositories.getDeviceFirstPage();
+        }
+        yield LoadedCheckAlarmState(model: model, isReachMax: false);
+      } catch (e) {
+        yield LoadErrorCheckAlarmState();
+      }
+  }
+
   }
 }

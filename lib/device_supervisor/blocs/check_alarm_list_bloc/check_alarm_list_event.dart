@@ -31,3 +31,29 @@ class RefreshCheckAlarmData extends CheckAlarmListEvent {
 class RefreshTrueAlarmData extends CheckAlarmListEvent {}
 
 class FetchTrueAlarmData extends CheckAlarmListEvent {}
+
+///根据日期筛选火警信息
+class UpdateAlarmByDate extends CheckAlarmListEvent {
+  final DateTime findingDate;
+
+  UpdateAlarmByDate(this.findingDate) : super([findingDate]);
+
+  @override
+  String toString() {
+    return 'UpdateFindingDateFilter{findingDate: $findingDate}';
+  }
+}
+
+///显示用户选择好的筛选日期
+class UpdateFindingDateFilter extends CheckAlarmListEvent {
+  final DateTime findingDate;
+
+  UpdateFindingDateFilter(this.findingDate) : super([findingDate]);
+
+  @override
+  String toString() {
+    return 'UpdateFindingDateFilter{findingDate: $findingDate}';
+  }
+}
+
+
