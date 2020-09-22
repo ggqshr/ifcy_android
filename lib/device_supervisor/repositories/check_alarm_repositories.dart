@@ -50,12 +50,12 @@ class CheckedAlarmDataProvider {
   Future<PageDataModel> filterFireCheckMessage(
       DateTime findingDate,{int listRows = 10, int page = 1}) async {
     String filter = findingDate.toString().substring(0,10);
-    Response res = await _dio.get("/warning-msg/fault-records",
-        queryParameters: {"filter": filter,"page": page, "list_rows": listRows});
+    Response res = await _dio.get("/warning-msg/fire-records/"+filter+"",
+        queryParameters: {"page": page, "list_rows": listRows});
     PageDataModel model = PageDataModel.fromJson(res.data['data']);
     model.dataList = model.dataList
-        .map<DeviceCheckedAlarmMessage>(
-            (item) => DeviceCheckedAlarmMessage.fromJson(item))
+        .map<FireCheckAlarmMessage>(
+            (item) => FireCheckAlarmMessage.fromJson(item))
         .toList();
     return model;
   }

@@ -171,8 +171,8 @@ class CheckAlarmListBloc
       UpdateFindingDateFilter event) async*{
     PageDataModel model;
     try {
-//      model = await _repositories.getFireFirstPage();
-      model = await _repositories.filterFireFirstPage(event.findingDate);
+      model = await _repositories.getFireFirstPage();
+//      model = await _repositories.filterFireFirstPage(event.findingDate);
       yield FilteringCheckAlarmState(model: model, isReachMax: true, date:event.findingDate);
     } catch (e) {
       yield LoadErrorCheckAlarmState();

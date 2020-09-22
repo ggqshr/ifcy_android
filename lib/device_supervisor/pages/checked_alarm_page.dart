@@ -213,7 +213,7 @@ class FilterEndDrawer extends StatelessWidget {
                     if (state is FilteringCheckAlarmState) {
                       return ListTile(
                         title: Text("发现日期:"),
-                          subtitle:Text(state.date.toString().substring(0,10)),
+//                          subtitle:Text(state.date.toString().substring(0,10)),
                         trailing: RaisedButton(
                           child: new Text('选择'),
                           onPressed: () async {
