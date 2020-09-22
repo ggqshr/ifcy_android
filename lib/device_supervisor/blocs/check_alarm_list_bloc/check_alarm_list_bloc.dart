@@ -133,7 +133,7 @@ class CheckAlarmListBloc
     try {
 //      model = await _repositories.getFireFirstPage();
       model = await _repositories.filterFireFirstPage(event.findingDate);
-      yield FilteringCheckAlarmState(model: model, isReachMax: false);
+      yield FilteringCheckAlarmState(model: model, isReachMax: false, date:event.findingDate);
     } catch (e) {
       yield LoadErrorCheckAlarmState();
     }
@@ -145,7 +145,7 @@ class CheckAlarmListBloc
     try {
 //      model = await _repositories.getFireFirstPage();
       model = await _repositories.filterFireFirstPage(event.findingDate);
-      yield FilteringCheckAlarmState(model: model, isReachMax: false);
+      yield FilteringCheckAlarmState(model: model, isReachMax: false, date:event.findingDate);
     } catch (e) {
       yield LoadErrorCheckAlarmState();
     }
@@ -159,9 +159,9 @@ class CheckAlarmListBloc
       model = await _repositories.filterFireNextPage(event.findingDate,current.currentPage + 1);
 //      model = await _repositories.getFireNextPage(current.currentPage + 1);
       yield model.dataList.isEmpty
-          ? FilteringCheckAlarmState(model: current, isReachMax: true)
+          ? FilteringCheckAlarmState(model: current, isReachMax: true, date:event.findingDate)
           : FilteringCheckAlarmState(
-          model: current.nextPage(model), isReachMax: false);
+          model: current.nextPage(model), isReachMax: false, date:event.findingDate);
     } catch (e) {
       yield LoadErrorCheckAlarmState();
     }
