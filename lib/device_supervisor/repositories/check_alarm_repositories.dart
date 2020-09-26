@@ -13,7 +13,7 @@ class CheckedAlarmDataProvider {
 
   Future<PageDataModel> getFireCheckMessage(
       {int listRows = 10, int page = 1}) async {
-    Response res = await _dio.get("/warning-msg/fire-records",
+    Response res = await _dio.get("/warning-msg/fire-records/type/FALSE_ALARM",
         queryParameters: {"page": page, "list_rows": listRows});
     PageDataModel model = PageDataModel.fromJson(res.data['data']);
     model.dataList = model.dataList
@@ -34,6 +34,18 @@ class CheckedAlarmDataProvider {
         .toList();
     return model;
   }
+
+  Future<PageDataModel> getTrueAlarmMessage(
+      {int listRows = 10, int page = 1}) async {
+    Response res = await _dio.get("/warning-msg/fire-records/type/TRULY_ALARM",
+        queryParameters: {"page": page, "list_rows": listRows});
+    PageDataModel model = PageDataModel.fromJson(res.data['data']);
+    model.dataList = model.dataList
+        .map<FireCheckAlarmMessage>(
+            (item) => FireCheckAlarmMessage.fromJson(item))
+        .toList();
+    return model;
+  }
 }
 
 class CheckAlarmRepositories {
@@ -43,7 +55,8 @@ class CheckAlarmRepositories {
       : _provider = provider ?? CheckedAlarmDataProvider();
 
   Future<PageDataModel> getFireFirstPage() async {
-    return await _provider.getFireCheckMessage()..currentPage=1;
+    return await _provider.getFireCheckMessage()
+      ..currentPage = 1;
   }
 
   Future<PageDataModel> getFireNextPage(int page) async {
@@ -51,10 +64,20 @@ class CheckAlarmRepositories {
   }
 
   Future<PageDataModel> getDeviceFirstPage() async {
-    return await _provider.getDeviceCheckMessage()..currentPage=1;
+    return await _provider.getDeviceCheckMessage()
+      ..currentPage = 1;
   }
 
   Future<PageDataModel> getDeviceNextPage(int page) async {
     return await _provider.getDeviceCheckMessage(page: page);
+  }
+
+  Future<PageDataModel> getTrueAlarmMassageFirstPage() async {
+    return await _provider.getTrueAlarmMessage()
+      ..currentPage = 1;
+  }
+
+  Future<PageDataModel> getTrueAlarmMassageNextPage(int page) async {
+    return await _provider.getTrueAlarmMessage(page: page);
   }
 }

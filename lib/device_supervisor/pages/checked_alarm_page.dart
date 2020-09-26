@@ -3,11 +3,19 @@
 ///@date :2019/9/3 11:04
 part of "device_supvisor_pages.dart";
 
+typedef LoadCall = CheckAlarmListEvent Function(bool isfire);
+typedef RefreshCall = CheckAlarmListEvent Function(bool isfire);
+
 class CheckedAlarmPage extends StatefulWidget {
+  final String titleString;
   final Function resultComponents;
   final bool isFire;
+  final RefreshCall refreshCall;
+  final LoadCall loadCall;
 
-  CheckedAlarmPage(this.resultComponents, this.isFire);
+  CheckedAlarmPage(
+      this.resultComponents, this.isFire, this.refreshCall, this.loadCall,
+      {this.titleString = "历史消息"});
 
   @override
   _CheckedAlarmPageState createState() => _CheckedAlarmPageState();
@@ -34,7 +42,7 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("历史消息"),
+        title: Text(widget.titleString),
         centerTitle: true,
       ),
       body: BlocListener<CheckAlarmListBloc, CheckAlarmListState>(
@@ -64,7 +72,7 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                   ? BlankPage(
                       showText: "无历史消息",
                       onRefreshCall: () =>
-                          bloc.add(RefreshCheckAlarmData(widget.isFire)),
+                          bloc.add(widget.refreshCall(widget.isFire)),
                     )
                   : EasyRefresh(
                       footer: getFooter(),
@@ -73,10 +81,10 @@ class _CheckedAlarmPageState extends State<CheckedAlarmPage> {
                       enableControlFinishLoad: true,
                       controller: _controller,
                       onRefresh: () async {
-                        bloc.add(RefreshCheckAlarmData(widget.isFire));
+                        bloc.add(widget.refreshCall(widget.isFire));
                       },
                       onLoad: () async {
-                        bloc.add(FetchCheckedAlarmData(widget.isFire));
+                        bloc.add(widget.loadCall(widget.isFire));
                       },
                       child: ListView.builder(
                         itemCount: model.dataList.length,

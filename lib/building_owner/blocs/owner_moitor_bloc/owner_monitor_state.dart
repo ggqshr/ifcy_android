@@ -19,6 +19,9 @@ class LoadedOwnerMonitorDataState extends OwnerMonitorState {
   ///任务完成进度
   final int taskCompleteRate;
 
+  ///真火警的数量
+  final int trueFireNum;
+
   ///火警消息
   final List<FireAlarmMessage> fireAlarmMsg;
 
@@ -38,15 +41,17 @@ class LoadedOwnerMonitorDataState extends OwnerMonitorState {
     @required this.deviceFaultMsg,
     @required this.taskInfoMsg,
     @required this.userList,
-  }):super([
-    fireNum,
-    deviceFaultNum,
-    taskCompleteRate,
-    fireAlarmMsg,
-    deviceFaultMsg,
-    taskInfoMsg,
-    userList,
-  ]);
+    @required this.trueFireNum,
+  }) : super([
+          fireNum,
+          deviceFaultNum,
+          taskCompleteRate,
+          fireAlarmMsg,
+          deviceFaultMsg,
+          taskInfoMsg,
+          userList,
+          trueFireNum,
+        ]);
 
   LoadedOwnerMonitorDataState copyWith({
     int fireNum,
@@ -56,24 +61,23 @@ class LoadedOwnerMonitorDataState extends OwnerMonitorState {
     List<DeviceFaultAlarmMessage> deviceFaultMsg,
     List<TaskInfoMessage> taskInfoMsg,
     List<PersonnelMessage> userList,
+    int trueFireNum,
   }) {
     return LoadedOwnerMonitorDataState(
-      fireNum: fireNum ?? this.fireNum,
-      deviceFaultNum: deviceFaultNum ?? this.deviceFaultNum,
-      taskCompleteRate: taskCompleteRate ?? this.taskCompleteRate,
-      fireAlarmMsg: fireAlarmMsg ?? this.fireAlarmMsg,
-      deviceFaultMsg: deviceFaultMsg ?? this.deviceFaultMsg,
-      taskInfoMsg: taskInfoMsg ?? this.taskInfoMsg,
-      userList: userList ?? this.userList,
-    );
+        fireNum: fireNum ?? this.fireNum,
+        deviceFaultNum: deviceFaultNum ?? this.deviceFaultNum,
+        taskCompleteRate: taskCompleteRate ?? this.taskCompleteRate,
+        fireAlarmMsg: fireAlarmMsg ?? this.fireAlarmMsg,
+        deviceFaultMsg: deviceFaultMsg ?? this.deviceFaultMsg,
+        taskInfoMsg: taskInfoMsg ?? this.taskInfoMsg,
+        userList: userList ?? this.userList,
+        trueFireNum: trueFireNum??this.trueFireNum);
   }
 
   @override
   String toString() {
     return 'LoadedOwnerMonitorDataState{fireNum: $fireNum, deviceFaultNum: $deviceFaultNum, taskCompleteRate: $taskCompleteRate, fireAlarmMsg: $fireAlarmMsg, deviceFaultMsg: $deviceFaultMsg, taskInfoMsg: $taskInfoMsg, userList: $userList}';
   }
-
-
 }
 
 class LoadErrorOwnerMonitorDataState extends OwnerMonitorState {}

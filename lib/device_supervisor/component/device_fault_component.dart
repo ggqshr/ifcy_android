@@ -40,7 +40,9 @@ class DeviceFaultComponent extends StatelessWidget {
                                   "PROCESSED"
                               ? "已处理"
                               : "未处理"),
-                      false),
+                      false,
+                      (isfire) => RefreshCheckAlarmData(isfire),
+                      (isfire) => FetchCheckedAlarmData(isfire)),
                 );
               }));
             },
@@ -87,8 +89,7 @@ class DeviceFaultTile extends StatelessWidget {
                 child: ConfirmMessagePage(),
               );
             }));
-            BlocProvider.of<MonitorBloc>(context)
-                .add(FetchMonitorDataEvent());
+            BlocProvider.of<MonitorBloc>(context).add(FetchMonitorDataEvent());
           },
         ),
         elevation: 10,

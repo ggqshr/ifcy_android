@@ -20,6 +20,9 @@ class LoadedMonitorState extends MonitorState {
   ///火警消息
   final List<FireAlarmMessage> fireAlarmMsg;
 
+  ///真实火警的消息数量
+  final int trueFireNum;
+
   ///设备顾航
   final List<DeviceFaultAlarmMessage> deviceFaultMsg;
 
@@ -31,6 +34,7 @@ class LoadedMonitorState extends MonitorState {
       this.taskCompleteRate,
       this.fireAlarmMsg,
       this.deviceFaultMsg,
+      this.trueFireNum,
       this.taskInfoMsg})
       : super([
           deviceFaultNum,
@@ -38,6 +42,7 @@ class LoadedMonitorState extends MonitorState {
           fireAlarmMsg,
           deviceFaultMsg,
           taskInfoMsg,
+          trueFireNum,
         ]);
 
   LoadedMonitorState copy({
@@ -46,6 +51,7 @@ class LoadedMonitorState extends MonitorState {
     deviceFaultMsg,
     taskInfoMsg,
     deviceFaultNum,
+    trueFireNum,
   }) {
     return LoadedMonitorState(
       taskCompleteRate: taskCompleteRate ?? this.taskCompleteRate,
@@ -53,6 +59,7 @@ class LoadedMonitorState extends MonitorState {
       deviceFaultMsg: deviceFaultMsg ?? this.deviceFaultMsg,
       taskInfoMsg: taskInfoMsg ?? this.taskInfoMsg,
       deviceFaultNum: deviceFaultNum ?? this.deviceFaultNum,
+      trueFireNum: trueFireNum ?? this.trueFireNum,
     );
   }
 

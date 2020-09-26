@@ -65,6 +65,7 @@ class OwnerPage extends StatelessWidget {
                   SliverPadding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   ),
+                  TrueFireComponent(state.trueFireNum),
                   FireAlarmComponent(state.fireAlarmMsg, fireSwitchCall),
                   DeviceFaultComponent(state.deviceFaultMsg),
                   SliverPadding(
@@ -310,7 +311,9 @@ class DeviceFaultComponent extends StatelessWidget {
                                   "PROCESSED"
                               ? "已处理"
                               : "未处理"),
-                      false),
+                      false,
+                      (isfire) => RefreshCheckAlarmData(isfire),
+                      (isfire) => FetchCheckedAlarmData(isfire)),
                 );
               }));
             },

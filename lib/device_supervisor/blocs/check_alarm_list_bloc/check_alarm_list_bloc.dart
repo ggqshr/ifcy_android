@@ -23,6 +23,42 @@ class CheckAlarmListBloc
     if (event is RefreshCheckAlarmData) {
       yield* _mapRefreshToState(event);
     }
+    if (event is RefreshTrueAlarmData) {
+      yield* _mapRefreshTrueToState();
+    }
+    if (event is FetchTrueAlarmData) {
+      yield* _mapFetchTrueToState();
+    }
+  }
+
+  Stream<CheckAlarmListState> _mapRefreshTrueToState() async* {
+    PageDataModel model;
+    try {
+      model = await _repositories.getTrueAlarmMassageFirstPage();
+      yield LoadedCheckAlarmState(model: model, isReachMax: false);
+    } catch (e) {
+      yield LoadErrorCheckAlarmState();
+    }
+  }
+
+  Stream<CheckAlarmListState> _mapFetchTrueToState() async* {
+    PageDataModel model;
+    try {
+      if (state is LoadingCheckAlarmState) {
+        model = await _repositories.getTrueAlarmMassageFirstPage();
+        yield LoadedCheckAlarmState(model: model, isReachMax: false);
+      } else if (state is LoadedCheckAlarmState) {
+        var current = (state as LoadedCheckAlarmState).model;
+        model = await _repositories
+            .getTrueAlarmMassageNextPage(current.currentPage + 1);
+        yield model.dataList.isEmpty
+            ? LoadedCheckAlarmState(model: current, isReachMax: true)
+            : LoadedCheckAlarmState(
+                model: current.nextPage(model), isReachMax: false);
+      }
+    } catch (e) {
+      yield LoadErrorCheckAlarmState();
+    }
   }
 
   Stream<CheckAlarmListState> _mapFetchToState(

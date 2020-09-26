@@ -47,6 +47,7 @@ class OwnerMonitorBloc extends Bloc<OwnerMonitorEvent, OwnerMonitorState> {
       if (state is LoadingOwnerMonitorDataState ||
           state is LoadErrorOwnerMonitorDataState) {
         yield LoadedOwnerMonitorDataState(
+          trueFireNum: await repositories.getTrueFireNum(),
           fireNum: await repositories.getFireNum(),
           deviceFaultNum: await repositories.getDeviceFaultNum(),
           taskCompleteRate: await repositories.getTaskCompleteRate(),
@@ -57,6 +58,7 @@ class OwnerMonitorBloc extends Bloc<OwnerMonitorEvent, OwnerMonitorState> {
         );
       } else if (state is LoadedOwnerMonitorDataState) {
         yield LoadedOwnerMonitorDataState(
+          trueFireNum: await repositories.getTrueFireNum(),
           fireNum: await repositories.getFireNum(),
           deviceFaultNum: await repositories.getDeviceFaultNum(),
           taskCompleteRate: await repositories.getTaskCompleteRate(),

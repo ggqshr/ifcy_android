@@ -39,7 +39,9 @@ class FireAlarmComponent extends StatelessWidget {
                                 "TRULY_ALARM"
                             ? "真火警"
                             : "误报"),
-                    true
+                    true,
+                    (isfire) => RefreshCheckAlarmData(isfire),
+                    (isfire) => FetchCheckedAlarmData(isfire),
                   ),
                 );
               }));
@@ -87,10 +89,9 @@ class FireMessageTile extends StatelessWidget {
                 child: ConfirmMessagePage(),
               );
             }));
-            BlocProvider.of<MonitorBloc>(context)
-                .add(FetchMonitorDataEvent());
+            BlocProvider.of<MonitorBloc>(context).add(FetchMonitorDataEvent());
           },
-          onLongPress: ()async{
+          onLongPress: () async {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(

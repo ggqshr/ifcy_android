@@ -46,6 +46,11 @@ class OwnerMonitorDataProvider {
     await _initSP();
     return prefs.containsKey(key);
   }
+
+  Future<int> getTrueFileNum() async {
+    Response res = await dio.get("/aggregation/fire-records-count/TRULY_ALARM");
+    return int.parse(res.data['data']['fire_records_count']);
+  }
 }
 
 class OwnerMonitorRepositories {
@@ -116,5 +121,9 @@ class OwnerMonitorRepositories {
     }
     thisMap[deviceCode] = expireTimeStamp;
     ownerMonitorDataProvider.setSPValue(userName, json.encode(thisMap));
+  }
+
+  Future<int> getTrueFireNum() async {
+    return await ownerMonitorDataProvider.getTrueFileNum();
   }
 }

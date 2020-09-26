@@ -117,4 +117,8 @@ class MonitorRepositories {
     thisMap[deviceCode] = expireTimeStamp;
     ownerMonitorDataProvider.setSPValue(userName, json.encode(thisMap));
   }
+
+  Future<int> getTrueFireNum()async{
+    return await ownerMonitorDataProvider.getTrueFileNum();
+  }
 }

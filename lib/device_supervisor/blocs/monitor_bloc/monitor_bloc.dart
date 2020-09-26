@@ -15,7 +15,9 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
   MonitorState get initialState => UnInitializationMonitorState();
 
   @override
-  Stream<MonitorState> mapEventToState(MonitorEvent event,) async* {
+  Stream<MonitorState> mapEventToState(
+    MonitorEvent event,
+  ) async* {
     if (event is FetchMonitorDataEvent) {
       yield* _mapFetchToState();
     } else if (event is UpdateMonitorDataEvent) {
@@ -50,6 +52,7 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
           fireAlarmMsg: await repositories.getFireAlarmMsg(userName),
           taskCompleteRate: await repositories.getTaskCompleteRate(),
           taskInfoMsg: await repositories.getTaskInfoMsg(),
+          trueFireNum: await repositories.getTrueFireNum(),
         );
       } else if (state is LoadedMonitorState) {
         yield (state as LoadedMonitorState).copy(
@@ -58,6 +61,7 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
           fireAlarmMsg: await repositories.getFireAlarmMsg(userName),
           taskCompleteRate: await repositories.getTaskCompleteRate(),
           taskInfoMsg: await repositories.getTaskInfoMsg(),
+          trueFireNum: await repositories.getTrueFireNum(),
         );
       }
     } catch (e) {

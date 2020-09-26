@@ -32,7 +32,7 @@ class _BuildingOwnerState extends State<BuildingOwner> {
     Icon(Icons.notification_important),
     Icon(Icons.person),
   ];
-  List<String> iconTextList = ["大厦", "故障", "人员", "火警", "我"];
+  List<String> iconTextList = ["大厦", "故障", "人员", "历史报警", "我"];
   List<int> bottomBadgeNumList = [1, 0, 0, 0, 0];
   ScrollController controller;
 
@@ -49,12 +49,16 @@ class _BuildingOwnerState extends State<BuildingOwner> {
           controller))
       ..add(FaultPage(() => Scaffold.of(context).openDrawer()))
       ..add(EmployeePage())
-      ..add(CheckedAlarmPage(
-          (thisTask) => CheckResultComponent(
-              (thisTask as FireCheckAlarmMessage).fireType == "TRULY_ALARM"
-                  ? "真火警"
-                  : "误报"),
-          true))
+      ..add(
+        CheckedAlarmPage(
+            (thisTask) => CheckResultComponent(
+                (thisTask as FireCheckAlarmMessage).fireType == "TRULY_ALARM"
+                    ? "真火警"
+                    : "误报"),
+            true,
+            (isfire) => RefreshCheckAlarmData(isfire),
+            (isfire) => FetchCheckedAlarmData(isfire)),
+      )
       ..add(PersonPage(() => Scaffold.of(context).openDrawer()));
   }
 

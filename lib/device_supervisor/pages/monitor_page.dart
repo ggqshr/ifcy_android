@@ -111,6 +111,7 @@ class MonitorPage extends StatelessWidget {
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                 ),
+                TrueFireComponent(state.trueFireNum),
                 FireAlarmComponent(state.fireAlarmMsg),
                 DeviceFaultComponent(state.deviceFaultMsg),
 //                TaskInfoComponent(state.taskInfoMsg),

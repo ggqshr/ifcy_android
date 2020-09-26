@@ -15,7 +15,6 @@ class FetchCheckedAlarmData extends CheckAlarmListEvent {
   String toString() {
     return 'FetchCheckedAlarmData{isFire: $isFire}';
   }
-
 }
 
 class RefreshCheckAlarmData extends CheckAlarmListEvent {
@@ -27,5 +26,8 @@ class RefreshCheckAlarmData extends CheckAlarmListEvent {
   String toString() {
     return 'RefreshCheckAlarmData{isFire: $isFire}';
   }
-
 }
+
+class RefreshTrueAlarmData extends CheckAlarmListEvent {}
+
+class FetchTrueAlarmData extends CheckAlarmListEvent {}
