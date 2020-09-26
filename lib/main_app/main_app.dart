@@ -1,15 +1,11 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_state.dart';
-import 'package:ifcy/main_app/blocs/login/bloc.dart';
 import 'package:ifcy/main_app/pages/login_page.dart';
 import 'package:ifcy/main_app/pages/select_project_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'repositories/user_login_repositories.dart';
 
 class MainApp extends StatelessWidget {
   @override

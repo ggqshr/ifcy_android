@@ -1,25 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_event.dart';
 import 'package:ifcy/main_app/blocs/error_process_delegate.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
+import 'package:ifcy/main_app_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'building_owner/model/building_owner_model.dart';
+import 'common/utils/StoreCreater.dart';
 import 'common/utils/utils.dart';
 import 'device_staff/model/device_staff_model.dart';
 import 'device_supervisor/model/device_supervisor_model.dart';
-import 'building_owner/model/building_owner_model.dart';
 import 'main_app/main_app.dart';
 import 'main_app/model/AppState.dart';
 import 'main_app/model/select_project_model.dart';
-import 'common/utils/StoreCreater.dart';
-import 'package:ifcy/main_app_redux.dart';
 
 void main() {
 

@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
-import 'package:ifcy/device_supervisor/repositories/device_message_repositories.dart';
 
 class ReportDeviceDataProvider {
   final Dio _dio;

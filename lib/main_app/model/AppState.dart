@@ -1,14 +1,12 @@
-import 'package:ifcy/common/model/model.dart';
+import 'package:ifcy/building_owner/model/building_owner_model.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
-import 'package:ifcy/building_owner/model/building_owner_model.dart';
 import 'package:ifcy/main_app/model/select_project_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'AppState.g.dart';
 part 'login_page_model.dart';
 part 'user_entity.dart';
-
-part 'AppState.g.dart';
 
 class AppState {
   String companyName; //公司名

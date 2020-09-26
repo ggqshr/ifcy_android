@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/blocs/supervisor_blocs.dart';
+
 import 'bloc.dart';
 
 class BadgeBloc extends Bloc<BadgeEvent, List<int>> {

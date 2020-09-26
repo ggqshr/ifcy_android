@@ -2,18 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'monitor_page_model.dart';
-
-part 'fire_alarm_model.dart';
-
-
-part 'task_info_model.dart';
-
 part 'add_task_bloc_model.dart';
-
-part 'plan_list_page_model.dart';
-
 part 'device_supervisor_model.g.dart';
+part 'fire_alarm_model.dart';
+part 'monitor_page_model.dart';
+part 'plan_list_page_model.dart';
+part 'task_info_model.dart';
 
 class DeviceSupervisorModel {
   int faultNum; //故障数

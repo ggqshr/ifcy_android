@@ -1,10 +1,11 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_bloc.dart';
 import 'package:ifcy/main_app/blocs/authorization/authorization_event.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 import 'package:rxdart/rxdart.dart';
+
 import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
+
 import './bloc.dart';
 
 class DeviceDetailBloc extends Bloc<DeviceDetailEvent, DeviceDetailState> {

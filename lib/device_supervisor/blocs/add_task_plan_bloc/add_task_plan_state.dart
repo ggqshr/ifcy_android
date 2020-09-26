@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:ifcy/common/model/model.dart';
-import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:meta/meta.dart';
 

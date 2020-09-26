@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_staff/repositories/repositories.dart';
+
 import './bloc.dart';
 
 class FloorDeviceBloc extends Bloc<FloorDeviceEvent, FloorDeviceState> {

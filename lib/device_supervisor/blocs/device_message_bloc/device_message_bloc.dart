@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/repositories/device_message_repositories.dart';
+
 import './bloc.dart';
 
 class DeviceMessageBloc extends Bloc<DeviceMessageEvent, DeviceMessageState> {

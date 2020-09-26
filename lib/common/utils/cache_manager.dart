@@ -3,10 +3,10 @@
 ///@date :2019/8/12 18:42
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:ifcy/common/utils/utils.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
+import 'package:ifcy/common/utils/utils.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 class IfcyCacheManager extends BaseCacheManager {
   static const key = "ifcyCacheKey"; //自定义的缓存Key值,应为唯一值

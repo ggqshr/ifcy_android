@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:dio/dio.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/common/utils/dio_util.dart';

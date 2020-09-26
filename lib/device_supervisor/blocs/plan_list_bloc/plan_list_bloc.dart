@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart';
 import 'package:ifcy/device_supervisor/repositories/plan_list_repositories.dart';
+
 import 'bloc.dart';
 
 class PlanListBloc extends Bloc<PlanListEvent, PlanListState> {

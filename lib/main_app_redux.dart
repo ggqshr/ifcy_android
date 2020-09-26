@@ -4,7 +4,6 @@ import 'package:ifcy/main_app/select_project_reducer.dart';
 import 'package:redux/redux.dart';
 
 import 'common/utils/utils.dart';
-import 'device_staff/device_staff_reducer.dart';
 import 'main_app/actions/main_app_actions.dart';
 
 String updateUserName(String userName, action) {

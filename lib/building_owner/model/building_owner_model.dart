@@ -1,11 +1,8 @@
 import 'package:ifcy/common/model/model.dart';
 
 part 'building_owner_appbar_model.dart';
-
 part 'device_fault_declare_model.dart';
-
 part 'fire_alarm_model.dart';
-
 part 'home_page_model.dart';
 
 ///@author lc

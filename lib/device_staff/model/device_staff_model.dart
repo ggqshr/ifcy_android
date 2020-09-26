@@ -2,18 +2,13 @@ import 'dart:convert';
 
 import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/model/model.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:ifcy/device_supervisor/model/device_supervisor_model.dart' show timeFromJson,timeToJson;
-import 'package:meta/meta.dart';
-
-part 'regular_inspection_model.dart';
-
-
-part 'fault_inspection_model.dart';
-
-part 'inspection_task_page_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'device_staff_model.g.dart';
+part 'fault_inspection_model.dart';
+part 'inspection_task_page_model.dart';
+part 'regular_inspection_model.dart';
 ///@author ggq
 ///@description: 维保工作人员的模块model
 ///@date :2019/8/2 8:58

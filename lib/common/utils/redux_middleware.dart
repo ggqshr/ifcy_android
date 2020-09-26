@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 ///@author ggq
 ///@description: redux的中间件，用来处理错误和其他问题
 ///@date :2019/8/18 16:04
 
 import 'package:ifcy/main_app/actions/main_app_actions.dart';
 import 'package:ifcy/main_app/pages/login_page.dart';
-import 'utils.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter/material.dart';
+
+import 'utils.dart';
 
 class ErrorMiddleware<State> extends MiddlewareClass<State> {
   @override

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:meta/meta.dart';
 
 @immutable

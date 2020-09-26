@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_supervisor/blocs/device_message_bloc/bloc.dart';
 import 'package:ifcy/device_supervisor/repositories/monitor_repositories.dart';
 import 'package:ifcy/device_supervisor/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
-import 'package:redux/redux.dart';
-import 'package:ifcy/common/utils/StoreCreater.dart';
+
 import 'blocs/supervisor_blocs.dart';
-import 'model/device_supervisor_model.dart';
 import 'pages/device_supvisor_pages.dart';
-import 'package:ifcy/common/components/components.dart';
 
 class DeviceSupervisor extends StatefulWidget {
   DeviceSupervisor();

@@ -6,7 +6,6 @@ import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
 
 part 'remember_event.dart';
-
 part 'remember_state.dart';
 
 class RememberBloc extends Bloc<RememberEvent, RememberState> {

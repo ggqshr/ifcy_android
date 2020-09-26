@@ -1,8 +1,8 @@
 import 'package:ifcy/main_app/model/AppState.dart';
+import 'package:redux/redux.dart';
 
 import 'actions/main_app_actions.dart';
 import 'model/select_project_model.dart';
-import 'package:redux/redux.dart';
 
 SelectProjectModel SelectProjectReducer(SelectProjectModel model, action) {
   return SelectProjectModel(

@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_staff/repositories/floor_map_repositories.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
+
 import './bloc.dart';
 
 class FloorMapBloc extends Bloc<FloorMapEvent, FloorMapState> {

@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:ifcy/common/model/model.dart';
 import 'package:ifcy/device_supervisor/repositories/confirm_message_repositories.dart';
+
 import './bloc.dart';
 
 class ConfirmMessageBloc

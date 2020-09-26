@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
 import 'package:ifcy/device_staff/blocs/device_upload_bloc/device_upload_event.dart';
-import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_staff/repositories/device_check_repositories.dart';
-import 'package:meta/meta.dart';
+
 import './bloc.dart';
 
 ///要依赖

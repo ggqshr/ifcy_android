@@ -1,10 +1,9 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/common/model/model.dart';
-import 'package:ifcy/common/utils/utils.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_device_check_bloc/bloc.dart';
 import 'package:ifcy/device_staff/blocs/device_upload_bloc/bloc.dart';
@@ -13,14 +12,11 @@ import 'package:ifcy/device_staff/blocs/device_upload_bloc/device_upload_state.d
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/device_staff/repositories/device_check_repositories.dart';
-import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
-import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
-part 'regular_inspection_component.dart';
 part 'fault_inspection_component.dart';
+part 'regular_inspection_component.dart';
 part 'scan_code_toinspection_component.dart';
 part 'upload_component.dart';

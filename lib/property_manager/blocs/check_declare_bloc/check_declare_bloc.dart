@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/property_manager/repositories/check_declare_repositories.dart';
+
 import './bloc.dart';
 
 class CheckDeclareBloc extends Bloc<CheckDeclareEvent, CheckDeclareState> {

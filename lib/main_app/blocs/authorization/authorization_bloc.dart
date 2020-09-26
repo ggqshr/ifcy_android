@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/main_app/repositories/user_login_repositories.dart';
+
 import './bloc.dart';
 
 class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {

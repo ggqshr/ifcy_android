@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ifcy/common/components/components.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
 import 'package:ifcy/device_staff/pages/device_staff_pages.dart';
 import 'package:ifcy/device_staff/repositories/repositories.dart';
 import 'package:ifcy/main_app/blocs/badge_bloc/badge_bloc.dart';
-import 'package:ifcy/main_app/model/AppState.dart';
 
 class DeviceStaff extends StatefulWidget {
   @override

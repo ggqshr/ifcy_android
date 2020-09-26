@@ -10,5 +10,5 @@ import 'package:ifcy/main_app/blocs/main_app_blocs.dart';
 import 'package:ifcy/property_manager/blocs/blocs.dart';
 import 'package:ifcy/property_manager/repositories/repositories.dart';
 
-part "monitor.dart";
 part "fault_declare_page.dart";
+part "monitor.dart";

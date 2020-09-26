@@ -1,8 +1,8 @@
 import 'package:ifcy/common/model/model.dart';
+import 'package:redux/redux.dart';
 
 import 'action/device_staff_actions.dart';
 import 'model/device_staff_model.dart';
-import 'package:redux/redux.dart';
 
 DeviceStaffModel deviceStaffModelReducer(DeviceStaffModel state, action) =>
     DeviceStaffModel(

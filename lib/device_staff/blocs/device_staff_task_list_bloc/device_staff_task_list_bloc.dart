@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
 import 'package:ifcy/device_staff/repositories/repositories.dart';
+
 import './bloc.dart';
 
 class DeviceStaffTaskListBloc

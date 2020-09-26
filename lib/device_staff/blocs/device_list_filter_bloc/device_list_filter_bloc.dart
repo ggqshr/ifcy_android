@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:ifcy/device_staff/blocs/device_staff_blocs.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
-import '../device_staff_blocs.dart';
-import '../device_staff_blocs.dart';
+
 import './bloc.dart';
+import '../device_staff_blocs.dart';
 
 class DeviceListFilterBloc
     extends Bloc<DeviceListFilterEvent, DeviceListFilterState> {

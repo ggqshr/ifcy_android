@@ -1,8 +1,8 @@
-import 'package:ifcy/common/utils/utils.dart';
-import 'package:redux_logging/redux_logging.dart';
-import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
-import 'package:redux/redux.dart';
 import 'dart:core';
+
+import 'package:ifcy/common/utils/utils.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
 
 Store<T> createStoreWithmiddleware<T>(Function reducer,T initstate, List<Middleware<T>> middleware) {
   if (middleware == null) {
