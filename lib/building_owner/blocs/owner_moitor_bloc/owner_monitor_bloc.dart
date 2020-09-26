@@ -46,26 +46,46 @@ class OwnerMonitorBloc extends Bloc<OwnerMonitorEvent, OwnerMonitorState> {
       String thisUserName = loginRepositories.getUser.userName; // 获取当前的用户名
       if (state is LoadingOwnerMonitorDataState ||
           state is LoadErrorOwnerMonitorDataState) {
+        List allData = await Future.wait([
+          repositories.getTrueFireNum(),
+          repositories.getFireNum(),
+          repositories.getDeviceFaultNum(),
+          repositories.getTaskCompleteRate(),
+          repositories.getFireAlarmMsg(thisUserName),
+          repositories.getDeviceFaultMsg(),
+          repositories.getTaskInfoMsg(),
+          repositories.getUserList(),
+        ]);
         yield LoadedOwnerMonitorDataState(
-          trueFireNum: await repositories.getTrueFireNum(),
-          fireNum: await repositories.getFireNum(),
-          deviceFaultNum: await repositories.getDeviceFaultNum(),
-          taskCompleteRate: await repositories.getTaskCompleteRate(),
-          fireAlarmMsg: await repositories.getFireAlarmMsg(thisUserName),
-          deviceFaultMsg: await repositories.getDeviceFaultMsg(),
-          taskInfoMsg: await repositories.getTaskInfoMsg(),
-          userList: await repositories.getUserList(),
+          trueFireNum: allData[0],
+          fireNum: allData[1],
+          deviceFaultNum: allData[2],
+          taskCompleteRate: allData[3],
+          fireAlarmMsg: allData[4],
+          deviceFaultMsg: allData[5],
+          taskInfoMsg: allData[6],
+          userList: allData[7],
         );
       } else if (state is LoadedOwnerMonitorDataState) {
+        List allData = await Future.wait([
+          repositories.getTrueFireNum(),
+          repositories.getFireNum(),
+          repositories.getDeviceFaultNum(),
+          repositories.getTaskCompleteRate(),
+          repositories.getFireAlarmMsg(thisUserName),
+          repositories.getDeviceFaultMsg(),
+          repositories.getTaskInfoMsg(),
+          repositories.getUserList(),
+        ]);
         yield LoadedOwnerMonitorDataState(
-          trueFireNum: await repositories.getTrueFireNum(),
-          fireNum: await repositories.getFireNum(),
-          deviceFaultNum: await repositories.getDeviceFaultNum(),
-          taskCompleteRate: await repositories.getTaskCompleteRate(),
-          fireAlarmMsg: await repositories.getFireAlarmMsg(thisUserName),
-          deviceFaultMsg: await repositories.getDeviceFaultMsg(),
-          taskInfoMsg: await repositories.getTaskInfoMsg(),
-          userList: await repositories.getUserList(),
+          trueFireNum: allData[0],
+          fireNum: allData[1],
+          deviceFaultNum: allData[2],
+          taskCompleteRate: allData[3],
+          fireAlarmMsg: allData[4],
+          deviceFaultMsg: allData[5],
+          taskInfoMsg: allData[6],
+          userList: allData[7],
         );
       }
     } catch (e) {

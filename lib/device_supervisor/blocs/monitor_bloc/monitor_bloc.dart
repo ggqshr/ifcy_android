@@ -46,22 +46,42 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
       String userName = loginRepositories.getUser.userName;
       if (state is UnInitializationMonitorState ||
           state is LoadedErrorMonitorState) {
+        List allData = await Future.wait(
+            [
+              repositories.getDeviceFaultNum(),
+              repositories.getDeviceFaultMsg(),
+              repositories.getFireAlarmMsg(userName),
+              repositories.getTaskCompleteRate(),
+              repositories.getTaskInfoMsg(),
+              repositories.getTrueFireNum(),
+            ]
+        );
         yield LoadedMonitorState(
-          deviceFaultNum: await repositories.getDeviceFaultNum(),
-          deviceFaultMsg: await repositories.getDeviceFaultMsg(),
-          fireAlarmMsg: await repositories.getFireAlarmMsg(userName),
-          taskCompleteRate: await repositories.getTaskCompleteRate(),
-          taskInfoMsg: await repositories.getTaskInfoMsg(),
-          trueFireNum: await repositories.getTrueFireNum(),
+          deviceFaultNum: allData[0],
+          deviceFaultMsg: allData[1],
+          fireAlarmMsg: allData[2],
+          taskCompleteRate: allData[3],
+          taskInfoMsg: allData[4],
+          trueFireNum: allData[5],
         );
       } else if (state is LoadedMonitorState) {
+        List allData = await Future.wait(
+            [
+              repositories.getDeviceFaultNum(),
+              repositories.getDeviceFaultMsg(),
+              repositories.getFireAlarmMsg(userName),
+              repositories.getTaskCompleteRate(),
+              repositories.getTaskInfoMsg(),
+              repositories.getTrueFireNum(),
+            ]
+        );
         yield (state as LoadedMonitorState).copy(
-          deviceFaultNum: await repositories.getDeviceFaultNum(),
-          deviceFaultMsg: await repositories.getDeviceFaultMsg(),
-          fireAlarmMsg: await repositories.getFireAlarmMsg(userName),
-          taskCompleteRate: await repositories.getTaskCompleteRate(),
-          taskInfoMsg: await repositories.getTaskInfoMsg(),
-          trueFireNum: await repositories.getTrueFireNum(),
+          deviceFaultNum: allData[0],
+          deviceFaultMsg: allData[1],
+          fireAlarmMsg: allData[2],
+          taskCompleteRate: allData[3],
+          taskInfoMsg: allData[4],
+          trueFireNum: allData[5],
         );
       }
     } catch (e) {
