@@ -81,12 +81,13 @@ class ReportDevicePage extends StatelessWidget {
                       state.devicesToShow.isNotEmpty &&
                       state.devicesToReport.isNotEmpty)
                   ? () {
-                      TextEditingController titleController =
-                          TextEditingController();
-                      TextEditingController contentController =
-                          TextEditingController();
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
+                        TextEditingController titleController =
+                        TextEditingController();
+                        titleController.text = "设备故障";
+                        TextEditingController contentController =
+                        TextEditingController();
                         return Scaffold(
                           appBar: AppBar(
                             title: Text("申报信息填写"),
@@ -204,13 +205,11 @@ class ReportDevicePage extends StatelessWidget {
                               ),
                             ),
                             child: FlatButton(
-                              onPressed: titleController.text.isNotEmpty
-                                  ? () {
+                              onPressed: () {
                                 _bloc.add(ReportToServer(
-                                    titleController.text,
+                                    titleController.text??"设备故障了",
                                     contentController.text));
-                              }
-                                  : null,
+                              },
                               child: Text(
                                 "提交",
                                 style: TextStyle(
