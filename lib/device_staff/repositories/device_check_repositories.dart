@@ -83,6 +83,20 @@ class DeviceCheckRepositories {
     return await provider.updateLocal(model);
   }
 
+  ///申报问题设备
+  Future reportDevice(List<String> deviceToReport) async {
+      Dio dio = DioUtils.getInstance().getDio();
+      Map dataMap = {
+        "device_to_report": deviceToReport.map((item) => {"code": item}).toList(),
+        "task_id": taskId,
+        "title": "reportDevice",
+      };
+      await dio.patch(
+        "/declare/patrol",
+        data: jsonEncode(dataMap),
+      );
+  }
+
   ///和服务器进行同步
   Future uploadDevice(List<InspectionDeviceModel> models) async {
     for (var model in models) {

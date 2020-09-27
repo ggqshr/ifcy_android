@@ -143,9 +143,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                 title: Text("工作台"),
                 centerTitle: true,
               ),
-              floatingActionButton: getFloatingActionButton(models
-                  .where((item) => item.checkStatus == CheckStatus.localCheck)
-                  .toList()),
+              floatingActionButton: getFloatingActionButton(models),
               body: CustomScrollView(
                 controller: _scrollController,
                 slivers: <Widget>[
@@ -198,6 +196,8 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
   }
 
   getFloatingActionButton(List<InspectionDeviceModel> model) {
+    List<InspectionDeviceModel> uploadedModel = model.where((item) => item.checkStatus == CheckStatus.localCheck).toList();
+    List<InspectionDeviceModel> reportModel = model.where((item) => item.checkStatus == CheckStatus.uncheck).toList();
     return Builder(builder: (context) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -222,11 +222,33 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
               child: Icon(Icons.arrow_upward),
             ),
           ),
+          FloatingActionButton(
+            heroTag: "report",
+            tooltip: "report",
+            backgroundColor: Colors.red,
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return BlocProvider(
+                    create: (context) => ReportUploadBloc(
+                      _deviceCheckRepositories,
+                    )..add(GetReportDevice(reportModel)),
+                    child: ReportDeviceProblem((_bloc.state as DeviceListLoaded).floorList),
+                  );
+                },
+
+              ));
+            },
+            child: Icon(Icons.report_problem,color:Colors.white),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Badge(
             showBadge: model.length != 0,
             position: BadgePosition.topRight(right: 2, top: -10),
             badgeContent: Text(
-              model.length.toString(),
+              uploadedModel.length.toString(),
               style: TextStyle(color: Colors.white),
             ),
             child: FloatingActionButton(
@@ -240,10 +262,10 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
                   builder: (context) {
                     return BlocProvider(
                       create: (context) => DeviceUploadBloc(
-                        _deviceCheckRepositories,
-                      )..add(GetUploadData(model)),
-                      child: UploadComponent(
-                          (_bloc.state as DeviceListLoaded).floorList),
+                      _deviceCheckRepositories,
+                    )..add(GetUploadData(uploadedModel)),
+                    child: UploadComponent(
+                    (_bloc.state as DeviceListLoaded).floorList),
                     );
                   },
                 ));
@@ -310,6 +332,7 @@ class _RegularInspectionPageState extends State<RegularInspectionPage>
             },
             child: Icon(FontAwesomeIcons.qrcode),
           ),
+
         ],
       );
     });
@@ -643,6 +666,68 @@ class InspectionTaskDetailPanel<T extends TaskInfoDetail>
     );
   }
 }
+
+//class getReportDevicePanel extends StatelessWidget {
+//  final bool isExpansion;
+//  final InspectionDeviceModel model;
+//  final List<FloorEntity> floorList;
+//
+//  getReportDevicePanel({this.isExpansion = false, this.model, this.floorList});
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Card(
+//      elevation: 5,
+//      child: ExpansionTile(
+//        initiallyExpanded: isExpansion,
+//        title: Container(
+//          width: 200,
+//          child: Row(
+//            children: <Widget>[
+//              Checkbox(
+//                value: state.devicesToReport.contains(thisDevice.code),
+//                onChanged: (value) {
+//                  if (value) {
+//                    _bloc.add(AddToReportList(thisDevice.code));
+//                  } else {
+//                    _bloc.add(
+//                        RemoveFromReportList(thisDevice.code));
+//                  }
+//                },
+//              ),
+//              Text(model.name),
+//              Spacer(),
+//              Chip(
+//                label: Text(
+//                  parseEnumType(model.checkStatus),
+//                  style: TextStyle(
+//                    color: model.checkStatus == CheckStatus.checked
+//                        ? Colors.black
+//                        : Colors.red,
+//                  ),
+//                ),
+//              ),
+//              Chip(
+//                label: Text(
+//                  "${floorList.singleWhere((item) => item.id == model.buildingFloorId).name}",
+//                ),
+//              ),
+//            ],
+//          ),
+//        ),
+//        children: <Widget>[
+//          Divider(
+//            color: Colors.black,
+//          ),
+//          ListTile(
+//            title: Text("设备Code"),
+//            subtitle: Text(model.code),
+//          ),
+//        ],
+//      ),
+//    );
+//  }
+//}
 
 class ReadOnlyInspectionTaskDetailPanel extends StatelessWidget {
   final bool isExpansion;
