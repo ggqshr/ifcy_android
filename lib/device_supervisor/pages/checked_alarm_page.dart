@@ -205,6 +205,9 @@ class FilterEndDrawer extends StatelessWidget {
                             ).catchError((err) {
                               print(err);
                             });
+                            if(date == null){
+                              date = new DateTime.now();
+                            }
                             bloc1.add(UpdateFindingDateFilter(date));
                           },
                         ),
@@ -226,6 +229,9 @@ class FilterEndDrawer extends StatelessWidget {
                             ).catchError((err) {
                               print(err);
                             });
+                            if(date == null){
+                              date = new DateTime.now();
+                            }
                             bloc1.add(UpdateFindingDateFilter(date));
                           },
                         ),
