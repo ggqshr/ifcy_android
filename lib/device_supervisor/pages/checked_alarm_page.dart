@@ -226,6 +226,7 @@ class FilterEndDrawer extends StatelessWidget {
                             ).catchError((err) {
                               print(err);
                             });
+                            bloc1.add(UpdateFindingDateFilter(date));
                           },
                         ),
                       );

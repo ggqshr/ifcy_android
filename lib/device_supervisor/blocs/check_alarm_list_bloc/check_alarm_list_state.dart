@@ -15,28 +15,21 @@ class LoadedCheckAlarmState extends CheckAlarmListState {
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
-
   LoadedCheckAlarmState({
     @required this.model,
     @required this.isReachMax,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is LoadedCheckAlarmState &&
-              runtimeType == other.runtimeType &&
-              model == other.model &&
-              isReachMax == other.isReachMax
-          );
-
+      (other is LoadedCheckAlarmState &&
+          runtimeType == other.runtimeType &&
+          model == other.model &&
+          isReachMax == other.isReachMax);
 
   @override
-  int get hashCode =>
-      model.hashCode ^
-      isReachMax.hashCode;
-
+  int get hashCode => model.hashCode ^ isReachMax.hashCode;
 
   @override
   String toString() {
@@ -45,7 +38,6 @@ class LoadedCheckAlarmState extends CheckAlarmListState {
         ' isReachMax: $isReachMax,' +
         '}';
   }
-
 
   LoadedCheckAlarmState copyWith({
     PageDataModel model,
@@ -56,7 +48,6 @@ class LoadedCheckAlarmState extends CheckAlarmListState {
       isReachMax: isReachMax ?? this.isReachMax,
     );
   }
-
 
   Map<String, dynamic> toMap() {
     return {
@@ -72,7 +63,6 @@ class LoadedCheckAlarmState extends CheckAlarmListState {
     );
   }
 
-
 //</editor-fold>
 }
 
@@ -85,23 +75,10 @@ class FilteringCheckAlarmState extends CheckAlarmListState {
     @required this.model,
     @required this.isReachMax,
     this.date,
-  });
-
-
+  }) : super([date, model, isReachMax]);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          (other is FilteringCheckAlarmState &&
-              runtimeType == other.runtimeType &&
-              model == other.model &&
-              isReachMax == other.isReachMax
-          );
-
-  @override
-  int get hashCode =>
-      model.hashCode ^
-      isReachMax.hashCode;
+  int get hashCode => model.hashCode ^ isReachMax.hashCode;
 
   @override
   String toString() {
@@ -137,4 +114,3 @@ class FilteringCheckAlarmState extends CheckAlarmListState {
 }
 
 class LoadErrorCheckAlarmState extends CheckAlarmListState {}
-
