@@ -235,7 +235,8 @@ class _FaultPageState extends State<FaultPage>
                     child: ListTile(
                       title: Text(devices[index].name),
                       trailing: FlatButton(
-                        child: Text("查看详情"),
+                        color:Color.fromRGBO(192, 47, 47,1),
+                        child: Text("查看详情",style: TextStyle(color: Colors.white),),
                         onPressed: () {
                           _bloc.add(ChangeShowStatusDevice(
                             devices[index].id,
@@ -311,10 +312,10 @@ class ChangeDeviceStateHeader extends SliverPersistentHeaderDelegate {
     return TabBar(
       tabs: [
         Tab(
-          child: Text("故障$faultDeviceNumber"),
+          child: Text("故障$faultDeviceNumber",style: TextStyle(color:Colors.black),),
         ),
         Tab(
-          child: Text("正常"),
+          child: Text("正常",style: TextStyle(color:Colors.black),),
         )
       ],
       controller: _controller,

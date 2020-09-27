@@ -292,10 +292,10 @@ class ChangeTaskState extends SliverPersistentHeaderDelegate {
     return TabBar(
       tabs: [
         Tab(
-          child: Text("未完成"),
+          child: Text("未完成",style: TextStyle(color:Colors.black),),
         ),
         Tab(
-          child: Text("完成"),
+          child: Text("完成",style: TextStyle(color:Colors.black),),
         )
       ],
       controller: _controller,

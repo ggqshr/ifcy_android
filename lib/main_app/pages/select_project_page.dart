@@ -26,10 +26,11 @@ class SelectProjectPage extends StatelessWidget {
                 children: <Widget>[
                   UserAccountsDrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.green[300],
+                      color: Color.fromRGBO(192, 47, 47,1),
                     ),
                     currentAccountPicture: CircleAvatar(
                       child: Text(state.userEntity.realName[0]),
+                      backgroundColor: Colors.white,
                     ),
                     accountName: Text(state.userEntity.realName),
                     accountEmail: Text(
@@ -42,6 +43,7 @@ class SelectProjectPage extends StatelessWidget {
                           .add(LoginOut());
                     },
                   ),
+                  Divider(color:Colors.black),
                   ListTile(
                     title: Text("升级app"),
                     onTap: () async {

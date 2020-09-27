@@ -86,7 +86,7 @@ class _PlanListPageState extends State<PlanListPage>
                                 child: ListTile(
                                   title: Text(thisPlan.name),
                                   trailing: FlatButton(
-                                    color: Colors.green[300],
+                                    color: Color.fromRGBO(192, 47, 47,1),
                                     child: Text("修改"),
                                     onPressed: () {
                                       UserLoginRepositories userRepo =
