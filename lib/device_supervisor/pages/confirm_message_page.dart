@@ -125,7 +125,7 @@ class BodyContext extends StatelessWidget {
         ),
         ListTile(
           title: Text("警报发生时间"),
-          trailing: Text(state.message.sendTime.toString().substring(0, 10)),
+          trailing: Text(state.message.sendTime.toString().substring(0, 19)),
         ),
         if (state is LoadedConfirmDataState)
           ListTile(
