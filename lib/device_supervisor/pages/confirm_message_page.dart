@@ -136,11 +136,12 @@ class BodyContext extends StatelessWidget {
                   RaisedButton(
                     child:
                         Text(state.message is FireAlarmMessage ? "真火警" : "处理"),
-                    onPressed: () => bloc.add(ConfirmMessage(true, "已处理")),
+                    onPressed: () => showDialogToCheck(context,
+                        (text) => bloc.add(ConfirmMessage(true, text))),
                   ),
                   RaisedButton(
-                    child: Text(
-                        state.message is FireAlarmMessage ? "误报火警" : "申报"),
+                    child:
+                        Text(state.message is FireAlarmMessage ? "误报火警" : "申报"),
                     onPressed: () => showDialogToCheck(context,
                         (text) => bloc.add(ConfirmMessage(false, text))),
                   ),
