@@ -7,12 +7,7 @@ class ExpansionCard extends StatelessWidget {
   final Function onTalCall;
   final bool isExpansion;
 
-  ExpansionCard(
-      {this.title,
-      this.messageNum,
-      this.viewList,
-      this.onTalCall,
-      this.isExpansion = false});
+  ExpansionCard({this.title, this.messageNum, this.viewList, this.onTalCall,this.isExpansion=false});
 
   @override
   Widget build(BuildContext context) {

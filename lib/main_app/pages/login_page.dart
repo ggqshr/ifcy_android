@@ -100,56 +100,28 @@ class _LoginPageState extends State<LoginPage> {
                   passWordFocusNode.unfocus();
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    // backgroundBlendMode: BlendMode.colorBurn,
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromRGBO(190, 61, 58, 1),
-                        Color.fromRGBO(153, 63, 68, 1),
-                        Color.fromRGBO(74, 33, 71, 1)
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
                   child: Form(
                     child: Column(
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 40),
                         ),
-                        Container(
-                          width: 130,
-                          height: 130,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                "images/app_icon.png",
-                              ),
-                            ),
-                            color: Colors.white,
-                            borderRadius: new BorderRadius.circular(45.0),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black,
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 10.0,
-                                  spreadRadius: 2.0),
-                            ],
-                          ),
+                        Image.asset(
+                          "images/app_icon.png",
+                          width: 100,
+                          height: 100,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 40),
+                          padding: EdgeInsets.symmetric(vertical: 20),
                         ),
                         TextFormField(
+                          autofocus: true,
                           controller: userNameController,
                           focusNode: userNameFocusNode,
                           decoration: InputDecoration(
                             labelText: "请输入用户名",
                             hintText: "用户名",
                             prefixIcon: Icon(Icons.verified_user),
-                            hintStyle: TextStyle(color: Colors.grey),
                             errorStyle:
                                 TextStyle(color: Colors.red, fontSize: 18),
                             suffixIcon:
@@ -166,9 +138,6 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 if (state is RememberLoadedState) {
                                   return DropdownButton(
-                                    iconEnabledColor: Colors.white,
-                                    iconDisabledColor: Colors.black,
-                                    iconSize: 35,
                                     underline: Container(),
                                     items: state.infos
                                         .map<DropdownMenuItem>(
@@ -186,8 +155,6 @@ class _LoginPageState extends State<LoginPage> {
                                           thisInfo.username;
                                       passWordController.text =
                                           thisInfo.password;
-                                      userNameFocusNode.unfocus();
-                                      passWordFocusNode.unfocus();
                                       loginBloc.add(SelectExistsInfo(thisInfo));
                                     },
                                   );
@@ -208,8 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             labelText: "请输入密码",
                             hintText: "密码",
-                            prefixIcon: Icon(Icons.lock),
-                            hintStyle: TextStyle(color: Colors.grey),
+                            prefixIcon: Icon(Icons.vpn_key),
                             errorStyle:
                                 TextStyle(color: Colors.red, fontSize: 18),
                             suffixIcon: IconButton(
@@ -229,22 +195,8 @@ class _LoginPageState extends State<LoginPage> {
                           validator: (_) =>
                               state.isPasswordValid ? null : "请输入密码",
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 40),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: new BorderRadius.circular(45.0),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black,
-                                  offset: Offset(5.0, 5.0),
-                                  blurRadius: 10.0,
-                                  spreadRadius: 2.0),
-                            ],
-                          ),
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width / 2.0,
+                        new Container(
+                          height: 45.0,
                           margin: EdgeInsets.only(top: 40.0),
                           child: new SizedBox.expand(
                             child: new RaisedButton(
@@ -257,8 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                                           password: passWordController.text));
                                     }
                                   : null,
-                              color: Color.fromARGB(255, 182, 46, 89),
-                              disabledColor: Colors.grey,
+                              color: Color.fromARGB(255, 61, 203, 128),
                               child: new Text(
                                 '登录',
                                 style: TextStyle(
@@ -273,8 +224,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                       mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                     ),
                   ),
+//                height: double.maxFinite,
                 ),
               );
             },
