@@ -14,7 +14,7 @@ class TrueFireCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTalCall == null ? null : () => onTalCall(context),
       child: Card(
-        color: Color.fromRGBO(192, 47, 47, 1),
+        color: Colors.red[400],
         child: Container(
           height: 50,
           child: Row(
@@ -24,7 +24,7 @@ class TrueFireCard extends StatelessWidget {
                   width: 20,
                 ),
               ),
-              Icon(FontAwesomeIcons.fireAlt,color: Colors.red,),
+              Icon(FontAwesomeIcons.fireAlt,color: Colors.yellowAccent,),
               Container(
                 child: SizedBox(
                   width: 13,
