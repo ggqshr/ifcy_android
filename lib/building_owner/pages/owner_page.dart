@@ -220,7 +220,7 @@ class FireMessageTile extends StatelessWidget {
             Icons.chevron_right,
           ),
           title: Text(meg.deviceName),
-          subtitle: Text("设备在${meg.sendTime.toString().substring(0, 10)}发出警报\n"
+          subtitle: Text("设备在${meg.sendTime.toString().substring(0, 16)}发出警报\n"
               "地点在${meg.floorName}的${meg.floorAreaName}"),
           onLongPress: () async {
             showDialog(
