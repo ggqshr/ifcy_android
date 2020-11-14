@@ -47,7 +47,7 @@ void main() {
         ..options.baseUrl = "http://116.56.140.193/business/app/api";
 //    dio.interceptors.add(LogInterceptor(responseBody: true));
       dio.options.receiveDataWhenStatusError = true;
-      dio.options.contentType = ContentType.json;
+      dio.options.contentType = ContentType.json.value;
       var ss = await dio.post(
         "/anonymous/login",
         data: '{"password": "123456", "username": "hyj"}',
@@ -62,7 +62,7 @@ void main() {
       Dio dio = Dio()
         ..options.baseUrl = "http://116.56.140.193/business/app/api";
       dio.options.receiveDataWhenStatusError = true;
-      dio.options.contentType = ContentType.json;
+      dio.options.contentType = ContentType.json.value;
       dio.interceptors.add(InterceptorsWrapper(onError: (e) {
         print(e.toString());
       }));

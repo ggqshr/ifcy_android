@@ -45,7 +45,7 @@ class DioUtils {
         connectTimeout: connectTimeOut,
         receiveTimeout: receiveTimeOut,
         baseUrl: baseUrl,
-        contentType: ContentType.json,
+        contentType: ContentType.json.value,
       ),
     );
     (dio.transformer as DefaultTransformer).jsonDecodeCallback =
@@ -104,7 +104,7 @@ class DioUtils {
     return Dio()
       ..options.baseUrl = baseUrl
       ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true))
-      ..options.contentType = ContentType.json;
+      ..options.contentType = ContentType.json.value;
   }
 
   //获取tokenl
@@ -140,38 +140,6 @@ class DioUtils {
     Response res = await _login(userName, passWord);
     setToken(res.headers.value("authorization"));
     return res;
-  }
-
-  ///处理异常的逻辑，包括DioError，以及非DioError
-  ///会将对应的Error转换为Action，然后在redux的中间件中做出响应
-  ///参考[ErrorMiddleware]
-  IfcyErrorAction parseError2action(Error err) {
-    if (err is DioError) {
-      //如果是Dio的错误
-      if (err.error is ShouldReLoginAction) {
-        //如果是重新登陆的错误
-        return err.error;
-      }
-      switch (err.type) {
-        case DioErrorType.CONNECT_TIMEOUT:
-          return ConnectTimeOutErrorAction();
-          break;
-        case DioErrorType.SEND_TIMEOUT:
-          return SendTimeOutErrorAction();
-          break;
-        case DioErrorType.RECEIVE_TIMEOUT:
-          return ReceiveTimeOutErrorAction();
-          break;
-        case DioErrorType.RESPONSE:
-          return parseResponse2action(err.response);
-        default:
-          print("Unknown Error $err");
-          break;
-      }
-    } else {
-      //其他类型的error
-      return ErrorAction.fromError(err);
-    }
   }
 
   //将响应转化为对应的action

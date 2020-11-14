@@ -6,6 +6,7 @@ import 'package:ifcy/common/dao/dao.dart';
 import 'package:ifcy/common/utils/cache_manager.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
 import 'package:ifcy/device_staff/model/device_staff_model.dart';
+import 'package:http_parser/http_parser.dart';
 
 ///@author ggq
 ///@description:
@@ -44,7 +45,7 @@ class DeviceCheckDataProvider {
     Dio dio = DioUtils.getInstance().getDio();
     Response res = await dio.patch(
       "/patrol/task/$taskId/check-device",
-      data: FormData.from(map),
+      data: FormData.fromMap(map),
     );
     return res.data['data'];
   }
@@ -102,13 +103,13 @@ class DeviceCheckRepositories {
   Future uploadDevice(List<InspectionDeviceModel> models) async {
     for (var model in models) {
       Map dataMap = model.toJson();
-      List<UploadFileInfo> pics = [];
+      List<MultipartFile> pics = [];
       //从缓存中读取图片，并转化成上传的对象
       for (var key in ["pic1", "pic2"]) {
         if (dataMap[key] != null) {
           File pic = await IfcyCacheManager().getSingleFile(dataMap[key]);
-          pics.add(UploadFileInfo(pic, dataMap[key],
-              contentType: ContentType.parse("image/jpeg")));
+          pics.add(MultipartFile(pic.openRead(), dataMap[key],
+              contentType: MediaType.parse("image/jpeg")));
           dataMap.remove(key); //删除不需要的字段
         }
       }
