@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -23,9 +22,6 @@ import 'main_app/model/select_project_model.dart';
 void main() {
 
   // 注册 fluro routes
-  Router router = Router();
-  Routes.configureRoutes(router);
-  Application.router = router;
   runApp(MyApp());
 //  SystemUiOverlayStyle systemUiOverlayStyle =
 //      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -46,9 +42,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final router = new Router();
-    Routes.configureRoutes(router);
-    Application.router = router;
     SharedPreferences.getInstance().then((res) {
       Application.prefs = res;
     });
@@ -72,7 +65,6 @@ class MyApp extends StatelessWidget {
             home: SafeArea(
               child: MainApp(),
             ),
-            onGenerateRoute: Application.router.generator,
             navigatorKey: Application.navigatorKey,
           ),
         ),

@@ -32,7 +32,6 @@ dependencies:
   sqflite: ^1.1.6+3
   shared_preferences: ^0.5.3+4
   flutter_spinkit: "^3.1.0"
-  fluro: "^1.5.1"
   badges: ^1.1.0
   charts_flutter: ^0.9.0
   font_awesome_flutter: 8.5.0

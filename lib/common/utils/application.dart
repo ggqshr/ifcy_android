@@ -1,5 +1,3 @@
-import 'package:fluro/fluro.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ifcy/building_owner/building_owner.dart';
 import 'package:ifcy/device_staff/device_staff.dart';
@@ -7,6 +5,7 @@ import 'package:ifcy/device_supervisor/device_supervisor.dart';
 import 'package:ifcy/property_manager/property_manager.dart';
 import 'package:ifcy/property_worker/property_worker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 export 'package:fluttertoast/fluttertoast.dart';
 
@@ -18,8 +17,6 @@ class Application {
   static final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
 
-  ///路由跳转
-  static Router router;
 
   ///全局的SharedPreferences
   static SharedPreferences prefs;

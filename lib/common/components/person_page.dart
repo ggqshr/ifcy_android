@@ -118,15 +118,15 @@ class PersonelInfoComponent extends StatelessWidget {
         trailing: IconButton(
           icon: Icon(Icons.navigate_next, color: Colors.grey),
           onPressed: () {
-            Application.router.navigateTo(context, '/personalInfo/:id', //跳转路径
-                transition: TransitionType.inFromRight //过场效果
-                );
+            Navigator.of(context).push(MaterialPageRoute(builder:(content){
+              return PersonInfoPage();
+            }));
           },
         ),
         onTap: () {
-          Application.router.navigateTo(context, '/personalInfo/:id', //跳转路径
-              transition: TransitionType.inFromRight //过场效果
-              );
+          Navigator.of(context).push(MaterialPageRoute(builder:(content){
+            return PersonInfoPage();
+          }));
         },
       ),
     );

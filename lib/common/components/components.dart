@@ -2,8 +2,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
-import 'package:fluro/fluro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
