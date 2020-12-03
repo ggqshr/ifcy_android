@@ -4,16 +4,14 @@ import 'package:ifcy/common/res/res.dart';
 import 'package:ifcy/common/utils/auth.dart';
 import 'package:ifcy/common/utils/dio_util.dart';
 import 'package:ifcy/main_app/model/AppState.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
 
 ///@author ggq
 ///@description:
 ///@date :2019/8/25 18:35
 
 class UserLoginDataProvider {
-  final JPush jPush;
 
-  UserLoginDataProvider([jPush]) : jPush = jPush ?? JPush();
+  UserLoginDataProvider();
 
   Future<UserEntity> login(String userName, String passWord) async {
     Response res = await DioUtils.getInstance().login(userName, passWord);
@@ -26,35 +24,6 @@ class UserLoginDataProvider {
     String fireTag = "FIRE_${userEntity.buildingCode}";
     String alias = "USER_${userEntity.userName}";
     String faultTag = "FAULT_${userEntity.buildingCode}";
-    jPush.addEventHandler(
-      // 接收通知回调方法。
-      onReceiveNotification: (Map<String, dynamic> message) async {
-        print("flutter onReceiveNotification: $message");
-      },
-      // 点击通知回调方法。
-      onOpenNotification: (Map<String, dynamic> message) async {
-        print("flutter onOpenNotification: $message");
-      },
-      // 接收自定义消息回调方法。
-      onReceiveMessage: (Map<String, dynamic> message) async {
-        print("flutter onReceiveMessage: $message");
-      },
-    );
-    jPush.setup(
-      appKey: "82a1ab81c8b060a42cdc62e1",
-      channel: "theChannel",
-      production: false,
-      debug: false, // 设置是否打印 debug 日志
-    );
-    //如果是维保主管和维保工作人员就设置故障tag，接收推送消息
-    if (userEntity.roleType == "MAINTAIN_WORKER" ||
-        userEntity.roleType == 'MAINTAIN_MANAGER') {
-      await jPush.setTags([faultTag, fireTag]);
-    } else {
-      await jPush.setTags([fireTag]);
-    }
-    Map a = await jPush.setAlias(alias);
-    print(a);
   }
 
   Future<Build> getCurrentBuild() async {
