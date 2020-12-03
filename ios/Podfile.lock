@@ -18,12 +18,6 @@ PODS:
     - Flutter
   - install_plugin (0.0.1):
     - Flutter
-  - JCore (2.4.0)
-  - JPush (3.3.6):
-    - JCore (< 3.0.0, >= 2.0.0)
-  - jpush_flutter (0.0.2):
-    - Flutter
-    - JPush
   - MTBBarcodeScanner (5.0.11)
   - path_provider (0.0.1):
     - Flutter
@@ -68,7 +62,6 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - install_plugin (from `.symlinks/plugins/install_plugin/ios`)
-  - jpush_flutter (from `.symlinks/plugins/jpush_flutter/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_linux (from `.symlinks/plugins/path_provider_linux/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
@@ -89,8 +82,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
-    - JCore
-    - JPush
     - MTBBarcodeScanner
 
 EXTERNAL SOURCES:
@@ -110,8 +101,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker/ios"
   install_plugin:
     :path: ".symlinks/plugins/install_plugin/ios"
-  jpush_flutter:
-    :path: ".symlinks/plugins/jpush_flutter/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   path_provider_linux:
@@ -155,9 +144,6 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   install_plugin: a13e7ddd2bab0c701b48cd359c26d0394125b6fb
-  JCore: a29e4b0ee54e1301446dc02d8e1c350404108b34
-  JPush: a401b946dcc76b37335422487201bc1ecc8dd296
-  jpush_flutter: d7e3a79466eb9447fd940233f02661b514f137c6
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   path_provider_linux: 4d630dc393e1f20364f3e3b4a2ff41d9674a84e4
