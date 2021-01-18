@@ -57,7 +57,7 @@ jobs:
      - name: Initialize Keychain with certificate
        run: |
          keychain initialize
-         keychain add-certificates --certificate ~/Library/MobileDevice/Certificates/certificate.p12 --certificate-password ${{ secrets.cert_password }}
+         keychain add-certificates --certificate ~/Library/MobileDevice/Certificates/certificate.p12
     
 #install flutter
      - name: Flutter get
